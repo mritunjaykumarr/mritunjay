@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stylish YouTube Video Player</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Background */
+        body {
+            background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
+            color: white;
+           
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #ff4d4d;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Input field */
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ff4d4d;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #222;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #ff9900;
+            box-shadow: 0 0 10px rgba(255, 153, 0, 0.6);
+        }
+
+        /* Play Button */
+        button {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.5);
+        }
+
+        button:hover {
+            background: #ff9900;
+            box-shadow: 0 6px 15px rgba(255, 153, 0, 0.6);
+        }
+
+        /* Video Container */
+        .video-container {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 200px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        /* Default Message with Colorful Animation */
+        .default-message {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(90deg, #ff4d4d, #ff9900, #ff4d4d);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientAnimation 3s linear infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Loader */
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top: 5px solid #ff4d4d;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        iframe {
+            width: 100%;
+            height: 315px;
+            border-radius: 10px;
+            display: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        a{
+          text-decoration: none;
+          color: white;
+
+        }
+        .main{
+          display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        .home{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          
+        }
+        .home-btn{
+          margin-top: 50px;
+        }
+    </style>
+</head>
+<body><div class="home">
+  <button class="home-btn"><a href="/index.html">HOME</a></button></div>
+  <div class="main">
+    <div class="container">
+        <h1>Ad-Free YouTube Player</h1>
+        <div class="input-container">
+            <input type="text" id="video-url" placeholder="Paste YouTube URL here...">
+            <button onclick="loadVideo()">Play</button>
+        </div>
+        <p class="error-message" id="error-message"></p>
+        
+        <div class="video-container" id="video-container">
+            <div class="default-message" id="default-message">Paste Your Link to Play the Video</div>
+            <div class="loader" id="loader"></div>
+            <iframe id="video-player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+    <script>
+        function loadVideo() {
+            const videoUrl = document.getElementById('video-url').value.trim();
+            const videoId = extractVideoId(videoUrl);
+            const errorMessage = document.getElementById('error-message');
+            const loader = document.getElementById('loader');
+            const videoContainer = document.getElementById('video-container');
+            const videoPlayer = document.getElementById('video-player');
+            const defaultMessage = document.getElementById('default-message');
+
+            if (!videoUrl) {
+                errorMessage.innerText = 'Please enter a YouTube URL.';
+                videoContainer.style.display = 'flex'; // Ensure container is visible
+                defaultMessage.style.display = 'block'; // Show default message
+                videoPlayer.style.display = 'none';
+                return;
+            }
+
+            if (videoId) {
+                errorMessage.innerText = ''; // Clear previous error
+                
+                // Show loader and hide default message
+                loader.style.display = 'block';
+                defaultMessage.style.display = 'none';
+                videoContainer.style.display = 'flex';
+                videoPlayer.style.display = 'none';
+
+                // Load video after a small delay for animation effect
+                setTimeout(() => {
+                    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&showinfo=0&controls=1`;
+                    videoPlayer.src = embedUrl;
+                    videoPlayer.style.display = 'block';
+                    loader.style.display = 'none';
+                }, 1500); // 1.5-second loader animation
+                
+            } else {
+                errorMessage.innerText = 'Invalid YouTube URL. Please enter a valid link.';
+                videoContainer.style.display = 'flex'; // Ensure container is visible
+                defaultMessage.style.display = 'block'; // Show default message
+                videoPlayer.style.display = 'none';
+            }
+        }
+
+        function extractVideoId(url) {
+            // Updated regex to handle different YouTube video types
+            const regex = /(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+    </script>
+
+</body>
+</html>
