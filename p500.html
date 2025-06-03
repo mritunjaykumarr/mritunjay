@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart UPI Payment</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Poppins', Arial, sans-serif;
+        background: linear-gradient(135deg, #ff6a00, #ee0979);
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        color: #fff;
+      }
+
+      .container {
+        background: linear-gradient(145deg, #7f00ff, #e100ff);
+        padding: 30px 25px 35px 25px;
+        border-radius: 20px;
+        box-shadow:
+          0 8px 30px rgba(255, 0, 150, 0.6),
+          0 20px 60px rgba(135, 0, 255, 0.4);
+        max-width: 320px;
+        width: 100%;
+        text-align: center;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+      }
+      .container:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow:
+          0 16px 60px rgba(255, 0, 150, 0.8),
+          0 30px 90px rgba(135, 0, 255, 0.7);
+      }
+
+      h2 {
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        color: #fff8ff;
+        text-shadow: 0 0 8px #ff33ccaa, 0 0 15px #aa00ffcc;
+      }
+
+      p {
+        font-size: 1rem;
+        margin-bottom: 25px;
+        color: #f3d1ffcc;
+        letter-spacing: 0.02em;
+      }
+
+      button {
+        background: #EF233C;
+        border: none;
+        border-radius: 50px;
+        color: white;
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding: 14px 0;
+        width: 100%;
+        cursor: pointer;
+        box-shadow:
+          0 6px 18px rgba(239, 35, 60, 0.6);
+        transition:
+          background 0.4s ease,
+          box-shadow 0.4s ease,
+          transform 0.3s ease,
+          filter 0.4s ease;
+      }
+
+      button:hover {
+        background: #b22234;
+        box-shadow:
+          0 8px 26px rgba(178, 34, 52, 0.9);
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 8px #b22234cc);
+      }
+
+      #qrcode {
+        margin-top: 25px;
+        display: flex;
+        justify-content: center;
+        opacity: 0;
+        animation: fadeIn 1s forwards;
+        max-width: 260px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .note {
+        font-size: 14px;
+        color: #e0d7ffcc;
+        margin-top: 18px;
+        font-style: italic;
+        text-shadow: 0 0 6px #d700ffcc;
+      }
+
+      /* Fade in animation for QR code */
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Pay ₹500 via UPI</h2>
+      <p>Click below to make your payment</p>
+      <button onclick="payNow()">Pay Now</button>
+      <div id="qrcode"></div>
+      <p class="note" id="note"></p>
+    </div>
+
+    <!-- QRCode JS library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script>
+      const upiID = "9470880956@ybl";
+      const name = "Mritunjay Kumar";
+      const amount = 500;
+      const upiLink = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
+
+      function isMobile() {
+        return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      }
+
+      function payNow() {
+        const choice = confirm(
+          "Click OK to pay via UPI App\nClick Cancel to pay by scanning QR"
+        );
+
+        if (choice && isMobile()) {
+          // On mobile, open UPI app link
+          window.location.href = upiLink;
+        } else {
+          // On PC or user chose QR
+          generateQRCode();
+        }
+      }
+
+      function generateQRCode() {
+        const qrDiv = document.getElementById("qrcode");
+        qrDiv.style.opacity = 0; // reset opacity for fade-in
+        qrDiv.innerHTML = ""; // Clear previous QR
+
+        QRCode.toCanvas(
+          document.createElement("canvas"),
+          upiLink,
+          { width: 220 },
+          function (err, canvas) {
+            if (err) {
+              alert("Failed to generate QR Code");
+              return console.error(err);
+            }
+            qrDiv.appendChild(canvas);
+            qrDiv.style.animation = "fadeIn 1s forwards";
+            document.getElementById(
+              "note"
+            ).innerHTML = `UPI ID: <strong>${upiID}</strong><br>Name: <strong>${name}</strong>`;
+          }
+        );
+      }
+    </script>
+  </body>
+</html>
