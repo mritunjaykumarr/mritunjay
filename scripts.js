@@ -316,22 +316,58 @@ if (certTrack) {
   })();
 
   /* ---------- CONTACT FORM (fake send) ---------- */
+ /* ---------- CONTACT FORM (Real Web3Forms Submission) ---------- */
   const contactForm = document.getElementById('contactForm');
-  contactForm?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const btn = contactForm.querySelector('button[type="submit"]');
-    const formStatus = document.getElementById('formStatus');
-    btn.disabled = true;
-    btn.textContent = 'Sending...';
-    formStatus.textContent = '';
-    setTimeout(() => {
-      btn.textContent = 'Sent ✓';
-      formStatus.textContent = 'Thanks — I will reply within 48 hours.';
-      contactForm.reset();
-      setTimeout(() => { btn.disabled = false; btn.textContent = 'Send message'; formStatus.textContent = ''; }, 1800);
-    }, 1200);
-  });
+  const formStatus = document.getElementById('formStatus');
 
+  contactForm?.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent the default form submission
+
+    const btn = contactForm.querySelector('button[type="submit"]');
+    const formData = new FormData(contactForm);
+    const object = {};
+    formData.forEach((value, key) => {
+      object[key] = value;
+    });
+    const json = JSON.stringify(object);
+
+    formStatus.innerHTML = "Sending...";
+    btn.disabled = true;
+
+    fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: json
+    })
+    .then(async (response) => {
+        let jsonResponse = await response.json();
+        if (response.status == 200) {
+            formStatus.innerHTML = jsonResponse.message;
+            btn.textContent = 'Sent ✓';
+        } else {
+            console.log(response);
+            formStatus.innerHTML = jsonResponse.message;
+            btn.textContent = 'Send Message';
+        }
+    })
+    .catch(error => {
+        console.log(error);
+        formStatus.innerHTML = "Something went wrong!";
+    })
+    .finally(() => {
+        contactForm.reset();
+        setTimeout(() => {
+            formStatus.innerHTML = '';
+            btn.disabled = false;
+            if(btn.textContent !== 'Sent ✓') {
+               btn.textContent = 'Send Message';
+            }
+        }, 3000);
+    });
+  });
   /* ---------- SCROLL REVEAL ---------- */
   const revealEls = document.querySelectorAll('.card, .project, .service-card, .blog-card, .profile-card');
   const observer = new IntersectionObserver((entries) => {
