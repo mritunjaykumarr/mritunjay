@@ -1,399 +1,336 @@
-/* scripts.js
-   Full interactions: loader, menu, theme, tabs, tilt, filters, modal,
-   cert carousel, radar chart, testimonials, contact fake send, scroll reveal
-*/
+/* =========================================
+   scripts.js — Mritunjay Kumar Portfolio
+   ========================================= */
 
-document.addEventListener('DOMContentLoaded', () => {
-  /* ---------- LOADER ---------- */
-  const loader = document.getElementById('pageLoader');
-  const site = document.getElementById('site');
+'use strict';
 
+/* ---- LOADER ---- */
+window.addEventListener('load', () => {
   setTimeout(() => {
-    if (loader) {
-      loader.style.opacity = '0';
-      loader.style.transition = 'opacity 380ms ease';
-      setTimeout(() => {
-        loader.style.display = 'none';
-        site?.classList.remove('hidden');
-      }, 420);
-    }
-  }, 850);
+    document.getElementById('loader').classList.add('hidden');
+  }, 900);
+});
 
-  /* ---------- YEAR ---------- */
-  const yearEl = document.getElementById('year');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-/* ---------- REAL-TIME CLOCK ---------- */
-  const clockElement = document.getElementById('real-time-clock');
-
-  function updateClock() {
-    const now = new Date();
-    
-    // Format date as: Mon, 29 Sep
-    const dateOptions = { weekday: 'short', day: 'numeric', month: 'short' };
-    const formattedDate = now.toLocaleDateString('en-US', dateOptions);
-
-    // Format time as: 06:21:59 PM
-    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-    const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
-
-    if (clockElement) {
-      clockElement.textContent = `${formattedDate} | ${formattedTime}`;
-    }
-  }
-
-  updateClock(); // Run once immediately
-  setInterval(updateClock, 1000); // Update every second
-/* ---------- GENERIC IMAGE MODAL (for Projects & Certs) ---------- */
-  const imageModal = document.getElementById('imageModal');
-  
-  // This one listener works for both project and certificate buttons
-  document.querySelectorAll('.open-modal').forEach(button => {
-    button.addEventListener('click', () => {
-      const title = button.dataset.title;
-      const desc = button.dataset.desc; // This will be undefined for certs, which is fine
-      const img = button.dataset.img;
-
-      imageModal.querySelector('#modalTitle').textContent = title;
-      imageModal.querySelector('#modalImg').src = img;
-      
-      // Only show the description paragraph if there is a description
-      const descEl = imageModal.querySelector('#modalDesc');
-      if (desc) {
-        descEl.textContent = desc;
-        descEl.style.display = 'block';
-      } else {
-        descEl.style.display = 'none';
-      }
-      
-      imageModal.classList.remove('hidden');
-      imageModal.setAttribute('aria-hidden', 'false');
-    });
-  });
-
-  // This close logic remains the same
-  imageModal?.querySelector('#closeModal')?.addEventListener('click', () => {
-    imageModal.classList.add('hidden');
-    imageModal.setAttribute('aria-hidden', 'true');
-  });
-
-  // This also remains the same
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      if (imageModal && !imageModal.classList.contains('hidden')) {
-        imageModal.classList.add('hidden');
-        imageModal.setAttribute('aria-hidden', 'true');
-      }
-    }
-  });
-  /* ---------- NAV / MOBILE ---------- */
-
-  const menuBtn = document.getElementById('menuBtn');
-  const mobileMenu = document.getElementById('mobileMenu');
-  menuBtn?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
-  });
-
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-      const href = a.getAttribute('href');
-      if (href.length > 1) {
-        e.preventDefault();
-        const el = document.querySelector(href);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-          mobileMenu.classList.add('hidden');
-        }
-      }
-    });
-  });
-
-  /* ---------- THEME TOGGLE (light/dark) ---------- */
-  const themeToggle = document.getElementById('themeToggle');
-  let dark = true;
-  themeToggle?.addEventListener('click', () => {
-    dark = !dark;
-    const root = document.documentElement;
-    if (!dark) {
-      root.style.setProperty('--bg', '#ffffff');
-      root.style.setProperty('--text', '#111111');
-      root.style.setProperty('--muted', '#444444');
-      root.style.setProperty('--glass', 'rgba(0,0,0,0.03)');
-      root.style.setProperty('--body-bg', '#f5f5f5');
-      root.style.setProperty('--card-bg', '#ffffff');
-      root.style.setProperty('--input-border', '#e0e0e0');
-      root.style.setProperty('--soft-shadow', '0 8px 30px rgba(0,0,0,0.08)');
-      themeToggle.textContent = '☼';
-    } else {
-      root.style.setProperty('--bg', '#0b0b0b');
-      root.style.setProperty('--text', '#f5f5f5');
-      root.style.setProperty('--muted', '#bdbdbd');
-      root.style.setProperty('--glass', 'rgba(255,255,255,0.03)');
-      root.style.setProperty('--body-bg', 'linear-gradient(180deg, #050505, #0b0b0b, #0c0c0c)');
-      root.style.setProperty('--card-bg', 'linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))');
-      root.style.setProperty('--input-border', 'rgba(255,255,255,0.04)');
-      root.style.setProperty('--soft-shadow', '0 8px 30px rgba(2,6,23,0.6)');
-      themeToggle.textContent = '☾';
-    }
-  });
-
-  /* ---------- TABS (About) ---------- */
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const tab = btn.dataset.tab;
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      const panel = document.getElementById(tab);
-      if (panel) panel.classList.add('active');
-    });
-  });
-
-  /* ---------- TILT (simple 3D) ---------- */
-  document.querySelectorAll('[data-tilt]').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      const rx = (y - 0.5) * -10;
-      const ry = (x - 0.5) * 14;
-      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
-      card.style.boxShadow = '0 30px 70px rgba(2,6,23,0.6)';
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-      card.style.boxShadow = '';
-    });
-  });
-
-  /* ---------- PROJECT FILTERS ---------- */
-  const filters = document.getElementById('projectFilters');
-  filters?.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      filters.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const f = btn.dataset.filter;
-      document.querySelectorAll('#projectsGrid .project').forEach(p => {
-        const t = p.dataset.type;
-        if (f === 'all' || f === t) p.style.display = '';
-        else p.style.display = 'none';
-      });
-    });
-  });
-
-  // project modal open
-  const projectModal = document.getElementById('projectModal');
-  document.querySelectorAll('.open-project').forEach(b => {
-    b.addEventListener('click', () => {
-      const title = b.dataset.title;
-      const desc = b.dataset.desc;
-      const img = b.dataset.img;
-      projectModal.querySelector('#modalTitle').textContent = title;
-      projectModal.querySelector('#modalDesc').textContent = desc;
-      projectModal.querySelector('#modalImg').src = img;
-      projectModal.classList.remove('hidden');
-      projectModal.setAttribute('aria-hidden', 'false');
-    });
-  });
-  projectModal?.querySelector('#closeModal')?.addEventListener('click', () => {
-    projectModal.classList.add('hidden');
-    projectModal.setAttribute('aria-hidden', 'true');
-  });
-
-  /* ---------- CERTIFICATION CAROUSEL ---------- */
-  /* ---------- CERTIFICATION CAROUSEL ---------- */
-const certTrack = document.querySelector('.cert-track');
-if (certTrack) {
-    const certNext = document.getElementById('certNext');
-    const certPrev = document.getElementById('certPrev');
-    let certIndex = 0;
-
-    // FIX: Updated the selector to find the new card class name
-    const certCards = certTrack.querySelectorAll('.cert-card-redesigned');
-
-    const showCert = (i) => {
-        if (certCards.length === 0) return;
-        // The gap in the new CSS is 24px
-        const cardWidth = certCards[0].offsetWidth + 24;
-        certTrack.scrollTo({ left: i * cardWidth, behavior: 'smooth' });
-    };
-
-    certNext?.addEventListener('click', () => {
-        if (certCards.length === 0) return;
-        const numVisible = Math.floor(certTrack.offsetWidth / (certCards[0].offsetWidth + 24));
-        // Ensure we don't scroll past the last possible item
-        certIndex = Math.min(certIndex + 1, certCards.length - numVisible);
-        showCert(certIndex);
-    });
-
-    certPrev?.addEventListener('click', () => {
-        if (certCards.length === 0) return;
-        certIndex = Math.max(certIndex - 1, 0);
-        showCert(certIndex);
-    });
+/* ---- REAL-TIME CLOCK ---- */
+function updateClock() {
+  const now = new Date();
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const day = days[now.getDay()];
+  const date = String(now.getDate()).padStart(2,'0');
+  const month = months[now.getMonth()];
+  let h = now.getHours();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  const hh = String(h).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock-date').textContent = `${day}, ${date} ${month}`;
+  document.getElementById('clock-time').textContent = `${hh}:${mm}:${ss} ${ampm}`;
 }
-  /* ---------- TESTIMONIALS ---------- */
-  const testSlides = document.querySelectorAll('.test-slide');
-  if (testSlides.length > 0) {
-    const testNext = document.getElementById('testNext');
-    const testPrev = document.getElementById('testPrev');
-    let tIdx = 0;
-    const showTest = (i) => {
-      testSlides.forEach(s => s.classList.remove('active'));
-      if (testSlides[i]) testSlides[i].classList.add('active');
+updateClock();
+setInterval(updateClock, 1000);
+
+/* ---- THEME TOGGLE ---- */
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = themeToggle.querySelector('.theme-icon');
+let currentTheme = 'dark';
+themeToggle.addEventListener('click', () => {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  themeIcon.textContent = currentTheme === 'dark' ? '☾' : '☼';
+});
+
+/* ---- HAMBURGER MENU ---- */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+document.querySelectorAll('.mob-link').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+/* ---- SMOOTH SCROLL ---- */
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+/* ---- SCROLL REVEAL ---- */
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.classList.add('visible');
+      revealObserver.unobserve(el.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => revealObserver.observe(el));
+
+/* ---- TABS (ABOUT) ---- */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`tab-${tab}`).classList.add('active');
+  });
+});
+
+/* ---- PROJECT FILTER ---- */
+const filterBtns = document.querySelectorAll('.filter-btn');
+const projectCards = document.querySelectorAll('.project-card');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    projectCards.forEach(card => {
+      const cats = card.dataset.category || '';
+      if (filter === 'all' || cats.includes(filter)) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  });
+});
+
+/* ---- PROJECT MODAL ---- */
+const projectModal = document.getElementById('projectModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalDesc = document.getElementById('modalDesc');
+const modalIcon = document.getElementById('modalIcon');
+
+document.querySelectorAll('.preview-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    modalTitle.textContent = btn.dataset.title;
+    modalDesc.textContent = btn.dataset.desc;
+    modalIcon.innerHTML = `<i class="fa-solid ${btn.dataset.icon}"></i>`;
+    projectModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+document.getElementById('modalClose').addEventListener('click', closeProjectModal);
+projectModal.addEventListener('click', e => { if (e.target === projectModal) closeProjectModal(); });
+function closeProjectModal() {
+  projectModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ---- CERT MODAL ---- */
+const certModal = document.getElementById('certModal');
+const certModalTitle = document.getElementById('certModalTitle');
+const certModalIssuer = document.getElementById('certModalIssuer');
+const certModalIcon = document.getElementById('certModalIcon');
+
+document.querySelectorAll('.cert-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const h4 = card.querySelector('h4');
+    const span = card.querySelector('span');
+    const icon = card.querySelector('.cert-thumb i').className;
+    certModalTitle.textContent = h4.textContent;
+    certModalIssuer.textContent = span.textContent;
+    certModalIcon.innerHTML = `<i class="${icon}"></i>`;
+    certModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+document.getElementById('certModalClose').addEventListener('click', closeCertModal);
+certModal.addEventListener('click', e => { if (e.target === certModal) closeCertModal(); });
+function closeCertModal() {
+  certModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ---- ESC to close modals ---- */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeProjectModal();
+    closeCertModal();
+  }
+});
+
+/* ---- 3D TILT EFFECT ---- */
+document.querySelectorAll('.tilt-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const rotX = ((y - cy) / cy) * -8;
+    const rotY = ((x - cx) / cx) * 8;
+    card.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+/* ---- RADAR CHART ---- */
+function drawRadar() {
+  const canvas = document.getElementById('radarChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+  const cx = W / 2;
+  const cy = H / 2;
+  const R = Math.min(W, H) / 2 - 50;
+
+  const skills = [
+    { label: 'HTML', value: 0.95 },
+    { label: 'CSS', value: 0.9 },
+    { label: 'JavaScript', value: 0.82 },
+    { label: 'React', value: 0.72 },
+    { label: 'Accessibility', value: 0.78 },
+    { label: 'Performance', value: 0.80 },
+  ];
+  const n = skills.length;
+  const angleStep = (Math.PI * 2) / n;
+
+  let progress = 0;
+  const duration = 1200;
+  let startTime = null;
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function getPoint(i, factor) {
+    const angle = angleStep * i - Math.PI / 2;
+    return {
+      x: cx + Math.cos(angle) * R * factor,
+      y: cy + Math.sin(angle) * R * factor,
     };
-    testNext?.addEventListener('click', () => { tIdx = (tIdx + 1) % testSlides.length; showTest(tIdx); });
-    testPrev?.addEventListener('click', () => { tIdx = (tIdx - 1 + testSlides.length) % testSlides.length; showTest(tIdx); });
-    setInterval(() => { tIdx = (tIdx + 1) % testSlides.length; showTest(tIdx); }, 6000);
   }
 
-  /* ---------- RADAR CHART ---------- */
-  (function renderRadar() {
-    const canvas = document.getElementById('skillsRadar');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
-    const centerX = W / 2, centerY = H / 2;
-    const labels = ['HTML', 'CSS', 'JS', 'React', 'Accessibility', 'Performance'];
-    const values = [88, 82, 78, 72, 80, 75];
-    const max = 100;
-    const rings = 5;
+  function draw(ts) {
+    if (!startTime) startTime = ts;
+    progress = Math.min((ts - startTime) / duration, 1);
+    const p = easeOut(progress);
+
     ctx.clearRect(0, 0, W, H);
 
-    function polar(i, radius) {
-      const angle = (Math.PI * 2) * (i / labels.length) - Math.PI / 2;
-      return { x: centerX + Math.cos(angle) * radius, y: centerY + Math.sin(angle) * radius };
-    }
-
-    for (let r = rings; r >= 1; r--) {
-      const rad = (Math.min(W, H) / 2 - 40) * (r / rings);
+    // Grid rings
+    for (let level = 1; level <= 5; level++) {
       ctx.beginPath();
-      ctx.strokeStyle = 'rgba(142,208,255,0.06)';
+      for (let i = 0; i < n; i++) {
+        const pt = getPoint(i, level / 5);
+        i === 0 ? ctx.moveTo(pt.x, pt.y) : ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = 'rgba(56,189,248,0.12)';
       ctx.lineWidth = 1;
-      ctx.setLineDash([4, 6]);
-      ctx.arc(centerX, centerY, rad, 0, Math.PI * 2);
       ctx.stroke();
     }
-    ctx.setLineDash([]);
 
-    const outer = Math.min(W, H) / 2 - 40;
-    ctx.font = '14px Inter, system-ui';
-    ctx.fillStyle = 'rgba(245,245,245,0.9)';
-    labels.forEach((lab, i) => {
-      const p = polar(i, outer + 14);
-      const p2 = polar(i, outer);
+    // Axis lines
+    for (let i = 0; i < n; i++) {
+      const pt = getPoint(i, 1);
       ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(p2.x, p2.y);
-      ctx.strokeStyle = 'rgba(142,208,255,0.05)';
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(pt.x, pt.y);
+      ctx.strokeStyle = 'rgba(56,189,248,0.15)';
+      ctx.lineWidth = 1;
       ctx.stroke();
-      ctx.fillText(lab, p.x - 12, p.y + 6);
-    });
+    }
 
+    // Filled area
     ctx.beginPath();
-    values.forEach((v, i) => {
-      const r = outer * (v / max);
-      const pos = polar(i, r);
-      if (i === 0) ctx.moveTo(pos.x, pos.y);
-      else ctx.lineTo(pos.x, pos.y);
+    skills.forEach((s, i) => {
+      const pt = getPoint(i, s.value * p);
+      i === 0 ? ctx.moveTo(pt.x, pt.y) : ctx.lineTo(pt.x, pt.y);
     });
     ctx.closePath();
-    ctx.fillStyle = 'rgba(142,208,255,0.14)';
+    ctx.fillStyle = 'rgba(56,189,248,0.18)';
     ctx.fill();
-    ctx.strokeStyle = 'rgba(142,208,255,0.35)';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 2.5;
     ctx.stroke();
 
-    values.forEach((v, i) => {
-      const r = outer * (v / max);
-      const pos = polar(i, r);
+    // Dots
+    skills.forEach((s, i) => {
+      const pt = getPoint(i, s.value * p);
       ctx.beginPath();
-      ctx.arc(pos.x, pos.y, 6, 0, Math.PI * 2);
-      ctx.fillStyle = '#fff';
+      ctx.arc(pt.x, pt.y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#38bdf8';
       ctx.fill();
-      ctx.strokeStyle = 'rgba(142,208,255,0.9)';
-      ctx.stroke();
     });
-  })();
 
-  /* ---------- CONTACT FORM (fake send) ---------- */
- /* ---------- CONTACT FORM (Real Web3Forms Submission) ---------- */
-  const contactForm = document.getElementById('contactForm');
-  const formStatus = document.getElementById('formStatus');
-
-  contactForm?.addEventListener('submit', (e) => {
-    e.preventDefault(); // Prevent the default form submission
-
-    const btn = contactForm.querySelector('button[type="submit"]');
-    const formData = new FormData(contactForm);
-    const object = {};
-    formData.forEach((value, key) => {
-      object[key] = value;
+    // Labels (always at full position)
+    ctx.font = '600 13px Syne, sans-serif';
+    ctx.fillStyle = '#7890a8';
+    skills.forEach((s, i) => {
+      const pt = getPoint(i, 1.2);
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(s.label, pt.x, pt.y);
     });
-    const json = JSON.stringify(object);
 
-    formStatus.innerHTML = "Sending...";
-    btn.disabled = true;
+    if (progress < 1) requestAnimationFrame(draw);
+  }
 
-    fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: json
-    })
-    .then(async (response) => {
-        let jsonResponse = await response.json();
-        if (response.status == 200) {
-            formStatus.innerHTML = jsonResponse.message;
-            btn.textContent = 'Sent ✓';
-        } else {
-            console.log(response);
-            formStatus.innerHTML = jsonResponse.message;
-            btn.textContent = 'Send Message';
-        }
-    })
-    .catch(error => {
-        console.log(error);
-        formStatus.innerHTML = "Something went wrong!";
-    })
-    .finally(() => {
-        contactForm.reset();
-        setTimeout(() => {
-            formStatus.innerHTML = '';
-            btn.disabled = false;
-            if(btn.textContent !== 'Sent ✓') {
-               btn.textContent = 'Send Message';
-            }
-        }, 3000);
-    });
-  });
-  /* ---------- SCROLL REVEAL ---------- */
-  const revealEls = document.querySelectorAll('.card, .project, .service-card, .blog-card, .profile-card');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.transform = 'translateY(0)';
-            entry.target.style.opacity = 1;
-        }
-    });
-  }, { threshold: 0.1 });
-  
-  revealEls.forEach(el => {
-    el.style.transition = 'all 700ms cubic-bezier(.2,.9,.2,1)';
-    el.style.transform = 'translateY(18px)';
-    el.style.opacity = 0;
-    observer.observe(el);
-  });
-
-  /* ---------- ESC closes modal ---------- */
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      const modal = document.getElementById('projectModal');
-      if (modal && !modal.classList.contains('hidden')) {
-        modal.classList.add('hidden');
-        modal.setAttribute('aria-hidden', 'true');
-      }
+  // Trigger when visible
+  const observer = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      startTime = null;
+      requestAnimationFrame(draw);
+      observer.disconnect();
     }
-  });
+  }, { threshold: 0.3 });
+  observer.observe(canvas);
+}
+drawRadar();
+
+/* ---- CONTACT FORM ---- */
+const contactForm = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
+const formStatus = document.getElementById('formStatus');
+
+contactForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  submitBtn.textContent = 'Sending...';
+  submitBtn.disabled = true;
+  formStatus.textContent = '';
+
+  const data = {
+    access_key: contactForm.querySelector('[name=access_key]').value,
+    name: contactForm.querySelector('[name=name]').value,
+    email: contactForm.querySelector('[name=email]').value,
+    message: contactForm.querySelector('[name=message]').value,
+  };
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json();
+    if (json.success) {
+      formStatus.textContent = 'Message sent ✓';
+      formStatus.style.color = '#4ade80';
+      contactForm.reset();
+    } else {
+      throw new Error('Failed');
+    }
+  } catch {
+    formStatus.textContent = 'Something went wrong. Please try again.';
+    formStatus.style.color = '#f87171';
+  } finally {
+    submitBtn.textContent = 'Send Message';
+    submitBtn.disabled = false;
+  }
 });
