@@ -92,7 +92,6 @@
     .dl-panel.show{display:block;animation:slideUp .4s ease;}
     @keyframes slideUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
-    /* Top info bar */
     .dl-topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 20px;border-bottom:1px solid var(--glass-border);}
     .dl-topbar-left{display:flex;align-items:center;gap:8px;font-family:var(--font-head);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
     .dl-meta{display:flex;align-items:center;gap:10px;}
@@ -100,48 +99,50 @@
     .dl-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
     .dl-vid-name{font-size:.78rem;color:var(--text-muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-    /* Steps */
-    .dl-steps{display:flex;gap:0;border-bottom:1px solid var(--glass-border);}
-    .dl-step{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 8px;font-family:var(--font-head);font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);border-right:1px solid var(--glass-border);}
-    .dl-step:last-child{border-right:none;}
-    .dl-step-num{width:20px;height:20px;border-radius:50%;background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--accent);flex-shrink:0;}
-
-    /* Main download content */
     .dl-body{padding:20px;}
-
-    /* Site cards */
     .dl-sites-label{font-family:var(--font-head);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;}
     .dl-sites{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-bottom:20px;}
 
+    /* Download button — now a <button> not <a> */
     .dl-site-btn{
       display:flex;align-items:center;gap:12px;
       padding:14px 16px;border-radius:var(--radius-sm);
       border:1px solid var(--glass-border);background:var(--glass);
       text-decoration:none;cursor:pointer;
       transition:all var(--tr);position:relative;overflow:hidden;
+      font-family:var(--font-body);
     }
     .dl-site-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-glow),transparent);opacity:0;transition:opacity var(--tr);}
     .dl-site-btn:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-glow);}
     .dl-site-btn:hover::after{opacity:1;}
+    .dl-site-btn:disabled{opacity:.6;cursor:not-allowed;transform:none !important;}
 
-    .site-ico{width:36px;height:36px;border-radius:8px;flex-shrink:0;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--accent);position:relative;z-index:1;}
-    .dl-site-btn.mp3 .site-ico{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.2);color:var(--green);}
     .dl-site-btn.mp3:hover{border-color:var(--green);box-shadow:0 6px 20px var(--green-glow);}
     .dl-site-btn.mp3::after{background:linear-gradient(135deg,var(--green-glow),transparent);}
+    .dl-site-btn.mp3 .site-ico{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.2);color:var(--green);}
 
-    .site-txt{position:relative;z-index:1;}
+    /* State variants */
+    .dl-site-btn.state-loading{border-color:var(--accent) !important;}
+    .dl-site-btn.state-done{border-color:var(--green) !important;background:rgba(74,222,128,.06) !important;}
+    .dl-site-btn.state-done::after{opacity:0 !important;}
+    .dl-site-btn.state-fail{border-color:#f87171 !important;background:rgba(248,113,113,.06) !important;}
+    .dl-site-btn.state-fail::after{opacity:0 !important;}
+
+    /* Progress bar inside button */
+    .dl-progress{position:absolute;bottom:0;left:0;height:2px;background:var(--accent);border-radius:0 2px 0 0;width:0;transition:width .4s ease;}
+    .dl-site-btn.mp3 .dl-progress{background:var(--green);}
+
+    .site-ico{width:36px;height:36px;border-radius:8px;flex-shrink:0;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--accent);position:relative;z-index:1;}
+    .site-txt{position:relative;z-index:1;text-align:left;}
     .site-name{font-family:var(--font-head);font-size:.8rem;font-weight:700;letter-spacing:.02em;display:block;color:var(--text);}
     .site-sub{font-size:.67rem;color:var(--text-muted);display:block;margin-top:2px;}
 
-    /* Divider */
     .dl-divider{height:1px;background:var(--glass-border);margin:0 0 16px;}
 
-    /* Note */
     .dl-note{display:flex;align-items:flex-start;gap:8px;font-size:.72rem;color:var(--text-muted);line-height:1.6;}
     .dl-note i{color:var(--accent);flex-shrink:0;margin-top:2px;}
     .dl-note strong{color:var(--text);}
 
-    /* Tips */
     .tips-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
     .tip{display:flex;align-items:center;gap:6px;background:var(--glass);border:1px solid var(--glass-border);border-radius:50px;padding:5px 12px;font-size:.7rem;color:var(--text-muted);font-family:var(--font-head);}
     .tip i{color:var(--accent);font-size:.68rem;}
@@ -156,7 +157,6 @@
       .input-row{flex-direction:column;}
       .play-btn,.clear-btn{width:100%;justify-content:center;}
       .dl-sites{grid-template-columns:1fr 1fr;}
-      .dl-step span:not(.dl-step-num){display:none;}
       .dl-vid-name{max-width:140px;}
     }
     @media(max-width:360px){.dl-sites{grid-template-columns:1fr;}}
@@ -176,8 +176,8 @@
 
 <main>
   <div class="page-badge">Ad-Free Experience</div>
-  <h1 class="page-title">YouTube Player <span style="color:var(--accent)">Without Ads & Download </span></h1>
-  <p class="page-subtitle">Watch ad-free and download videos in MP4 or MP3. Choose a download site below — your link will be copied automatically.</p>
+  <h1 class="page-title">YouTube Player <span style="color:var(--accent)">Without Ads &amp; Download</span></h1>
+  <p class="page-subtitle">Watch ad-free and download videos in MP4 or MP3. Pick your quality — download starts automatically.</p>
 
   <div class="player-card">
 
@@ -211,12 +211,9 @@
       <iframe id="player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 
-    <!-- ═══════════════════════════════════════
-         DOWNLOAD PANEL
-    ═══════════════════════════════════════ -->
+    <!-- DOWNLOAD PANEL -->
     <div class="dl-panel" id="dlPanel">
 
-      <!-- Top bar -->
       <div class="dl-topbar">
         <div class="dl-topbar-left"><i class="fa-solid fa-download"></i> Download Video</div>
         <div class="dl-meta">
@@ -225,36 +222,23 @@
         </div>
       </div>
 
-      <!-- How-to steps -->
-      <div class="dl-steps">
-        <div class="dl-step"><span class="dl-step-num">1</span><span>Click a button below</span></div>
-        <div class="dl-step"><span class="dl-step-num">2</span><span>Site opens with video</span></div>
-        <div class="dl-step"><span class="dl-step-num">3</span><span>Choose quality &amp; save</span></div>
-      </div>
-
-      <!-- Download body -->
       <div class="dl-body">
 
         <p class="dl-sites-label">Video (MP4)</p>
-        <div class="dl-sites" id="mp4Sites">
-          <!-- filled by JS -->
-        </div>
+        <div class="dl-sites" id="mp4Sites"></div>
 
         <div class="dl-divider"></div>
 
         <p class="dl-sites-label">Audio Only (MP3)</p>
-        <div class="dl-sites" id="mp3Sites">
-          <!-- filled by JS -->
-        </div>
+        <div class="dl-sites" id="mp3Sites"></div>
 
         <div class="dl-note">
           <i class="fa-solid fa-circle-info"></i>
-          <span>Each button opens a <strong>trusted download site</strong> in a new tab with your video URL pre-filled — no copy-pasting needed. The site will process the video and let you save it directly to your device.</span>
+          <span>Click a quality button — the download link is fetched automatically. <strong>No redirects, no copy-pasting.</strong> If one quality fails, try another.</span>
         </div>
 
       </div>
     </div>
-    <!-- ═══════════════════════════════════════ -->
 
     <div class="tips-row">
       <span class="tip"><i class="fa-solid fa-link"></i> youtube.com/watch?v=…</span>
@@ -271,170 +255,267 @@
 </footer>
 
 <script>
-  'use strict';
+'use strict';
 
-  let currentVideoId = null;
+let currentVideoId = null;
 
-  /* ─────────────────────────────────────────────
-     DOWNLOAD SITE CONFIGS
-     Each entry has a `url(videoId)` function that
-     returns the CORRECT direct URL for that site.
-     All tested URL formats as of 2025.
-  ───────────────────────────────────────────── */
-  const MP4_SITES = [
-    {
-      name: 'SaveFrom',
-      sub:  'MP4 · All qualities',
-      icon: 'fa-download',
-      url:  id => `https://en.savefrom.net/1-how-to-download-youtube-video_${id}.html`
-    },
-    {
-      name: 'SSYouTube',
-      sub:  'MP4 · Fast redirect',
-      icon: 'fa-bolt',
-      // The classic "ss" trick: replace www.youtube.com with ssyoutube.com
-      url:  id => `https://www.ssyoutube.com/watch?v=${id}`
-    },
-    {
-      name: 'SnapSave',
-      sub:  'MP4 · 720p / 1080p',
-      icon: 'fa-film',
-      url:  id => `https://snapsave.app/result?url=${encodeURIComponent('https://www.youtube.com/watch?v=' + id)}`
-    },
-    {
-      name: '9xBuddy',
-      sub:  'MP4 · Multiple resolutions',
-      icon: 'fa-video',
-      url:  id => `https://9xbuddy.in/process?url=${encodeURIComponent('https://www.youtube.com/watch?v=' + id)}`
-    },
+/* ══════════════════════════════════════
+   HELPERS
+══════════════════════════════════════ */
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function extractId(url) {
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+function showErr(msg) { document.getElementById('errText').textContent = msg; document.getElementById('errBox').classList.add('show'); }
+function hideErr()    { document.getElementById('errBox').classList.remove('show'); }
+
+async function fetchInfo(id) {
+  try {
+    const r = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent('https://www.youtube.com/watch?v='+id)}&format=json`);
+    if (r.ok) { const d = await r.json(); return { title: d.title, thumb: d.thumbnail_url }; }
+  } catch {}
+  return { title: 'YouTube Video', thumb: null };
+}
+
+/* ══════════════════════════════════════
+   BUILD DOWNLOAD BUTTONS
+══════════════════════════════════════ */
+function buildDownloadButtons(id) {
+  const ytUrl = `https://www.youtube.com/watch?v=${id}`;
+
+  const mp4Formats = [
+    { label:'1080p', quality:'1080', best:true  },
+    { label:'720p',  quality:'720'              },
+    { label:'480p',  quality:'480'              },
+    { label:'360p',  quality:'360'              },
+  ];
+  const mp3Formats = [
+    { label:'320 kbps', quality:'320', best:true },
+    { label:'192 kbps', quality:'192'            },
+    { label:'128 kbps', quality:'128'            },
   ];
 
-  const MP3_SITES = [
-    {
-      name: 'YTmp3',
-      sub:  'MP3 · 320kbps',
-      icon: 'fa-music',
-      cls:  'mp3',
-      url:  id => `https://ytmp3.cc/en13/youtube-to-mp3/?url=${encodeURIComponent('https://www.youtube.com/watch?v=' + id)}`
-    },
-    {
-      name: 'MP3Juice',
-      sub:  'MP3 · High quality',
-      icon: 'fa-headphones',
-      cls:  'mp3',
-      url:  id => `https://www.mp3juices.cc/?search=${encodeURIComponent('https://www.youtube.com/watch?v=' + id)}`
-    },
-    {
-      name: 'ConvertMP3',
-      sub:  'MP3 · Direct convert',
-      icon: 'fa-waveform-lines',
-      cls:  'mp3',
-      url:  id => `https://www.convertmp3.io/?video=${encodeURIComponent('https://www.youtube.com/watch?v=' + id)}`
-    },
-    {
-      name: 'X2Convert',
-      sub:  'MP3 / M4A choice',
-      icon: 'fa-compact-disc',
-      cls:  'mp3',
-      url:  id => `https://x2convert.com/en16/download-youtube-to-mp3/?url=${encodeURIComponent('https://www.youtube.com/watch?v=' + id)}`
-    },
-  ];
+  const mp4Grid = document.getElementById('mp4Sites');
+  const mp3Grid = document.getElementById('mp3Sites');
+  mp4Grid.innerHTML = '';
+  mp3Grid.innerHTML = '';
 
-  function renderSite(s, videoId) {
-    const href = s.url(videoId);
-    return `
-      <a class="dl-site-btn ${s.cls||''}" href="${href}" target="_blank" rel="noopener noreferrer"
-         onclick="flash(this)" title="Download via ${s.name}">
-        <div class="site-ico"><i class="fa-solid ${s.icon}"></i></div>
-        <div class="site-txt">
-          <span class="site-name">${s.name}</span>
-          <span class="site-sub">${s.sub}</span>
-        </div>
-      </a>`;
+  mp4Formats.forEach(f => {
+    const btn = makeBtn(f, 'mp4', ytUrl, id);
+    mp4Grid.appendChild(btn);
+  });
+  mp3Formats.forEach(f => {
+    const btn = makeBtn(f, 'mp3', ytUrl, id);
+    mp3Grid.appendChild(btn);
+  });
+}
+
+function makeBtn(f, type, ytUrl, id) {
+  const isMp3 = type === 'mp3';
+  const btn = document.createElement('button');
+  btn.className = `dl-site-btn${isMp3 ? ' mp3' : ''}`;
+
+  btn.innerHTML = `
+    <div class="site-ico">
+      <i class="fa-solid ${isMp3 ? 'fa-music' : 'fa-film'}"></i>
+    </div>
+    <div class="site-txt">
+      <span class="site-name">${f.label}</span>
+      <span class="site-sub">${isMp3 ? 'MP3 · Audio' : 'MP4 · Video'}${f.best ? ' · ✦ Best' : ''}</span>
+    </div>
+    <div class="dl-progress" id="prog-${type}-${f.quality}"></div>
+  `;
+
+  btn.onclick = () => triggerDownload(btn, ytUrl, id, type, f.quality);
+  return btn;
+}
+
+/* ══════════════════════════════════════
+   DOWNLOAD TRIGGER
+══════════════════════════════════════ */
+async function triggerDownload(btn, ytUrl, id, type, quality) {
+  const origHTML = btn.innerHTML;
+  setbtnState(btn, 'loading', type);
+
+  // Animate progress bar to 60% while waiting
+  const prog = btn.querySelector('.dl-progress');
+  if (prog) prog.style.width = '60%';
+
+  try {
+    const url = await resolveUrl(ytUrl, id, type, quality);
+    if (!url) throw new Error('no url');
+
+    if (prog) prog.style.width = '100%';
+
+    // Force download via hidden anchor
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${type === 'mp3' ? 'audio' : 'video'}_${quality}.${type}`;
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    setbtnState(btn, 'done', type);
+    setTimeout(() => { btn.innerHTML = origHTML; btn.disabled = false; btn.className = `dl-site-btn${type==='mp3'?' mp3':''}`; }, 4000);
+
+  } catch {
+    if (prog) prog.style.width = '0%';
+    setbtnState(btn, 'fail', type);
+    setTimeout(() => { btn.innerHTML = origHTML; btn.disabled = false; btn.className = `dl-site-btn${type==='mp3'?' mp3':''}`; }, 3000);
   }
+}
 
-  function renderAll(videoId) {
-    document.getElementById('mp4Sites').innerHTML = MP4_SITES.map(s => renderSite(s, videoId)).join('');
-    document.getElementById('mp3Sites').innerHTML = MP3_SITES.map(s => renderSite(s, videoId)).join('');
+function setbtnState(btn, state, type) {
+  const isMp3 = type === 'mp3';
+  btn.disabled = state === 'loading';
+  btn.className = `dl-site-btn${isMp3?' mp3':''} state-${state}`;
+
+  const icons = { loading: 'fa-spinner fa-spin', done: 'fa-check', fail: 'fa-xmark' };
+  const labels = { loading: 'Fetching…', done: 'Download Started!', fail: 'Failed — Retry' };
+  const colors = { loading: 'var(--accent)', done: 'var(--green)', fail: '#f87171' };
+
+  btn.innerHTML = `
+    <div class="site-ico" style="color:${colors[state]}">
+      <i class="fa-solid ${icons[state]}"></i>
+    </div>
+    <div class="site-txt">
+      <span class="site-name" style="color:${colors[state]}">${labels[state]}</span>
+      <span class="site-sub">${state === 'loading' ? 'Please wait…' : state === 'done' ? 'Check your downloads' : 'Try another quality'}</span>
+    </div>
+    <div class="dl-progress" style="width:${state==='done'?'100%':state==='loading'?'60%':'0%'};background:${colors[state]};"></div>
+  `;
+}
+
+/* ══════════════════════════════════════
+   URL RESOLUTION  (3 strategies)
+══════════════════════════════════════ */
+async function resolveUrl(ytUrl, id, type, quality) {
+
+  /* ── Strategy 1: yt1s.com ── */
+  try {
+    const url = await tryYt1s(ytUrl, id, type, quality);
+    if (url) return url;
+  } catch {}
+
+  /* ── Strategy 2: loader.to ── */
+  try {
+    const url = await tryLoaderTo(ytUrl, type, quality);
+    if (url) return url;
+  } catch {}
+
+  /* ── Strategy 3: your backend as last resort ── */
+  try {
+    const endpoint = type === 'mp3'
+      ? `https://adfree-nsj3.onrender.com/download-mp3?url=${encodeURIComponent(ytUrl)}`
+      : `https://adfree-nsj3.onrender.com/download?url=${encodeURIComponent(ytUrl)}`;
+    const r = await fetch(endpoint);
+    if (r.ok && r.url && r.url !== endpoint) return r.url;
+  } catch {}
+
+  return null;
+}
+
+/* ── yt1s ── */
+async function tryYt1s(ytUrl, id, type, quality) {
+  const vt = type === 'mp3' ? 'mp3' : 'mp4';
+
+  const r1 = await fetch('https://yt1s.com/api/ajaxSearch/index', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `q=${encodeURIComponent(ytUrl)}&vt=${vt}`
+  });
+  const j1 = await r1.json();
+  if (j1.status !== 'ok') return null;
+
+  const links = j1.links?.[vt] || {};
+  let k = links[quality]?.k;
+  if (!k) {
+    // fallback to any available quality
+    const first = Object.values(links)[0];
+    k = first?.k;
   }
+  if (!k) return null;
 
-  function flash(el) {
-    el.style.transform = 'scale(0.95)';
-    setTimeout(() => el.style.transform = '', 200);
+  const r2 = await fetch('https://yt1s.com/api/ajaxConvert/convert', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `vid=${j1.vid}&k=${encodeURIComponent(k)}`
+  });
+  const j2 = await r2.json();
+  return j2.status === 'ok' && j2.dlink ? j2.dlink : null;
+}
+
+/* ── loader.to ── */
+async function tryLoaderTo(ytUrl, type, quality) {
+  const fmt = type === 'mp3' ? 'mp3' : 'mp4';
+  const r = await fetch(`https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=${fmt}&q=${quality}`);
+  const j = await r.json();
+  if (!j.id) return null;
+
+  for (let i = 0; i < 12; i++) {
+    await sleep(2000);
+    const poll = await fetch(`https://loader.to/api/info/?id=${j.id}`).then(r => r.json());
+    if (poll.download_url) return poll.download_url;
+    if (poll.dl) return poll.dl;
+    if (poll.progress === 1000) break;
   }
+  return null;
+}
 
-  /* ─── oEmbed info (no API key) ─── */
-  async function fetchInfo(id) {
-    try {
-      const r = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent('https://www.youtube.com/watch?v=' + id)}&format=json`);
-      if (r.ok) { const d = await r.json(); return { title: d.title, thumb: d.thumbnail_url }; }
-    } catch {}
-    return { title: 'YouTube Video', thumb: null };
-  }
+/* ══════════════════════════════════════
+   PLAYER LOGIC
+══════════════════════════════════════ */
+function resetPlayer() {
+  document.getElementById('defaultState').style.display = 'flex';
+  document.getElementById('loaderState').classList.remove('show');
+  const p = document.getElementById('player');
+  p.classList.remove('show'); p.src = '';
+  document.getElementById('dlPanel').classList.remove('show');
+  currentVideoId = null;
+}
 
-  /* ─── Extract video ID ─── */
-  function extractId(url) {
-    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/);
-    return m ? m[1] : null;
-  }
+async function loadVideo() {
+  const raw = document.getElementById('videoUrl').value.trim();
+  hideErr();
+  if (!raw) { showErr('Please paste a YouTube URL to continue.'); resetPlayer(); return; }
+  const id = extractId(raw);
+  if (!id) { showErr('Invalid YouTube URL. Try: youtube.com/watch?v=… or youtu.be/…'); resetPlayer(); return; }
 
-  /* ─── Error UI ─── */
-  function showErr(msg) { document.getElementById('errText').textContent = msg; document.getElementById('errBox').classList.add('show'); }
-  function hideErr()    { document.getElementById('errBox').classList.remove('show'); }
+  currentVideoId = id;
+  document.getElementById('defaultState').style.display = 'none';
+  document.getElementById('loaderState').classList.add('show');
+  document.getElementById('player').classList.remove('show');
+  document.getElementById('dlPanel').classList.remove('show');
 
-  function resetPlayer() {
-    document.getElementById('defaultState').style.display = 'flex';
-    document.getElementById('loaderState').classList.remove('show');
-    const p = document.getElementById('player');
-    p.classList.remove('show'); p.src = '';
-    document.getElementById('dlPanel').classList.remove('show');
-    currentVideoId = null;
-  }
+  const [info] = await Promise.all([
+    fetchInfo(id),
+    sleep(1000)
+  ]);
 
-  /* ─── Main load ─── */
-  async function loadVideo() {
-    const raw = document.getElementById('videoUrl').value.trim();
-    hideErr();
-    if (!raw) { showErr('Please paste a YouTube URL to continue.'); resetPlayer(); return; }
+  const player = document.getElementById('player');
+  player.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+  document.getElementById('loaderState').classList.remove('show');
+  player.classList.add('show');
 
-    const id = extractId(raw);
-    if (!id) { showErr('Invalid YouTube URL. Try: youtube.com/watch?v=… or youtu.be/…'); resetPlayer(); return; }
+  document.getElementById('dlName').textContent = info.title;
+  const thumb = document.getElementById('dlThumb');
+  thumb.innerHTML = info.thumb
+    ? `<img src="${info.thumb}" alt="thumb"/>`
+    : `<i class="fa-brands fa-youtube"></i>`;
 
-    currentVideoId = id;
+  buildDownloadButtons(id);
+  document.getElementById('dlPanel').classList.add('show');
+}
 
-    // Show loader
-    document.getElementById('defaultState').style.display = 'none';
-    document.getElementById('loaderState').classList.add('show');
-    document.getElementById('player').classList.remove('show');
-    document.getElementById('dlPanel').classList.remove('show');
-
-    // Fetch title + thumb in parallel with min delay
-    const [info] = await Promise.all([
-      fetchInfo(id),
-      new Promise(r => setTimeout(r, 1000))
-    ]);
-
-    // Start playing
-    const player = document.getElementById('player');
-    player.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&controls=1`;
-    document.getElementById('loaderState').classList.remove('show');
-    player.classList.add('show');
-
-    // Update download panel
-    document.getElementById('dlName').textContent = info.title;
-    const thumb = document.getElementById('dlThumb');
-    thumb.innerHTML = info.thumb
-      ? `<img src="${info.thumb}" alt="thumb" />`
-      : `<i class="fa-brands fa-youtube"></i>`;
-
-    renderAll(id);
-    document.getElementById('dlPanel').classList.add('show');
-  }
-
-  function clearAll() {
-    document.getElementById('videoUrl').value = '';
-    hideErr(); resetPlayer();
-  }
+function clearAll() {
+  document.getElementById('videoUrl').value = '';
+  hideErr();
+  resetPlayer();
+}
 </script>
 
 </body>
