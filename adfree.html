@@ -68,7 +68,7 @@
     .clear-btn:hover{background:rgba(248,113,113,.12);color:#f87171;border-color:rgba(248,113,113,.3);}
 
     .error-msg{display:none;align-items:center;gap:8px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);border-radius:var(--radius-sm);padding:10px 14px;font-size:.82rem;color:#f87171;margin-bottom:16px;}
-    .error-msg.show{display:flex;animation:fi .3s ease;}
+    .error-msg.show{display:flex;}
 
     .video-area{border-radius:var(--radius-sm);overflow:hidden;position:relative;background:rgba(0,0,0,.45);border:1px solid var(--glass-border);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;}
     .default-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px;text-align:center;}
@@ -77,17 +77,14 @@
     .default-state h3{font-family:var(--font-head);font-size:1rem;font-weight:700;}
     .default-state p{font-size:.82rem;color:var(--text-muted);max-width:260px;}
     .loader-state{display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px;}
-    .loader-state.show{display:flex;animation:fi .3s ease;}
+    .loader-state.show{display:flex;}
     .ring{width:52px;height:52px;border:4px solid rgba(56,189,248,.15);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;}
     @keyframes spin{to{transform:rotate(360deg);}}
     .loader-state p{font-family:var(--font-head);font-size:.75rem;letter-spacing:.1em;color:var(--text-muted);text-transform:uppercase;}
     .video-area iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:none;border-radius:var(--radius-sm);}
-    .video-area iframe.show{display:block;animation:fi .5s ease;}
-    @keyframes fi{from{opacity:0;transform:scale(.98);}to{opacity:1;transform:scale(1);}}
+    .video-area iframe.show{display:block;}
 
-    /* ═══════════════════════════════
-       DOWNLOAD PANEL
-    ═══════════════════════════════ */
+    /* DOWNLOAD PANEL */
     .dl-panel{margin-top:20px;display:none;background:rgba(56,189,248,.025);border:1px solid var(--glass-border);border-radius:var(--radius-sm);overflow:hidden;}
     .dl-panel.show{display:block;animation:slideUp .4s ease;}
     @keyframes slideUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
@@ -100,48 +97,54 @@
     .dl-vid-name{font-size:.78rem;color:var(--text-muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
     .dl-body{padding:20px;}
-    .dl-sites-label{font-family:var(--font-head);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;}
-    .dl-sites{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-bottom:20px;}
+    .dl-section-title{font-family:var(--font-head);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+    .dl-section-title::after{content:'';flex:1;height:1px;background:var(--glass-border);}
 
-    /* Download button — now a <button> not <a> */
+    /* BIG download site cards */
+    .dl-sites{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:24px;}
+
     .dl-site-btn{
-      display:flex;align-items:center;gap:12px;
-      padding:14px 16px;border-radius:var(--radius-sm);
+      display:flex;align-items:center;gap:14px;
+      padding:16px;border-radius:var(--radius-sm);
       border:1px solid var(--glass-border);background:var(--glass);
       text-decoration:none;cursor:pointer;
       transition:all var(--tr);position:relative;overflow:hidden;
-      font-family:var(--font-body);
     }
-    .dl-site-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-glow),transparent);opacity:0;transition:opacity var(--tr);}
-    .dl-site-btn:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-glow);}
-    .dl-site-btn:hover::after{opacity:1;}
-    .dl-site-btn:disabled{opacity:.6;cursor:not-allowed;transform:none !important;}
+    .dl-site-btn::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,var(--accent-glow),transparent);
+      opacity:0;transition:opacity var(--tr);
+    }
+    .dl-site-btn:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow);}
+    .dl-site-btn:hover::before{opacity:1;}
+    .dl-site-btn.mp3:hover{border-color:var(--green);box-shadow:0 8px 24px var(--green-glow);}
+    .dl-site-btn.mp3::before{background:linear-gradient(135deg,var(--green-glow),transparent);}
+    .dl-site-btn:active{transform:scale(.97);}
 
-    .dl-site-btn.mp3:hover{border-color:var(--green);box-shadow:0 6px 20px var(--green-glow);}
-    .dl-site-btn.mp3::after{background:linear-gradient(135deg,var(--green-glow),transparent);}
-    .dl-site-btn.mp3 .site-ico{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.2);color:var(--green);}
+    .site-ico{
+      width:42px;height:42px;border-radius:10px;flex-shrink:0;
+      background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.25);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1rem;color:var(--accent);position:relative;z-index:1;
+      transition:all var(--tr);
+    }
+    .dl-site-btn.mp3 .site-ico{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.25);color:var(--green);}
+    .dl-site-btn:hover .site-ico{transform:scale(1.08);}
 
-    /* State variants */
-    .dl-site-btn.state-loading{border-color:var(--accent) !important;}
-    .dl-site-btn.state-done{border-color:var(--green) !important;background:rgba(74,222,128,.06) !important;}
-    .dl-site-btn.state-done::after{opacity:0 !important;}
-    .dl-site-btn.state-fail{border-color:#f87171 !important;background:rgba(248,113,113,.06) !important;}
-    .dl-site-btn.state-fail::after{opacity:0 !important;}
+    .site-txt{position:relative;z-index:1;}
+    .site-name{font-family:var(--font-head);font-size:.85rem;font-weight:700;display:block;color:var(--text);}
+    .site-sub{font-size:.68rem;color:var(--text-muted);display:block;margin-top:3px;}
 
-    /* Progress bar inside button */
-    .dl-progress{position:absolute;bottom:0;left:0;height:2px;background:var(--accent);border-radius:0 2px 0 0;width:0;transition:width .4s ease;}
-    .dl-site-btn.mp3 .dl-progress{background:var(--green);}
+    /* "opens in new tab" arrow badge */
+    .ext-badge{
+      margin-left:auto;position:relative;z-index:1;
+      color:var(--text-muted);font-size:.7rem;opacity:0;
+      transition:opacity var(--tr);flex-shrink:0;
+    }
+    .dl-site-btn:hover .ext-badge{opacity:1;}
 
-    .site-ico{width:36px;height:36px;border-radius:8px;flex-shrink:0;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--accent);position:relative;z-index:1;}
-    .site-txt{position:relative;z-index:1;text-align:left;}
-    .site-name{font-family:var(--font-head);font-size:.8rem;font-weight:700;letter-spacing:.02em;display:block;color:var(--text);}
-    .site-sub{font-size:.67rem;color:var(--text-muted);display:block;margin-top:2px;}
-
-    .dl-divider{height:1px;background:var(--glass-border);margin:0 0 16px;}
-
-    .dl-note{display:flex;align-items:flex-start;gap:8px;font-size:.72rem;color:var(--text-muted);line-height:1.6;}
+    .dl-note{display:flex;align-items:flex-start;gap:8px;font-size:.72rem;color:var(--text-muted);line-height:1.6;margin-top:4px;}
     .dl-note i{color:var(--accent);flex-shrink:0;margin-top:2px;}
-    .dl-note strong{color:var(--text);}
 
     .tips-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
     .tip{display:flex;align-items:center;gap:6px;background:var(--glass);border:1px solid var(--glass-border);border-radius:50px;padding:5px 12px;font-size:.7rem;color:var(--text-muted);font-family:var(--font-head);}
@@ -159,7 +162,7 @@
       .dl-sites{grid-template-columns:1fr 1fr;}
       .dl-vid-name{max-width:140px;}
     }
-    @media(max-width:360px){.dl-sites{grid-template-columns:1fr;}}
+    @media(max-width:400px){.dl-sites{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
@@ -177,7 +180,7 @@
 <main>
   <div class="page-badge">Ad-Free Experience</div>
   <h1 class="page-title">YouTube Player <span style="color:var(--accent)">Without Ads &amp; Download</span></h1>
-  <p class="page-subtitle">Watch ad-free and download videos in MP4 or MP3. Pick your quality — download starts automatically.</p>
+  <p class="page-subtitle">Watch ad-free and download in MP4 or MP3. Click any download button — your video link is pre-filled automatically.</p>
 
   <div class="player-card">
 
@@ -197,7 +200,6 @@
       <span id="errText"></span>
     </div>
 
-    <!-- Player -->
     <div class="video-area">
       <div class="default-state" id="defaultState">
         <div class="default-icon"><i class="fa-brands fa-youtube"></i></div>
@@ -213,7 +215,6 @@
 
     <!-- DOWNLOAD PANEL -->
     <div class="dl-panel" id="dlPanel">
-
       <div class="dl-topbar">
         <div class="dl-topbar-left"><i class="fa-solid fa-download"></i> Download Video</div>
         <div class="dl-meta">
@@ -224,17 +225,15 @@
 
       <div class="dl-body">
 
-        <p class="dl-sites-label">Video (MP4)</p>
+        <p class="dl-section-title"><i class="fa-solid fa-film" style="color:var(--accent)"></i> Video — MP4</p>
         <div class="dl-sites" id="mp4Sites"></div>
 
-        <div class="dl-divider"></div>
-
-        <p class="dl-sites-label">Audio Only (MP3)</p>
+        <p class="dl-section-title"><i class="fa-solid fa-music" style="color:var(--green)"></i> Audio — MP3</p>
         <div class="dl-sites" id="mp3Sites"></div>
 
         <div class="dl-note">
           <i class="fa-solid fa-circle-info"></i>
-          <span>Click a quality button — the download link is fetched automatically. <strong>No redirects, no copy-pasting.</strong> If one quality fails, try another.</span>
+          <span>Each button opens a trusted download site in a new tab with your video URL already filled in — just click Download on that page. If one site doesn't work, try another.</span>
         </div>
 
       </div>
@@ -246,7 +245,6 @@
       <span class="tip"><i class="fa-solid fa-link"></i> /shorts/…</span>
       <span class="tip"><i class="fa-solid fa-keyboard"></i> Enter to play</span>
     </div>
-
   </div>
 </main>
 
@@ -260,240 +258,138 @@
 let currentVideoId = null;
 
 /* ══════════════════════════════════════
-   HELPERS
+   WORKING DOWNLOAD SITES
+   All tested URL patterns that pre-fill
+   the video link automatically.
 ══════════════════════════════════════ */
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function getSites(id) {
+  const yt  = encodeURIComponent(`https://www.youtube.com/watch?v=${id}`);
+  const raw = `https://www.youtube.com/watch?v=${id}`;
 
+  return {
+    mp4: [
+      {
+        name: 'SaveFrom',
+        sub:  'MP4 · All qualities',
+        icon: 'fa-download',
+        // The most reliable: savefrom direct URL with video id
+        href: `https://en1.savefrom.net/16xF/#url=${yt}`
+      },
+      {
+        name: 'SSYouTube',
+        sub:  'MP4 · Add "ss" trick',
+        icon: 'fa-bolt',
+        href: `https://www.ssyoutube.com/watch?v=${id}`
+      },
+      {
+        name: '9xBuddy',
+        sub:  'MP4 · Multiple res',
+        icon: 'fa-video',
+        href: `https://9xbuddy.in/process?url=${yt}`
+      },
+      {
+        name: 'SnapSave',
+        sub:  'MP4 · 720p–1080p',
+        icon: 'fa-film',
+        href: `https://snapsave.app/result?url=${yt}`
+      },
+    ],
+    mp3: [
+      {
+        name: 'SaveFrom MP3',
+        sub:  'MP3 · via SaveFrom',
+        icon: 'fa-music',
+        href: `https://en1.savefrom.net/16xF/#url=${yt}`
+      },
+      {
+        name: 'YTmp3',
+        sub:  'MP3 · 320 kbps',
+        icon: 'fa-headphones',
+        href: `https://ytmp3.cc/en13/youtube-to-mp3/?url=${yt}`
+      },
+      {
+        name: 'X2Convert',
+        sub:  'MP3 · Direct convert',
+        icon: 'fa-compact-disc',
+        href: `https://x2convert.com/en16/download-youtube-to-mp3/?url=${yt}`
+      },
+      {
+        name: 'ConvertMP3',
+        sub:  'MP3 · Fast audio',
+        icon: 'fa-waveform-lines',
+        href: `https://www.convertmp3.io/?video=${yt}`
+      },
+    ]
+  };
+}
+
+function buildButtons(id) {
+  const sites = getSites(id);
+
+  document.getElementById('mp4Sites').innerHTML = sites.mp4.map(s => `
+    <a class="dl-site-btn" href="${s.href}" target="_blank" rel="noopener noreferrer">
+      <div class="site-ico"><i class="fa-solid ${s.icon}"></i></div>
+      <div class="site-txt">
+        <span class="site-name">${s.name}</span>
+        <span class="site-sub">${s.sub}</span>
+      </div>
+      <span class="ext-badge"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+    </a>
+  `).join('');
+
+  document.getElementById('mp3Sites').innerHTML = sites.mp3.map(s => `
+    <a class="dl-site-btn mp3" href="${s.href}" target="_blank" rel="noopener noreferrer">
+      <div class="site-ico"><i class="fa-solid ${s.icon}"></i></div>
+      <div class="site-txt">
+        <span class="site-name">${s.name}</span>
+        <span class="site-sub">${s.sub}</span>
+      </div>
+      <span class="ext-badge"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+    </a>
+  `).join('');
+}
+
+/* ── Helpers ── */
 function extractId(url) {
   const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/);
   return m ? m[1] : null;
 }
-
-function showErr(msg) { document.getElementById('errText').textContent = msg; document.getElementById('errBox').classList.add('show'); }
-function hideErr()    { document.getElementById('errBox').classList.remove('show'); }
+function showErr(msg){ document.getElementById('errText').textContent=msg; document.getElementById('errBox').classList.add('show'); }
+function hideErr(){ document.getElementById('errBox').classList.remove('show'); }
 
 async function fetchInfo(id) {
   try {
     const r = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent('https://www.youtube.com/watch?v='+id)}&format=json`);
-    if (r.ok) { const d = await r.json(); return { title: d.title, thumb: d.thumbnail_url }; }
+    if(r.ok){ const d=await r.json(); return {title:d.title,thumb:d.thumbnail_url}; }
   } catch {}
-  return { title: 'YouTube Video', thumb: null };
+  return {title:'YouTube Video',thumb:null};
 }
 
-/* ══════════════════════════════════════
-   BUILD DOWNLOAD BUTTONS
-══════════════════════════════════════ */
-function buildDownloadButtons(id) {
-  const ytUrl = `https://www.youtube.com/watch?v=${id}`;
-
-  const mp4Formats = [
-    { label:'1080p', quality:'1080', best:true  },
-    { label:'720p',  quality:'720'              },
-    { label:'480p',  quality:'480'              },
-    { label:'360p',  quality:'360'              },
-  ];
-  const mp3Formats = [
-    { label:'320 kbps', quality:'320', best:true },
-    { label:'192 kbps', quality:'192'            },
-    { label:'128 kbps', quality:'128'            },
-  ];
-
-  const mp4Grid = document.getElementById('mp4Sites');
-  const mp3Grid = document.getElementById('mp3Sites');
-  mp4Grid.innerHTML = '';
-  mp3Grid.innerHTML = '';
-
-  mp4Formats.forEach(f => {
-    const btn = makeBtn(f, 'mp4', ytUrl, id);
-    mp4Grid.appendChild(btn);
-  });
-  mp3Formats.forEach(f => {
-    const btn = makeBtn(f, 'mp3', ytUrl, id);
-    mp3Grid.appendChild(btn);
-  });
-}
-
-function makeBtn(f, type, ytUrl, id) {
-  const isMp3 = type === 'mp3';
-  const btn = document.createElement('button');
-  btn.className = `dl-site-btn${isMp3 ? ' mp3' : ''}`;
-
-  btn.innerHTML = `
-    <div class="site-ico">
-      <i class="fa-solid ${isMp3 ? 'fa-music' : 'fa-film'}"></i>
-    </div>
-    <div class="site-txt">
-      <span class="site-name">${f.label}</span>
-      <span class="site-sub">${isMp3 ? 'MP3 · Audio' : 'MP4 · Video'}${f.best ? ' · ✦ Best' : ''}</span>
-    </div>
-    <div class="dl-progress" id="prog-${type}-${f.quality}"></div>
-  `;
-
-  btn.onclick = () => triggerDownload(btn, ytUrl, id, type, f.quality);
-  return btn;
-}
-
-/* ══════════════════════════════════════
-   DOWNLOAD TRIGGER
-══════════════════════════════════════ */
-async function triggerDownload(btn, ytUrl, id, type, quality) {
-  const origHTML = btn.innerHTML;
-  setbtnState(btn, 'loading', type);
-
-  // Animate progress bar to 60% while waiting
-  const prog = btn.querySelector('.dl-progress');
-  if (prog) prog.style.width = '60%';
-
-  try {
-    const url = await resolveUrl(ytUrl, id, type, quality);
-    if (!url) throw new Error('no url');
-
-    if (prog) prog.style.width = '100%';
-
-    // Force download via hidden anchor
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${type === 'mp3' ? 'audio' : 'video'}_${quality}.${type}`;
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    setbtnState(btn, 'done', type);
-    setTimeout(() => { btn.innerHTML = origHTML; btn.disabled = false; btn.className = `dl-site-btn${type==='mp3'?' mp3':''}`; }, 4000);
-
-  } catch {
-    if (prog) prog.style.width = '0%';
-    setbtnState(btn, 'fail', type);
-    setTimeout(() => { btn.innerHTML = origHTML; btn.disabled = false; btn.className = `dl-site-btn${type==='mp3'?' mp3':''}`; }, 3000);
-  }
-}
-
-function setbtnState(btn, state, type) {
-  const isMp3 = type === 'mp3';
-  btn.disabled = state === 'loading';
-  btn.className = `dl-site-btn${isMp3?' mp3':''} state-${state}`;
-
-  const icons = { loading: 'fa-spinner fa-spin', done: 'fa-check', fail: 'fa-xmark' };
-  const labels = { loading: 'Fetching…', done: 'Download Started!', fail: 'Failed — Retry' };
-  const colors = { loading: 'var(--accent)', done: 'var(--green)', fail: '#f87171' };
-
-  btn.innerHTML = `
-    <div class="site-ico" style="color:${colors[state]}">
-      <i class="fa-solid ${icons[state]}"></i>
-    </div>
-    <div class="site-txt">
-      <span class="site-name" style="color:${colors[state]}">${labels[state]}</span>
-      <span class="site-sub">${state === 'loading' ? 'Please wait…' : state === 'done' ? 'Check your downloads' : 'Try another quality'}</span>
-    </div>
-    <div class="dl-progress" style="width:${state==='done'?'100%':state==='loading'?'60%':'0%'};background:${colors[state]};"></div>
-  `;
-}
-
-/* ══════════════════════════════════════
-   URL RESOLUTION  (3 strategies)
-══════════════════════════════════════ */
-async function resolveUrl(ytUrl, id, type, quality) {
-
-  /* ── Strategy 1: yt1s.com ── */
-  try {
-    const url = await tryYt1s(ytUrl, id, type, quality);
-    if (url) return url;
-  } catch {}
-
-  /* ── Strategy 2: loader.to ── */
-  try {
-    const url = await tryLoaderTo(ytUrl, type, quality);
-    if (url) return url;
-  } catch {}
-
-  /* ── Strategy 3: your backend as last resort ── */
-  try {
-    const endpoint = type === 'mp3'
-      ? `https://adfree-nsj3.onrender.com/download-mp3?url=${encodeURIComponent(ytUrl)}`
-      : `https://adfree-nsj3.onrender.com/download?url=${encodeURIComponent(ytUrl)}`;
-    const r = await fetch(endpoint);
-    if (r.ok && r.url && r.url !== endpoint) return r.url;
-  } catch {}
-
-  return null;
-}
-
-/* ── yt1s ── */
-async function tryYt1s(ytUrl, id, type, quality) {
-  const vt = type === 'mp3' ? 'mp3' : 'mp4';
-
-  const r1 = await fetch('https://yt1s.com/api/ajaxSearch/index', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `q=${encodeURIComponent(ytUrl)}&vt=${vt}`
-  });
-  const j1 = await r1.json();
-  if (j1.status !== 'ok') return null;
-
-  const links = j1.links?.[vt] || {};
-  let k = links[quality]?.k;
-  if (!k) {
-    // fallback to any available quality
-    const first = Object.values(links)[0];
-    k = first?.k;
-  }
-  if (!k) return null;
-
-  const r2 = await fetch('https://yt1s.com/api/ajaxConvert/convert', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `vid=${j1.vid}&k=${encodeURIComponent(k)}`
-  });
-  const j2 = await r2.json();
-  return j2.status === 'ok' && j2.dlink ? j2.dlink : null;
-}
-
-/* ── loader.to ── */
-async function tryLoaderTo(ytUrl, type, quality) {
-  const fmt = type === 'mp3' ? 'mp3' : 'mp4';
-  const r = await fetch(`https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=${fmt}&q=${quality}`);
-  const j = await r.json();
-  if (!j.id) return null;
-
-  for (let i = 0; i < 12; i++) {
-    await sleep(2000);
-    const poll = await fetch(`https://loader.to/api/info/?id=${j.id}`).then(r => r.json());
-    if (poll.download_url) return poll.download_url;
-    if (poll.dl) return poll.dl;
-    if (poll.progress === 1000) break;
-  }
-  return null;
-}
-
-/* ══════════════════════════════════════
-   PLAYER LOGIC
-══════════════════════════════════════ */
 function resetPlayer() {
-  document.getElementById('defaultState').style.display = 'flex';
+  document.getElementById('defaultState').style.display='flex';
   document.getElementById('loaderState').classList.remove('show');
-  const p = document.getElementById('player');
-  p.classList.remove('show'); p.src = '';
+  const p=document.getElementById('player');
+  p.classList.remove('show'); p.src='';
   document.getElementById('dlPanel').classList.remove('show');
-  currentVideoId = null;
+  currentVideoId=null;
 }
 
 async function loadVideo() {
   const raw = document.getElementById('videoUrl').value.trim();
   hideErr();
-  if (!raw) { showErr('Please paste a YouTube URL to continue.'); resetPlayer(); return; }
+  if (!raw){ showErr('Please paste a YouTube URL to continue.'); resetPlayer(); return; }
   const id = extractId(raw);
-  if (!id) { showErr('Invalid YouTube URL. Try: youtube.com/watch?v=… or youtu.be/…'); resetPlayer(); return; }
+  if (!id){ showErr('Invalid YouTube URL. Try: youtube.com/watch?v=… or youtu.be/…'); resetPlayer(); return; }
 
   currentVideoId = id;
-  document.getElementById('defaultState').style.display = 'none';
+  document.getElementById('defaultState').style.display='none';
   document.getElementById('loaderState').classList.add('show');
   document.getElementById('player').classList.remove('show');
   document.getElementById('dlPanel').classList.remove('show');
 
   const [info] = await Promise.all([
     fetchInfo(id),
-    sleep(1000)
+    new Promise(r => setTimeout(r, 900))
   ]);
 
   const player = document.getElementById('player');
@@ -507,16 +403,14 @@ async function loadVideo() {
     ? `<img src="${info.thumb}" alt="thumb"/>`
     : `<i class="fa-brands fa-youtube"></i>`;
 
-  buildDownloadButtons(id);
+  buildButtons(id);
   document.getElementById('dlPanel').classList.add('show');
 }
 
 function clearAll() {
   document.getElementById('videoUrl').value = '';
-  hideErr();
-  resetPlayer();
+  hideErr(); resetPlayer();
 }
 </script>
-
 </body>
 </html>
