@@ -37,7 +37,8 @@
           <li><a href="#projects" class="nav-link"><span>04</span>Projects</a></li>
           <li><a href="#certifications" class="nav-link"><span>05</span>Certs</a></li>
           <li><a href="#skills" class="nav-link"><span>06</span>Skills</a></li>
-          <li><a href="#contact" class="nav-link"><span>07</span>Contact</a></li>
+          <li><a href="#blog" class="nav-link"><span>07</span>Blog</a></li>
+          <li><a href="#contact" class="nav-link"><span>08</span>Contact</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -62,6 +63,7 @@
         <li><a href="#projects" class="mob-link">Projects</a></li>
         <li><a href="#certifications" class="mob-link">Certifications</a></li>
         <li><a href="#skills" class="mob-link">Skills</a></li>
+        <li><a href="#blog" class="mob-link">Blog</a></li>
         <li><a href="#contact" class="mob-link">Contact</a></li>
       </ul>
     </div>
@@ -464,9 +466,50 @@
       </div>
     </section>
 
+    <!-- BLOG -->
+    <section id="blog" class="section blog-section">
+      <div class="section-label">07 / Blog</div>
+      <div class="container">
+        <h2 class="section-title reveal">My <span class="accent">Blog</span></h2>
+        <div class="blog-header reveal">
+          <div class="blog-filter-row">
+            <button class="blog-chip active" data-bf="all">All</button>
+            <button class="blog-chip" data-bf="Blog">Blog</button>
+            <button class="blog-chip" data-bf="Article">Article</button>
+            <button class="blog-chip" data-bf="News">News</button>
+          </div>
+        </div>
+
+        <!-- Loading state -->
+        <div id="blogLoading" class="blog-loading">
+          <div class="blog-skeleton"></div>
+          <div class="blog-skeleton"></div>
+          <div class="blog-skeleton"></div>
+        </div>
+
+        <!-- Posts grid -->
+        <div class="blog-grid" id="blogGrid" style="display:none"></div>
+
+        <!-- Empty state -->
+        <div id="blogEmpty" class="blog-empty" style="display:none">
+          <div class="blog-empty-icon">✦</div>
+          <h3>No posts yet</h3>
+          <p>Check back soon — new content drops daily.</p>
+        </div>
+
+        <!-- Load more -->
+        <div class="blog-more-wrap" id="blogMoreWrap" style="display:none">
+          <button class="btn btn-outline" id="blogMoreBtn" onclick="loadMorePosts()">
+            <span>Load More</span>
+            <i class="fa-solid fa-arrow-down"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- CONTACT -->
     <section id="contact" class="section contact">
-      <div class="section-label">07 / Contact</div>
+      <div class="section-label">08 / Contact</div>
       <div class="container">
         <h2 class="section-title reveal">Get In <span class="accent">Touch</span></h2>
         <div class="contact-grid">
@@ -551,6 +594,204 @@
     </div>
   </div>
 
+  <!-- BLOG READ MODAL -->
+  <div class="modal-overlay" id="blogReadModal">
+    <div class="modal-box glass blog-read-modal">
+      <button class="modal-close" id="blogReadClose"><i class="fa-solid fa-xmark"></i></button>
+      <div id="blogReadContent"></div>
+    </div>
+  </div>
+
   <script src="scripts.js"></script>
-</body>
-</html>
+  <script src="firebase-config.js"></script>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, query, where, orderBy, limit, startAfter, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const POSTS_PER_PAGE = 6;
+    let lastDoc = null;
+    let allLoaded = false;
+    let activeBlogFilter = 'all';
+    let allBlogPosts = [];
+
+    async function initBlog() {
+      try {
+        const app = initializeApp(window.FIREBASE_CONFIG, 'portfolio');
+        const db = getFirestore(app);
+        window._blogDb = db;
+        window._blogCol = collection(db, 'posts');
+        window._blogSDK = { query, where, orderBy, limit, startAfter, getDocs };
+        await fetchPosts(true);
+      } catch(e) {
+        console.warn('Firebase not configured — blog section hidden.', e.message);
+        document.getElementById('blogLoading').style.display = 'none';
+        document.getElementById('blogEmpty').style.display = 'flex';
+      }
+    }
+
+    async function fetchPosts(reset = false) {
+      if (!window._blogDb) return;
+      const { query, where, orderBy, limit, startAfter, getDocs } = window._blogSDK;
+
+      document.getElementById('blogLoading').style.display = 'grid';
+      document.getElementById('blogGrid').style.display = 'none';
+
+      try {
+        let q = query(
+          window._blogCol,
+          where('status', '==', 'published'),
+          orderBy('createdAt', 'desc'),
+          limit(POSTS_PER_PAGE)
+        );
+        if (!reset && lastDoc) q = query(window._blogCol, where('status','==','published'), orderBy('createdAt','desc'), startAfter(lastDoc), limit(POSTS_PER_PAGE));
+
+        const snap = await getDocs(q);
+        const newPosts = snap.docs.map(d => ({ id: d.id, ...d.data(), createdAt: d.data().createdAt?.toDate?.()?.toISOString() || new Date().toISOString() }));
+
+        if (reset) allBlogPosts = newPosts;
+        else allBlogPosts = [...allBlogPosts, ...newPosts];
+
+        lastDoc = snap.docs[snap.docs.length - 1] || null;
+        allLoaded = snap.docs.length < POSTS_PER_PAGE;
+
+        renderBlogGrid();
+      } catch(e) {
+        console.error('Blog fetch error:', e);
+        document.getElementById('blogLoading').style.display = 'none';
+        document.getElementById('blogEmpty').style.display = 'flex';
+      }
+    }
+
+    function renderBlogGrid() {
+      const grid = document.getElementById('blogGrid');
+      const loading = document.getElementById('blogLoading');
+      const empty = document.getElementById('blogEmpty');
+      const moreWrap = document.getElementById('blogMoreWrap');
+
+      const filtered = activeBlogFilter === 'all'
+        ? allBlogPosts
+        : allBlogPosts.filter(p => p.type === activeBlogFilter);
+
+      loading.style.display = 'none';
+
+      if (filtered.length === 0) {
+        grid.style.display = 'none';
+        empty.style.display = 'flex';
+        moreWrap.style.display = 'none';
+        return;
+      }
+
+      empty.style.display = 'none';
+      grid.style.display = 'grid';
+      moreWrap.style.display = allLoaded ? 'none' : 'flex';
+
+      grid.innerHTML = filtered.map((p, i) => {
+        const date = new Date(p.createdAt).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+        const cover = p.cover
+          ? `<img src="${p.cover}" alt="${p.title}" class="blog-card-img" loading="lazy"/>`
+          : `<div class="blog-card-img-ph">${typeEmoji(p.type)}</div>`;
+        const tags = (p.tags||[]).slice(0,2).map(t=>`<span class="blog-tag">${t}</span>`).join('');
+        const featured = i === 0 && activeBlogFilter === 'all';
+        return `
+          <div class="blog-card glass tilt-card reveal ${featured ? 'blog-card--featured' : ''}" onclick="openBlogPost('${p.id}')" style="animation-delay:${i*0.08}s">
+            <div class="blog-card-cover">
+              ${cover}
+              <div class="blog-card-cover-overlay"></div>
+              <span class="blog-type-badge blog-type-${(p.type||'blog').toLowerCase()}">${p.type||'Blog'}</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span class="blog-cat"><i class="fa-solid fa-folder-open"></i> ${p.category||'General'}</span>
+                <span class="blog-date"><i class="fa-regular fa-calendar"></i> ${date}</span>
+              </div>
+              <h3 class="blog-card-title">${escBlog(p.title)}</h3>
+              <p class="blog-card-excerpt">${escBlog(p.excerpt||'')}</p>
+              ${tags ? `<div class="blog-tags-row">${tags}</div>` : ''}
+              <div class="blog-card-footer">
+                <span class="blog-read-more">Read Post <i class="fa-solid fa-arrow-right"></i></span>
+                <span class="blog-read-time">${readTime(p.body)} min read</span>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+
+      // re-observe new cards for reveal
+      document.querySelectorAll('.blog-card.reveal:not(.visible)').forEach(el => {
+        if (typeof revealObserver !== 'undefined') revealObserver.observe(el);
+        else el.classList.add('visible');
+      });
+
+      // re-apply tilt
+      document.querySelectorAll('.blog-card.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const rotX = ((e.clientY - rect.top - rect.height/2) / (rect.height/2)) * -6;
+          const rotY = ((e.clientX - rect.left - rect.width/2) / (rect.width/2)) * 6;
+          card.style.transform = `perspective(700px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+        });
+        card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+      });
+    }
+
+    function typeEmoji(t) { return t==='Article'?'📰':t==='News'?'📡':'📝'; }
+    function readTime(html) { const w=(html||'').replace(/<[^>]+>/g,' ').trim().split(/\s+/).filter(Boolean).length; return Math.max(1, Math.ceil(w/200)); }
+    function escBlog(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // Blog post reader modal
+    window.openBlogPost = function(id) {
+      const p = allBlogPosts.find(x => x.id === id);
+      if (!p) return;
+      const date = new Date(p.createdAt).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+      const cover = p.cover ? `<img src="${p.cover}" class="blog-read-cover" alt="${p.title}"/>` : '';
+      const tags = (p.tags||[]).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
+      document.getElementById('blogReadContent').innerHTML = `
+        ${cover}
+        <div class="blog-read-type blog-type-${(p.type||'blog').toLowerCase()}">${p.type}</div>
+        <h1 class="blog-read-title">${escBlog(p.title)}</h1>
+        <div class="blog-read-meta">
+          <span><i class="fa-solid fa-folder-open"></i> ${p.category||'General'}</span>
+          <span><i class="fa-regular fa-calendar"></i> ${date}</span>
+          <span><i class="fa-regular fa-clock"></i> ${readTime(p.body)} min read</span>
+        </div>
+        ${tags ? `<div class="blog-tags-row" style="margin-bottom:20px">${tags}</div>` : ''}
+        <div class="blog-read-body">${p.body}</div>`;
+      document.getElementById('blogReadModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.loadMorePosts = async function() {
+      const btn = document.getElementById('blogMoreBtn');
+      btn.querySelector('span').textContent = 'Loading…';
+      btn.disabled = true;
+      await fetchPosts(false);
+      btn.querySelector('span').textContent = 'Load More';
+      btn.disabled = false;
+    };
+
+    // Filter chips
+    document.querySelectorAll('.blog-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.blog-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeBlogFilter = chip.dataset.bf;
+        renderBlogGrid();
+      });
+    });
+
+    // Blog modal close
+    document.getElementById('blogReadClose').addEventListener('click', () => {
+      document.getElementById('blogReadModal').classList.remove('open');
+      document.body.style.overflow = '';
+    });
+    document.getElementById('blogReadModal').addEventListener('click', e => {
+      if (e.target === document.getElementById('blogReadModal')) {
+        document.getElementById('blogReadModal').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Init
+    initBlog();
+  </script>
