@@ -605,110 +605,184 @@
   <script src="scripts.js"></script>
   <script src="firebase-config.js"></script>
 
-  <!-- Firebase SDK -->
+  <!-- =====================================================
+       BLOG ENGINE — Dual Mode
+       MODE 1 (default): reads from localStorage  → works instantly, same device as dashboard
+       MODE 2 (online):  reads from Firebase      → works across devices, when config is filled
+       ===================================================== -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, query, where, orderBy, limit, startAfter, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    /* ---------- helpers ---------- */
+    function escBlog(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function typeEmoji(t){ return t==='Article'?'📰':t==='News'?'📡':'📝'; }
+    function readTime(html){ const w=(html||'').replace(/<[^>]+>/g,' ').trim().split(/\s+/).filter(Boolean).length; return Math.max(1,Math.ceil(w/200)); }
 
+    /* ---------- state ---------- */
     const POSTS_PER_PAGE = 6;
-    let lastDoc = null;
-    let allLoaded = false;
-    let activeBlogFilter = 'all';
     let allBlogPosts = [];
+    let activeBlogFilter = 'all';
+    let lastFirebaseDoc = null;
+    let allLoaded = false;
+    let usingFirebase = false;
 
-    async function initBlog() {
+    /* ---------- detect firebase config ---------- */
+    function isFirebaseConfigured(){
       try {
-        const app = initializeApp(window.FIREBASE_CONFIG, 'portfolio');
-        const db = getFirestore(app);
-        window._blogDb = db;
-        window._blogCol = collection(db, 'posts');
-        window._blogSDK = { query, where, orderBy, limit, startAfter, getDocs };
-        await fetchPosts(true);
-      } catch(e) {
-        console.warn('Firebase not configured — blog section hidden.', e.message);
-        document.getElementById('blogLoading').style.display = 'none';
-        document.getElementById('blogEmpty').style.display = 'flex';
-      }
+        const c = window.FIREBASE_CONFIG;
+        return c && c.apiKey && c.apiKey !== 'YOUR_API_KEY' && c.projectId && c.projectId !== 'YOUR_PROJECT_ID';
+      } catch(e){ return false; }
     }
 
-    async function fetchPosts(reset = false) {
-      if (!window._blogDb) return;
-      const { query, where, orderBy, limit, startAfter, getDocs } = window._blogSDK;
+    /* ---------- INIT ---------- */
+    async function initBlog(){
+      showLoading(true);
 
-      document.getElementById('blogLoading').style.display = 'grid';
-      document.getElementById('blogGrid').style.display = 'none';
+      if(isFirebaseConfigured()){
+        /* ---- Firebase path ---- */
+        try {
+          const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+          const { getFirestore, collection, query, where, orderBy, limit, getDocs, startAfter }
+            = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
 
+          const app = initializeApp(window.FIREBASE_CONFIG, 'portfolio_blog');
+          const db  = getFirestore(app);
+          window._blogFirestore = { db, collection, query, where, orderBy, limit, getDocs, startAfter };
+          usingFirebase = true;
+          await loadFromFirebase(true);
+          return;
+        } catch(e){
+          console.warn('Firebase init failed, falling back to localStorage:', e.message);
+        }
+      }
+
+      /* ---- localStorage path (same-device mode) ---- */
+      loadFromLocalStorage();
+    }
+
+    /* ---------- localStorage loader ---------- */
+    function loadFromLocalStorage(){
+      try {
+        const raw = localStorage.getItem('dp_posts');
+        const all = raw ? JSON.parse(raw) : [];
+        // only published posts, newest first
+        allBlogPosts = all
+          .filter(p => p.status === 'published')
+          .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+        allLoaded = true;
+      } catch(e){
+        allBlogPosts = [];
+      }
+      showLoading(false);
+      renderBlogGrid();
+
+      // Poll for new posts every 5 seconds (dashboard and portfolio on same tab/device)
+      setInterval(() => {
+        try {
+          const raw = localStorage.getItem('dp_posts');
+          const all = raw ? JSON.parse(raw) : [];
+          const updated = all
+            .filter(p => p.status === 'published')
+            .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+          // Only re-render if something changed
+          if(JSON.stringify(updated.map(p=>p.id+p.updatedAt)) !== JSON.stringify(allBlogPosts.map(p=>p.id+p.updatedAt))){
+            allBlogPosts = updated;
+            renderBlogGrid();
+          }
+        } catch(e){}
+      }, 5000);
+    }
+
+    /* ---------- Firebase loader ---------- */
+    async function loadFromFirebase(reset = false){
+      const { db, collection, query, where, orderBy, limit, getDocs, startAfter } = window._blogFirestore;
+      showLoading(true);
       try {
         let q = query(
-          window._blogCol,
-          where('status', '==', 'published'),
-          orderBy('createdAt', 'desc'),
+          collection(db, 'posts'),
+          where('status','==','published'),
+          orderBy('createdAt','desc'),
           limit(POSTS_PER_PAGE)
         );
-        if (!reset && lastDoc) q = query(window._blogCol, where('status','==','published'), orderBy('createdAt','desc'), startAfter(lastDoc), limit(POSTS_PER_PAGE));
-
+        if(!reset && lastFirebaseDoc){
+          q = query(collection(db,'posts'), where('status','==','published'), orderBy('createdAt','desc'), startAfter(lastFirebaseDoc), limit(POSTS_PER_PAGE));
+        }
         const snap = await getDocs(q);
-        const newPosts = snap.docs.map(d => ({ id: d.id, ...d.data(), createdAt: d.data().createdAt?.toDate?.()?.toISOString() || new Date().toISOString() }));
-
-        if (reset) allBlogPosts = newPosts;
-        else allBlogPosts = [...allBlogPosts, ...newPosts];
-
-        lastDoc = snap.docs[snap.docs.length - 1] || null;
+        const fetched = snap.docs.map(d => ({
+          id: d.id, ...d.data(),
+          createdAt: d.data().createdAt?.toDate?.()?.toISOString() || new Date().toISOString()
+        }));
+        if(reset) allBlogPosts = fetched;
+        else allBlogPosts = [...allBlogPosts, ...fetched];
+        lastFirebaseDoc = snap.docs[snap.docs.length - 1] || null;
         allLoaded = snap.docs.length < POSTS_PER_PAGE;
-
-        renderBlogGrid();
-      } catch(e) {
-        console.error('Blog fetch error:', e);
-        document.getElementById('blogLoading').style.display = 'none';
-        document.getElementById('blogEmpty').style.display = 'flex';
+      } catch(e){
+        console.error('Firebase fetch error:', e);
       }
+      showLoading(false);
+      renderBlogGrid();
     }
 
-    function renderBlogGrid() {
-      const grid = document.getElementById('blogGrid');
-      const loading = document.getElementById('blogLoading');
-      const empty = document.getElementById('blogEmpty');
+    /* ---------- load more ---------- */
+    window.loadMorePosts = async function(){
+      const btn = document.getElementById('blogMoreBtn');
+      btn.querySelector('span').textContent = 'Loading…';
+      btn.disabled = true;
+      if(usingFirebase) await loadFromFirebase(false);
+      btn.querySelector('span').textContent = 'Load More';
+      btn.disabled = false;
+    };
+
+    /* ---------- render ---------- */
+    function showLoading(on){
+      const l = document.getElementById('blogLoading');
+      const g = document.getElementById('blogGrid');
+      l.style.display = on ? 'grid' : 'none';
+      if(on) g.style.display = 'none';
+    }
+
+    function renderBlogGrid(){
+      const grid     = document.getElementById('blogGrid');
+      const empty    = document.getElementById('blogEmpty');
       const moreWrap = document.getElementById('blogMoreWrap');
 
       const filtered = activeBlogFilter === 'all'
         ? allBlogPosts
         : allBlogPosts.filter(p => p.type === activeBlogFilter);
 
-      loading.style.display = 'none';
-
-      if (filtered.length === 0) {
-        grid.style.display = 'none';
+      if(filtered.length === 0){
+        grid.style.display  = 'none';
         empty.style.display = 'flex';
         moreWrap.style.display = 'none';
         return;
       }
 
       empty.style.display = 'none';
-      grid.style.display = 'grid';
-      moreWrap.style.display = allLoaded ? 'none' : 'flex';
+      grid.style.display  = 'grid';
+      moreWrap.style.display = (allLoaded || !usingFirebase) ? 'none' : 'flex';
 
       grid.innerHTML = filtered.map((p, i) => {
-        const date = new Date(p.createdAt).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
-        const cover = p.cover
-          ? `<img src="${p.cover}" alt="${p.title}" class="blog-card-img" loading="lazy"/>`
+        const date     = new Date(p.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        const cover    = p.cover
+          ? `<img src="${p.cover}" alt="" class="blog-card-img" loading="lazy"/>`
           : `<div class="blog-card-img-ph">${typeEmoji(p.type)}</div>`;
-        const tags = (p.tags||[]).slice(0,2).map(t=>`<span class="blog-tag">${t}</span>`).join('');
-        const featured = i === 0 && activeBlogFilter === 'all';
+        const tags     = (p.tags||[]).slice(0,2).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
+        const featured = i === 0 && activeBlogFilter === 'all' && filtered.length > 1;
+        const typeSlug = (p.type||'blog').toLowerCase();
         return `
-          <div class="blog-card glass tilt-card reveal ${featured ? 'blog-card--featured' : ''}" onclick="openBlogPost('${p.id}')" style="animation-delay:${i*0.08}s">
+          <div class="blog-card glass tilt-card reveal ${featured?'blog-card--featured':''}"
+               onclick="openBlogPost('${p.id}')" style="animation-delay:${i*0.07}s">
             <div class="blog-card-cover">
               ${cover}
               <div class="blog-card-cover-overlay"></div>
-              <span class="blog-type-badge blog-type-${(p.type||'blog').toLowerCase()}">${p.type||'Blog'}</span>
+              <span class="blog-type-badge blog-type-${typeSlug}">${p.type||'Blog'}</span>
             </div>
             <div class="blog-card-body">
               <div class="blog-card-meta">
-                <span class="blog-cat"><i class="fa-solid fa-folder-open"></i> ${p.category||'General'}</span>
+                <span class="blog-cat"><i class="fa-solid fa-folder-open"></i> ${escBlog(p.category||'General')}</span>
                 <span class="blog-date"><i class="fa-regular fa-calendar"></i> ${date}</span>
               </div>
               <h3 class="blog-card-title">${escBlog(p.title)}</h3>
               <p class="blog-card-excerpt">${escBlog(p.excerpt||'')}</p>
-              ${tags ? `<div class="blog-tags-row">${tags}</div>` : ''}
+              ${tags?`<div class="blog-tags-row">${tags}</div>`:''}
               <div class="blog-card-footer">
                 <span class="blog-read-more">Read Post <i class="fa-solid fa-arrow-right"></i></span>
                 <span class="blog-read-time">${readTime(p.body)} min read</span>
@@ -717,81 +791,68 @@
           </div>`;
       }).join('');
 
-      // re-observe new cards for reveal
+      /* re-observe reveal */
       document.querySelectorAll('.blog-card.reveal:not(.visible)').forEach(el => {
-        if (typeof revealObserver !== 'undefined') revealObserver.observe(el);
+        if(typeof revealObserver !== 'undefined') revealObserver.observe(el);
         else el.classList.add('visible');
       });
 
-      // re-apply tilt
+      /* re-apply tilt */
       document.querySelectorAll('.blog-card.tilt-card').forEach(card => {
         card.addEventListener('mousemove', e => {
-          const rect = card.getBoundingClientRect();
-          const rotX = ((e.clientY - rect.top - rect.height/2) / (rect.height/2)) * -6;
-          const rotY = ((e.clientX - rect.left - rect.width/2) / (rect.width/2)) * 6;
-          card.style.transform = `perspective(700px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+          const r = card.getBoundingClientRect();
+          const rX = ((e.clientY-r.top-r.height/2)/(r.height/2))*-6;
+          const rY = ((e.clientX-r.left-r.width/2)/(r.width/2))*6;
+          card.style.transform = `perspective(700px) rotateX(${rX}deg) rotateY(${rY}deg) scale(1.02)`;
         });
-        card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+        card.addEventListener('mouseleave', ()=>{ card.style.transform=''; });
       });
     }
 
-    function typeEmoji(t) { return t==='Article'?'📰':t==='News'?'📡':'📝'; }
-    function readTime(html) { const w=(html||'').replace(/<[^>]+>/g,' ').trim().split(/\s+/).filter(Boolean).length; return Math.max(1, Math.ceil(w/200)); }
-    function escBlog(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-    // Blog post reader modal
-    window.openBlogPost = function(id) {
+    /* ---------- read modal ---------- */
+    window.openBlogPost = function(id){
       const p = allBlogPosts.find(x => x.id === id);
-      if (!p) return;
-      const date = new Date(p.createdAt).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-      const cover = p.cover ? `<img src="${p.cover}" class="blog-read-cover" alt="${p.title}"/>` : '';
-      const tags = (p.tags||[]).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
+      if(!p) return;
+      const date  = new Date(p.createdAt).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+      const cover = p.cover ? `<img src="${p.cover}" class="blog-read-cover" alt=""/>` : '';
+      const tags  = (p.tags||[]).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
+      const typeSlug = (p.type||'blog').toLowerCase();
       document.getElementById('blogReadContent').innerHTML = `
         ${cover}
-        <div class="blog-read-type blog-type-${(p.type||'blog').toLowerCase()}">${p.type}</div>
+        <div class="blog-read-type blog-type-${typeSlug}">${p.type||'Blog'}</div>
         <h1 class="blog-read-title">${escBlog(p.title)}</h1>
         <div class="blog-read-meta">
-          <span><i class="fa-solid fa-folder-open"></i> ${p.category||'General'}</span>
+          <span><i class="fa-solid fa-folder-open"></i> ${escBlog(p.category||'General')}</span>
           <span><i class="fa-regular fa-calendar"></i> ${date}</span>
           <span><i class="fa-regular fa-clock"></i> ${readTime(p.body)} min read</span>
         </div>
-        ${tags ? `<div class="blog-tags-row" style="margin-bottom:20px">${tags}</div>` : ''}
+        ${tags?`<div class="blog-tags-row" style="margin-bottom:20px">${tags}</div>`:''}
         <div class="blog-read-body">${p.body}</div>`;
       document.getElementById('blogReadModal').classList.add('open');
       document.body.style.overflow = 'hidden';
     };
 
-    window.loadMorePosts = async function() {
-      const btn = document.getElementById('blogMoreBtn');
-      btn.querySelector('span').textContent = 'Loading…';
-      btn.disabled = true;
-      await fetchPosts(false);
-      btn.querySelector('span').textContent = 'Load More';
-      btn.disabled = false;
-    };
-
-    // Filter chips
+    /* ---------- filter chips ---------- */
     document.querySelectorAll('.blog-chip').forEach(chip => {
       chip.addEventListener('click', () => {
-        document.querySelectorAll('.blog-chip').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.blog-chip').forEach(c=>c.classList.remove('active'));
         chip.classList.add('active');
         activeBlogFilter = chip.dataset.bf;
         renderBlogGrid();
       });
     });
 
-    // Blog modal close
-    document.getElementById('blogReadClose').addEventListener('click', () => {
+    /* ---------- modal close ---------- */
+    function closeBlogModal(){
       document.getElementById('blogReadModal').classList.remove('open');
       document.body.style.overflow = '';
-    });
+    }
+    document.getElementById('blogReadClose').addEventListener('click', closeBlogModal);
     document.getElementById('blogReadModal').addEventListener('click', e => {
-      if (e.target === document.getElementById('blogReadModal')) {
-        document.getElementById('blogReadModal').classList.remove('open');
-        document.body.style.overflow = '';
-      }
+      if(e.target === document.getElementById('blogReadModal')) closeBlogModal();
     });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeBlogModal(); });
 
-    // Init
+    /* ---------- start ---------- */
     initBlog();
   </script>
