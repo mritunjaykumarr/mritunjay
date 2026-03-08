@@ -42,12 +42,12 @@
 // ============================================================
 
 const FIREBASE_CONFIG = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyBECM26idkr26XWDj6IY0e5u0TikYHYQKg",
+  authDomain:        "mritunjay-portfolio-25a6b.firebaseapp.com",
+  projectId:         "mritunjay-portfolio-25a6b",
+  storageBucket:     "mritunjay-portfolio-25a6b.firebasestorage.app",
+  messagingSenderId: "643363777685",
+  appId:             "1:643363777685:web:28ca07ddf4017820f13f9c"
 };
 
 // Admin password for dashboard access (change this!)
