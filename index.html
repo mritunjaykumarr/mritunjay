@@ -15,13 +15,15 @@
   <!-- PAGE LOADER -->
   <div id="loader" class="loader">
     <div class="loader-inner">
-      <svg class="loader-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-        <circle class="loader-track" cx="40" cy="40" r="34" />
-        <circle class="loader-ring" cx="40" cy="40" r="34" />
-      </svg>
-      <p class="loader-text">loading portfolio...</p>
+      <div class="loader-logo">MK</div>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+      <p class="loader-text">Crafting experience...</p>
     </div>
   </div>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
 
   <!-- HEADER -->
   <header id="header" class="header">
@@ -29,13 +31,13 @@
       <a href="#home" class="logo">MRITUNJAY<span>.</span></a>
       <nav class="nav" id="nav">
         <ul class="nav-list">
-          <li><a href="#home" class="nav-link">Home</a></li>
-          <li><a href="#about" class="nav-link">About</a></li>
-          <li><a href="#education" class="nav-link">Education</a></li>
-          <li><a href="#projects" class="nav-link">Projects</a></li>
-          <li><a href="#certifications" class="nav-link">Certifications</a></li>
-          <li><a href="#skills" class="nav-link">Skills</a></li>
-          <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li><a href="#home" class="nav-link"><span>01</span>Home</a></li>
+          <li><a href="#about" class="nav-link"><span>02</span>About</a></li>
+          <li><a href="#education" class="nav-link"><span>03</span>Education</a></li>
+          <li><a href="#projects" class="nav-link"><span>04</span>Projects</a></li>
+          <li><a href="#certifications" class="nav-link"><span>05</span>Certs</a></li>
+          <li><a href="#skills" class="nav-link"><span>06</span>Skills</a></li>
+          <li><a href="#contact" class="nav-link"><span>07</span>Contact</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -68,53 +70,90 @@
   <main>
     <!-- HERO -->
     <section id="home" class="hero">
-      <div class="blob blob-1"></div>
-      <div class="blob blob-2"></div>
-      <div class="blob blob-3"></div>
+      <div class="hero-grid-bg"></div>
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
       <div class="container hero-inner">
         <div class="hero-left reveal">
-          <span class="hero-badge">Available for hire</span>
-          <h1 class="hero-title">Hi, I'm<br /><span class="accent">Mritunjay Kumar</span></h1>
+          <div class="hero-eyebrow">
+            <div class="eyebrow-dot"></div>
+            <span>Available for hire</span>
+          </div>
+          <h1 class="hero-title">
+            <span class="title-line">Hi, I'm</span>
+            <span class="title-name">Mritunjay<br/>Kumar</span>
+          </h1>
           <p class="hero-sub">Aspiring Frontend Developer with hands-on experience in creating responsive and interactive web applications. Skilled in modern design practices, eager to contribute to real-world projects, and grow as a professional developer.</p>
           <div class="hero-btns">
-            <a href="#projects" class="btn btn-primary">View Projects</a>
-            <a href="tel:+919470880956" class="btn btn-outline">Hire Me</a>
+            <a href="#projects" class="btn btn-primary">
+              <span>View Projects</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="tel:+919470880956" class="btn btn-outline">
+              <i class="fa-solid fa-phone"></i>
+              <span>Hire Me</span>
+            </a>
           </div>
           <div class="hero-stats">
             <div class="stat-item">
-              <span class="stat-num">12+</span>
+              <span class="stat-num" data-val="12">0</span><span class="stat-plus">+</span>
               <span class="stat-lbl">Projects Shipped</span>
             </div>
+            <div class="stat-divider"></div>
             <div class="stat-item">
-              <span class="stat-num">3</span>
+              <span class="stat-num" data-val="3">0</span>
               <span class="stat-lbl">Certifications</span>
             </div>
+            <div class="stat-divider"></div>
             <div class="stat-item">
-              <span class="stat-num">4.9</span>
+              <span class="stat-num" data-val="4.9">0</span>
               <span class="stat-lbl">Client Rating</span>
             </div>
           </div>
         </div>
         <div class="hero-right reveal reveal-right">
           <div class="profile-card tilt-card">
+            <div class="profile-glow-ring"></div>
             <div class="profile-img-wrap">
               <img src="assets/orgpic1.jpg" alt="Mritunjay Kumar" class="profile-photo" />
               <div class="profile-overlay">
                 <span>Software Engineer</span>
               </div>
             </div>
-            <div class="profile-socials">
-              <a href="https://github.com/mritunjaykumarr" target="_blank" class="social-btn" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-              <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-              <a href="#" target="_blank" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <div class="profile-card-footer">
+              <div class="profile-info">
+                <strong>Mritunjay Kumar</strong>
+                <small>Frontend Developer</small>
+              </div>
+              <div class="profile-socials">
+                <a href="https://github.com/mritunjaykumarr" target="_blank" class="social-btn" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" target="_blank" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+              </div>
             </div>
           </div>
+          <!-- Floating badges -->
+          <div class="float-badge badge-react">
+            <i class="fa-brands fa-react"></i> React
+          </div>
+          <div class="float-badge badge-node">
+            <i class="fa-brands fa-node-js"></i> Node.js
+          </div>
+          <div class="float-badge badge-avail">
+            <div class="avail-dot"></div> Open to Work
+          </div>
         </div>
+      </div>
+      <div class="scroll-indicator">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
       </div>
     </section>
 
     <!-- ABOUT -->
     <section id="about" class="section about">
+      <div class="section-label">02 / About</div>
       <div class="container">
         <h2 class="section-title reveal">About <span class="accent">Me</span></h2>
         <div class="about-grid">
@@ -122,6 +161,10 @@
             <div class="about-img-wrap">
               <img src="assets/about2.png" alt="Mritunjay Kumar" class="about-photo" />
               <div class="about-img-deco"></div>
+              <div class="about-img-tag">
+                <i class="fa-solid fa-code"></i>
+                <span>Frontend Dev</span>
+              </div>
             </div>
           </div>
           <div class="about-content reveal reveal-right">
@@ -159,8 +202,8 @@
               </div>
             </div>
             <div class="about-btns">
-              <a href="#contact" class="btn btn-primary">Work with me</a>
-              <a href="Updated_resume_sept2025.pdf" download class="btn btn-outline">Download CV</a>
+              <a href="#contact" class="btn btn-primary"><span>Work with me</span><i class="fa-solid fa-arrow-right"></i></a>
+              <a href="Updated_resume_sept2025.pdf" download class="btn btn-outline"><i class="fa-solid fa-download"></i><span>Download CV</span></a>
             </div>
           </div>
         </div>
@@ -169,11 +212,12 @@
 
     <!-- EDUCATION -->
     <section id="education" class="section education">
+      <div class="section-label">03 / Education</div>
       <div class="container">
         <h2 class="section-title reveal">Edu<span class="accent">cation</span></h2>
         <div class="timeline">
           <div class="timeline-item reveal">
-            <div class="tl-dot"></div>
+            <div class="tl-dot"><i class="fa-solid fa-graduation-cap"></i></div>
             <div class="tl-card glass">
               <span class="tl-year">2022 – 2026</span>
               <h3>B.Tech Computer Science</h3>
@@ -182,7 +226,7 @@
             </div>
           </div>
           <div class="timeline-item reveal">
-            <div class="tl-dot"></div>
+            <div class="tl-dot"><i class="fa-solid fa-school"></i></div>
             <div class="tl-card glass">
               <span class="tl-year">2020 – 2022</span>
               <h3>Class XII</h3>
@@ -191,7 +235,7 @@
             </div>
           </div>
           <div class="timeline-item reveal">
-            <div class="tl-dot"></div>
+            <div class="tl-dot"><i class="fa-solid fa-book"></i></div>
             <div class="tl-card glass">
               <span class="tl-year">2018 – 2020</span>
               <h3>Class X</h3>
@@ -205,6 +249,7 @@
 
     <!-- PROJECTS -->
     <section id="projects" class="section projects">
+      <div class="section-label">04 / Projects</div>
       <div class="container">
         <h2 class="section-title reveal">My <span class="accent">Projects</span></h2>
         <div class="filter-btns reveal">
@@ -218,8 +263,10 @@
           <div class="project-card glass tilt-card reveal" data-category="web tools">
             <div class="proj-img">
               <img src="assets/bulkmailP.png" alt="Bulk Mail Sender" class="proj-photo" />
+              <div class="proj-img-overlay"></div>
             </div>
             <div class="proj-body">
+              <div class="proj-tags"><span>Web</span><span>Tools</span></div>
               <h3>Bulk Mail Sender</h3>
               <p>A web-based bulk email sender with CSV upload, Gmail API, Node.js, Express backend for mass communication.</p>
               <div class="proj-btns">
@@ -235,8 +282,10 @@
           <div class="project-card glass tilt-card reveal" data-category="tools">
             <div class="proj-img">
               <img src="assets/clip.png" alt="CLI Portfolio" class="proj-photo" />
+              <div class="proj-img-overlay"></div>
             </div>
             <div class="proj-body">
+              <div class="proj-tags"><span>Tools</span></div>
               <h3>CLI Portfolio</h3>
               <p>Interactive CLI portfolio — run <code>npx mritunjay-portfolio</code> to explore skills, projects, and contact info in your terminal.</p>
               <div class="proj-btns">
@@ -252,8 +301,10 @@
           <div class="project-card glass tilt-card reveal" data-category="web">
             <div class="proj-img">
               <img src="assets/currencyP.png" alt="Currency Converter" class="proj-photo" />
+              <div class="proj-img-overlay"></div>
             </div>
             <div class="proj-body">
+              <div class="proj-tags"><span>Web</span></div>
               <h3>Currency Converter</h3>
               <p>Real-time currency converter with live API integration, 150+ currencies, and a clean, intuitive interface.</p>
               <div class="proj-btns">
@@ -269,8 +320,10 @@
           <div class="project-card glass tilt-card reveal" data-category="web design">
             <div class="proj-img">
               <img src="assets/adfree.png" alt="Ad-Free YouTube Player" class="proj-photo" />
+              <div class="proj-img-overlay"></div>
             </div>
             <div class="proj-body">
+              <div class="proj-tags"><span>Web</span><span>Design</span></div>
               <h3>Ad-Free YouTube Player</h3>
               <p>Custom YouTube player with a clean UI, no ads, and a distraction-free viewing experience.</p>
               <div class="proj-btns">
@@ -286,8 +339,10 @@
           <div class="project-card glass tilt-card reveal" data-category="web">
             <div class="proj-img">
               <img src="assets/chatapp.png" alt="Chat App" class="proj-photo" />
+              <div class="proj-img-overlay"></div>
             </div>
             <div class="proj-body">
+              <div class="proj-tags"><span>Web</span></div>
               <h3>Chat App</h3>
               <p>Real-time messaging platform with WebSocket support, user rooms, and a modern chat interface.</p>
               <div class="proj-btns">
@@ -306,15 +361,20 @@
 
     <!-- CERTIFICATIONS -->
     <section id="certifications" class="section certifications">
+      <div class="section-label">05 / Certifications</div>
       <div class="container">
         <h2 class="section-title reveal">Certifi<span class="accent">cations</span></h2>
         <div class="certs-grid">
           <div class="cert-card glass tilt-card reveal">
             <div class="cert-thumb">
               <img src="assets/fullstackC.png" alt="Fullstack Completion Certificate" class="cert-photo" />
-              <div class="cert-overlay">Click to View</div>
+              <div class="cert-overlay">
+                <i class="fa-solid fa-eye"></i>
+                <span>View Certificate</span>
+              </div>
             </div>
             <div class="cert-body">
+              <div class="cert-badge"><i class="fa-solid fa-certificate"></i></div>
               <h4>Fullstack Completion</h4>
               <span>Infosys · July 2024</span>
             </div>
@@ -322,9 +382,13 @@
           <div class="cert-card glass tilt-card reveal">
             <div class="cert-thumb">
               <img src="assets/machinelearningC.png" alt="Machine Learning Certificate" class="cert-photo" />
-              <div class="cert-overlay">Click to View</div>
+              <div class="cert-overlay">
+                <i class="fa-solid fa-eye"></i>
+                <span>View Certificate</span>
+              </div>
             </div>
             <div class="cert-body">
+              <div class="cert-badge"><i class="fa-solid fa-certificate"></i></div>
               <h4>Basic Machine Learning</h4>
               <span>Infosys · Sept 2024</span>
             </div>
@@ -332,9 +396,13 @@
           <div class="cert-card glass tilt-card reveal">
             <div class="cert-thumb">
               <img src="assets/deeplearningC.png" alt="Deep Learning Certificate" class="cert-photo" />
-              <div class="cert-overlay">Click to View</div>
+              <div class="cert-overlay">
+                <i class="fa-solid fa-eye"></i>
+                <span>View Certificate</span>
+              </div>
             </div>
             <div class="cert-body">
+              <div class="cert-badge"><i class="fa-solid fa-certificate"></i></div>
               <h4>Basic Deep Learning</h4>
               <span>Design Institute · Sept 2024</span>
             </div>
@@ -342,9 +410,13 @@
           <div class="cert-card glass tilt-card reveal">
             <div class="cert-thumb">
               <img src="assets/internshipC.png" alt="Frontend Internship Certificate" class="cert-photo" />
-              <div class="cert-overlay">Click to View</div>
+              <div class="cert-overlay">
+                <i class="fa-solid fa-eye"></i>
+                <span>View Certificate</span>
+              </div>
             </div>
             <div class="cert-body">
+              <div class="cert-badge"><i class="fa-solid fa-certificate"></i></div>
               <h4>Frontend Internship</h4>
               <span>Completion Certificate</span>
             </div>
@@ -355,6 +427,7 @@
 
     <!-- SKILLS -->
     <section id="skills" class="section skills-section">
+      <div class="section-label">06 / Skills</div>
       <div class="container">
         <h2 class="section-title reveal">My <span class="accent">Skills</span></h2>
         <div class="skills-layout">
@@ -393,6 +466,7 @@
 
     <!-- CONTACT -->
     <section id="contact" class="section contact">
+      <div class="section-label">07 / Contact</div>
       <div class="container">
         <h2 class="section-title reveal">Get In <span class="accent">Touch</span></h2>
         <div class="contact-grid">
@@ -412,20 +486,30 @@
           </div>
           <div class="contact-right reveal reveal-right">
             <form id="contactForm" class="contact-form glass">
+              <div class="form-header">
+                <h3>Send a Message</h3>
+                <p>I'll get back to you within 24 hours.</p>
+              </div>
               <div class="float-field">
                 <input type="text" id="name" name="name" required placeholder=" " autocomplete="off" />
                 <label for="name">Your Name</label>
+                <div class="field-line"></div>
               </div>
               <div class="float-field">
                 <input type="email" id="email" name="email" required placeholder=" " autocomplete="off" />
                 <label for="email">Email Address</label>
+                <div class="field-line"></div>
               </div>
               <div class="float-field">
                 <textarea id="message" name="message" rows="5" required placeholder=" "></textarea>
                 <label for="message">Your Message</label>
+                <div class="field-line"></div>
               </div>
               <input type="hidden" name="access_key" value="4d1a516c-be8e-477d-a896-1287a0511caf" />
-              <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Send Message</button>
+              <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                <span>Send Message</span>
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
               <p class="form-status" id="formStatus"></p>
             </form>
           </div>
@@ -435,6 +519,7 @@
   </main>
 
   <footer class="footer">
+    <div class="footer-top-line"></div>
     <div class="container footer-inner">
       <span class="logo">MRITUNJAY<span class="accent">.</span></span>
       <p>© 2025 Mritunjay Kumar. Crafted with <span class="accent">♥</span></p>
