@@ -495,30 +495,35 @@ input,textarea,select{font-family:var(--body)}
 <div class="sb-ov" id="sbOv" onclick="closeSb()"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
+<!-- Firebase config MUST load before the module script -->
+<script src="firebase-config.js"></script>
+
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-// Load config
+// Load config — now guaranteed to be available
 const cfg = window.FIREBASE_CONFIG;
 let db, storage, app;
 
+const isConfigured = cfg && cfg.apiKey && cfg.apiKey !== 'YOUR_API_KEY' && cfg.projectId && cfg.projectId !== 'YOUR_PROJECT_ID';
+
 try {
+  if(!isConfigured) throw new Error('Firebase config not filled in');
   app = initializeApp(cfg);
   db = getFirestore(app);
   storage = getStorage(app);
   window._db = db;
   window._storage = storage;
   window._fs = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp };
-  console.log("Firebase connected ✓");
+  console.log("✅ Firebase connected — posts will save to Firestore");
 } catch(e) {
-  console.warn("Firebase not configured yet. Using local mode.", e.message);
+  console.warn("⚠️ Firebase not configured. Using localStorage mode.", e.message);
   window._db = null;
 }
 </script>
-<script src="firebase-config.js"></script>
 <script>
 'use strict';
 
