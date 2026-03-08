@@ -1,1 +1,1020 @@
-//
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mritunjay Kumar — Frontend Developer</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+</head>
+<body>
+
+  <!-- PAGE LOADER -->
+  <div id="loader" class="loader">
+    <div class="loader-inner">
+      <div class="loader-logo">MK</div>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+      <p class="loader-text">Crafting experience...</p>
+    </div>
+  </div>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <!-- HEADER -->
+  <header id="header" class="header">
+    <div class="container header-inner">
+      <a href="#home" class="logo">MRITUNJAY<span>.</span></a>
+      <nav class="nav" id="nav">
+        <ul class="nav-list">
+          <li><a href="#home" class="nav-link"><span>01</span>Home</a></li>
+          <li><a href="#about" class="nav-link"><span>02</span>About</a></li>
+          <li><a href="#education" class="nav-link"><span>03</span>Education</a></li>
+          <li><a href="#projects" class="nav-link"><span>04</span>Projects</a></li>
+          <li><a href="#certifications" class="nav-link"><span>05</span>Certs</a></li>
+          <li><a href="#skills" class="nav-link"><span>06</span>Skills</a></li>
+          <li><a href="#blog" class="nav-link"><span>07</span>Blog</a></li>
+          <li><a href="#contact" class="nav-link"><span>08</span>Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <div class="clock" id="clock">
+          <span id="clock-date"></span>
+          <span class="clock-sep">|</span>
+          <span id="clock-time"></span>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="theme-icon">☾</span>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <ul>
+        <li><a href="#home" class="mob-link">Home</a></li>
+        <li><a href="#about" class="mob-link">About</a></li>
+        <li><a href="#education" class="mob-link">Education</a></li>
+        <li><a href="#projects" class="mob-link">Projects</a></li>
+        <li><a href="#certifications" class="mob-link">Certifications</a></li>
+        <li><a href="#skills" class="mob-link">Skills</a></li>
+        <li><a href="#blog" class="mob-link">Blog</a></li>
+        <li><a href="#contact" class="mob-link">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-grid-bg"></div>
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
+      <div class="container hero-inner">
+        <div class="hero-left reveal">
+          <div class="hero-eyebrow">
+            <div class="eyebrow-dot"></div>
+            <span>Available for hire</span>
+          </div>
+          <h1 class="hero-title">
+            <span class="title-line">Hi, I'm</span>
+            <span class="title-name">Mritunjay<br/>Kumar</span>
+          </h1>
+          <p class="hero-sub">Aspiring Frontend Developer with hands-on experience in creating responsive and interactive web applications. Skilled in modern design practices, eager to contribute to real-world projects, and grow as a professional developer.</p>
+          <div class="hero-btns">
+            <a href="#projects" class="btn btn-primary">
+              <span>View Projects</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="tel:+919470880956" class="btn btn-outline">
+              <i class="fa-solid fa-phone"></i>
+              <span>Hire Me</span>
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-num" data-val="12">0</span><span class="stat-plus">+</span>
+              <span class="stat-lbl">Projects Shipped</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num" data-val="3">0</span>
+              <span class="stat-lbl">Certifications</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num" data-val="4.9">0</span>
+              <span class="stat-lbl">Client Rating</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-right reveal reveal-right">
+          <div class="profile-card tilt-card">
+            <div class="profile-glow-ring"></div>
+            <div class="profile-img-wrap">
+              <img src="assets/orgpic1.jpg" alt="Mritunjay Kumar" class="profile-photo" />
+              <div class="profile-overlay">
+                <span>Software Engineer</span>
+              </div>
+            </div>
+            <div class="profile-card-footer">
+              <div class="profile-info">
+                <strong>Mritunjay Kumar</strong>
+                <small>Frontend Developer</small>
+              </div>
+              <div class="profile-socials">
+                <a href="https://github.com/mritunjaykumarr" target="_blank" class="social-btn" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" target="_blank" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+          <!-- Floating badges -->
+          <div class="float-badge badge-react">
+            <i class="fa-brands fa-react"></i> React
+          </div>
+          <div class="float-badge badge-node">
+            <i class="fa-brands fa-node-js"></i> Node.js
+          </div>
+          <div class="float-badge badge-avail">
+            <div class="avail-dot"></div> Open to Work
+          </div>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section about">
+      <div class="section-label">02 / About</div>
+      <div class="container">
+        <h2 class="section-title reveal">About <span class="accent">Me</span></h2>
+        <div class="about-grid">
+          <div class="about-img reveal">
+            <div class="about-img-wrap">
+              <img src="assets/about2.png" alt="Mritunjay Kumar" class="about-photo" />
+              <div class="about-img-deco"></div>
+              <div class="about-img-tag">
+                <i class="fa-solid fa-code"></i>
+                <span>Frontend Dev</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-content reveal reveal-right">
+            <p class="about-text">I am a detail-oriented frontend developer with a passion for creating intuitive and beautiful user interfaces. My journey in web development is driven by a desire to solve complex problems and build products that not only work flawlessly but also provide a delightful user experience.</p>
+            <div class="tabs">
+              <div class="tab-btns">
+                <button class="tab-btn active" data-tab="philosophy">My Philosophy</button>
+                <button class="tab-btn" data-tab="experience">Experience</button>
+                <button class="tab-btn" data-tab="core-skills">Core Skills</button>
+              </div>
+              <div class="tab-content active" id="tab-philosophy">
+                <p>User-first approach with a commitment to writing clean, scalable, and accessible code. Every project is an opportunity to optimise performance and deliver experiences that feel effortless.</p>
+              </div>
+              <div class="tab-content" id="tab-experience">
+                <div class="mini-timeline">
+                  <div class="mt-item">
+                    <span class="mt-year">2025</span>
+                    <span class="mt-role">Frontend Developer — Freelance</span>
+                  </div>
+                  <div class="mt-item">
+                    <span class="mt-year">2024</span>
+                    <span class="mt-role">Frontend Intern</span>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-content" id="tab-core-skills">
+                <ul class="skills-checklist">
+                  <li><i class="fa-solid fa-circle-check"></i> Responsive Design</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Interactive UI & Motion</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Component Architecture</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Accessibility (WCAG)</li>
+                  <li><i class="fa-solid fa-circle-check"></i> API Integration</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Performance Optimisation</li>
+                </ul>
+              </div>
+            </div>
+            <div class="about-btns">
+              <a href="#contact" class="btn btn-primary"><span>Work with me</span><i class="fa-solid fa-arrow-right"></i></a>
+              <a href="Updated_resume_sept2025.pdf" download class="btn btn-outline"><i class="fa-solid fa-download"></i><span>Download CV</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="section education">
+      <div class="section-label">03 / Education</div>
+      <div class="container">
+        <h2 class="section-title reveal">Edu<span class="accent">cation</span></h2>
+        <div class="timeline">
+          <div class="timeline-item reveal">
+            <div class="tl-dot"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div class="tl-card glass">
+              <span class="tl-year">2022 – 2026</span>
+              <h3>B.Tech Computer Science</h3>
+              <p class="tl-inst">VMKV Engineering College, Salem, Tamil Nadu</p>
+              <p>Pursuing a comprehensive computer science education with specialisation in software engineering, web technologies, and data structures.</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal">
+            <div class="tl-dot"><i class="fa-solid fa-school"></i></div>
+            <div class="tl-card glass">
+              <span class="tl-year">2020 – 2022</span>
+              <h3>Class XII</h3>
+              <p class="tl-inst">SRKG College, Sitamarhi, Bihar</p>
+              <p>Completed with <strong>70.5%</strong>, establishing a strong foundation in sciences and mathematics.</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal">
+            <div class="tl-dot"><i class="fa-solid fa-book"></i></div>
+            <div class="tl-card glass">
+              <span class="tl-year">2018 – 2020</span>
+              <h3>Class X</h3>
+              <p class="tl-inst">Holy Faith Public High School, Sitamarhi, Bihar</p>
+              <p>Graduated with <strong>83.1%</strong>, demonstrating academic excellence and discipline.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section projects">
+      <div class="section-label">04 / Projects</div>
+      <div class="container">
+        <h2 class="section-title reveal">My <span class="accent">Projects</span></h2>
+        <div class="filter-btns reveal">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="web">Web</button>
+          <button class="filter-btn" data-filter="tools">Tools</button>
+          <button class="filter-btn" data-filter="design">Design</button>
+        </div>
+        <div class="projects-grid" id="projectsGrid">
+
+          <div class="project-card glass tilt-card reveal" data-category="web tools">
+            <div class="proj-img">
+              <img src="assets/bulkmailP.png" alt="Bulk Mail Sender" class="proj-photo" />
+              <div class="proj-img-overlay"></div>
+            </div>
+            <div class="proj-body">
+              <div class="proj-tags"><span>Web</span><span>Tools</span></div>
+              <h3>Bulk Mail Sender</h3>
+              <p>A web-based bulk email sender with CSV upload, Gmail API, Node.js, Express backend for mass communication.</p>
+              <div class="proj-btns">
+                <button class="btn btn-sm btn-primary preview-btn"
+                  data-title="Bulk Mail Sender"
+                  data-desc="A web-based bulk email sender with CSV upload, Gmail API, Node.js, Express. Allows sending personalised emails to thousands of recipients from a CSV file."
+                  data-icon="fa-envelope-open-text">Preview</button>
+                <a href="https://www.bulkmailsender.online/" target="_blank" class="btn btn-sm btn-outline">Live <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card glass tilt-card reveal" data-category="tools">
+            <div class="proj-img">
+              <img src="assets/clip.png" alt="CLI Portfolio" class="proj-photo" />
+              <div class="proj-img-overlay"></div>
+            </div>
+            <div class="proj-body">
+              <div class="proj-tags"><span>Tools</span></div>
+              <h3>CLI Portfolio</h3>
+              <p>Interactive CLI portfolio — run <code>npx mritunjay-portfolio</code> to explore skills, projects, and contact info in your terminal.</p>
+              <div class="proj-btns">
+                <button class="btn btn-sm btn-primary preview-btn"
+                  data-title="CLI Portfolio"
+                  data-desc="Run 'npx mritunjay-portfolio' in any terminal to launch an interactive CLI portfolio. Features ASCII art, animated prompts, and navigable project info."
+                  data-icon="fa-terminal">Preview</button>
+                <a href="https://github.com/mritunjaykumarr/CLI-Portfolio.git" target="_blank" class="btn btn-sm btn-outline">GitHub <i class="fa-brands fa-github"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card glass tilt-card reveal" data-category="web">
+            <div class="proj-img">
+              <img src="assets/currencyP.png" alt="Currency Converter" class="proj-photo" />
+              <div class="proj-img-overlay"></div>
+            </div>
+            <div class="proj-body">
+              <div class="proj-tags"><span>Web</span></div>
+              <h3>Currency Converter</h3>
+              <p>Real-time currency converter with live API integration, 150+ currencies, and a clean, intuitive interface.</p>
+              <div class="proj-btns">
+                <button class="btn btn-sm btn-primary preview-btn"
+                  data-title="Currency Converter"
+                  data-desc="Real-time currency converter supporting 150+ currencies via live exchange-rate API. Features instant conversion, a clean UI, and a memorable design."
+                  data-icon="fa-coins">Preview</button>
+                <a href="https://www.bulkmailsender.online/currency_converter.html" target="_blank" class="btn btn-sm btn-outline">Live <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card glass tilt-card reveal" data-category="web design">
+            <div class="proj-img">
+              <img src="assets/adfree.png" alt="Ad-Free YouTube Player" class="proj-photo" />
+              <div class="proj-img-overlay"></div>
+            </div>
+            <div class="proj-body">
+              <div class="proj-tags"><span>Web</span><span>Design</span></div>
+              <h3>Ad-Free YouTube Player</h3>
+              <p>Custom YouTube player with a clean UI, no ads, and a distraction-free viewing experience.</p>
+              <div class="proj-btns">
+                <button class="btn btn-sm btn-primary preview-btn"
+                  data-title="Ad-Free YouTube Player"
+                  data-desc="Custom YouTube player wrapper that strips all ads and recommendations, leaving only the video player in a clean, minimal interface. Built with JavaScript and YouTube IFrame API."
+                  data-icon="fa-youtube">Preview</button>
+                <a href="https://mritunjaykumar2.vercel.app/adfree.html" target="_blank" class="btn btn-sm btn-outline">Live <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card glass tilt-card reveal" data-category="web">
+            <div class="proj-img">
+              <img src="assets/chatapp.png" alt="Chat App" class="proj-photo" />
+              <div class="proj-img-overlay"></div>
+            </div>
+            <div class="proj-body">
+              <div class="proj-tags"><span>Web</span></div>
+              <h3>Chat App</h3>
+              <p>Real-time messaging platform with WebSocket support, user rooms, and a modern chat interface.</p>
+              <div class="proj-btns">
+                <button class="btn btn-sm btn-primary preview-btn"
+                  data-title="Chat App"
+                  data-desc="Real-time messaging platform built with Node.js, Socket.io, and a responsive frontend. Features room-based chat, username support, and live presence indicators."
+                  data-icon="fa-comments">Preview</button>
+                <a href="https://mritunjaychatapp2.vercel.app" target="_blank" class="btn btn-sm btn-outline">Live <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certifications" class="section certifications">
+      <div class="section-label">05 / Certifications</div>
+      <div class="container">
+        <h2 class="section-title reveal">Certifi<span class="accent">cations</span></h2>
+        <div class="certs-grid">
+          <div class="cert-card glass tilt-card reveal">
+            <div class="cert-thumb">
+              <img src="assets/fullstackC.png" alt="Fullstack Completion Certificate" class="cert-photo" />
+              <div class="cert-overlay">
+                <i class="fa-solid fa-eye"></i>
+                <span>View Certificate</span>
+              </div>
+            </div>
+            <div class="cert-body">
+              <div class="cert-badge"><i class="fa-solid fa-certificate"></i></div>
+              <h4>Fullstack Completion</h4>
+              <span>Infosys · July 2024</span>
+            </div>
+          </div>
+          <div class="cert-card glass tilt-card reveal">
+            <div class="cert-thumb">
+              <img src="assets/machinelearningC.png" alt="Machine Learning Certificate" class="cert-photo" />
+              <div class="cert-overlay">
+                <i class="fa-solid fa-eye"></i>
+                <span>View Certificate</span>
+              </div>
+            </div>
+            <div class="cert-body">
+              <div class="cert-badge"><i class="fa-solid fa-certificate"></i></div>
+              <h4>Basic Machine Learning</h4>
+              <span>Infosys · Sept 2024</span>
+            </div>
+          </div>
+          <div class="cert-card glass tilt-card reveal">
+            <div class="cert-thumb">
+              <img src="assets/deeplearningC.png" alt="Deep Learning Certificate" class="cert-photo" />
+              <div class="cert-overlay">
+                <i class="fa-solid fa-eye"></i>
+                <span>View Certificate</span>
+              </div>
+            </div>
+            <div class="cert-body">
+              <div class="cert-badge"><i class="fa-solid fa-certificate"></i></div>
+              <h4>Basic Deep Learning</h4>
+              <span>Design Institute · Sept 2024</span>
+            </div>
+          </div>
+          <div class="cert-card glass tilt-card reveal">
+            <div class="cert-thumb">
+              <img src="assets/internshipC.png" alt="Frontend Internship Certificate" class="cert-photo" />
+              <div class="cert-overlay">
+                <i class="fa-solid fa-eye"></i>
+                <span>View Certificate</span>
+              </div>
+            </div>
+            <div class="cert-body">
+              <div class="cert-badge"><i class="fa-solid fa-certificate"></i></div>
+              <h4>Frontend Internship</h4>
+              <span>Completion Certificate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section skills-section">
+      <div class="section-label">06 / Skills</div>
+      <div class="container">
+        <h2 class="section-title reveal">My <span class="accent">Skills</span></h2>
+        <div class="skills-layout">
+          <div class="skills-cards reveal">
+            <div class="skill-cat glass">
+              <h4><i class="fa-solid fa-palette"></i> Frontend</h4>
+              <div class="skill-tags">
+                <span>HTML</span><span>CSS</span><span>JavaScript</span><span>React</span><span>Sass</span><span>WordPress</span>
+              </div>
+            </div>
+            <div class="skill-cat glass">
+              <h4><i class="fa-solid fa-server"></i> Backend</h4>
+              <div class="skill-tags">
+                <span>Node.js</span><span>Express</span><span>MongoDB</span><span>PostgreSQL</span>
+              </div>
+            </div>
+            <div class="skill-cat glass">
+              <h4><i class="fa-solid fa-code"></i> Languages</h4>
+              <div class="skill-tags">
+                <span>Java</span><span>JavaScript</span><span>C#</span><span>Python</span>
+              </div>
+            </div>
+            <div class="skill-cat glass">
+              <h4><i class="fa-solid fa-wrench"></i> Tools</h4>
+              <div class="skill-tags">
+                <span>Git</span><span>GitHub</span><span>Figma</span><span>Render</span><span>Vercel</span>
+              </div>
+            </div>
+          </div>
+          <div class="radar-wrap reveal">
+            <canvas id="radarChart" width="360" height="360"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG -->
+    <section id="blog" class="section blog-section">
+      <div class="section-label">07 / Blog</div>
+      <div class="container">
+        <h2 class="section-title reveal">My <span class="accent">Blog</span></h2>
+        <div class="blog-header reveal">
+          <div class="blog-filter-row">
+            <button class="blog-chip active" data-bf="all">All</button>
+            <button class="blog-chip" data-bf="Blog">Blog</button>
+            <button class="blog-chip" data-bf="Article">Article</button>
+            <button class="blog-chip" data-bf="News">News</button>
+          </div>
+        </div>
+
+        <!-- Loading state -->
+        <div id="blogLoading" class="blog-loading">
+          <div class="blog-skeleton"></div>
+          <div class="blog-skeleton"></div>
+          <div class="blog-skeleton"></div>
+        </div>
+
+        <!-- Posts grid -->
+        <div class="blog-grid" id="blogGrid" style="display:none"></div>
+
+        <!-- Empty state -->
+        <div id="blogEmpty" class="blog-empty" style="display:none">
+          <div class="blog-empty-icon">✦</div>
+          <h3>No posts yet</h3>
+          <p>Check back soon — new content drops daily.</p>
+        </div>
+
+        <!-- Load more -->
+        <div class="blog-more-wrap" id="blogMoreWrap" style="display:none">
+          <button class="btn btn-outline" id="blogMoreBtn" onclick="loadMorePosts()">
+            <span>Load More</span>
+            <i class="fa-solid fa-arrow-down"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section contact">
+      <div class="section-label">08 / Contact</div>
+      <div class="container">
+        <h2 class="section-title reveal">Get In <span class="accent">Touch</span></h2>
+        <div class="contact-grid">
+          <div class="contact-left reveal">
+            <div class="contact-img-card glass">
+              <img src="assets/contactus.png" alt="Contact" class="contact-photo" />
+              <div class="contact-overlay-text">
+                <h3>Let's Build Something Amazing</h3>
+                <p>Open to freelance projects, internships, and full-time opportunities.</p>
+                <div class="contact-info-links">
+                  <a href="tel:+919470880956"><i class="fa-solid fa-phone"></i> +91 9470880956</a>
+                  <a href="https://github.com/mritunjaykumarr" target="_blank"><i class="fa-brands fa-github"></i> mritunjaykumarr</a>
+                  <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="contact-right reveal reveal-right">
+            <form id="contactForm" class="contact-form glass">
+              <div class="form-header">
+                <h3>Send a Message</h3>
+                <p>I'll get back to you within 24 hours.</p>
+              </div>
+              <div class="float-field">
+                <input type="text" id="name" name="name" required placeholder=" " autocomplete="off" />
+                <label for="name">Your Name</label>
+                <div class="field-line"></div>
+              </div>
+              <div class="float-field">
+                <input type="email" id="email" name="email" required placeholder=" " autocomplete="off" />
+                <label for="email">Email Address</label>
+                <div class="field-line"></div>
+              </div>
+              <div class="float-field">
+                <textarea id="message" name="message" rows="5" required placeholder=" "></textarea>
+                <label for="message">Your Message</label>
+                <div class="field-line"></div>
+              </div>
+              <input type="hidden" name="access_key" value="4d1a516c-be8e-477d-a896-1287a0511caf" />
+              <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                <span>Send Message</span>
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+              <p class="form-status" id="formStatus"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-top-line"></div>
+    <div class="container footer-inner">
+      <span class="logo">MRITUNJAY<span class="accent">.</span></span>
+      <p>© 2025 Mritunjay Kumar. Crafted with <span class="accent">♥</span></p>
+      <div class="footer-socials">
+        <a href="https://github.com/mritunjaykumarr" target="_blank"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="tel:+919470880956"><i class="fa-solid fa-phone"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- PROJECT MODAL -->
+  <div class="modal-overlay" id="projectModal">
+    <div class="modal-box glass">
+      <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-icon" id="modalIcon"></div>
+      <h2 id="modalTitle"></h2>
+      <p id="modalDesc"></p>
+    </div>
+  </div>
+
+  <!-- CERT MODAL -->
+  <div class="modal-overlay" id="certModal">
+    <div class="modal-box glass">
+      <button class="modal-close" id="certModalClose"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-icon" id="certModalIcon"></div>
+      <h2 id="certModalTitle"></h2>
+      <p id="certModalIssuer"></p>
+    </div>
+  </div>
+
+  <!-- BLOG READ MODAL -->
+  <div class="modal-overlay" id="blogReadModal">
+    <div class="modal-box glass blog-read-modal">
+      <button class="modal-close" id="blogReadClose"><i class="fa-solid fa-xmark"></i></button>
+      <div id="blogReadContent"></div>
+    </div>
+  </div>
+
+  <script src="scripts.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <!-- =====================================================
+       BLOG ENGINE — Dual Mode + Likes System
+       MODE 1 (default): localStorage  → same device, instant
+       MODE 2 (online):  Firebase      → cross-device, when config filled
+       LIKES: stored in dp_likes (localStorage) + Firestore (if Firebase)
+       ===================================================== -->
+  <script type="module">
+    /* -------- helpers -------- */
+    function escBlog(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function typeEmoji(t){ return t==='Article'?'📰':t==='News'?'📡':'📝'; }
+    function readTime(html){ const w=(html||'').replace(/<[^>]+>/g,' ').trim().split(/\s+/).filter(Boolean).length; return Math.max(1,Math.ceil(w/200)); }
+
+    /* -------- state -------- */
+    const POSTS_PER_PAGE = 6;
+    let allBlogPosts   = [];
+    let activeBlogFilter = 'all';
+    let lastFirebaseDoc  = null;
+    let allLoaded        = false;
+    let usingFirebase    = false;
+
+    /* ======================================================
+       LIKES ENGINE
+       - likes count  → dp_likes_count  { postId: number }
+       - user liked?  → dp_likes_user   { postId: true }   (per browser)
+       ====================================================== */
+    function getLikeCounts(){ try{ return JSON.parse(localStorage.getItem('dp_likes_count')||'{}'); }catch(e){ return {}; } }
+    function getUserLikes(){  try{ return JSON.parse(localStorage.getItem('dp_likes_user') ||'{}'); }catch(e){ return {}; } }
+    function getLikeCount(id){ return getLikeCounts()[id] || 0; }
+    function hasUserLiked(id){ return !!getUserLikes()[id]; }
+
+    async function toggleLike(postId, event){
+      if(event){ event.stopPropagation(); }
+
+      const counts   = getLikeCounts();
+      const userLikes= getUserLikes();
+      const liked    = !!userLikes[postId];
+
+      if(liked){
+        counts[postId]    = Math.max(0, (counts[postId]||1) - 1);
+        delete userLikes[postId];
+      } else {
+        counts[postId]    = (counts[postId]||0) + 1;
+        userLikes[postId] = true;
+      }
+
+      localStorage.setItem('dp_likes_count', JSON.stringify(counts));
+      localStorage.setItem('dp_likes_user',  JSON.stringify(userLikes));
+
+      /* Firebase sync */
+      if(usingFirebase && window._blogFirestore){
+        try{
+          const { db, doc, updateDoc, increment } = window._blogFirestore;
+          if(doc && updateDoc && increment){
+            await updateDoc(doc(db,'posts',postId),{ likes: increment(liked ? -1 : 1) });
+          }
+        }catch(e){ /* silent — local already saved */ }
+      }
+
+      /* Update all like buttons for this post without re-rendering whole grid */
+      updateLikeButtons(postId, counts[postId], !liked);
+
+      /* Burst animation on the button that was clicked */
+      if(event && !liked){
+        const btn = event.currentTarget;
+        btn.classList.add('like-burst');
+        setTimeout(()=> btn.classList.remove('like-burst'), 600);
+        spawnHearts(btn);
+      }
+    }
+    window.toggleLike = toggleLike;
+
+    /* -------- share / copy link -------- */
+    window.sharePost = function(postId, event){
+      if(event) event.stopPropagation();
+
+      /* Build shareable URL: current page + ?post=ID */
+      const url = `${location.origin}${location.pathname}?post=${postId}`;
+
+      /* Use Web Share API on mobile if available */
+      const post = allBlogPosts.find(x => x.id === postId);
+      if(navigator.share && /Mobi|Android/i.test(navigator.userAgent)){
+        navigator.share({
+          title: post ? post.title : 'Check out this post',
+          text:  post ? (post.excerpt || post.title) : '',
+          url
+        }).catch(()=>{});
+        return;
+      }
+
+      /* Desktop: copy to clipboard */
+      navigator.clipboard.writeText(url).then(() => {
+        showShareToast('🔗 Link copied to clipboard!');
+        /* animate the button */
+        if(event){
+          const btn = event.currentTarget;
+          btn.classList.add('share-copied');
+          setTimeout(()=> btn.classList.remove('share-copied'), 1800);
+        }
+      }).catch(() => {
+        /* fallback for older browsers */
+        const ta = document.createElement('textarea');
+        ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showShareToast('🔗 Link copied!');
+      });
+    };
+
+    function showShareToast(msg){
+      /* remove any existing toast */
+      const old = document.getElementById('shareToast');
+      if(old) old.remove();
+
+      const toast = document.createElement('div');
+      toast.id = 'shareToast';
+      toast.className = 'share-toast';
+      toast.innerHTML = `<i class="fa-solid fa-check"></i> ${msg}`;
+      document.body.appendChild(toast);
+
+      /* trigger enter animation */
+      requestAnimationFrame(()=> requestAnimationFrame(()=> toast.classList.add('share-toast--in')));
+
+      setTimeout(()=>{
+        toast.classList.remove('share-toast--in');
+        setTimeout(()=> toast.remove(), 400);
+      }, 2500);
+    }
+
+    function updateLikeButtons(postId, count, isLiked){
+      document.querySelectorAll(`.like-btn[data-id="${postId}"]`).forEach(btn => {
+        btn.classList.toggle('liked', isLiked);
+        const countEl = btn.querySelector('.like-count');
+        if(countEl) countEl.textContent = count > 0 ? count : '';
+      });
+      const pill = document.getElementById(`modalLikeCount_${postId}`);
+      if(pill) pill.textContent = `${count} like${count !== 1 ? 's' : ''}`;
+      document.querySelectorAll(`.like-btn--big[data-id="${postId}"] .like-label`).forEach(el => {
+        el.textContent = isLiked ? 'Liked' : 'Like this post';
+      });
+    }
+
+    /* heart particle burst */
+    function spawnHearts(btn){
+      const rect = btn.getBoundingClientRect();
+      for(let i = 0; i < 7; i++){
+        const h = document.createElement('span');
+        h.className = 'heart-particle';
+        h.textContent = '♥';
+        h.style.cssText = `
+          left:${rect.left + rect.width/2}px;
+          top:${rect.top + rect.height/2}px;
+          --dx:${(Math.random()-0.5)*80}px;
+          --dy:${-(Math.random()*60+30)}px;
+          animation-delay:${i*0.04}s;
+          font-size:${Math.random()*8+8}px;
+        `;
+        document.body.appendChild(h);
+        setTimeout(()=> h.remove(), 900);
+      }
+    }
+
+    /* -------- firebase config check -------- */
+    function isFirebaseConfigured(){
+      try{
+        const c = window.FIREBASE_CONFIG;
+        return c && c.apiKey && c.apiKey !== 'YOUR_API_KEY' && c.projectId && c.projectId !== 'YOUR_PROJECT_ID';
+      }catch(e){ return false; }
+    }
+
+    /* -------- INIT -------- */
+    async function initBlog(){
+      showLoading(true);
+
+      if(isFirebaseConfigured()){
+        try{
+          const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+          const { getFirestore, collection, query, where, orderBy, limit, getDocs, startAfter, doc, updateDoc, increment }
+            = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+
+          const app = initializeApp(window.FIREBASE_CONFIG, 'portfolio_blog');
+          const db  = getFirestore(app);
+          window._blogFirestore = { db, collection, query, where, orderBy, limit, getDocs, startAfter, doc, updateDoc, increment };
+          usingFirebase = true;
+          await loadFromFirebase(true);
+          return;
+        }catch(e){
+          console.warn('Firebase init failed, falling back to localStorage:', e.message);
+        }
+      }
+
+      loadFromLocalStorage();
+    }
+
+    /* -------- localStorage loader -------- */
+    function loadFromLocalStorage(){
+      try{
+        const raw = localStorage.getItem('dp_posts');
+        const all = raw ? JSON.parse(raw) : [];
+        allBlogPosts = all
+          .filter(p => p.status === 'published')
+          .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+        allLoaded = true;
+      }catch(e){ allBlogPosts = []; }
+      showLoading(false);
+      renderBlogGrid();
+
+      setInterval(() => {
+        try{
+          const raw = localStorage.getItem('dp_posts');
+          const all = raw ? JSON.parse(raw) : [];
+          const updated = all
+            .filter(p => p.status === 'published')
+            .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+          if(JSON.stringify(updated.map(p=>p.id+p.updatedAt)) !== JSON.stringify(allBlogPosts.map(p=>p.id+p.updatedAt))){
+            allBlogPosts = updated;
+            renderBlogGrid();
+          }
+        }catch(e){}
+      }, 5000);
+    }
+
+    /* -------- Firebase loader -------- */
+    async function loadFromFirebase(reset = false){
+      const { db, collection, query, where, orderBy, limit, getDocs, startAfter } = window._blogFirestore;
+      showLoading(true);
+      try{
+        let q = query(collection(db,'posts'), where('status','==','published'), orderBy('createdAt','desc'), limit(POSTS_PER_PAGE));
+        if(!reset && lastFirebaseDoc)
+          q = query(collection(db,'posts'), where('status','==','published'), orderBy('createdAt','desc'), startAfter(lastFirebaseDoc), limit(POSTS_PER_PAGE));
+        const snap = await getDocs(q);
+        const fetched = snap.docs.map(d => ({
+          id: d.id, ...d.data(),
+          createdAt: d.data().createdAt?.toDate?.()?.toISOString() || new Date().toISOString()
+        }));
+        if(reset) allBlogPosts = fetched; else allBlogPosts = [...allBlogPosts, ...fetched];
+        lastFirebaseDoc = snap.docs[snap.docs.length-1] || null;
+        allLoaded = snap.docs.length < POSTS_PER_PAGE;
+      }catch(e){ console.error('Firebase fetch:', e); }
+      showLoading(false);
+      renderBlogGrid();
+    }
+
+    /* -------- load more -------- */
+    window.loadMorePosts = async function(){
+      const btn = document.getElementById('blogMoreBtn');
+      btn.querySelector('span').textContent = 'Loading…';
+      btn.disabled = true;
+      if(usingFirebase) await loadFromFirebase(false);
+      btn.querySelector('span').textContent = 'Load More';
+      btn.disabled = false;
+    };
+
+    /* -------- show/hide loading -------- */
+    function showLoading(on){
+      document.getElementById('blogLoading').style.display = on ? 'grid' : 'none';
+      if(on) document.getElementById('blogGrid').style.display = 'none';
+    }
+
+    /* -------- render grid -------- */
+    function renderBlogGrid(){
+      const grid     = document.getElementById('blogGrid');
+      const empty    = document.getElementById('blogEmpty');
+      const moreWrap = document.getElementById('blogMoreWrap');
+
+      const filtered = activeBlogFilter === 'all'
+        ? allBlogPosts
+        : allBlogPosts.filter(p => p.type === activeBlogFilter);
+
+      if(filtered.length === 0){
+        grid.style.display = 'none'; empty.style.display = 'flex'; moreWrap.style.display = 'none';
+        return;
+      }
+
+      empty.style.display = 'none';
+      grid.style.display  = 'grid';
+      moreWrap.style.display = (allLoaded || !usingFirebase) ? 'none' : 'flex';
+
+      grid.innerHTML = filtered.map((p, i) => {
+        const date     = new Date(p.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        const cover    = p.cover
+          ? `<img src="${p.cover}" alt="" class="blog-card-img" loading="lazy"/>`
+          : `<div class="blog-card-img-ph">${typeEmoji(p.type)}</div>`;
+        const tags     = (p.tags||[]).slice(0,2).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
+        const featured = i === 0 && activeBlogFilter === 'all' && filtered.length > 1;
+        const typeSlug = (p.type||'blog').toLowerCase();
+        /* likes */
+        const likeCount = usingFirebase ? (p.likes||0) : getLikeCount(p.id);
+        const liked     = hasUserLiked(p.id);
+        return `
+          <div class="blog-card glass tilt-card reveal ${featured?'blog-card--featured':''}"
+               onclick="openBlogPost('${p.id}')" style="animation-delay:${i*0.07}s">
+            <div class="blog-card-cover">
+              ${cover}
+              <div class="blog-card-cover-overlay"></div>
+              <span class="blog-type-badge blog-type-${typeSlug}">${p.type||'Blog'}</span>
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span class="blog-cat"><i class="fa-solid fa-folder-open"></i> ${escBlog(p.category||'General')}</span>
+                <span class="blog-date"><i class="fa-regular fa-calendar"></i> ${date}</span>
+              </div>
+              <h3 class="blog-card-title">${escBlog(p.title)}</h3>
+              <p class="blog-card-excerpt">${escBlog(p.excerpt||'')}</p>
+              ${tags?`<div class="blog-tags-row">${tags}</div>`:''}
+              <div class="blog-card-footer">
+                <span class="blog-read-more">Read Post <i class="fa-solid fa-arrow-right"></i></span>
+                <div class="blog-card-actions">
+                  <span class="blog-read-time"><i class="fa-regular fa-clock"></i> ${readTime(p.body)} min</span>
+                  <button class="like-btn ${liked?'liked':''}" data-id="${p.id}"
+                    onclick="toggleLike('${p.id}', event)" title="Like this post" aria-label="Like">
+                    <span class="like-heart">♥</span>
+                    <span class="like-count">${likeCount > 0 ? likeCount : ''}</span>
+                  </button>
+                  <button class="share-btn" onclick="sharePost('${p.id}', event)" title="Copy link" aria-label="Share">
+                    <i class="fa-solid fa-link"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+
+      /* re-observe reveal */
+      document.querySelectorAll('.blog-card.reveal:not(.visible)').forEach(el => {
+        if(typeof revealObserver !== 'undefined') revealObserver.observe(el);
+        else el.classList.add('visible');
+      });
+
+      /* re-apply tilt */
+      document.querySelectorAll('.blog-card.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const r = card.getBoundingClientRect();
+          const rX = ((e.clientY-r.top-r.height/2)/(r.height/2))*-6;
+          const rY = ((e.clientX-r.left-r.width/2)/(r.width/2))*6;
+          card.style.transform = `perspective(700px) rotateX(${rX}deg) rotateY(${rY}deg) scale(1.02)`;
+        });
+        card.addEventListener('mouseleave', ()=>{ card.style.transform=''; });
+      });
+    }
+
+    /* -------- read modal -------- */
+    window.openBlogPost = function(id){
+      const p = allBlogPosts.find(x => x.id === id);
+      if(!p) return;
+      const date     = new Date(p.createdAt).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+      const cover    = p.cover ? `<img src="${p.cover}" class="blog-read-cover" alt=""/>` : '';
+      const tags     = (p.tags||[]).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
+      const typeSlug = (p.type||'blog').toLowerCase();
+      const likeCount= usingFirebase ? (p.likes||0) : getLikeCount(p.id);
+      const liked    = hasUserLiked(p.id);
+
+      document.getElementById('blogReadContent').innerHTML = `
+        ${cover}
+        <div class="blog-read-type blog-type-${typeSlug}">${p.type||'Blog'}</div>
+        <h1 class="blog-read-title">${escBlog(p.title)}</h1>
+        <div class="blog-read-meta">
+          <span><i class="fa-solid fa-folder-open"></i> ${escBlog(p.category||'General')}</span>
+          <span><i class="fa-regular fa-calendar"></i> ${date}</span>
+          <span><i class="fa-regular fa-clock"></i> ${readTime(p.body)} min read</span>
+        </div>
+        ${tags?`<div class="blog-tags-row" style="margin-bottom:20px">${tags}</div>`:''}
+        <div class="blog-read-body">${p.body}</div>
+        <div class="blog-read-like-bar">
+          <button class="like-btn like-btn--big ${liked?'liked':''}" data-id="${p.id}"
+            onclick="toggleLike('${p.id}', event)" aria-label="Like this post">
+            <span class="like-heart">♥</span>
+            <span class="like-label">${liked ? 'Liked' : 'Like this post'}</span>
+            <span class="like-count-pill" id="modalLikeCount_${p.id}">${likeCount > 0 ? likeCount : '0'} likes</span>
+          </button>
+          <button class="share-btn share-btn--big" onclick="sharePost('${p.id}', event)" aria-label="Copy link">
+            <i class="fa-solid fa-link"></i>
+            <span class="share-label">Copy Link</span>
+          </button>
+        </div>`;
+
+      document.getElementById('blogReadModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+
+    /* -------- filter chips -------- */
+    document.querySelectorAll('.blog-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.blog-chip').forEach(c=>c.classList.remove('active'));
+        chip.classList.add('active');
+        activeBlogFilter = chip.dataset.bf;
+        renderBlogGrid();
+      });
+    });
+
+    /* -------- modal close -------- */
+    function closeBlogModal(){
+      document.getElementById('blogReadModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('blogReadClose').addEventListener('click', closeBlogModal);
+    document.getElementById('blogReadModal').addEventListener('click', e => {
+      if(e.target === document.getElementById('blogReadModal')) closeBlogModal();
+    });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeBlogModal(); });
+
+    /* -------- start -------- */
+    initBlog().then(()=>{
+      /* auto-open post if URL has ?post=ID */
+      const postParam = new URLSearchParams(location.search).get('post');
+      if(postParam){
+        setTimeout(()=>{
+          const exists = allBlogPosts.find(x => x.id === postParam);
+          if(exists) window.openBlogPost(postParam);
+        }, 300);
+      }
+    });
+  </script>
