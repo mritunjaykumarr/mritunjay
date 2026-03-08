@@ -606,122 +606,186 @@
   <script src="firebase-config.js"></script>
 
   <!-- =====================================================
-       BLOG ENGINE — Dual Mode
-       MODE 1 (default): reads from localStorage  → works instantly, same device as dashboard
-       MODE 2 (online):  reads from Firebase      → works across devices, when config is filled
+       BLOG ENGINE — Dual Mode + Likes System
+       MODE 1 (default): localStorage  → same device, instant
+       MODE 2 (online):  Firebase      → cross-device, when config filled
+       LIKES: stored in dp_likes (localStorage) + Firestore (if Firebase)
        ===================================================== -->
   <script type="module">
-    /* ---------- helpers ---------- */
+    /* -------- helpers -------- */
     function escBlog(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
     function typeEmoji(t){ return t==='Article'?'📰':t==='News'?'📡':'📝'; }
     function readTime(html){ const w=(html||'').replace(/<[^>]+>/g,' ').trim().split(/\s+/).filter(Boolean).length; return Math.max(1,Math.ceil(w/200)); }
 
-    /* ---------- state ---------- */
+    /* -------- state -------- */
     const POSTS_PER_PAGE = 6;
-    let allBlogPosts = [];
+    let allBlogPosts   = [];
     let activeBlogFilter = 'all';
-    let lastFirebaseDoc = null;
-    let allLoaded = false;
-    let usingFirebase = false;
+    let lastFirebaseDoc  = null;
+    let allLoaded        = false;
+    let usingFirebase    = false;
 
-    /* ---------- detect firebase config ---------- */
-    function isFirebaseConfigured(){
-      try {
-        const c = window.FIREBASE_CONFIG;
-        return c && c.apiKey && c.apiKey !== 'YOUR_API_KEY' && c.projectId && c.projectId !== 'YOUR_PROJECT_ID';
-      } catch(e){ return false; }
+    /* ======================================================
+       LIKES ENGINE
+       - likes count  → dp_likes_count  { postId: number }
+       - user liked?  → dp_likes_user   { postId: true }   (per browser)
+       ====================================================== */
+    function getLikeCounts(){ try{ return JSON.parse(localStorage.getItem('dp_likes_count')||'{}'); }catch(e){ return {}; } }
+    function getUserLikes(){  try{ return JSON.parse(localStorage.getItem('dp_likes_user') ||'{}'); }catch(e){ return {}; } }
+    function getLikeCount(id){ return getLikeCounts()[id] || 0; }
+    function hasUserLiked(id){ return !!getUserLikes()[id]; }
+
+    async function toggleLike(postId, event){
+      if(event){ event.stopPropagation(); }
+
+      const counts   = getLikeCounts();
+      const userLikes= getUserLikes();
+      const liked    = !!userLikes[postId];
+
+      if(liked){
+        counts[postId]    = Math.max(0, (counts[postId]||1) - 1);
+        delete userLikes[postId];
+      } else {
+        counts[postId]    = (counts[postId]||0) + 1;
+        userLikes[postId] = true;
+      }
+
+      localStorage.setItem('dp_likes_count', JSON.stringify(counts));
+      localStorage.setItem('dp_likes_user',  JSON.stringify(userLikes));
+
+      /* Firebase sync */
+      if(usingFirebase && window._blogFirestore){
+        try{
+          const { db, doc, updateDoc, increment } = window._blogFirestore;
+          if(doc && updateDoc && increment){
+            await updateDoc(doc(db,'posts',postId),{ likes: increment(liked ? -1 : 1) });
+          }
+        }catch(e){ /* silent — local already saved */ }
+      }
+
+      /* Update all like buttons for this post without re-rendering whole grid */
+      updateLikeButtons(postId, counts[postId], !liked);
+
+      /* Burst animation on the button that was clicked */
+      if(event && !liked){
+        const btn = event.currentTarget;
+        btn.classList.add('like-burst');
+        setTimeout(()=> btn.classList.remove('like-burst'), 600);
+        spawnHearts(btn);
+      }
+    }
+    window.toggleLike = toggleLike;
+
+    function updateLikeButtons(postId, count, isLiked){
+      document.querySelectorAll(`.like-btn[data-id="${postId}"]`).forEach(btn => {
+        btn.classList.toggle('liked', isLiked);
+        const countEl = btn.querySelector('.like-count');
+        if(countEl) countEl.textContent = count > 0 ? count : '';
+      });
     }
 
-    /* ---------- INIT ---------- */
+    /* heart particle burst */
+    function spawnHearts(btn){
+      const rect = btn.getBoundingClientRect();
+      for(let i = 0; i < 7; i++){
+        const h = document.createElement('span');
+        h.className = 'heart-particle';
+        h.textContent = '♥';
+        h.style.cssText = `
+          left:${rect.left + rect.width/2}px;
+          top:${rect.top + rect.height/2}px;
+          --dx:${(Math.random()-0.5)*80}px;
+          --dy:${-(Math.random()*60+30)}px;
+          animation-delay:${i*0.04}s;
+          font-size:${Math.random()*8+8}px;
+        `;
+        document.body.appendChild(h);
+        setTimeout(()=> h.remove(), 900);
+      }
+    }
+
+    /* -------- firebase config check -------- */
+    function isFirebaseConfigured(){
+      try{
+        const c = window.FIREBASE_CONFIG;
+        return c && c.apiKey && c.apiKey !== 'YOUR_API_KEY' && c.projectId && c.projectId !== 'YOUR_PROJECT_ID';
+      }catch(e){ return false; }
+    }
+
+    /* -------- INIT -------- */
     async function initBlog(){
       showLoading(true);
 
       if(isFirebaseConfigured()){
-        /* ---- Firebase path ---- */
-        try {
+        try{
           const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
-          const { getFirestore, collection, query, where, orderBy, limit, getDocs, startAfter }
+          const { getFirestore, collection, query, where, orderBy, limit, getDocs, startAfter, doc, updateDoc, increment }
             = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
 
           const app = initializeApp(window.FIREBASE_CONFIG, 'portfolio_blog');
           const db  = getFirestore(app);
-          window._blogFirestore = { db, collection, query, where, orderBy, limit, getDocs, startAfter };
+          window._blogFirestore = { db, collection, query, where, orderBy, limit, getDocs, startAfter, doc, updateDoc, increment };
           usingFirebase = true;
           await loadFromFirebase(true);
           return;
-        } catch(e){
+        }catch(e){
           console.warn('Firebase init failed, falling back to localStorage:', e.message);
         }
       }
 
-      /* ---- localStorage path (same-device mode) ---- */
       loadFromLocalStorage();
     }
 
-    /* ---------- localStorage loader ---------- */
+    /* -------- localStorage loader -------- */
     function loadFromLocalStorage(){
-      try {
+      try{
         const raw = localStorage.getItem('dp_posts');
         const all = raw ? JSON.parse(raw) : [];
-        // only published posts, newest first
         allBlogPosts = all
           .filter(p => p.status === 'published')
           .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
         allLoaded = true;
-      } catch(e){
-        allBlogPosts = [];
-      }
+      }catch(e){ allBlogPosts = []; }
       showLoading(false);
       renderBlogGrid();
 
-      // Poll for new posts every 5 seconds (dashboard and portfolio on same tab/device)
       setInterval(() => {
-        try {
+        try{
           const raw = localStorage.getItem('dp_posts');
           const all = raw ? JSON.parse(raw) : [];
           const updated = all
             .filter(p => p.status === 'published')
             .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-          // Only re-render if something changed
           if(JSON.stringify(updated.map(p=>p.id+p.updatedAt)) !== JSON.stringify(allBlogPosts.map(p=>p.id+p.updatedAt))){
             allBlogPosts = updated;
             renderBlogGrid();
           }
-        } catch(e){}
+        }catch(e){}
       }, 5000);
     }
 
-    /* ---------- Firebase loader ---------- */
+    /* -------- Firebase loader -------- */
     async function loadFromFirebase(reset = false){
       const { db, collection, query, where, orderBy, limit, getDocs, startAfter } = window._blogFirestore;
       showLoading(true);
-      try {
-        let q = query(
-          collection(db, 'posts'),
-          where('status','==','published'),
-          orderBy('createdAt','desc'),
-          limit(POSTS_PER_PAGE)
-        );
-        if(!reset && lastFirebaseDoc){
+      try{
+        let q = query(collection(db,'posts'), where('status','==','published'), orderBy('createdAt','desc'), limit(POSTS_PER_PAGE));
+        if(!reset && lastFirebaseDoc)
           q = query(collection(db,'posts'), where('status','==','published'), orderBy('createdAt','desc'), startAfter(lastFirebaseDoc), limit(POSTS_PER_PAGE));
-        }
         const snap = await getDocs(q);
         const fetched = snap.docs.map(d => ({
           id: d.id, ...d.data(),
           createdAt: d.data().createdAt?.toDate?.()?.toISOString() || new Date().toISOString()
         }));
-        if(reset) allBlogPosts = fetched;
-        else allBlogPosts = [...allBlogPosts, ...fetched];
-        lastFirebaseDoc = snap.docs[snap.docs.length - 1] || null;
+        if(reset) allBlogPosts = fetched; else allBlogPosts = [...allBlogPosts, ...fetched];
+        lastFirebaseDoc = snap.docs[snap.docs.length-1] || null;
         allLoaded = snap.docs.length < POSTS_PER_PAGE;
-      } catch(e){
-        console.error('Firebase fetch error:', e);
-      }
+      }catch(e){ console.error('Firebase fetch:', e); }
       showLoading(false);
       renderBlogGrid();
     }
 
-    /* ---------- load more ---------- */
+    /* -------- load more -------- */
     window.loadMorePosts = async function(){
       const btn = document.getElementById('blogMoreBtn');
       btn.querySelector('span').textContent = 'Loading…';
@@ -731,14 +795,13 @@
       btn.disabled = false;
     };
 
-    /* ---------- render ---------- */
+    /* -------- show/hide loading -------- */
     function showLoading(on){
-      const l = document.getElementById('blogLoading');
-      const g = document.getElementById('blogGrid');
-      l.style.display = on ? 'grid' : 'none';
-      if(on) g.style.display = 'none';
+      document.getElementById('blogLoading').style.display = on ? 'grid' : 'none';
+      if(on) document.getElementById('blogGrid').style.display = 'none';
     }
 
+    /* -------- render grid -------- */
     function renderBlogGrid(){
       const grid     = document.getElementById('blogGrid');
       const empty    = document.getElementById('blogEmpty');
@@ -749,9 +812,7 @@
         : allBlogPosts.filter(p => p.type === activeBlogFilter);
 
       if(filtered.length === 0){
-        grid.style.display  = 'none';
-        empty.style.display = 'flex';
-        moreWrap.style.display = 'none';
+        grid.style.display = 'none'; empty.style.display = 'flex'; moreWrap.style.display = 'none';
         return;
       }
 
@@ -767,6 +828,9 @@
         const tags     = (p.tags||[]).slice(0,2).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
         const featured = i === 0 && activeBlogFilter === 'all' && filtered.length > 1;
         const typeSlug = (p.type||'blog').toLowerCase();
+        /* likes */
+        const likeCount = usingFirebase ? (p.likes||0) : getLikeCount(p.id);
+        const liked     = hasUserLiked(p.id);
         return `
           <div class="blog-card glass tilt-card reveal ${featured?'blog-card--featured':''}"
                onclick="openBlogPost('${p.id}')" style="animation-delay:${i*0.07}s">
@@ -785,7 +849,14 @@
               ${tags?`<div class="blog-tags-row">${tags}</div>`:''}
               <div class="blog-card-footer">
                 <span class="blog-read-more">Read Post <i class="fa-solid fa-arrow-right"></i></span>
-                <span class="blog-read-time">${readTime(p.body)} min read</span>
+                <div class="blog-card-actions">
+                  <span class="blog-read-time"><i class="fa-regular fa-clock"></i> ${readTime(p.body)} min</span>
+                  <button class="like-btn ${liked?'liked':''}" data-id="${p.id}"
+                    onclick="toggleLike('${p.id}', event)" title="Like this post" aria-label="Like">
+                    <span class="like-heart">♥</span>
+                    <span class="like-count">${likeCount > 0 ? likeCount : ''}</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>`;
@@ -809,14 +880,17 @@
       });
     }
 
-    /* ---------- read modal ---------- */
+    /* -------- read modal -------- */
     window.openBlogPost = function(id){
       const p = allBlogPosts.find(x => x.id === id);
       if(!p) return;
-      const date  = new Date(p.createdAt).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-      const cover = p.cover ? `<img src="${p.cover}" class="blog-read-cover" alt=""/>` : '';
-      const tags  = (p.tags||[]).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
+      const date     = new Date(p.createdAt).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+      const cover    = p.cover ? `<img src="${p.cover}" class="blog-read-cover" alt=""/>` : '';
+      const tags     = (p.tags||[]).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
       const typeSlug = (p.type||'blog').toLowerCase();
+      const likeCount= usingFirebase ? (p.likes||0) : getLikeCount(p.id);
+      const liked    = hasUserLiked(p.id);
+
       document.getElementById('blogReadContent').innerHTML = `
         ${cover}
         <div class="blog-read-type blog-type-${typeSlug}">${p.type||'Blog'}</div>
@@ -827,12 +901,44 @@
           <span><i class="fa-regular fa-clock"></i> ${readTime(p.body)} min read</span>
         </div>
         ${tags?`<div class="blog-tags-row" style="margin-bottom:20px">${tags}</div>`:''}
-        <div class="blog-read-body">${p.body}</div>`;
+        <div class="blog-read-body">${p.body}</div>
+        <div class="blog-read-like-bar">
+          <button class="like-btn like-btn--big ${liked?'liked':''}" data-id="${p.id}"
+            onclick="toggleLike('${p.id}', event)" aria-label="Like this post">
+            <span class="like-heart">♥</span>
+            <span class="like-label">${liked ? 'Liked' : 'Like this post'}</span>
+            <span class="like-count-pill" id="modalLikeCount_${p.id}">${likeCount > 0 ? likeCount : '0'} likes</span>
+          </button>
+        </div>`;
+
       document.getElementById('blogReadModal').classList.add('open');
       document.body.style.overflow = 'hidden';
     };
 
-    /* ---------- filter chips ---------- */
+    /* update modal like count pill too */
+    const _origUpdateLike = window.updateLikeButtons;
+    window._updateLikeButtons_extra = function(postId, count, isLiked){
+      /* pill in modal */
+      const pill = document.getElementById(`modalLikeCount_${postId}`);
+      if(pill) pill.textContent = `${count} like${count!==1?'s':''}`;
+      /* label */
+      document.querySelectorAll(`.like-btn--big[data-id="${postId}"] .like-label`).forEach(el=>{
+        el.textContent = isLiked ? 'Liked' : 'Like this post';
+      });
+    };
+
+    /* patch updateLikeButtons to also call extra */
+    const _orig = updateLikeButtons;
+    function updateLikeButtons(postId, count, isLiked){
+      document.querySelectorAll(`.like-btn[data-id="${postId}"]`).forEach(btn => {
+        btn.classList.toggle('liked', isLiked);
+        const countEl = btn.querySelector('.like-count');
+        if(countEl) countEl.textContent = count > 0 ? count : '';
+      });
+      window._updateLikeButtons_extra(postId, count, isLiked);
+    }
+
+    /* -------- filter chips -------- */
     document.querySelectorAll('.blog-chip').forEach(chip => {
       chip.addEventListener('click', () => {
         document.querySelectorAll('.blog-chip').forEach(c=>c.classList.remove('active'));
@@ -842,7 +948,7 @@
       });
     });
 
-    /* ---------- modal close ---------- */
+    /* -------- modal close -------- */
     function closeBlogModal(){
       document.getElementById('blogReadModal').classList.remove('open');
       document.body.style.overflow = '';
@@ -853,6 +959,6 @@
     });
     document.addEventListener('keydown', e => { if(e.key==='Escape') closeBlogModal(); });
 
-    /* ---------- start ---------- */
+    /* -------- start -------- */
     initBlog();
   </script>
