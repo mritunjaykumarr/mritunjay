@@ -1,7 +1,3 @@
-// ============================================================
-//  firebase-config.js  — Shared by index.html & dashboard.html
-// ============================================================
-
 const FIREBASE_CONFIG = {
   apiKey:            "AIzaSyBECM26idkr26XWDj6IY0e5u0TikYHYQKg",
   authDomain:        "mritunjay-portfolio-25a6b.firebaseapp.com",
@@ -12,5 +8,4 @@ const FIREBASE_CONFIG = {
   measurementId:     "G-RPCJQZ2RQ0"
 };
 
-// Admin password for dashboard access (change this!)
 const ADMIN_PASSWORD = "mritunjay2025";
