@@ -676,6 +676,64 @@
     }
     window.toggleLike = toggleLike;
 
+    /* -------- share / copy link -------- */
+    window.sharePost = function(postId, event){
+      if(event) event.stopPropagation();
+
+      /* Build shareable URL: current page + ?post=ID */
+      const url = `${location.origin}${location.pathname}?post=${postId}`;
+
+      /* Use Web Share API on mobile if available */
+      const post = allBlogPosts.find(x => x.id === postId);
+      if(navigator.share && /Mobi|Android/i.test(navigator.userAgent)){
+        navigator.share({
+          title: post ? post.title : 'Check out this post',
+          text:  post ? (post.excerpt || post.title) : '',
+          url
+        }).catch(()=>{});
+        return;
+      }
+
+      /* Desktop: copy to clipboard */
+      navigator.clipboard.writeText(url).then(() => {
+        showShareToast('🔗 Link copied to clipboard!');
+        /* animate the button */
+        if(event){
+          const btn = event.currentTarget;
+          btn.classList.add('share-copied');
+          setTimeout(()=> btn.classList.remove('share-copied'), 1800);
+        }
+      }).catch(() => {
+        /* fallback for older browsers */
+        const ta = document.createElement('textarea');
+        ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showShareToast('🔗 Link copied!');
+      });
+    };
+
+    function showShareToast(msg){
+      /* remove any existing toast */
+      const old = document.getElementById('shareToast');
+      if(old) old.remove();
+
+      const toast = document.createElement('div');
+      toast.id = 'shareToast';
+      toast.className = 'share-toast';
+      toast.innerHTML = `<i class="fa-solid fa-check"></i> ${msg}`;
+      document.body.appendChild(toast);
+
+      /* trigger enter animation */
+      requestAnimationFrame(()=> requestAnimationFrame(()=> toast.classList.add('share-toast--in')));
+
+      setTimeout(()=>{
+        toast.classList.remove('share-toast--in');
+        setTimeout(()=> toast.remove(), 400);
+      }, 2500);
+    }
+
     function updateLikeButtons(postId, count, isLiked){
       document.querySelectorAll(`.like-btn[data-id="${postId}"]`).forEach(btn => {
         btn.classList.toggle('liked', isLiked);
@@ -861,6 +919,9 @@
                     <span class="like-heart">♥</span>
                     <span class="like-count">${likeCount > 0 ? likeCount : ''}</span>
                   </button>
+                  <button class="share-btn" onclick="sharePost('${p.id}', event)" title="Copy link" aria-label="Share">
+                    <i class="fa-solid fa-link"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -914,6 +975,10 @@
             <span class="like-label">${liked ? 'Liked' : 'Like this post'}</span>
             <span class="like-count-pill" id="modalLikeCount_${p.id}">${likeCount > 0 ? likeCount : '0'} likes</span>
           </button>
+          <button class="share-btn share-btn--big" onclick="sharePost('${p.id}', event)" aria-label="Copy link">
+            <i class="fa-solid fa-link"></i>
+            <span class="share-label">Copy Link</span>
+          </button>
         </div>`;
 
       document.getElementById('blogReadModal').classList.add('open');
@@ -942,5 +1007,14 @@
     document.addEventListener('keydown', e => { if(e.key==='Escape') closeBlogModal(); });
 
     /* -------- start -------- */
-    initBlog();
+    initBlog().then(()=>{
+      /* auto-open post if URL has ?post=ID */
+      const postParam = new URLSearchParams(location.search).get('post');
+      if(postParam){
+        setTimeout(()=>{
+          const exists = allBlogPosts.find(x => x.id === postParam);
+          if(exists) window.openBlogPost(postParam);
+        }, 300);
+      }
+    });
   </script>
