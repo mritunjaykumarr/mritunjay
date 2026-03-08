@@ -682,6 +682,11 @@
         const countEl = btn.querySelector('.like-count');
         if(countEl) countEl.textContent = count > 0 ? count : '';
       });
+      const pill = document.getElementById(`modalLikeCount_${postId}`);
+      if(pill) pill.textContent = `${count} like${count !== 1 ? 's' : ''}`;
+      document.querySelectorAll(`.like-btn--big[data-id="${postId}"] .like-label`).forEach(el => {
+        el.textContent = isLiked ? 'Liked' : 'Like this post';
+      });
     }
 
     /* heart particle burst */
@@ -914,29 +919,6 @@
       document.getElementById('blogReadModal').classList.add('open');
       document.body.style.overflow = 'hidden';
     };
-
-    /* update modal like count pill too */
-    const _origUpdateLike = window.updateLikeButtons;
-    window._updateLikeButtons_extra = function(postId, count, isLiked){
-      /* pill in modal */
-      const pill = document.getElementById(`modalLikeCount_${postId}`);
-      if(pill) pill.textContent = `${count} like${count!==1?'s':''}`;
-      /* label */
-      document.querySelectorAll(`.like-btn--big[data-id="${postId}"] .like-label`).forEach(el=>{
-        el.textContent = isLiked ? 'Liked' : 'Like this post';
-      });
-    };
-
-    /* patch updateLikeButtons to also call extra */
-    const _orig = updateLikeButtons;
-    function updateLikeButtons(postId, count, isLiked){
-      document.querySelectorAll(`.like-btn[data-id="${postId}"]`).forEach(btn => {
-        btn.classList.toggle('liked', isLiked);
-        const countEl = btn.querySelector('.like-count');
-        if(countEl) countEl.textContent = count > 0 ? count : '';
-      });
-      window._updateLikeButtons_extra(postId, count, isLiked);
-    }
 
     /* -------- filter chips -------- */
     document.querySelectorAll('.blog-chip').forEach(chip => {
