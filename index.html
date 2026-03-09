@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mritunjay Kumar — Frontend Developer</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&f[]=cabinet-grotesk@300,400,500,600,700,800,900&display=swap" rel="stylesheet" />
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 </head>
 <body>
@@ -676,63 +676,123 @@
     }
     window.toggleLike = toggleLike;
 
-    /* -------- share / copy link -------- */
-    window.sharePost = function(postId, event){
+    /* -------- SHARE CARD SYSTEM -------- */
+    window.openShareCard = function(postId, event){
       if(event) event.stopPropagation();
-
-      /* Build shareable URL: current page + ?post=ID */
-      const url = `${location.origin}${location.pathname}?post=${postId}`;
-
-      /* Use Web Share API on mobile if available */
       const post = allBlogPosts.find(x => x.id === postId);
-      if(navigator.share && /Mobi|Android/i.test(navigator.userAgent)){
-        navigator.share({
-          title: post ? post.title : 'Check out this post',
-          text:  post ? (post.excerpt || post.title) : '',
-          url
-        }).catch(()=>{});
-        return;
-      }
+      if(!post) return;
+      const url = `${location.origin}${location.pathname}?post=${postId}`;
+      const date = post.date ? new Date(post.date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : 'Recent';
+      const excerpt = (post.excerpt || post.body || '').replace(/<[^>]*>/g,'').slice(0,120) + '...';
+      const imgStyle = post.coverImage ? `background:url('${post.coverImage}') center/cover no-repeat` : `background:linear-gradient(135deg,#0a1018 0%,#0d1f2d 50%,#091510 100%)`;
+      const typeColors = {Blog:'#64dcb4', Article:'#b06cff', News:'#f59e0b', Tutorial:'#38bdf8'};
+      const typeColor = typeColors[post.type] || '#64dcb4';
 
-      /* Desktop: copy to clipboard */
-      navigator.clipboard.writeText(url).then(() => {
-        showShareToast('🔗 Link copied to clipboard!');
-        /* animate the button */
-        if(event){
-          const btn = event.currentTarget;
-          btn.classList.add('share-copied');
-          setTimeout(()=> btn.classList.remove('share-copied'), 1800);
-        }
-      }).catch(() => {
-        /* fallback for older browsers */
-        const ta = document.createElement('textarea');
-        ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
-        document.body.appendChild(ta); ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        showShareToast('🔗 Link copied!');
+      // Remove existing
+      const old = document.getElementById('shareCardOverlay');
+      if(old) old.remove();
+
+      const overlay = document.createElement('div');
+      overlay.id = 'shareCardOverlay';
+      overlay.className = 'sc-overlay';
+      overlay.innerHTML = `
+        <div class="sc-panel" id="scPanel">
+          <div class="sc-header">
+            <span class="sc-label">Share this post</span>
+            <button class="sc-close" onclick="document.getElementById('shareCardOverlay').remove(); document.body.style.overflow=''">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Visual snapshot card -->
+          <div class="sc-preview-wrap">
+            <div class="sc-card" id="scCard">
+              <div class="sc-card-bg" style="${imgStyle}"></div>
+              <div class="sc-card-gradient"></div>
+              <div class="sc-card-grid"></div>
+              <div class="sc-card-inner">
+                <div class="sc-card-top">
+                  <span class="sc-card-site">mritunjaykumar2.vercel.app</span>
+                  <span class="sc-card-type" style="color:${typeColor};border-color:${typeColor}22;background:${typeColor}11">${post.type||'Blog'}</span>
+                </div>
+                <div class="sc-card-body">
+                  <h2 class="sc-card-title">${escBlog(post.title)}</h2>
+                  <p class="sc-card-excerpt">${escBlog(excerpt)}</p>
+                </div>
+                <div class="sc-card-foot">
+                  <div class="sc-card-author">
+                    <div class="sc-card-avatar">MK</div>
+                    <div>
+                      <strong>Mritunjay Kumar</strong>
+                      <small>${date}</small>
+                    </div>
+                  </div>
+                  <div class="sc-card-meta">
+                    <span><i class="fa-regular fa-clock"></i> ${readTime(post.body)} min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Share options -->
+          <div class="sc-options">
+            <button class="sc-opt sc-opt--copy" onclick="scCopyLink('${url}', this)">
+              <i class="fa-solid fa-link"></i>
+              <span>Copy Link</span>
+            </button>
+            <a class="sc-opt sc-opt--wa" href="https://wa.me/?text=${encodeURIComponent(post.title + ' — ' + url)}" target="_blank" rel="noopener">
+              <i class="fa-brands fa-whatsapp"></i>
+              <span>WhatsApp</span>
+            </a>
+            <a class="sc-opt sc-opt--tw" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(url)}" target="_blank" rel="noopener">
+              <i class="fa-brands fa-x-twitter"></i>
+              <span>X / Twitter</span>
+            </a>
+            <a class="sc-opt sc-opt--li" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}" target="_blank" rel="noopener">
+              <i class="fa-brands fa-linkedin-in"></i>
+              <span>LinkedIn</span>
+            </a>
+          </div>
+
+          <p class="sc-url-preview">${url}</p>
+        </div>`;
+
+      document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(()=> requestAnimationFrame(()=> overlay.classList.add('sc-open')));
+
+      // Close on backdrop click
+      overlay.addEventListener('click', e => {
+        if(e.target === overlay){ overlay.remove(); document.body.style.overflow = ''; }
       });
     };
 
-    function showShareToast(msg){
-      /* remove any existing toast */
-      const old = document.getElementById('shareToast');
-      if(old) old.remove();
-
-      const toast = document.createElement('div');
-      toast.id = 'shareToast';
-      toast.className = 'share-toast';
-      toast.innerHTML = `<i class="fa-solid fa-check"></i> ${msg}`;
-      document.body.appendChild(toast);
-
-      /* trigger enter animation */
-      requestAnimationFrame(()=> requestAnimationFrame(()=> toast.classList.add('share-toast--in')));
-
-      setTimeout(()=>{
-        toast.classList.remove('share-toast--in');
-        setTimeout(()=> toast.remove(), 400);
-      }, 2500);
-    }
+    window.scCopyLink = function(url, btn){
+      const copy = () => {
+        btn.classList.add('sc-copied');
+        btn.querySelector('i').className = 'fa-solid fa-check';
+        btn.querySelector('span').textContent = 'Copied!';
+        setTimeout(()=>{
+          btn.classList.remove('sc-copied');
+          btn.querySelector('i').className = 'fa-solid fa-link';
+          btn.querySelector('span').textContent = 'Copy Link';
+        }, 2200);
+      };
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(url).then(copy).catch(()=>{
+          const ta = document.createElement('textarea');
+          ta.value = url; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
+          copy();
+        });
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = url; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+        copy();
+      }
+    };
 
     function updateLikeButtons(postId, count, isLiked){
       document.querySelectorAll(`.like-btn[data-id="${postId}"]`).forEach(btn => {
@@ -919,7 +979,7 @@
                     <span class="like-heart">♥</span>
                     <span class="like-count">${likeCount > 0 ? likeCount : ''}</span>
                   </button>
-                  <button class="share-btn" onclick="sharePost('${p.id}', event)" title="Copy link" aria-label="Share">
+                  <button class="share-btn" onclick="openShareCard('${p.id}', event)" title="Share" aria-label="Share">
                     <i class="fa-solid fa-link"></i>
                   </button>
                 </div>
@@ -975,9 +1035,9 @@
             <span class="like-label">${liked ? 'Liked' : 'Like this post'}</span>
             <span class="like-count-pill" id="modalLikeCount_${p.id}">${likeCount > 0 ? likeCount : '0'} likes</span>
           </button>
-          <button class="share-btn share-btn--big" onclick="sharePost('${p.id}', event)" aria-label="Copy link">
-            <i class="fa-solid fa-link"></i>
-            <span class="share-label">Copy Link</span>
+          <button class="share-btn share-btn--big" onclick="openShareCard('${p.id}', event)" aria-label="Share post">
+            <i class="fa-solid fa-share-nodes"></i>
+            <span class="share-label">Share Post</span>
           </button>
         </div>`;
 
