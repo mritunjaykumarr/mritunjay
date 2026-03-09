@@ -630,7 +630,9 @@ async function deleteFromStore(id) {
 /* ===== STORAGE UPLOAD ===== */
 async function uploadCover(file, progressBar, progressFill) {
   if (!useFirebase || !window._storage) return null;
-  const { ref, uploadBytesResumable, getDownloadURL } = window._fs || {};
+
+  const { ref, uploadBytesResumable, getDownloadURL } =
+    await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js");
   if (!ref) return null;
 
   return new Promise((resolve, reject) => {
