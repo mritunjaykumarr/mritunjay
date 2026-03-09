@@ -327,7 +327,7 @@ function drawRadar() {
         i === 0 ? ctx.moveTo(pt.x, pt.y) : ctx.lineTo(pt.x, pt.y);
       }
       ctx.closePath();
-      ctx.strokeStyle = level === 5 ? 'rgba(56,189,248,0.18)' : 'rgba(56,189,248,0.07)';
+      ctx.strokeStyle = level === 5 ? 'rgba(124,58,237,0.22)' : 'rgba(124,58,237,0.08)';
       ctx.lineWidth = level === 5 ? 1.5 : 1;
       ctx.stroke();
     }
@@ -338,7 +338,7 @@ function drawRadar() {
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.lineTo(pt.x, pt.y);
-      ctx.strokeStyle = 'rgba(56,189,248,0.1)';
+      ctx.strokeStyle = 'rgba(124,58,237,0.12)';
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.stroke();
@@ -347,8 +347,8 @@ function drawRadar() {
 
     // Filled area
     const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
-    gradient.addColorStop(0, 'rgba(56,189,248,0.28)');
-    gradient.addColorStop(1, 'rgba(14,165,233,0.06)');
+    gradient.addColorStop(0, 'rgba(124,58,237,0.3)');
+    gradient.addColorStop(1, 'rgba(57,211,83,0.06)');
 
     ctx.beginPath();
     skills.forEach((s, i) => {
@@ -358,7 +358,7 @@ function drawRadar() {
     ctx.closePath();
     ctx.fillStyle = gradient;
     ctx.fill();
-    ctx.strokeStyle = 'rgba(56,189,248,0.8)';
+    ctx.strokeStyle = 'rgba(167,139,250,0.85)';
     ctx.lineWidth = 2;
     ctx.stroke();
 
@@ -368,12 +368,12 @@ function drawRadar() {
       // Glow
       ctx.beginPath();
       ctx.arc(pt.x, pt.y, 8, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(56,189,248,0.15)';
+      ctx.fillStyle = 'rgba(124,58,237,0.2)';
       ctx.fill();
       // Dot
       ctx.beginPath();
       ctx.arc(pt.x, pt.y, 4.5, 0, Math.PI * 2);
-      ctx.fillStyle = '#38bdf8';
+      ctx.fillStyle = '#a78bfa';
       ctx.fill();
       ctx.strokeStyle = 'rgba(255,255,255,0.5)';
       ctx.lineWidth = 1;
@@ -381,11 +381,11 @@ function drawRadar() {
     });
 
     // Labels
-    ctx.font = '700 12px Syne, sans-serif';
+    ctx.font = '600 12px \'Clash Display\', sans-serif';
     skills.forEach((s, i) => {
       const pt = getPoint(i, 1.25);
       const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-      ctx.fillStyle = isDark ? '#6b8aaa' : '#3a5470';
+      ctx.fillStyle = isDark ? '#8b90b8' : '#4a4272';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(s.label, pt.x, pt.y);
