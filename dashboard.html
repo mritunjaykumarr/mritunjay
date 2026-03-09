@@ -506,7 +506,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://w
 
 // Load config — now guaranteed to be available
 const cfg = window.FIREBASE_CONFIG;
-let db, storage, app;
+let db, app;  // storage removed - using Cloudinary instead
 
 const isConfigured = cfg && cfg.apiKey && cfg.apiKey !== 'YOUR_API_KEY' && cfg.projectId && cfg.projectId !== 'YOUR_PROJECT_ID';
 
@@ -514,9 +514,8 @@ try {
   if(!isConfigured) throw new Error('Firebase config not filled in');
   app = initializeApp(cfg);
   db = getFirestore(app);
-  storage = getStorage(app);
+  // Note: Firebase Storage removed — images now served via Cloudinary (25GB free)
   window._db = db;
-  window._storage = storage;
   window._fs = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp };
   console.log("✅ Firebase connected — posts will save to Firestore");
 } catch(e) {
@@ -627,21 +626,61 @@ async function deleteFromStore(id) {
   }
 }
 
-/* ===== STORAGE UPLOAD ===== */
-async function uploadCover(file, progressBar, progressFill) {
-  if (!useFirebase || !window._storage) return null;
-  const { ref, uploadBytesResumable, getDownloadURL } = window._fs || {};
-  if (!ref) return null;
+/* ===== CLOUDINARY IMAGE UPLOAD ===== */
+// Cloudinary free plan: 25GB storage, 25GB bandwidth/month
+// Setup: https://cloudinary.com → sign up free → copy Cloud Name + Upload Preset
+const CLOUDINARY_CONFIG = {
+  cloudName:     window.CLOUDINARY_CLOUD_NAME    || 'YOUR_CLOUD_NAME',
+  uploadPreset:  window.CLOUDINARY_UPLOAD_PRESET || 'YOUR_UPLOAD_PRESET'
+};
 
+function isCloudinaryConfigured() {
+  return CLOUDINARY_CONFIG.cloudName !== 'YOUR_CLOUD_NAME' &&
+         CLOUDINARY_CONFIG.uploadPreset !== 'YOUR_UPLOAD_PRESET';
+}
+
+async function uploadCover(file, progressBar, progressFill) {
+  // Try Cloudinary first (best option - 25GB free)
+  if (isCloudinaryConfigured()) {
+    return await uploadToCloudinary(file, progressBar, progressFill);
+  }
+  // Fallback: base64 (works always, but larger storage in Firestore)
+  toast('💡 Cloudinary not set up — storing image as base64', 'info');
+  return await toBase64(file);
+}
+
+async function uploadToCloudinary(file, progressBar, progressFill) {
   return new Promise((resolve, reject) => {
-    const storRef = ref(window._storage, `covers/${Date.now()}_${file.name}`);
-    const task = uploadBytesResumable(storRef, file);
-    progressBar.style.display = 'block';
-    task.on('state_changed',
-      snap => { progressFill.style.width = (snap.bytesTransferred / snap.totalBytes * 100) + '%'; },
-      err => { reject(err); },
-      async () => { resolve(await getDownloadURL(task.snapshot.ref)); }
-    );
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+    formData.append('folder', 'blog-covers');
+
+    const xhr = new XMLHttpRequest();
+    const url  = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/image/upload`;
+
+    xhr.open('POST', url, true);
+
+    // Progress bar
+    xhr.upload.onprogress = e => {
+      if (e.lengthComputable) {
+        const pct = Math.round((e.loaded / e.total) * 100);
+        if (progressBar) progressBar.style.display = 'block';
+        if (progressFill) progressFill.style.width = pct + '%';
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const res = JSON.parse(xhr.responseText);
+        resolve(res.secure_url); // HTTPS CDN url
+      } else {
+        reject(new Error('Cloudinary upload failed: ' + xhr.statusText));
+      }
+    };
+
+    xhr.onerror = () => reject(new Error('Network error during upload'));
+    xhr.send(formData);
   });
 }
 
@@ -740,15 +779,10 @@ async function submitPost(id, status) {
   try {
     let coverUrl = null;
     if (pendingFile[id]) {
-      if (useFirebase) {
-        const pb = document.getElementById('up_'+id);
-        const pf = document.getElementById('upf_'+id);
-        toast('Uploading image…','info');
-        coverUrl = await uploadCover(pendingFile[id], pb, pf);
-      } else {
-        // Convert to base64 for local storage
-        coverUrl = await toBase64(pendingFile[id]);
-      }
+      const pb = document.getElementById('up_'+id);
+      const pf = document.getElementById('upf_'+id);
+      toast('⬆️ Uploading image…','info');
+      coverUrl = await uploadCover(pendingFile[id], pb, pf);
     } else {
       // Keep existing cover if editing
       if (editId) coverUrl = posts.find(p=>p.id===editId)?.cover || null;
