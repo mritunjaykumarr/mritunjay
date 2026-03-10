@@ -445,3 +445,46 @@ contactForm.addEventListener('submit', async e => {
     submitBtn.disabled = false;
   }
 });
+
+/* ══════════════════════════════════════
+   PRICING TOGGLE
+══════════════════════════════════════ */
+let pricingRetainer = false;
+
+function togglePricing() {
+  pricingRetainer = !pricingRetainer;
+  const toggle = document.getElementById('pricingToggle');
+  const monthlyLabel = document.getElementById('toggleMonthly');
+  const retainerLabel = document.getElementById('toggleRetainer');
+
+  toggle.classList.toggle('on', pricingRetainer);
+  monthlyLabel.classList.toggle('active-label', !pricingRetainer);
+  retainerLabel.classList.toggle('active-label', pricingRetainer);
+
+  // Animate price change
+  document.querySelectorAll('.pricing-price').forEach(el => {
+    el.style.transform = 'scale(0.85)';
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = pricingRetainer ? el.dataset.retainer : el.dataset.project;
+      el.style.transform = 'scale(1)';
+      el.style.opacity = '1';
+      el.style.transition = 'all 0.3s cubic-bezier(0.4,0,0.2,1)';
+    }, 180);
+  });
+
+  // Toggle period labels
+  document.querySelectorAll('.project-period').forEach(el => {
+    el.style.display = pricingRetainer ? 'none' : 'block';
+  });
+  document.querySelectorAll('.retainer-period').forEach(el => {
+    el.style.display = pricingRetainer ? 'block' : 'none';
+  });
+}
+window.togglePricing = togglePricing;
+
+// Init label state
+document.addEventListener('DOMContentLoaded', () => {
+  const ml = document.getElementById('toggleMonthly');
+  if (ml) ml.classList.add('active-label');
+});
