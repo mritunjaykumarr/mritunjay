@@ -38,7 +38,8 @@
           <li><a href="#certifications" class="nav-link"><span>05</span>Certs</a></li>
           <li><a href="#skills" class="nav-link"><span>06</span>Skills</a></li>
           <li><a href="#blog" class="nav-link"><span>07</span>Blog</a></li>
-          <li><a href="#contact" class="nav-link"><span>08</span>Contact</a></li>
+          <li><a href="#pricing" class="nav-link"><span>08</span>Pricing</a></li>
+          <li><a href="#contact" class="nav-link"><span>09</span>Contact</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -64,7 +65,8 @@
         <li><a href="#certifications" class="mob-link">Certifications</a></li>
         <li><a href="#skills" class="mob-link">Skills</a></li>
         <li><a href="#blog" class="mob-link">Blog</a></li>
-        <li><a href="#contact" class="mob-link">Contact</a></li>
+        <li><a href="#pricing" class="mob-link">Pricing</a>
+          <a href="#contact" class="mob-link">Contact</a></li>
       </ul>
     </div>
   </header>
@@ -507,9 +509,150 @@
       </div>
     </section>
 
+    <!-- PRICING -->
+    <section id="pricing" class="section pricing-section">
+      <div class="section-label">08 / Pricing</div>
+      <div class="container">
+        <h2 class="section-title reveal">Hire Me — <span class="accent">Pricing</span></h2>
+        <p class="pricing-sub reveal">Transparent pricing for freelance work. Pick a plan, place your order, and let's build something great together.</p>
+
+        <!-- Toggle -->
+        <div class="pricing-toggle-wrap reveal">
+          <span class="pricing-toggle-label" id="toggleMonthly">Project</span>
+          <button class="pricing-toggle" id="pricingToggle" onclick="togglePricing()" aria-label="Toggle billing">
+            <span class="pricing-toggle-knob"></span>
+          </button>
+          <span class="pricing-toggle-label" id="toggleRetainer">Monthly Retainer</span>
+          <span class="pricing-save-badge">Save 20%</span>
+        </div>
+
+        <!-- Cards -->
+        <div class="pricing-grid reveal">
+
+          <!-- STARTER -->
+          <div class="pricing-card">
+            <div class="pricing-card-header">
+              <div class="pricing-icon"><i class="fa-solid fa-seedling"></i></div>
+              <div>
+                <div class="pricing-plan">Starter</div>
+                <div class="pricing-desc">Perfect for landing pages & simple sites</div>
+              </div>
+            </div>
+            <div class="pricing-price-wrap">
+              <div class="pricing-price" data-project="₹4,999" data-retainer="₹3,999">₹4,999</div>
+              <div class="pricing-period project-period">/ project</div>
+              <div class="pricing-period retainer-period" style="display:none">/ month</div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> 1–3 Page Website</li>
+              <li><i class="fa-solid fa-check"></i> Responsive Design</li>
+              <li><i class="fa-solid fa-check"></i> Contact Form</li>
+              <li><i class="fa-solid fa-check"></i> Basic SEO Setup</li>
+              <li><i class="fa-solid fa-check"></i> 7-Day Delivery</li>
+              <li><i class="fa-solid fa-check"></i> 1 Revision Round</li>
+              <li class="pricing-feature-off"><i class="fa-solid fa-xmark"></i> Backend / Database</li>
+              <li class="pricing-feature-off"><i class="fa-solid fa-xmark"></i> Admin Dashboard</li>
+            </ul>
+            <a href="PASTE_YOUR_RAZORPAY_LINK_HERE" target="_blank" class="pricing-btn" data-plan="Starter">
+              <span>Order Now</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <div class="pricing-secure"><i class="fa-brands fa-razorpay"></i> Secure checkout via Razorpay</div>
+          </div>
+
+          <!-- PRO (most popular) -->
+          <div class="pricing-card pricing-card-popular">
+            <div class="pricing-popular-badge"><i class="fa-solid fa-star"></i> Most Popular</div>
+            <div class="pricing-card-header">
+              <div class="pricing-icon pricing-icon-popular"><i class="fa-solid fa-rocket"></i></div>
+              <div>
+                <div class="pricing-plan">Pro</div>
+                <div class="pricing-desc">Full-stack web app with backend</div>
+              </div>
+            </div>
+            <div class="pricing-price-wrap">
+              <div class="pricing-price" data-project="₹14,999" data-retainer="₹11,999">₹14,999</div>
+              <div class="pricing-period project-period">/ project</div>
+              <div class="pricing-period retainer-period" style="display:none">/ month</div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> Up to 10 Pages</li>
+              <li><i class="fa-solid fa-check"></i> React / Next.js Frontend</li>
+              <li><i class="fa-solid fa-check"></i> Node.js + Firebase Backend</li>
+              <li><i class="fa-solid fa-check"></i> Auth & Database</li>
+              <li><i class="fa-solid fa-check"></i> Admin Dashboard</li>
+              <li><i class="fa-solid fa-check"></i> 14-Day Delivery</li>
+              <li><i class="fa-solid fa-check"></i> 3 Revision Rounds</li>
+              <li><i class="fa-solid fa-check"></i> 1 Month Free Support</li>
+            </ul>
+            <a href="PASTE_YOUR_RAZORPAY_LINK_HERE" target="_blank" class="pricing-btn pricing-btn-popular">
+              <span>Order Now</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <div class="pricing-secure"><i class="fa-brands fa-razorpay"></i> Secure checkout via Razorpay</div>
+          </div>
+
+          <!-- ELITE -->
+          <div class="pricing-card">
+            <div class="pricing-card-header">
+              <div class="pricing-icon pricing-icon-elite"><i class="fa-solid fa-crown"></i></div>
+              <div>
+                <div class="pricing-plan">Elite</div>
+                <div class="pricing-desc">Custom enterprise-grade solution</div>
+              </div>
+            </div>
+            <div class="pricing-price-wrap">
+              <div class="pricing-price" data-project="₹29,999" data-retainer="₹23,999">₹29,999</div>
+              <div class="pricing-period project-period">/ project</div>
+              <div class="pricing-period retainer-period" style="display:none">/ month</div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> Unlimited Pages</li>
+              <li><i class="fa-solid fa-check"></i> Custom UI/UX Design</li>
+              <li><i class="fa-solid fa-check"></i> Full-Stack Architecture</li>
+              <li><i class="fa-solid fa-check"></i> Payment Integration</li>
+              <li><i class="fa-solid fa-check"></i> AI / API Integration</li>
+              <li><i class="fa-solid fa-check"></i> Deployment + CI/CD</li>
+              <li><i class="fa-solid fa-check"></i> Unlimited Revisions</li>
+              <li><i class="fa-solid fa-check"></i> 3 Months Free Support</li>
+            </ul>
+            <a href="PASTE_YOUR_RAZORPAY_LINK_HERE" target="_blank" class="pricing-btn pricing-btn-elite">
+              <span>Order Now</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <div class="pricing-secure"><i class="fa-brands fa-razorpay"></i> Secure checkout via Razorpay</div>
+          </div>
+
+        </div><!-- /pricing-grid -->
+
+        <!-- Trust bar -->
+        <div class="pricing-trust reveal">
+          <div class="pricing-trust-item"><i class="fa-solid fa-shield-halved"></i><span>100% Secure Payment</span></div>
+          <div class="pricing-trust-sep"></div>
+          <div class="pricing-trust-item"><i class="fa-solid fa-rotate-left"></i><span>Revision Guarantee</span></div>
+          <div class="pricing-trust-sep"></div>
+          <div class="pricing-trust-item"><i class="fa-solid fa-headset"></i><span>Dedicated Support</span></div>
+          <div class="pricing-trust-sep"></div>
+          <div class="pricing-trust-item"><i class="fa-solid fa-clock"></i><span>On-Time Delivery</span></div>
+          <div class="pricing-trust-sep"></div>
+          <div class="pricing-trust-item"><i class="fa-solid fa-indian-rupee-sign"></i><span>INR Payments Accepted</span></div>
+        </div>
+
+        <!-- Custom project CTA -->
+        <div class="pricing-custom reveal">
+          <div class="pricing-custom-text">
+            <div class="pricing-custom-title">Need something custom?</div>
+            <div class="pricing-custom-sub">Got a unique idea? Let's talk scope, timeline, and budget — I'll build exactly what you need.</div>
+          </div>
+          <a href="#contact" class="btn btn-primary"><span>Let's Discuss</span><i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+      </div>
+    </section>
+
     <!-- CONTACT -->
     <section id="contact" class="section contact">
-      <div class="section-label">08 / Contact</div>
+      <div class="section-label">09 / Contact</div>
       <div class="container">
         <h2 class="section-title reveal">Get In <span class="accent">Touch</span></h2>
         <div class="contact-grid">
@@ -602,6 +745,7 @@
           <a href="#certifications"class="footer-col-link"><i class="fa-solid fa-certificate"></i> Certifications</a>
           <a href="#skills"        class="footer-col-link"><i class="fa-solid fa-wrench"></i> Skills</a>
           <a href="#blog"          class="footer-col-link"><i class="fa-solid fa-pen-nib"></i> Blog</a>
+          <a href="#pricing"      class="footer-col-link"><i class="fa-solid fa-tag"></i> Pricing</a>
           <a href="#contact"       class="footer-col-link"><i class="fa-solid fa-envelope"></i> Contact</a>
         </div>
       </div>
