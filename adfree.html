@@ -1013,41 +1013,81 @@
    (open-source YouTube proxy, no key)
 ══════════════════════════════════════ */
 
-// Invidious instances (fallback list)
-const INVIDIOUS_INSTANCES = [
-  'https://iv.datura.network',
-  'https://invidious.nerdvpn.de',
-  'https://invidious.privacyredirect.com',
-  'https://yt.cdaut.de',
-];
-let currentInstance = 0;
+/* ══════════════════════════════════════
+   SEARCH ENGINE v2
+   Uses YouTube RSS feed via allorigins
+   CORS proxy — no API key, works from
+   any domain including Vercel.
+══════════════════════════════════════ */
+
 let searchQuery = '';
-let searchPage = 1;
-const PAGE_SIZE = 20;
-let allResults = [];
-let isSearching = false;
+let searchOffset = 0;
+let allResults   = [];
+let isSearching  = false;
 
-function getInvidiousBase() {
-  return INVIDIOUS_INSTANCES[currentInstance % INVIDIOUS_INSTANCES.length];
-}
+/* We use two CORS proxies as fallback */
+const CORS_PROXIES = [
+  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://thingproxy.freeboard.io/fetch/${url}`,
+];
 
-async function fetchSearch(query, page = 1) {
-  const params = new URLSearchParams({
-    q: query,
-    page,
-    sort_by: 'relevance',
-    type: 'video',
-  });
-  // Try each instance
-  for (let i = 0; i < INVIDIOUS_INSTANCES.length; i++) {
-    const base = INVIDIOUS_INSTANCES[(currentInstance + i) % INVIDIOUS_INSTANCES.length];
+/* YouTube search via scraping the RSS / suggest endpoint */
+async function fetchSearch(query, startIdx = 0) {
+  /* YouTube's hidden search suggestion XML — returns video IDs */
+  /* We use the YouTube search page via CORS proxy and parse video IDs */
+  const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgIQAQ%3D%3D`;
+
+  for (const makeProxy of CORS_PROXIES) {
     try {
-      const r = await fetch(`${base}/api/v1/search?${params}`, { signal: AbortSignal.timeout(6000) });
-      if (r.ok) {
-        currentInstance = (currentInstance + i) % INVIDIOUS_INSTANCES.length;
-        return await r.json();
+      const proxyUrl = makeProxy(ytSearchUrl);
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(10000) });
+      if (!res.ok) continue;
+
+      let text = '';
+      const ct = res.headers.get('content-type') || '';
+      if (ct.includes('application/json')) {
+        const json = await res.json();
+        text = json.contents || json.body || '';
+      } else {
+        text = await res.text();
+        /* allorigins wraps in JSON */
+        try { const j = JSON.parse(text); text = j.contents || j.body || text; } catch {}
       }
-    } catch {}
+
+      /* Extract video IDs from YouTube HTML */
+      const idMatches = [...text.matchAll(/"videoId":"([a-zA-Z0-9_-]{11})"/g)];
+      if (!idMatches.length) continue;
+
+      /* Extract titles alongside IDs */
+      const titleMatches = [...text.matchAll(/"title":\{"runs":\[\{"text":"([^"]+)"\}\]/g)];
+      const channelMatches = [...text.matchAll(/"ownerText":\{"runs":\[\{"text":"([^"]+)"/g)];
+      const viewMatches = [...text.matchAll(/"viewCountText":\{"simpleText":"([^"]+)"/g)];
+      const durationMatches = [...text.matchAll(/"lengthText":\{"accessibility":[^}]+\},"simpleText":"([^"]+)"/g)];
+      const publishMatches = [...text.matchAll(/"publishedTimeText":\{"simpleText":"([^"]+)"/g)];
+
+      /* De-duplicate IDs */
+      const seen = new Set();
+      const videos = [];
+      idMatches.forEach((m, i) => {
+        const id = m[1];
+        if (seen.has(id)) return;
+        seen.add(id);
+        videos.push({
+          videoId:  id,
+          title:    titleMatches[videos.length]?.[1]   || 'YouTube Video',
+          channel:  channelMatches[videos.length]?.[1] || '',
+          views:    viewMatches[videos.length]?.[1]    || '',
+          duration: durationMatches[videos.length]?.[1]|| '',
+          published:publishMatches[videos.length]?.[1] || '',
+        });
+      });
+
+      /* Slice for pagination (20 per page) */
+      const page = videos.slice(startIdx, startIdx + 20);
+      return page.length ? page : null;
+
+    } catch (e) { continue; }
   }
   return null;
 }
@@ -1056,63 +1096,69 @@ async function doSearch(query, chipEl) {
   query = (query || '').trim();
   if (!query) return;
 
-  // Update header input
   const input = document.getElementById('headerSearchInput');
   if (input && input.value !== query) input.value = query;
 
-  // Chip highlight
   if (chipEl) {
     document.querySelectorAll('.yt-chip').forEach(c => c.classList.remove('active'));
     chipEl.classList.add('active');
   }
 
-  // Close suggestions
   closeSuggestions();
 
   searchQuery = query;
-  searchPage = 1;
-  allResults = [];
-  isSearching = true;
+  searchOffset = 0;
+  allResults   = [];
+  isSearching  = true;
 
-  // Show search panel, hide loader/empty/results
   document.getElementById('searchPanel').style.display = 'block';
   document.getElementById('searchPanelTitle').textContent = `Results for "${query}"`;
   document.getElementById('searchResultsGrid').innerHTML = '';
   document.getElementById('searchLoading').style.display = 'flex';
-  document.getElementById('searchEmpty').style.display = 'none';
+  document.getElementById('searchEmpty').style.display   = 'none';
+  document.getElementById('searchEmpty').innerHTML = `
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <strong>No results found</strong>
+    <span>Try a different search term</span>`;
   document.getElementById('searchLoadMore').style.display = 'none';
 
-  const results = await fetchSearch(query, 1);
+  const results = await fetchSearch(query, 0);
   isSearching = false;
   document.getElementById('searchLoading').style.display = 'none';
 
-  if (!results || results.length === 0) {
+  if (!results || !results.length) {
     document.getElementById('searchEmpty').style.display = 'flex';
+    /* Show a helpful note about CORS proxy */
+    document.getElementById('searchEmpty').innerHTML = `
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <strong>Search unavailable right now</strong>
+      <span>The proxy service is temporarily down. Please paste a YouTube link directly in the player below to watch ad-free.</span>
+    `;
     return;
   }
 
-  allResults = results.filter(r => r.type === 'video' || r.videoId);
+  allResults = results;
   renderResults(allResults);
-  document.getElementById('searchLoadMore').style.display = allResults.length >= PAGE_SIZE ? 'block' : 'none';
+  searchOffset = allResults.length;
+  document.getElementById('searchLoadMore').style.display = results.length >= 20 ? 'block' : 'none';
 }
 window.doSearch = doSearch;
 
 async function loadMoreResults() {
   if (isSearching) return;
-  searchPage++;
   isSearching = true;
   document.getElementById('searchLoadMore').style.display = 'none';
   document.getElementById('searchLoading').style.display = 'flex';
 
-  const results = await fetchSearch(searchQuery, searchPage);
+  const results = await fetchSearch(searchQuery, searchOffset);
   isSearching = false;
   document.getElementById('searchLoading').style.display = 'none';
 
-  if (results && results.length > 0) {
-    const videos = results.filter(r => r.type === 'video' || r.videoId);
-    allResults = [...allResults, ...videos];
-    renderResults(videos, true);
-    document.getElementById('searchLoadMore').style.display = videos.length >= PAGE_SIZE ? 'block' : 'none';
+  if (results && results.length) {
+    allResults = [...allResults, ...results];
+    renderResults(results, true);
+    searchOffset += results.length;
+    document.getElementById('searchLoadMore').style.display = results.length >= 20 ? 'block' : 'none';
   }
 }
 window.loadMoreResults = loadMoreResults;
@@ -1124,12 +1170,13 @@ function renderResults(videos, append = false) {
   videos.forEach(v => {
     const id = v.videoId;
     if (!id) return;
+    /* Support both Invidious shape (old) and our new scrape shape */
     const thumb = v.videoThumbnails?.[1]?.url || v.videoThumbnails?.[0]?.url || `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
     const title = v.title || 'Untitled';
-    const channel = v.author || '';
-    const views = v.viewCount ? formatViews(v.viewCount) + ' views' : '';
-    const published = v.publishedText || '';
-    const duration = v.lengthSeconds ? formatDuration(v.lengthSeconds) : '';
+    const channel = v.channel || v.author || '';
+    const views = v.views || (v.viewCount ? formatViews(v.viewCount) + ' views' : '');
+    const published = v.published || v.publishedText || '';
+    const duration = v.duration || (v.lengthSeconds ? formatDuration(v.lengthSeconds) : '');
 
     const card = document.createElement('div');
     card.className = 'yt-result-card';
