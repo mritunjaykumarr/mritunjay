@@ -580,6 +580,153 @@
       .yt-play-btn, .yt-clear-btn { width: 100%; justify-content: center; }
       .yt-chips { display: none; }
     }
+
+    /* ═══════════════════════════════
+       SEARCH RESULTS
+    ═══════════════════════════════ */
+    .yt-search-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+    }
+    .yt-search-panel-title {
+      font-size: 1rem; font-weight: 600; color: var(--text);
+    }
+    .yt-search-panel-close {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; font-weight: 500; color: var(--text-muted);
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius-pill); padding: 6px 14px;
+      cursor: pointer; transition: all var(--tr);
+    }
+    .yt-search-panel-close:hover { background: var(--bg4); color: var(--text); }
+
+    /* Results grid */
+    .yt-results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    /* Result card */
+    .yt-result-card {
+      cursor: pointer; border-radius: var(--radius);
+      overflow: hidden; background: transparent;
+      transition: background var(--tr), transform var(--tr);
+      position: relative;
+    }
+    .yt-result-card:hover { background: var(--bg2); transform: translateY(-2px); }
+    .yt-result-thumb-wrap {
+      position: relative; aspect-ratio: 16/9;
+      border-radius: var(--radius); overflow: hidden;
+      background: var(--bg3); margin-bottom: 10px;
+    }
+    .yt-result-thumb {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.35s var(--tr);
+    }
+    .yt-result-card:hover .yt-result-thumb { transform: scale(1.03); }
+    .yt-result-thumb-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0);
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--tr);
+    }
+    .yt-result-card:hover .yt-result-thumb-overlay { background: rgba(0,0,0,0.35); }
+    .yt-result-play-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: #000;
+      opacity: 0; transform: scale(0.8);
+      transition: opacity var(--tr), transform var(--tr);
+    }
+    .yt-result-card:hover .yt-result-play-btn { opacity: 1; transform: scale(1); }
+    .yt-result-duration {
+      position: absolute; bottom: 6px; right: 6px;
+      background: rgba(0,0,0,0.85); color: #fff;
+      font-size: 0.68rem; font-weight: 600; padding: 2px 6px;
+      border-radius: 4px; letter-spacing: 0.03em;
+    }
+    .yt-result-info { padding: 0 4px 8px; }
+    .yt-result-title {
+      font-size: 0.82rem; font-weight: 500; color: var(--text);
+      line-height: 1.35; margin-bottom: 5px;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .yt-result-meta {
+      font-size: 0.72rem; color: var(--text-dim); line-height: 1.4;
+    }
+    .yt-result-channel {
+      font-weight: 500; color: var(--text-muted);
+      display: block; margin-bottom: 2px;
+    }
+
+    /* Loading / empty */
+    .yt-search-loading {
+      padding: 40px 0; display: flex; justify-content: center;
+    }
+    .yt-search-spinner-row {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 0.85rem; color: var(--text-muted);
+    }
+    .yt-search-empty {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px; padding: 60px 20px; text-align: center;
+    }
+    .yt-search-empty i { font-size: 2.5rem; color: var(--bg4); }
+    .yt-search-empty strong { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
+    .yt-search-empty span { font-size: 0.8rem; color: var(--text-dim); }
+
+    /* Load more */
+    .yt-load-more-wrap { text-align: center; padding: 8px 0 24px; }
+    .yt-load-more-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 22px; border-radius: var(--radius-pill);
+      background: var(--bg3); border: 1px solid var(--border);
+      font-size: 0.82rem; font-weight: 500; color: var(--text);
+      cursor: pointer; transition: all var(--tr);
+    }
+    .yt-load-more-btn:hover { background: var(--bg4); }
+
+    /* ── Autocomplete suggestions ── */
+    .yt-suggestions {
+      position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); overflow: hidden;
+      z-index: 300; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      display: none;
+    }
+    .yt-suggestions.open { display: block; }
+    .yt-sug-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px; cursor: pointer;
+      font-size: 0.85rem; color: var(--text);
+      transition: background var(--tr);
+    }
+    .yt-sug-item:hover { background: var(--bg3); }
+    .yt-sug-item i { color: var(--text-dim); font-size: 0.75rem; width: 14px; text-align: center; }
+
+    /* Position search wrap relative for dropdown */
+    #headerSearchWrap { position: relative; }
+
+    /* "Now playing" highlight on result card */
+    .yt-result-card.now-playing .yt-result-thumb-wrap::after {
+      content: '▶ PLAYING';
+      position: absolute; top: 8px; left: 8px;
+      background: var(--yt-red); color: #fff;
+      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em;
+      padding: 3px 8px; border-radius: 3px;
+    }
+    .yt-result-card.now-playing { outline: 2px solid var(--yt-red); outline-offset: 2px; }
+
+    @media (max-width: 620px) {
+      .yt-results-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    }
+    @media (max-width: 400px) {
+      .yt-results-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -602,11 +749,18 @@
   </div>
 
   <div class="yt-header-center">
-    <div class="yt-search-wrap">
-      <input class="yt-search-input" type="text" placeholder="Search YouTube (coming soon)" disabled />
+    <div class="yt-search-wrap" id="headerSearchWrap">
+      <input class="yt-search-input" type="text" id="headerSearchInput"
+        placeholder="Search videos…"
+        autocomplete="off"
+        onkeydown="if(event.key==='Enter') doSearch(this.value)" />
     </div>
-    <button class="yt-search-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
-    <button class="yt-mic-btn" aria-label="Voice search"><i class="fa-solid fa-microphone"></i></button>
+    <button class="yt-search-btn" aria-label="Search" onclick="doSearch(document.getElementById('headerSearchInput').value)">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <button class="yt-mic-btn" aria-label="Voice search" onclick="startVoiceSearch()">
+      <i class="fa-solid fa-microphone" id="micIcon"></i>
+    </button>
   </div>
 
   <div class="yt-header-right">
@@ -671,15 +825,42 @@
   <main class="yt-main">
 
     <!-- Filter chips -->
-    <div class="yt-chips">
-      <button class="yt-chip active">All</button>
-      <button class="yt-chip">Music</button>
-      <button class="yt-chip">Gaming</button>
-      <button class="yt-chip">Tech</button>
-      <button class="yt-chip">Movies</button>
-      <button class="yt-chip">News</button>
-      <button class="yt-chip">Sports</button>
-      <button class="yt-chip">Education</button>
+    <div class="yt-chips" id="chipsRow">
+      <button class="yt-chip active" onclick="doSearch(this.textContent==='All'?'trending':this.textContent, this)">All</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Music</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Gaming</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Tech</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Movies</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">News</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Sports</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Education</button>
+    </div>
+
+    <!-- ═══ SEARCH RESULTS PANEL (hidden by default) ═══ -->
+    <div id="searchPanel" style="display:none">
+      <div class="yt-search-panel-header">
+        <span id="searchPanelTitle" class="yt-search-panel-title"></span>
+        <button class="yt-search-panel-close" onclick="closeSearch()">
+          <i class="fa-solid fa-xmark"></i> Close Results
+        </button>
+      </div>
+      <div id="searchResultsGrid" class="yt-results-grid"></div>
+      <div id="searchLoading" class="yt-search-loading" style="display:none">
+        <div class="yt-search-spinner-row">
+          <div class="yt-spinner"></div>
+          <span>Searching…</span>
+        </div>
+      </div>
+      <div id="searchEmpty" class="yt-search-empty" style="display:none">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <strong>No results found</strong>
+        <span>Try a different search term</span>
+      </div>
+      <div id="searchLoadMore" class="yt-load-more-wrap" style="display:none">
+        <button class="yt-load-more-btn" onclick="loadMoreResults()">
+          <i class="fa-solid fa-rotate-right"></i> Load More
+        </button>
+      </div>
     </div>
 
     <div class="yt-player-section">
@@ -826,6 +1007,266 @@
 
 <script>
 'use strict';
+
+/* ══════════════════════════════════════
+   SEARCH ENGINE — Uses Invidious API
+   (open-source YouTube proxy, no key)
+══════════════════════════════════════ */
+
+// Invidious instances (fallback list)
+const INVIDIOUS_INSTANCES = [
+  'https://iv.datura.network',
+  'https://invidious.nerdvpn.de',
+  'https://invidious.privacyredirect.com',
+  'https://yt.cdaut.de',
+];
+let currentInstance = 0;
+let searchQuery = '';
+let searchPage = 1;
+const PAGE_SIZE = 20;
+let allResults = [];
+let isSearching = false;
+
+function getInvidiousBase() {
+  return INVIDIOUS_INSTANCES[currentInstance % INVIDIOUS_INSTANCES.length];
+}
+
+async function fetchSearch(query, page = 1) {
+  const params = new URLSearchParams({
+    q: query,
+    page,
+    sort_by: 'relevance',
+    type: 'video',
+  });
+  // Try each instance
+  for (let i = 0; i < INVIDIOUS_INSTANCES.length; i++) {
+    const base = INVIDIOUS_INSTANCES[(currentInstance + i) % INVIDIOUS_INSTANCES.length];
+    try {
+      const r = await fetch(`${base}/api/v1/search?${params}`, { signal: AbortSignal.timeout(6000) });
+      if (r.ok) {
+        currentInstance = (currentInstance + i) % INVIDIOUS_INSTANCES.length;
+        return await r.json();
+      }
+    } catch {}
+  }
+  return null;
+}
+
+async function doSearch(query, chipEl) {
+  query = (query || '').trim();
+  if (!query) return;
+
+  // Update header input
+  const input = document.getElementById('headerSearchInput');
+  if (input && input.value !== query) input.value = query;
+
+  // Chip highlight
+  if (chipEl) {
+    document.querySelectorAll('.yt-chip').forEach(c => c.classList.remove('active'));
+    chipEl.classList.add('active');
+  }
+
+  // Close suggestions
+  closeSuggestions();
+
+  searchQuery = query;
+  searchPage = 1;
+  allResults = [];
+  isSearching = true;
+
+  // Show search panel, hide loader/empty/results
+  document.getElementById('searchPanel').style.display = 'block';
+  document.getElementById('searchPanelTitle').textContent = `Results for "${query}"`;
+  document.getElementById('searchResultsGrid').innerHTML = '';
+  document.getElementById('searchLoading').style.display = 'flex';
+  document.getElementById('searchEmpty').style.display = 'none';
+  document.getElementById('searchLoadMore').style.display = 'none';
+
+  const results = await fetchSearch(query, 1);
+  isSearching = false;
+  document.getElementById('searchLoading').style.display = 'none';
+
+  if (!results || results.length === 0) {
+    document.getElementById('searchEmpty').style.display = 'flex';
+    return;
+  }
+
+  allResults = results.filter(r => r.type === 'video' || r.videoId);
+  renderResults(allResults);
+  document.getElementById('searchLoadMore').style.display = allResults.length >= PAGE_SIZE ? 'block' : 'none';
+}
+window.doSearch = doSearch;
+
+async function loadMoreResults() {
+  if (isSearching) return;
+  searchPage++;
+  isSearching = true;
+  document.getElementById('searchLoadMore').style.display = 'none';
+  document.getElementById('searchLoading').style.display = 'flex';
+
+  const results = await fetchSearch(searchQuery, searchPage);
+  isSearching = false;
+  document.getElementById('searchLoading').style.display = 'none';
+
+  if (results && results.length > 0) {
+    const videos = results.filter(r => r.type === 'video' || r.videoId);
+    allResults = [...allResults, ...videos];
+    renderResults(videos, true);
+    document.getElementById('searchLoadMore').style.display = videos.length >= PAGE_SIZE ? 'block' : 'none';
+  }
+}
+window.loadMoreResults = loadMoreResults;
+
+function renderResults(videos, append = false) {
+  const grid = document.getElementById('searchResultsGrid');
+  const fragment = document.createDocumentFragment();
+
+  videos.forEach(v => {
+    const id = v.videoId;
+    if (!id) return;
+    const thumb = v.videoThumbnails?.[1]?.url || v.videoThumbnails?.[0]?.url || `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+    const title = v.title || 'Untitled';
+    const channel = v.author || '';
+    const views = v.viewCount ? formatViews(v.viewCount) + ' views' : '';
+    const published = v.publishedText || '';
+    const duration = v.lengthSeconds ? formatDuration(v.lengthSeconds) : '';
+
+    const card = document.createElement('div');
+    card.className = 'yt-result-card';
+    card.dataset.id = id;
+    card.innerHTML = `
+      <div class="yt-result-thumb-wrap">
+        <img class="yt-result-thumb" src="${thumb}" alt="${escHtml(title)}" loading="lazy"
+          onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'" />
+        <div class="yt-result-thumb-overlay">
+          <div class="yt-result-play-btn"><i class="fa-solid fa-play" style="margin-left:3px"></i></div>
+        </div>
+        ${duration ? `<span class="yt-result-duration">${duration}</span>` : ''}
+      </div>
+      <div class="yt-result-info">
+        <div class="yt-result-title">${escHtml(title)}</div>
+        <div class="yt-result-meta">
+          ${channel ? `<span class="yt-result-channel">${escHtml(channel)}</span>` : ''}
+          <span>${[views, published].filter(Boolean).join(' · ')}</span>
+        </div>
+      </div>`;
+
+    card.addEventListener('click', () => playFromSearch(id, title, card));
+    fragment.appendChild(card);
+  });
+
+  if (!append) grid.innerHTML = '';
+  grid.appendChild(fragment);
+}
+
+function playFromSearch(id, title, cardEl) {
+  // Highlight card
+  document.querySelectorAll('.yt-result-card').forEach(c => c.classList.remove('now-playing'));
+  if (cardEl) cardEl.classList.add('now-playing');
+
+  // Set URL input
+  const url = `https://www.youtube.com/watch?v=${id}`;
+  document.getElementById('videoUrl').value = url;
+
+  // Load player
+  loadVideo();
+
+  // Scroll to player smoothly
+  document.querySelector('.yt-primary')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+window.playFromSearch = playFromSearch;
+
+function closeSearch() {
+  document.getElementById('searchPanel').style.display = 'none';
+  document.querySelectorAll('.yt-chip').forEach((c,i) => c.classList.toggle('active', i===0));
+}
+window.closeSearch = closeSearch;
+
+/* ── Autocomplete via suggestions (local trending) ── */
+const TRENDING_SUGGESTIONS = [
+  'Lo-fi hip hop', 'Gaming highlights 2024', 'Tech review', 'Coding tutorial',
+  'Music mix', 'Movie trailers 2025', 'Cricket highlights', 'IPL 2025',
+  'India news today', 'Bollywood songs', 'React JS tutorial', 'Node.js beginner',
+  'Python programming', 'AI tools 2025', 'Motivational speech', 'Stand up comedy India',
+];
+let suggestionsEl = null;
+
+function createSuggestionsEl() {
+  suggestionsEl = document.createElement('div');
+  suggestionsEl.className = 'yt-suggestions';
+  suggestionsEl.id = 'headerSuggestions';
+  document.getElementById('headerSearchWrap').appendChild(suggestionsEl);
+}
+
+function showSuggestions(query) {
+  if (!suggestionsEl) createSuggestionsEl();
+  const q = query.toLowerCase().trim();
+  const matches = q
+    ? TRENDING_SUGGESTIONS.filter(s => s.toLowerCase().includes(q)).slice(0, 7)
+    : TRENDING_SUGGESTIONS.slice(0, 6);
+
+  if (matches.length === 0) { closeSuggestions(); return; }
+  suggestionsEl.innerHTML = matches.map(s => `
+    <div class="yt-sug-item" onclick="doSearch('${escHtml(s)}'); document.getElementById('headerSearchInput').value='${escHtml(s)}'">
+      <i class="fa-solid fa-magnifying-glass"></i> ${escHtml(s)}
+    </div>`).join('');
+  suggestionsEl.classList.add('open');
+}
+
+function closeSuggestions() {
+  if (suggestionsEl) suggestionsEl.classList.remove('open');
+}
+
+/* Voice search */
+window.startVoiceSearch = function() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { alert('Voice search not supported in this browser.'); return; }
+  const r = new SR();
+  r.lang = 'en-IN'; r.interimResults = false; r.maxAlternatives = 1;
+  document.getElementById('micIcon').className = 'fa-solid fa-microphone-lines';
+  r.start();
+  r.onresult = e => {
+    const q = e.results[0][0].transcript;
+    document.getElementById('headerSearchInput').value = q;
+    doSearch(q);
+  };
+  r.onend = () => { document.getElementById('micIcon').className = 'fa-solid fa-microphone'; };
+  r.onerror = () => { document.getElementById('micIcon').className = 'fa-solid fa-microphone'; };
+};
+
+/* Search input events */
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('headerSearchInput');
+  if (!input) return;
+  input.addEventListener('input', () => showSuggestions(input.value));
+  input.addEventListener('focus',  () => showSuggestions(input.value));
+  document.addEventListener('click', e => {
+    if (!document.getElementById('headerSearchWrap')?.contains(e.target)) closeSuggestions();
+  });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeSuggestions();
+  });
+});
+
+/* ── Helpers ── */
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function formatViews(n) {
+  if (n >= 1e9) return (n/1e9).toFixed(1)+'B';
+  if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
+  if (n >= 1e3) return (n/1e3).toFixed(0)+'K';
+  return n;
+}
+function formatDuration(s) {
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  if (h) return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  return `${m}:${String(sec).padStart(2,'0')}`;
+}
+
+/* ══════════════════════════════════════
+   ORIGINAL PLAYER LOGIC
+══════════════════════════════════════ */
 
 let currentVideoId = null;
 let currentTab = 'mp4';
