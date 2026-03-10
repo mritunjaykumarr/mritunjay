@@ -1014,82 +1014,68 @@
 ══════════════════════════════════════ */
 
 /* ══════════════════════════════════════
-   SEARCH ENGINE v2
-   Uses YouTube RSS feed via allorigins
-   CORS proxy — no API key, works from
-   any domain including Vercel.
+   SEARCH ENGINE v3 — YouTube Data API v3
+   Free, official, no CORS issues at all.
+   Get your free key at:
+   console.cloud.google.com → YouTube Data API v3
+   Paste it below ↓
 ══════════════════════════════════════ */
 
-let searchQuery = '';
+const YT_API_KEY = 'AIzaSyBnY6hDxR7JSlPefhfhY8V22flAcZZlJ1s'; // ← user must set their own key
+
+let searchQuery  = '';
 let searchOffset = 0;
+let nextPageToken = '';
 let allResults   = [];
 let isSearching  = false;
 
-/* We use two CORS proxies as fallback */
-const CORS_PROXIES = [
-  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-  url => `https://thingproxy.freeboard.io/fetch/${url}`,
-];
-
-/* YouTube search via scraping the RSS / suggest endpoint */
-async function fetchSearch(query, startIdx = 0) {
-  /* YouTube's hidden search suggestion XML — returns video IDs */
-  /* We use the YouTube search page via CORS proxy and parse video IDs */
-  const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgIQAQ%3D%3D`;
-
-  for (const makeProxy of CORS_PROXIES) {
-    try {
-      const proxyUrl = makeProxy(ytSearchUrl);
-      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(10000) });
-      if (!res.ok) continue;
-
-      let text = '';
-      const ct = res.headers.get('content-type') || '';
-      if (ct.includes('application/json')) {
-        const json = await res.json();
-        text = json.contents || json.body || '';
-      } else {
-        text = await res.text();
-        /* allorigins wraps in JSON */
-        try { const j = JSON.parse(text); text = j.contents || j.body || text; } catch {}
-      }
-
-      /* Extract video IDs from YouTube HTML */
-      const idMatches = [...text.matchAll(/"videoId":"([a-zA-Z0-9_-]{11})"/g)];
-      if (!idMatches.length) continue;
-
-      /* Extract titles alongside IDs */
-      const titleMatches = [...text.matchAll(/"title":\{"runs":\[\{"text":"([^"]+)"\}\]/g)];
-      const channelMatches = [...text.matchAll(/"ownerText":\{"runs":\[\{"text":"([^"]+)"/g)];
-      const viewMatches = [...text.matchAll(/"viewCountText":\{"simpleText":"([^"]+)"/g)];
-      const durationMatches = [...text.matchAll(/"lengthText":\{"accessibility":[^}]+\},"simpleText":"([^"]+)"/g)];
-      const publishMatches = [...text.matchAll(/"publishedTimeText":\{"simpleText":"([^"]+)"/g)];
-
-      /* De-duplicate IDs */
-      const seen = new Set();
-      const videos = [];
-      idMatches.forEach((m, i) => {
-        const id = m[1];
-        if (seen.has(id)) return;
-        seen.add(id);
-        videos.push({
-          videoId:  id,
-          title:    titleMatches[videos.length]?.[1]   || 'YouTube Video',
-          channel:  channelMatches[videos.length]?.[1] || '',
-          views:    viewMatches[videos.length]?.[1]    || '',
-          duration: durationMatches[videos.length]?.[1]|| '',
-          published:publishMatches[videos.length]?.[1] || '',
-        });
-      });
-
-      /* Slice for pagination (20 per page) */
-      const page = videos.slice(startIdx, startIdx + 20);
-      return page.length ? page : null;
-
-    } catch (e) { continue; }
+async function fetchSearch(query, pageToken = '') {
+  if (!YT_API_KEY || YT_API_KEY === 'YOUR_API_KEY_HERE') {
+    return null; // show setup message
   }
-  return null;
+  const params = new URLSearchParams({
+    part: 'snippet',
+    q: query,
+    type: 'video',
+    maxResults: 20,
+    key: YT_API_KEY,
+    ...(pageToken ? { pageToken } : {})
+  });
+  try {
+    const res = await fetch(`https://www.googleapis.com/youtube/v3/search?${params}`,
+      { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      console.error('YT API error:', err);
+      return null;
+    }
+    const data = await res.json();
+    nextPageToken = data.nextPageToken || '';
+    return (data.items || []).map(item => ({
+      videoId:   item.id.videoId,
+      title:     item.snippet.title,
+      channel:   item.snippet.channelTitle,
+      published: timeAgo(item.snippet.publishedAt),
+      thumb:     item.snippet.thumbnails?.medium?.url
+                 || item.snippet.thumbnails?.default?.url
+                 || `https://i.ytimg.com/vi/${item.id.videoId}/mqdefault.jpg`,
+      duration:  '',
+      views:     ''
+    }));
+  } catch(e) {
+    console.error('Fetch error:', e);
+    return null;
+  }
+}
+
+function timeAgo(iso) {
+  if (!iso) return '';
+  const diff = (Date.now() - new Date(iso)) / 1000;
+  if (diff < 3600)   return Math.floor(diff/60) + ' minutes ago';
+  if (diff < 86400)  return Math.floor(diff/3600) + ' hours ago';
+  if (diff < 2592000)return Math.floor(diff/86400) + ' days ago';
+  if (diff < 31536000)return Math.floor(diff/2592000) + ' months ago';
+  return Math.floor(diff/31536000) + ' years ago';
 }
 
 async function doSearch(query, chipEl) {
@@ -1103,13 +1089,13 @@ async function doSearch(query, chipEl) {
     document.querySelectorAll('.yt-chip').forEach(c => c.classList.remove('active'));
     chipEl.classList.add('active');
   }
-
   closeSuggestions();
 
-  searchQuery = query;
-  searchOffset = 0;
-  allResults   = [];
-  isSearching  = true;
+  searchQuery   = query;
+  searchOffset  = 0;
+  nextPageToken = '';
+  allResults    = [];
+  isSearching   = true;
 
   document.getElementById('searchPanel').style.display = 'block';
   document.getElementById('searchPanelTitle').textContent = `Results for "${query}"`;
@@ -1122,43 +1108,53 @@ async function doSearch(query, chipEl) {
     <span>Try a different search term</span>`;
   document.getElementById('searchLoadMore').style.display = 'none';
 
-  const results = await fetchSearch(query, 0);
+  const results = await fetchSearch(query);
   isSearching = false;
   document.getElementById('searchLoading').style.display = 'none';
 
-  if (!results || !results.length) {
+  if (!results) {
+    /* API key missing or quota hit */
     document.getElementById('searchEmpty').style.display = 'flex';
-    /* Show a helpful note about CORS proxy */
     document.getElementById('searchEmpty').innerHTML = `
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <strong>Search unavailable right now</strong>
-      <span>The proxy service is temporarily down. Please paste a YouTube link directly in the player below to watch ad-free.</span>
-    `;
+      <i class="fa-brands fa-youtube" style="color:var(--yt-red);font-size:2.5rem"></i>
+      <strong style="color:var(--text)">API Key Required</strong>
+      <span style="max-width:340px;line-height:1.6">
+        To enable search, add your free YouTube Data API key.<br>
+        <b style="color:var(--text)">Steps:</b><br>
+        1. Go to <a href="https://console.cloud.google.com" target="_blank" style="color:var(--yt-red)">console.cloud.google.com</a><br>
+        2. Create project → Enable <b>YouTube Data API v3</b><br>
+        3. Credentials → Create API Key → Copy it<br>
+        4. Open <b>adfree.html</b> → find <code>YT_API_KEY</code> → paste your key<br><br>
+        Meanwhile, paste any YouTube link directly in the player below ↓
+      </span>`;
+    return;
+  }
+
+  if (!results.length) {
+    document.getElementById('searchEmpty').style.display = 'flex';
     return;
   }
 
   allResults = results;
   renderResults(allResults);
-  searchOffset = allResults.length;
-  document.getElementById('searchLoadMore').style.display = results.length >= 20 ? 'block' : 'none';
+  document.getElementById('searchLoadMore').style.display = nextPageToken ? 'block' : 'none';
 }
 window.doSearch = doSearch;
 
 async function loadMoreResults() {
-  if (isSearching) return;
+  if (isSearching || !nextPageToken) return;
   isSearching = true;
   document.getElementById('searchLoadMore').style.display = 'none';
   document.getElementById('searchLoading').style.display = 'flex';
 
-  const results = await fetchSearch(searchQuery, searchOffset);
+  const results = await fetchSearch(searchQuery, nextPageToken);
   isSearching = false;
   document.getElementById('searchLoading').style.display = 'none';
 
   if (results && results.length) {
     allResults = [...allResults, ...results];
     renderResults(results, true);
-    searchOffset += results.length;
-    document.getElementById('searchLoadMore').style.display = results.length >= 20 ? 'block' : 'none';
+    document.getElementById('searchLoadMore').style.display = nextPageToken ? 'block' : 'none';
   }
 }
 window.loadMoreResults = loadMoreResults;
@@ -1170,13 +1166,12 @@ function renderResults(videos, append = false) {
   videos.forEach(v => {
     const id = v.videoId;
     if (!id) return;
-    /* Support both Invidious shape (old) and our new scrape shape */
-    const thumb = v.videoThumbnails?.[1]?.url || v.videoThumbnails?.[0]?.url || `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+    const thumb = v.thumb || v.videoThumbnails?.[1]?.url || `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
     const title = v.title || 'Untitled';
     const channel = v.channel || v.author || '';
-    const views = v.views || (v.viewCount ? formatViews(v.viewCount) + ' views' : '');
+    const views = v.views || '';
     const published = v.published || v.publishedText || '';
-    const duration = v.duration || (v.lengthSeconds ? formatDuration(v.lengthSeconds) : '');
+    const duration = v.duration || '';
 
     const card = document.createElement('div');
     card.className = 'yt-result-card';
