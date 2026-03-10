@@ -4,6 +4,38 @@
 
 'use strict';
 
+/* ═══════════════════════════════════════
+   NAVBAR — scroll effect + More dropdown
+═══════════════════════════════════════ */
+const header = document.getElementById('header');
+
+// Add .scrolled class when page is scrolled
+window.addEventListener('scroll', () => {
+  header?.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+// Init on load
+if (window.scrollY > 20) header?.classList.add('scrolled');
+
+// More dropdown toggle
+function toggleNavMore() {
+  document.getElementById('navMore')?.classList.toggle('open');
+}
+window.toggleNavMore = toggleNavMore;
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  const more = document.getElementById('navMore');
+  if (more && !more.contains(e.target)) more.classList.remove('open');
+});
+
+// Close dropdown on nav link click inside it
+document.getElementById('navDropdown')?.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navMore')?.classList.remove('open');
+  });
+});
+
+
 /* ---- LOADER ---- */
 window.addEventListener('load', () => {
   setTimeout(() => {
