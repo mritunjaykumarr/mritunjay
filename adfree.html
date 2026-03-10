@@ -1030,7 +1030,7 @@ let allResults   = [];
 let isSearching  = false;
 
 async function fetchSearch(query, pageToken = '') {
-  if (!YT_API_KEY || YT_API_KEY === 'YOUR_API_KEY_HERE') {
+  if (!YT_API_KEY) {
     return null; // show setup message
   }
   const params = new URLSearchParams({
@@ -1043,7 +1043,7 @@ async function fetchSearch(query, pageToken = '') {
   });
   try {
     const res = await fetch(`https://www.googleapis.com/youtube/v3/search?${params}`,
-      { signal: AbortSignal.timeout(8000) });
+      {});
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       console.error('YT API error:', err);
