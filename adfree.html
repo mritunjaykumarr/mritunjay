@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ad-Free YouTube Player — Mritunjay Kumar</title>
+  <title>MKTube — Ad-Free Player by Mritunjay Kumar</title>
+  <!-- PWA -->
+  <link rel="manifest" href="mktube-manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MKTube" />
+  <meta name="theme-color" content="#ff0000" />
+  <meta name="description" content="Watch YouTube ad-free. Install as app for background audio." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=YouTube+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -982,6 +990,98 @@
     @media (max-width: 400px) {
       .yt-results-grid { grid-template-columns: 1fr; }
     }
+
+    /* ═══════════════════════════════════════
+       PWA INSTALL BANNER + BG AUDIO NOTICE
+    ═══════════════════════════════════════ */
+    .pwa-banner {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 999;
+      background: linear-gradient(135deg, #1a0a0a 0%, #200808 100%);
+      border-top: 1px solid rgba(255,0,0,0.3);
+      padding: 14px 16px;
+      align-items: center; gap: 12px;
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.6);
+      animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .pwa-banner.show { display: flex; }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .pwa-banner-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--yt-red);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: #fff; flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(255,0,0,0.4);
+    }
+    .pwa-banner-text { flex: 1; min-width: 0; }
+    .pwa-banner-title {
+      font-size: 0.88rem; font-weight: 700; color: #fff;
+      margin-bottom: 3px;
+    }
+    .pwa-banner-sub {
+      font-size: 0.72rem; color: rgba(255,255,255,0.5);
+      line-height: 1.4;
+    }
+    .pwa-banner-sub b { color: #4ade80; }
+    .pwa-install-btn {
+      padding: 9px 18px; border-radius: 20px;
+      background: var(--yt-red); color: #fff;
+      font-size: 0.8rem; font-weight: 700;
+      border: none; cursor: pointer; flex-shrink: 0;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(255,0,0,0.35);
+    }
+    .pwa-install-btn:hover { background: var(--yt-red-dark); transform: translateY(-1px); }
+    .pwa-dismiss-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: none; color: rgba(255,255,255,0.4);
+      font-size: 0.85rem; cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .pwa-dismiss-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+    /* Background audio tip toast */
+    .bg-audio-toast {
+      display: none;
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+      z-index: 998;
+      background: rgba(15,15,15,0.97);
+      border: 1px solid rgba(74,222,128,0.3);
+      border-radius: 14px; padding: 14px 18px;
+      max-width: min(360px, 92vw);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(74,222,128,0.1);
+      animation: fadeIn 0.3s ease;
+    }
+    .bg-audio-toast.show { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+    .bg-toast-title {
+      font-size: 0.85rem; font-weight: 700; color: #4ade80;
+      display: flex; align-items: center; gap: 7px; margin-bottom: 8px;
+    }
+    .bg-toast-steps {
+      font-size: 0.75rem; color: rgba(255,255,255,0.6);
+      line-height: 1.7; list-style: none;
+    }
+    .bg-toast-steps li { display: flex; gap: 8px; align-items: flex-start; }
+    .bg-toast-steps li::before {
+      content: attr(data-n);
+      background: rgba(74,222,128,0.15); color: #4ade80;
+      border-radius: 50%; width: 18px; height: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.62rem; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    }
+    .bg-toast-close {
+      position: absolute; top: 10px; right: 12px;
+      background: none; border: none; color: rgba(255,255,255,0.3);
+      font-size: 0.9rem; cursor: pointer; padding: 4px;
+    }
+    .bg-toast-close:hover { color: #fff; }
   </style>
 </head>
 <body>
@@ -1375,6 +1475,36 @@
   </div>
 
 </footer>
+
+<!-- ── PWA INSTALL BANNER ── -->
+<div class="pwa-banner" id="pwaBanner">
+  <div class="pwa-banner-icon"><i class="fa-brands fa-youtube"></i></div>
+  <div class="pwa-banner-text">
+    <div class="pwa-banner-title">Install MKTube App</div>
+    <div class="pwa-banner-sub">Get <b>background audio</b> — music plays even when screen is off</div>
+  </div>
+  <button class="pwa-install-btn" id="pwaInstallBtn" onclick="installPWA()">Install</button>
+  <button class="pwa-dismiss-btn" onclick="dismissBanner()" aria-label="Dismiss">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+</div>
+
+<!-- ── BACKGROUND AUDIO GUIDE TOAST ── -->
+<div class="bg-audio-toast" id="bgAudioToast">
+  <button class="bg-toast-close" onclick="document.getElementById('bgAudioToast').classList.remove('show')">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  <div class="bg-toast-title">
+    <i class="fa-solid fa-headphones"></i> Background Audio Guide
+  </div>
+  <ul class="bg-toast-steps">
+    <li data-n="1">Install this page as an app (tap Install below)</li>
+    <li data-n="2">Open MKTube from your home screen</li>
+    <li data-n="3">Search or paste a YouTube link and play</li>
+    <li data-n="4">Lock your screen — audio keeps playing ✓</li>
+  </ul>
+</div>
+
 
 <script>
 'use strict';
@@ -1856,6 +1986,97 @@ function clearAll() {
   document.getElementById('videoUrl').value = '';
   hideErr(); resetPlayer();
 }
+/* ═══════════════════════════════════════════
+   PWA + BACKGROUND AUDIO
+═══════════════════════════════════════════ */
+let deferredPrompt = null;
+
+// Catch the install prompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show banner only if not already installed & not dismissed
+  if (!localStorage.getItem('pwaDismissed')) {
+    document.getElementById('pwaBanner')?.classList.add('show');
+  }
+});
+
+// App installed
+window.addEventListener('appinstalled', () => {
+  document.getElementById('pwaBanner')?.classList.remove('show');
+  deferredPrompt = null;
+  showBgAudioToast();
+});
+
+async function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    if (outcome === 'accepted') {
+      document.getElementById('pwaBanner')?.classList.remove('show');
+    }
+  } else {
+    // Fallback: show manual instructions toast
+    showBgAudioToast();
+    document.getElementById('pwaBanner')?.classList.remove('show');
+  }
+}
+window.installPWA = installPWA;
+
+function dismissBanner() {
+  document.getElementById('pwaBanner')?.classList.remove('show');
+  localStorage.setItem('pwaDismissed', '1');
+}
+window.dismissBanner = dismissBanner;
+
+function showBgAudioToast() {
+  const t = document.getElementById('bgAudioToast');
+  t?.classList.add('show');
+  setTimeout(() => t?.classList.remove('show'), 12000);
+}
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      await navigator.serviceWorker.register('mktube-sw.js');
+      console.log('MKTube SW registered');
+    } catch(e) {
+      console.warn('SW registration failed:', e);
+    }
+  });
+}
+
+// Show background audio tip when a video starts playing
+const _origLoadVideo = window.loadVideo || (() => {});
+document.addEventListener('DOMContentLoaded', () => {
+  const playBtn = document.querySelector('.yt-play-btn');
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      // Show toast after 3s when video starts — only on mobile
+      if (window.innerWidth <= 768 && !localStorage.getItem('bgTipShown')) {
+        setTimeout(() => {
+          showBgAudioToast();
+          localStorage.setItem('bgTipShown', '1');
+        }, 3000);
+      }
+    });
+  }
+});
+
+// Also show banner on mobile if PWA not installed and not dismissed
+if (window.innerWidth <= 768 && !localStorage.getItem('pwaDismissed')) {
+  // Check if already running as PWA
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+  if (!isStandalone) {
+    setTimeout(() => {
+      document.getElementById('pwaBanner')?.classList.add('show');
+    }, 2000);
+  }
+}
+
 </script>
 </body>
 </html>
