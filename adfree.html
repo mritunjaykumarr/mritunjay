@@ -1324,6 +1324,140 @@
     @media (max-width: 620px) {
       .yt-homepage-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
     }
+
+    /* ═══════════════════════════════════════
+       SHORTS SECTION
+    ═══════════════════════════════════════ */
+    .yt-shorts-section {
+      margin-bottom: 36px;
+    }
+    .yt-shorts-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .yt-shorts-title {
+      font-size: 0.72rem; font-weight: 800;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.14em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .yt-shorts-title::after {
+      content: ''; width: 80px; height: 1px;
+      background: linear-gradient(90deg, rgba(255,0,0,0.4), transparent);
+    }
+    .yt-shorts-see-all {
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--accent); text-decoration: none;
+      display: flex; align-items: center; gap: 5px;
+      transition: color 0.18s;
+    }
+    .yt-shorts-see-all:hover { color: #fff; }
+
+    /* Horizontal scroll row */
+    .yt-shorts-row {
+      display: flex; gap: 12px;
+      overflow-x: auto; padding-bottom: 8px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .yt-shorts-row::-webkit-scrollbar { height: 4px; }
+    .yt-shorts-row::-webkit-scrollbar-track { background: var(--bg2); border-radius: 2px; }
+    .yt-shorts-row::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.4); border-radius: 2px; }
+
+    /* Short card — 9:16 portrait */
+    .yt-short-card {
+      flex-shrink: 0;
+      width: 160px;
+      scroll-snap-align: start;
+      cursor: pointer;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.22s cubic-bezier(0.4,0,0.2,1);
+    }
+    .yt-short-card:hover { transform: translateY(-4px) scale(1.02); }
+
+    /* Thumb — portrait 9:16 */
+    .yt-short-thumb-wrap {
+      position: relative;
+      aspect-ratio: 9/16;
+      background: var(--bg3);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .yt-short-thumb {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+    .yt-short-card:hover .yt-short-thumb { transform: scale(1.05); }
+
+    /* Overlay gradient */
+    .yt-short-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        transparent 40%,
+        rgba(0,0,0,0.75) 100%
+      );
+    }
+
+    /* Shorts badge */
+    .yt-short-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: var(--yt-red); color: #fff;
+      font-size: 0.55rem; font-weight: 800;
+      padding: 2px 7px; border-radius: 4px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+
+    /* Play icon on hover */
+    .yt-short-play {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: #000;
+      opacity: 0;
+      transition: all 0.22s ease;
+    }
+    .yt-short-card:hover .yt-short-play {
+      opacity: 1; transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Title inside card */
+    .yt-short-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 10px 10px 12px;
+    }
+    .yt-short-title {
+      font-size: 0.72rem; font-weight: 600; color: #fff;
+      line-height: 1.35;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .yt-short-views {
+      font-size: 0.62rem; color: rgba(255,255,255,0.55);
+      margin-top: 3px;
+    }
+
+    /* Skeleton short card */
+    .yt-short-skeleton {
+      flex-shrink: 0; width: 160px;
+      border-radius: 14px; overflow: hidden;
+    }
+    .yt-short-skeleton-thumb {
+      aspect-ratio: 9/16;
+      background: linear-gradient(90deg, var(--bg3) 25%, var(--bg4) 50%, var(--bg3) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 14px;
+    }
+
+    @media (max-width: 620px) {
+      .yt-short-card { width: 130px; }
+      .yt-short-skeleton { width: 130px; }
+    }
   </style>
 </head>
 <body>
@@ -1411,6 +1545,9 @@
     <a href="#" class="yt-nav-item" onclick="navSearch('trending videos today india', this)">
       <i class="fa-solid fa-fire"></i> Trending
     </a>
+    <a href="#" class="yt-nav-item" onclick="document.getElementById('shortsSection')?.scrollIntoView({behavior:'smooth'}); loadShorts(); document.querySelectorAll('.yt-nav-item').forEach(n=>n.classList.remove('active')); this.classList.add('active'); return false">
+      <i class="fa-brands fa-youtube" style="color:var(--yt-red)"></i> Shorts
+    </a>
     <a href="#" class="yt-nav-item" onclick="navSearch('top music hits 2025', this)">
       <i class="fa-solid fa-music"></i> Music
     </a>
@@ -1483,6 +1620,20 @@
         <button class="yt-load-more-btn" onclick="loadMoreResults()">
           <i class="fa-solid fa-rotate-right"></i> Load More
         </button>
+      </div>
+    </div>
+
+    <!-- ══ SHORTS SECTION ══ -->
+    <div class="yt-shorts-section" id="shortsSection">
+      <div class="yt-shorts-header">
+        <div class="yt-shorts-title">📱 Shorts</div>
+        <a href="#" class="yt-shorts-see-all" onclick="loadMoreShorts(); return false">
+          See all <i class="fa-solid fa-chevron-right" style="font-size:0.6rem"></i>
+        </a>
+      </div>
+      <div class="yt-shorts-row" id="shortsRow">
+        <!-- Skeletons -->
+        <div class="yt-short-skeleton"><div class="yt-short-skeleton-thumb"></div></div><div class="yt-short-skeleton"><div class="yt-short-skeleton-thumb"></div></div><div class="yt-short-skeleton"><div class="yt-short-skeleton-thumb"></div></div><div class="yt-short-skeleton"><div class="yt-short-skeleton-thumb"></div></div><div class="yt-short-skeleton"><div class="yt-short-skeleton-thumb"></div></div><div class="yt-short-skeleton"><div class="yt-short-skeleton-thumb"></div></div><div class="yt-short-skeleton"><div class="yt-short-skeleton-thumb"></div></div><div class="yt-short-skeleton"><div class="yt-short-skeleton-thumb"></div></div>
       </div>
     </div>
 
@@ -2566,10 +2717,106 @@ async function loadHomepage(query) {
   });
 }
 
-/* Auto-load trending when page opens */
+/* Auto-load trending + shorts when page opens */
 document.addEventListener('DOMContentLoaded', () => {
   loadHomepage('trending india 2025');
+  loadShorts();
 });
+
+/* ════════════════════════════════════════
+   SHORTS SECTION
+════════════════════════════════════════ */
+
+async function loadShorts() {
+  const row = document.getElementById('shortsRow');
+  if (!row) return;
+
+  /* Show skeletons */
+  row.innerHTML = Array(10).fill(
+    '<div class="yt-short-skeleton"><div class="yt-short-skeleton-thumb"></div></div>'
+  ).join('');
+
+  /* Fetch shorts via YouTube API */
+  const results = await fetchSearch('#shorts trending india 2025');
+  if (!results || !results.length) {
+    row.innerHTML = '<div style="color:var(--text-dim);font-size:0.8rem;padding:20px">Could not load Shorts.</div>';
+    return;
+  }
+
+  row.innerHTML = '';
+  results.slice(0, 15).forEach(v => {
+    const id = v.videoId; if (!id) return;
+    /* Use portrait thumbnail — YouTube shorts use hq720 which is portrait */
+    const thumb = `https://i.ytimg.com/vi/${id}/hq720.jpg`;
+    const title = v.title || 'Short';
+    const views = v.views || '';
+
+    const card = document.createElement('div');
+    card.className = 'yt-short-card';
+    card.innerHTML = `
+      <div class="yt-short-thumb-wrap">
+        <img class="yt-short-thumb" src="${thumb}" alt="${escHtml(title)}" loading="lazy"
+          onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'" />
+        <div class="yt-short-overlay"></div>
+        <div class="yt-short-badge">Shorts</div>
+        <div class="yt-short-play">
+          <i class="fa-solid fa-play" style="margin-left:3px"></i>
+        </div>
+        <div class="yt-short-info">
+          <div class="yt-short-title">${escHtml(title)}</div>
+          ${views ? `<div class="yt-short-views">${views}</div>` : ''}
+        </div>
+      </div>`;
+
+    card.addEventListener('click', () => {
+      /* Open short in player — use shorts embed URL */
+      document.getElementById('videoUrl').value = `https://www.youtube.com/shorts/${id}`;
+      loadVideo();
+      document.querySelector('.yt-primary')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    row.appendChild(card);
+  });
+}
+
+async function loadMoreShorts() {
+  const row = document.getElementById('shortsRow');
+  if (!row) return;
+  /* Append more shorts to the row */
+  const results = await fetchSearch('#shorts viral 2025');
+  if (!results) return;
+  results.slice(0, 10).forEach(v => {
+    const id = v.videoId; if (!id) return;
+    const thumb = `https://i.ytimg.com/vi/${id}/hq720.jpg`;
+    const title = v.title || 'Short';
+    const card = document.createElement('div');
+    card.className = 'yt-short-card';
+    card.innerHTML = `
+      <div class="yt-short-thumb-wrap">
+        <img class="yt-short-thumb" src="${thumb}" alt="${escHtml(title)}" loading="lazy"
+          onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'" />
+        <div class="yt-short-overlay"></div>
+        <div class="yt-short-badge">Shorts</div>
+        <div class="yt-short-play">
+          <i class="fa-solid fa-play" style="margin-left:3px"></i>
+        </div>
+        <div class="yt-short-info">
+          <div class="yt-short-title">${escHtml(title)}</div>
+        </div>
+      </div>`;
+    card.addEventListener('click', () => {
+      document.getElementById('videoUrl').value = `https://www.youtube.com/shorts/${id}`;
+      loadVideo();
+      document.querySelector('.yt-primary')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    row.appendChild(card);
+  });
+  /* Scroll to end */
+  row.scrollTo({ left: row.scrollWidth, behavior: 'smooth' });
+}
+window.loadMoreShorts = loadMoreShorts;
+
+/* Also add Shorts nav item trigger */
+const _origLoadHomepage = loadHomepage;
 
 </script>
 </body>
