@@ -4,6 +4,26 @@ const YT_API_KEY = 'AIzaSyBnY6hDxR7JSlPefhfhY8V22flAcZZlJ1s';
 let searchQuery='',searchOffset=0,nextPageToken='',allResults=[],isSearching=false;
 let currentVideoId=null,currentTab='mp4';
 
+/* ── Mobile Sidebar Toggle ── */
+function openSidebar(){
+  document.querySelector('.yt-sidebar')?.classList.add('open');
+  document.getElementById('sidebarOverlay')?.classList.add('open');
+}
+function closeSidebar(){
+  document.querySelector('.yt-sidebar')?.classList.remove('open');
+  document.getElementById('sidebarOverlay')?.classList.remove('open');
+}
+window.closeSidebar=closeSidebar;
+/* Wire hamburger button */
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelector('.yt-hamburger')?.addEventListener('click',()=>{
+    const sb=document.querySelector('.yt-sidebar');
+    if(sb?.classList.contains('open')) closeSidebar(); else openSidebar();
+  });
+  /* Close sidebar when a nav item is clicked (mobile) */
+  document.querySelectorAll('.yt-nav-item').forEach(n=>n.addEventListener('click',()=>{if(window.innerWidth<=960)closeSidebar()}));
+});
+
 /* ── YouTube Search API ── */
 async function fetchSearch(q,pageToken=''){
   if(!YT_API_KEY)return null;
@@ -110,6 +130,7 @@ function resetPlayer(){
   document.getElementById('dlEmpty').style.display='block';document.getElementById('mp4List').innerHTML='';document.getElementById('mp3List').innerHTML='';
   document.getElementById('videoTitle').textContent='Paste a link and press Play to start watching without ads.';document.getElementById('videoTitle').classList.add('empty');
   document.getElementById('actionBar').style.display='none';currentVideoId=null;
+  document.getElementById('suggestionsPanel').style.display='none';document.getElementById('suggestionsList').innerHTML='';
 }
 
 async function loadVideo(){
@@ -131,6 +152,33 @@ async function _actualLoadVideo(){
   document.getElementById('actionBar').style.display='flex';document.getElementById('dlName').textContent=info.title;
   const thumb=document.getElementById('dlThumb');thumb.innerHTML=info.thumb?`<img src="${info.thumb}" alt="thumb"/>`:'<i class="fa-brands fa-youtube"></i>';
   document.getElementById('dlThumbRow').style.display='flex';document.getElementById('dlTabs').style.display='flex';buildDlList(id);
+  loadSuggestions(info.title);
+}
+
+/* ── Up Next Suggestions ── */
+async function loadSuggestions(query){
+  const panel=document.getElementById('suggestionsPanel');
+  const list=document.getElementById('suggestionsList');
+  if(!panel||!list)return;
+  panel.style.display='block';
+  list.innerHTML='<div class="yt-sug-loading"><div class="yt-spinner" style="width:24px;height:24px;border-width:2px"></div><span>Loading suggestions…</span></div>';
+  /* Search for related videos using the current video title */
+  const q=query.replace(/[^a-zA-Z0-9 ]/g,'').split(' ').slice(0,4).join(' ');
+  const results=await fetchSearch(q);
+  if(!results||!results.length){list.innerHTML='<div style="text-align:center;padding:20px;color:var(--text-dim);font-size:0.78rem">No suggestions available</div>';return}
+  /* Filter out the currently playing video */
+  const filtered=results.filter(v=>v.videoId&&v.videoId!==currentVideoId).slice(0,10);
+  list.innerHTML='';
+  filtered.forEach(v=>{
+    const card=document.createElement('div');card.className='yt-sug-card';
+    card.innerHTML=`<div class="yt-sug-card-thumb"><img src="${v.thumb}" alt="" loading="lazy" onerror="this.src='https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg'"/><div class="yt-sug-card-thumb-overlay"><div class="yt-sug-card-play"><i class="fa-solid fa-play" style="margin-left:1px"></i></div></div></div><div class="yt-sug-card-info"><div class="yt-sug-card-title">${escHtml(v.title)}</div>${v.channel?'<div class="yt-sug-card-channel">'+escHtml(v.channel)+'</div>':''}<div class="yt-sug-card-meta">${v.published||''}</div></div>`;
+    card.addEventListener('click',()=>{
+      document.getElementById('videoUrl').value='https://www.youtube.com/watch?v='+v.videoId;
+      loadVideo();
+      document.querySelector('.yt-primary')?.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+    list.appendChild(card);
+  });
 }
 
 function clearAll(){document.getElementById('videoUrl').value='';hideErr();resetPlayer()}
