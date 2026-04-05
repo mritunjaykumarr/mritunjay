@@ -53,6 +53,8 @@
 </div>
 
 <div class="yt-layout">
+  <!-- Sidebar overlay (mobile) -->
+  <div class="yt-sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
   <!-- SIDEBAR -->
   <nav class="yt-sidebar">
     <a href="#" class="yt-nav-item active" onclick="navSearch('trending india 2025',this)"><i class="fa-solid fa-house"></i> Home</a>
@@ -156,7 +158,7 @@
         </div>
       </div>
 
-      <!-- SECONDARY (download panel) -->
+      <!-- SECONDARY (download + suggestions) -->
       <div class="yt-secondary">
         <div class="yt-panel">
           <div class="yt-panel-header"><div class="yt-panel-title"><i class="fa-solid fa-download"></i> Download</div><span class="yt-panel-badge">Ad-Free Tool</span></div>
@@ -169,6 +171,17 @@
             <div class="yt-dl-list" id="mp4List"></div>
             <div class="yt-dl-list" id="mp3List" style="display:none"></div>
             <div class="yt-dl-empty" id="dlEmpty"><i class="fa-solid fa-arrow-down-to-line"></i><strong>No video loaded</strong>Paste a YouTube link and press Play to see download options.</div>
+          </div>
+        </div>
+
+        <!-- Up Next / Suggested Videos -->
+        <div class="yt-panel yt-suggestions-panel" id="suggestionsPanel" style="display:none;margin-top:16px">
+          <div class="yt-panel-header">
+            <div class="yt-panel-title"><i class="fa-solid fa-list"></i> Up Next</div>
+            <span class="yt-panel-badge">Suggestions</span>
+          </div>
+          <div class="yt-panel-body" id="suggestionsList" style="padding:8px">
+            <!-- Suggested video cards load here -->
           </div>
         </div>
       </div>
