@@ -1,136 +1,1963 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MKTube — Ad-Free Player by Mritunjay Kumar</title>
-  <link rel="manifest" href="mktube-manifest.json"/>
-  <meta name="mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="MKTube"/>
-  <meta name="theme-color" content="#00c9a7"/>
-  <meta name="description" content="Watch YouTube ad-free. Install as app for background audio."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-  <link rel="stylesheet" href="mktube-style.css"/>
+  <!-- PWA -->
+  <link rel="manifest" href="mktube-manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MKTube" />
+  <meta name="theme-color" content="#ff0000" />
+  <meta name="description" content="Watch YouTube ad-free. Install as app for background audio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=YouTube+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    :root {
+      --yt-red:       #ff0000;
+      --yt-red-dark:  #cc0000;
+      --yt-red-glow:  rgba(255,0,0,0.18);
+      --bg:           #0f0f0f;
+      --bg2:          #181818;
+      --bg3:          #202020;
+      --bg4:          #282828;
+      --surface:      rgba(255,255,255,0.04);
+      --border:       rgba(255,255,255,0.08);
+      --text:         #f1f1f1;
+      --text-muted:   #aaaaaa;
+      --text-dim:     #717171;
+      --green:        #ff4444;
+      --green-glow:   rgba(255,60,60,0.15);
+      --accent:       #ff0000;
+      --accent-glow:  rgba(255,0,0,0.15);
+      --radius:       14px;
+      --radius-sm:    8px;
+      --radius-pill:  50px;
+      --font:         'Roboto', sans-serif;
+      --tr:           0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; font-family: var(--font); }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+    /* ═══════════════════════════════
+       HEADER — redesigned dark purple
+    ═══════════════════════════════ */
+    .yt-header {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(15,15,15,0.96);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid rgba(255,0,0,0.1);
+      height: 68px;
+      display: flex; align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+      box-shadow: 0 1px 0 rgba(255,0,0,0.08), 0 4px 24px rgba(0,0,0,0.5);
+    }
+
+    .yt-header-left {
+      display: flex; align-items: center; gap: 18px;
+      flex-shrink: 0;
+    }
+    .yt-hamburger {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: transparent;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      transition: background var(--tr); flex-shrink: 0;
+    }
+    .yt-hamburger:hover { background: rgba(255,255,255,0.1); }
+    .yt-hamburger span {
+      display: block; width: 20px; height: 2px;
+      background: var(--text); border-radius: 99px;
+    }
+    .yt-logo {
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none;
+    }
+    .yt-logo-icon {
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      color: #fff;
+      width: 38px; height: 26px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 14px rgba(255,0,0,0.35), 0 0 0 1px rgba(255,0,0,0.2);
+      transition: transform var(--tr), box-shadow var(--tr);
+    }
+    .yt-logo:hover .yt-logo-icon {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(255,0,0,0.5);
+    }
+    .yt-logo-text {
+      font-size: 1.25rem; font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff 30%, #ccc 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .yt-logo-badge {
+      font-size: 0.55rem; font-weight: 700;
+      color: #ff6b6b;
+      background: rgba(255,60,60,0.08);
+      border: 1px solid rgba(255,60,60,0.15);
+      border-radius: 4px; padding: 2px 6px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      align-self: center; margin-left: 2px;
+    }
+
+    /* Center search */
+    .yt-header-center {
+      flex: 1; display: flex; align-items: center; gap: 10px;
+      max-width: 680px; margin: 0 auto;
+    }
+    .yt-search-wrap {
+      flex: 1; display: flex; align-items: center;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 28px 0 0 28px;
+      overflow: hidden;
+      background: var(--bg2);
+      transition: border-color var(--tr), box-shadow var(--tr);
+      height: 46px;
+    }
+    .yt-search-wrap:focus-within {
+      border-color: rgba(255,0,0,0.5);
+      box-shadow: 0 0 0 3px rgba(255,0,0,0.12);
+    }
+    .yt-search-input {
+      flex: 1; background: transparent;
+      border: none; outline: none;
+      color: var(--text); font-family: var(--font);
+      font-size: 1rem; font-weight: 400;
+      padding: 0 20px;
+    }
+    .yt-search-input::placeholder { color: var(--text-dim); }
+    .yt-search-btn {
+      width: 70px; height: 46px;
+      background: var(--bg3);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-left: none;
+      border-radius: 0 28px 28px 0;
+      color: var(--text); font-size: 1.05rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--tr); flex-shrink: 0;
+    }
+    .yt-search-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .yt-mic-btn {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: var(--bg3);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      color: var(--text); font-size: 0.95rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--tr); flex-shrink: 0;
+    }
+    .yt-mic-btn:hover { background: rgba(255,0,0,0.15); color: var(--yt-red); border-color: rgba(255,0,0,0.3); }
+
+    /* Right actions */
+    .yt-header-right {
+      display: flex; align-items: center; gap: 10px;
+      flex-shrink: 0; margin-left: auto;
+    }
+    .yt-icon-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.05rem; color: var(--text);
+      transition: background var(--tr); position: relative;
+    }
+    .yt-icon-btn:hover { background: rgba(255,255,255,0.1); }
+    .yt-notif-badge {
+      position: absolute; top: 3px; right: 3px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--yt-red); font-size: 0.6rem; font-weight: 700;
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--bg);
+    }
+    .yt-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--yt-red), #ff6b35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.82rem; font-weight: 800; color: #fff; cursor: pointer;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.15);
+      transition: transform var(--tr);
+    }
+    .yt-avatar:hover { transform: scale(1.08); }
+
+    /* ═══════════════════════════════
+       LAYOUT
+    ═══════════════════════════════ */
+    .yt-layout {
+      display: flex; flex: 1;
+      min-height: calc(100vh - 68px);
+    }
+
+    /* ═══════════════════════════════
+       SIDEBAR — Bigger, Bold, Curved
+    ═══════════════════════════════ */
+    .yt-sidebar {
+      width: 230px; flex-shrink: 0;
+      background: var(--bg2);
+      position: sticky; top: 68px;
+      height: calc(100vh - 68px);
+      overflow-y: auto;
+      padding: 12px 0;
+      border-right: 1px solid rgba(255,0,0,0.08);
+    }
+    .yt-sidebar::-webkit-scrollbar { width: 0; }
+    .yt-nav-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 11px 16px;
+      font-size: 0.85rem; font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      border-radius: 10px;
+      margin: 1px 8px;
+      transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
+      cursor: pointer; text-decoration: none;
+      position: relative; letter-spacing: 0.01em;
+    }
+    .yt-nav-item::before {
+      content: '';
+      position: absolute; left: 0; top: 50%;
+      transform: translateY(-50%) scaleY(0);
+      width: 3px; height: 55%;
+      background: linear-gradient(180deg, #ff4444, #cc0000);
+      border-radius: 0 3px 3px 0;
+      transition: transform 0.18s ease;
+    }
+    .yt-nav-item:hover {
+      background: rgba(255,0,0,0.06);
+      color: #fff; transform: translateX(2px);
+    }
+    .yt-nav-item:hover::before { transform: translateY(-50%) scaleY(1); }
+    .yt-nav-item.active {
+      background: linear-gradient(135deg, rgba(255,0,0,0.1), rgba(255,0,0,0.08));
+      color: #fff; font-weight: 700;
+      border: 1px solid rgba(255,0,0,0.12);
+    }
+    .yt-nav-item.active::before { transform: translateY(-50%) scaleY(1); }
+    .yt-nav-item i {
+      width: 22px; text-align: center;
+      font-size: 1rem; color: var(--yt-red);
+      transition: transform 0.18s ease;
+    }
+    .yt-nav-item:hover i { transform: scale(1.15); }
+    .yt-nav-item.active i { color: var(--yt-red); }
+    .yt-sidebar-divider {
+      height: 1px;
+      background: rgba(255,0,0,0.08);
+      margin: 10px 12px;
+    }
+    .yt-sidebar-section-title {
+      padding: 8px 16px 4px;
+      font-size: 0.62rem; font-weight: 800;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════
+       MAIN CONTENT
+    ═══════════════════════════════ */
+    .yt-main {
+      flex: 1; padding: 24px 24px 60px;
+      max-width: 1200px;
+      overflow-x: hidden;
+    }
+
+    /* Chips / filter row */
+    .yt-chips {
+      display: flex; gap: 10px; flex-wrap: nowrap;
+      overflow-x: auto; margin-bottom: 24px;
+      padding-bottom: 4px;
+    }
+    .yt-chips::-webkit-scrollbar { height: 0; }
+    .yt-chip {
+      flex-shrink: 0;
+      padding: 7px 16px; border-radius: var(--radius-pill);
+      font-size: 0.8rem; font-weight: 600;
+      background: var(--bg3);
+      color: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.07);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      letter-spacing: 0.01em;
+    }
+    .yt-chip:hover {
+      background: rgba(255,0,0,0.1);
+      border-color: rgba(255,0,0,0.2);
+      color: #fff;
+    }
+    .yt-chip.active {
+      background: linear-gradient(135deg, #ff2222, #cc0000);
+      color: #fff; border-color: transparent;
+      box-shadow: 0 4px 14px rgba(255,0,0,0.2);
+    }
+
+    /* ═══════════════════════════════
+       PLAYER SECTION
+    ═══════════════════════════════ */
+    .yt-player-section {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* Primary player column */
+    .yt-primary {}
+
+    /* Video container */
+    .yt-video-wrap {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,0,0,0.08);
+    }
+    .yt-video-default {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 20px; text-align: center; padding: 40px;
+      width: 100%;
+    }
+    .yt-play-icon {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: var(--text);
+      animation: breathe 3s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,0,0,0); }
+      50% { transform: scale(1.04); box-shadow: 0 0 0 14px rgba(255,0,0,0); }
+    }
+    .yt-video-default h3 {
+      font-size: 1.05rem; font-weight: 500; color: var(--text);
+    }
+    .yt-video-default p { font-size: 0.82rem; color: var(--text-dim); max-width: 240px; }
+    .yt-loader {
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px; text-align: center; padding: 40px;
+      position: absolute; inset: 0;
+    }
+    .yt-loader.show { display: flex; }
+    .yt-spinner {
+      width: 40px; height: 40px;
+      border: 3px solid rgba(255,255,255,0.08);
+      border-top-color: var(--yt-red);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .yt-loader p { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.05em; }
+    .yt-video-frame {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: none; display: none;
+    }
+    .yt-video-frame.show { display: block; }
+
+    /* Ad-free badge */
+    .yt-adfree-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, rgba(255,30,30,0.06), rgba(255,30,30,0.04));
+      border: 1px solid rgba(255,60,60,0.15);
+      border-radius: var(--radius-pill); padding: 5px 14px;
+      font-size: 0.72rem; font-weight: 600; color: #ff6b6b;
+      margin-bottom: 12px; letter-spacing: 0.04em;
+    }
+    .yt-adfree-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--yt-red); animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* Video info below player */
+    .yt-video-info { padding: 14px 0 0; }
+    .yt-video-title {
+      font-size: 1.1rem; font-weight: 600; line-height: 1.4;
+      color: var(--text); margin-bottom: 12px;
+    }
+    .yt-video-title.empty { color: var(--text-dim); font-weight: 400; font-size: 0.9rem; }
+
+    /* Action bar */
+    .yt-action-bar {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap; margin-bottom: 16px;
+    }
+    .yt-action-group {
+      display: flex; align-items: center;
+      background: var(--bg3);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+    .yt-action-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 9px 16px;
+      font-size: 0.82rem; font-weight: 500; color: var(--text);
+      background: transparent;
+      transition: background var(--tr);
+    }
+    .yt-action-btn:hover { background: var(--bg4); }
+    .yt-action-btn i { font-size: 0.95rem; }
+    .yt-action-divider { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+    .yt-action-btn.yt-sub-btn {
+      background: var(--text); color: var(--bg);
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+    }
+    .yt-action-btn.yt-sub-btn:hover { background: #d0d0d0; }
+
+    /* Input search row */
+    .yt-input-section {
+      background: linear-gradient(135deg, var(--bg2), var(--bg3));
+      border: 1px solid rgba(255,0,0,0.1);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .yt-input-label {
+      font-size: 0.75rem; font-weight: 500; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .yt-input-label i { color: var(--yt-red); }
+    .yt-input-row { display: flex; gap: 8px; }
+    .yt-url-wrap {
+      flex: 1; display: flex; align-items: center;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-pill); overflow: hidden;
+      padding: 0 16px; gap: 10px;
+      transition: border-color var(--tr), box-shadow var(--tr);
+    }
+    .yt-url-wrap:focus-within {
+      border-color: var(--yt-red);
+      box-shadow: 0 0 0 2px var(--yt-red-glow);
+    }
+    .yt-url-wrap i { color: var(--yt-red); font-size: 0.95rem; flex-shrink: 0; }
+    .yt-url-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--text); font-family: var(--font);
+      font-size: 0.9rem; padding: 11px 0;
+    }
+    .yt-url-input::placeholder { color: var(--text-dim); }
+    .yt-play-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 24px; border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      color: #fff; font-size: 0.88rem; font-weight: 700;
+      border: none; cursor: pointer;
+      transition: all var(--tr); white-space: nowrap;
+      box-shadow: 0 4px 18px rgba(255,0,0,0.35);
+      letter-spacing: 0.02em;
+    }
+    .yt-play-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,0,0,0.45); }
+    .yt-play-btn:active { transform: scale(0.97); }
+    .yt-clear-btn {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text-muted); font-size: 0.85rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--tr); flex-shrink: 0;
+    }
+    .yt-clear-btn:hover { background: rgba(248,113,113,0.15); color: #f87171; border-color: rgba(248,113,113,0.3); }
+
+    /* Error */
+    .yt-error {
+      display: none; align-items: center; gap: 8px;
+      background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2);
+      border-radius: var(--radius-sm); padding: 10px 14px;
+      font-size: 0.82rem; color: #f87171; margin-top: 10px;
+    }
+    .yt-error.show { display: flex; }
+
+    /* ═══════════════════════════════
+       DOWNLOAD SECTION (secondary)
+    ═══════════════════════════════ */
+    .yt-secondary {}
+
+    /* "Up Next" style panel */
+    .yt-panel {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .yt-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .yt-panel-title {
+      font-size: 0.88rem; font-weight: 600; color: var(--text);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .yt-panel-title i { color: var(--yt-red); }
+    .yt-panel-badge {
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-dim);
+    }
+    .yt-panel-body { padding: 14px; }
+
+    /* Thumb row inside panel */
+    .yt-dl-thumb-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 14px; padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .yt-dl-thumb {
+      width: 80px; height: 52px; border-radius: 6px;
+      background: var(--bg3); overflow: hidden; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-dim); font-size: 1.1rem;
+    }
+    .yt-dl-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .yt-dl-title-text {
+      font-size: 0.78rem; font-weight: 500; color: var(--text);
+      line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .yt-dl-subtitle { font-size: 0.7rem; color: var(--text-muted); margin-top: 3px; }
+
+    /* Tab switcher for MP4/MP3 */
+    .yt-tab-row {
+      display: flex; gap: 0;
+      background: var(--bg3);
+      border-radius: var(--radius-sm);
+      padding: 3px; margin-bottom: 12px;
+    }
+    .yt-tab {
+      flex: 1; padding: 7px 12px;
+      border-radius: 6px; font-size: 0.78rem; font-weight: 500;
+      text-align: center; cursor: pointer;
+      color: var(--text-muted); background: transparent;
+      transition: all var(--tr);
+    }
+    .yt-tab.active { background: var(--bg); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+
+    /* Download items — YouTube "video list" style */
+    .yt-dl-list { display: flex; flex-direction: column; gap: 6px; }
+    .yt-dl-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; border-radius: var(--radius-sm);
+      background: var(--bg3); border: 1px solid transparent;
+      text-decoration: none;
+      transition: all var(--tr); cursor: pointer;
+      position: relative; overflow: hidden;
+    }
+    .yt-dl-item::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--yt-red); transform: scaleY(0); transition: transform var(--tr);
+      border-radius: 0 2px 2px 0;
+    }
+    .yt-dl-item:hover { background: var(--bg4); border-color: var(--border); transform: translateX(3px); }
+    .yt-dl-item:hover::before { transform: scaleY(1); }
+    .yt-dl-item.mp3-item::before { background: var(--green); }
+    .yt-dl-item-ico {
+      width: 38px; height: 38px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; flex-shrink: 0;
+      background: rgba(255,0,0,0.12); color: var(--yt-red);
+      transition: transform var(--tr);
+    }
+    .yt-dl-item:hover .yt-dl-item-ico { transform: scale(1.05); }
+    .yt-dl-item.mp3-item .yt-dl-item-ico { background: rgba(255,30,30,0.06); color: var(--green); }
+    .yt-dl-item-info { flex: 1; min-width: 0; }
+    .yt-dl-item-name { font-size: 0.83rem; font-weight: 500; color: var(--text); }
+    .yt-dl-item-sub { font-size: 0.7rem; color: var(--text-dim); margin-top: 2px; }
+    .yt-dl-item-arrow {
+      color: var(--text-dim); font-size: 0.75rem;
+      opacity: 0; transition: opacity var(--tr), transform var(--tr);
+    }
+    .yt-dl-item:hover .yt-dl-item-arrow { opacity: 1; transform: translateX(2px); }
+
+    /* Empty state in download panel */
+    .yt-dl-empty {
+      text-align: center; padding: 32px 16px;
+      color: var(--text-dim); font-size: 0.82rem; line-height: 1.6;
+    }
+    .yt-dl-empty i { font-size: 2rem; display: block; margin-bottom: 12px; color: var(--bg4); }
+    .yt-dl-empty strong { display: block; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
+
+    /* Tips row */
+    .yt-tips {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;
+    }
+    .yt-tip {
+      display: flex; align-items: center; gap: 5px;
+      background: var(--bg3); border-radius: var(--radius-pill);
+      padding: 4px 10px; font-size: 0.68rem; color: var(--text-dim);
+    }
+    .yt-tip i { color: var(--yt-red); font-size: 0.62rem; }
+
+    /* ═══════════════════════════════
+       FOOTER — Rich aesthetic
+    ═══════════════════════════════ */
+    .yt-footer {
+      background: #0a0a0a;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .yt-footer::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--yt-red), #ff6b35, var(--yt-red), transparent);
+    }
+    /* Subtle red glow at top */
+    .yt-footer::after {
+      content: '';
+      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 120px;
+      background: radial-gradient(ellipse, rgba(255,0,0,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .yt-footer-main {
+      max-width: 1200px; margin: 0 auto;
+      padding: 60px 32px 40px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 48px;
+      position: relative; z-index: 1;
+    }
+    /* Brand column */
+    .yt-footer-brand {}
+    .yt-footer-logo {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px; text-decoration: none;
+    }
+    .yt-footer-logo-icon {
+      background: var(--yt-red); color: #fff;
+      width: 44px; height: 30px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 16px rgba(255,0,0,0.35);
+    }
+    .yt-footer-logo-text {
+      font-size: 1.3rem; font-weight: 800;
+      color: #fff; letter-spacing: -0.3px;
+    }
+    .yt-footer-logo-badge {
+      font-size: 0.55rem; font-weight: 700;
+      color: #ff6b6b; background: rgba(255,60,60,0.08);
+      border: 1px solid rgba(255,60,60,0.15);
+      border-radius: 4px; padding: 2px 6px;
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .yt-footer-desc {
+      font-size: 0.82rem; line-height: 1.7;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 24px; max-width: 280px;
+    }
+    /* Social icons */
+    .yt-footer-socials { display: flex; gap: 10px; flex-wrap: wrap; }
+    .yt-footer-social {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .yt-footer-social:hover {
+      background: var(--yt-red); color: #fff;
+      border-color: var(--yt-red);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255,0,0,0.35);
+    }
+    /* Link columns */
+    .yt-footer-col-title {
+      font-size: 0.7rem; font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.14em; text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .yt-footer-col-title::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(255,0,0,0.25), transparent);
+    }
+    .yt-footer-col-links { display: flex; flex-direction: column; gap: 11px; }
+    .yt-footer-link {
+      font-size: 0.82rem; color: rgba(255,255,255,0.38);
+      text-decoration: none; display: flex; align-items: center; gap: 7px;
+      transition: all 0.2s ease;
+      font-weight: 400;
+    }
+    .yt-footer-link i { font-size: 0.65rem; color: rgba(255,0,0,0.4); flex-shrink: 0; }
+    .yt-footer-link:hover { color: #fff; transform: translateX(4px); }
+    .yt-footer-link:hover i { color: var(--yt-red); }
+    /* Divider */
+    .yt-footer-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin: 0 32px;
+      position: relative; z-index: 1;
+    }
+    /* Bottom bar */
+    .yt-footer-bottom {
+      max-width: 1200px; margin: 0 auto;
+      padding: 20px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+      position: relative; z-index: 1;
+    }
+    .yt-footer-copy {
+      font-size: 0.75rem; color: rgba(255,255,255,0.22);
+    }
+    .yt-footer-copy a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    .yt-footer-copy a:hover { color: #fff; }
+    .yt-footer-copy .yt-footer-heart { color: var(--yt-red); }
+    .yt-footer-owner {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.12em;
+      background: linear-gradient(135deg, #fff 0%, rgba(255,0,0,0.85) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-transform: uppercase;
+    }
+    .yt-footer-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .yt-footer-tag {
+      font-size: 0.65rem; color: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px; padding: 3px 10px;
+      font-weight: 500; letter-spacing: 0.04em;
+    }
+    @media (max-width: 960px) {
+      .yt-footer-main { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .yt-footer-brand { grid-column: 1 / -1; }
+    }
+    @media (max-width: 620px) {
+      .yt-footer-main { grid-template-columns: 1fr 1fr; padding: 40px 20px 28px; gap: 28px; }
+      .yt-footer-brand { grid-column: 1 / -1; }
+      .yt-footer-bottom { padding: 16px 20px; flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+
+    /* Back pill */
+    .yt-back-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius-pill); padding: 5px 12px 5px 8px;
+      font-size: 0.78rem; font-weight: 500; color: var(--text-muted);
+      text-decoration: none; transition: all var(--tr);
+    }
+    .yt-back-pill i { font-size: 0.8rem; }
+    .yt-back-pill:hover { background: var(--bg4); color: var(--text); }
+
+    /* ═══════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════ */
+   @media (max-width: 960px) {
+  .yt-sidebar {
+    position: fixed;
+    left: -260px;
+    top: 68px;
+    width: 230px;
+    height: calc(100vh - 68px);
+    background: #181818;
+    transition: left 0.3s ease;
+    z-index: 999;
+  }
+
+  .yt-sidebar.open {
+    left: 0;
+  }
+}
+      .yt-player-section { grid-template-columns: 1fr; }
+      .yt-secondary { max-width: 100%; }
+      .yt-main { padding: 16px 16px 60px; }
+    }
+    @media (max-width: 620px) {
+      .yt-header-center { display: none; }
+      .yt-sidebar { display: none; }
+      .yt-main { padding: 12px 12px 50px; }
+      .yt-input-row { flex-direction: column; }
+      .yt-play-btn, .yt-clear-btn { width: 100%; justify-content: center; }
+      .yt-chips { display: none; }
+      /* Show mobile search icon in header */
+      .yt-mob-search-btn { display: flex !important; }
+      /* Hide right-side extras on tiny screens */
+      .yt-icon-btn { display: none; }
+      .yt-back-pill { display: none; }
+    }
+
+    /* ── MOBILE SEARCH DROPDOWN ── */
+    .yt-mob-search-btn {
+      display: none;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: transparent;
+      align-items: center; justify-content: center;
+      font-size: 1.05rem; color: var(--text);
+      border: none; cursor: pointer;
+      transition: background var(--tr);
+      flex-shrink: 0;
+    }
+    .yt-mob-search-btn:hover { background: var(--surface); }
+
+    .yt-mob-search-bar {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      animation: slideDown 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .yt-mob-search-bar.open { display: flex; }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+    .yt-mob-search-input {
+      flex: 1; background: var(--bg2);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 24px; outline: none;
+      color: var(--text); font-family: var(--font);
+      font-size: 0.95rem; padding: 10px 18px;
+      transition: border-color var(--tr);
+    }
+    .yt-mob-search-input:focus {
+      border-color: rgba(255,0,0,0.5);
+      box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
+    }
+    .yt-mob-search-input::placeholder { color: var(--text-dim); }
+    .yt-mob-search-go {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--yt-red); color: #fff;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; flex-shrink: 0;
+      transition: all var(--tr);
+    }
+    .yt-mob-search-go:hover { background: var(--yt-red-dark); }
+    .yt-mob-search-cancel {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: transparent; color: var(--text-muted);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; flex-shrink: 0;
+      transition: all var(--tr);
+    }
+    .yt-mob-search-cancel:hover { color: var(--text); background: var(--surface); }
+
+    /* ═══════════════════════════════
+       SEARCH RESULTS
+    ═══════════════════════════════ */
+    .yt-search-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+    }
+    .yt-search-panel-title {
+      font-size: 1rem; font-weight: 600; color: var(--text);
+    }
+    .yt-search-panel-close {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; font-weight: 500; color: var(--text-muted);
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius-pill); padding: 6px 14px;
+      cursor: pointer; transition: all var(--tr);
+    }
+    .yt-search-panel-close:hover { background: var(--bg4); color: var(--text); }
+
+    /* Results grid */
+    .yt-results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    /* Result card */
+    .yt-result-card {
+      cursor: pointer; border-radius: var(--radius);
+      overflow: hidden; background: transparent;
+      transition: background var(--tr), transform var(--tr);
+      position: relative;
+    }
+    .yt-result-card:hover { background: var(--bg2); transform: translateY(-2px); }
+    .yt-result-thumb-wrap {
+      position: relative; aspect-ratio: 16/9;
+      border-radius: var(--radius); overflow: hidden;
+      background: var(--bg3); margin-bottom: 10px;
+    }
+    .yt-result-thumb {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.35s var(--tr);
+    }
+    .yt-result-card:hover .yt-result-thumb { transform: scale(1.03); }
+    .yt-result-thumb-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0);
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--tr);
+    }
+    .yt-result-card:hover .yt-result-thumb-overlay { background: rgba(0,0,0,0.35); }
+    .yt-result-play-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: #000;
+      opacity: 0; transform: scale(0.8);
+      transition: opacity var(--tr), transform var(--tr);
+    }
+    .yt-result-card:hover .yt-result-play-btn { opacity: 1; transform: scale(1); }
+    .yt-result-duration {
+      position: absolute; bottom: 6px; right: 6px;
+      background: rgba(0,0,0,0.85); color: #fff;
+      font-size: 0.68rem; font-weight: 600; padding: 2px 6px;
+      border-radius: 4px; letter-spacing: 0.03em;
+    }
+    .yt-result-info { padding: 0 4px 8px; }
+    .yt-result-title {
+      font-size: 0.82rem; font-weight: 500; color: var(--text);
+      line-height: 1.35; margin-bottom: 5px;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .yt-result-meta {
+      font-size: 0.72rem; color: var(--text-dim); line-height: 1.4;
+    }
+    .yt-result-channel {
+      font-weight: 500; color: var(--text-muted);
+      display: block; margin-bottom: 2px;
+    }
+
+    /* Loading / empty */
+    .yt-search-loading {
+      padding: 40px 0; display: flex; justify-content: center;
+    }
+    .yt-search-spinner-row {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 0.85rem; color: var(--text-muted);
+    }
+    .yt-search-empty {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px; padding: 60px 20px; text-align: center;
+    }
+    .yt-search-empty i { font-size: 2.5rem; color: var(--bg4); }
+    .yt-search-empty strong { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
+    .yt-search-empty span { font-size: 0.8rem; color: var(--text-dim); }
+
+    /* Load more */
+    .yt-load-more-wrap { text-align: center; padding: 8px 0 24px; }
+    .yt-load-more-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 22px; border-radius: var(--radius-pill);
+      background: var(--bg3); border: 1px solid var(--border);
+      font-size: 0.82rem; font-weight: 500; color: var(--text);
+      cursor: pointer; transition: all var(--tr);
+    }
+    .yt-load-more-btn:hover { background: var(--bg4); }
+
+    /* ── Autocomplete suggestions ── */
+    .yt-suggestions {
+      position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); overflow: hidden;
+      z-index: 300; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      display: none;
+    }
+    .yt-suggestions.open { display: block; }
+    .yt-sug-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px; cursor: pointer;
+      font-size: 0.85rem; color: var(--text);
+      transition: background var(--tr);
+    }
+    .yt-sug-item:hover { background: var(--bg3); }
+    .yt-sug-item i { color: var(--text-dim); font-size: 0.75rem; width: 14px; text-align: center; }
+
+    /* Position search wrap relative for dropdown */
+    #headerSearchWrap { position: relative; }
+
+    /* "Now playing" highlight on result card */
+    .yt-result-card.now-playing .yt-result-thumb-wrap::after {
+      content: '▶ PLAYING';
+      position: absolute; top: 8px; left: 8px;
+      background: var(--yt-red); color: #fff;
+      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em;
+      padding: 3px 8px; border-radius: 3px;
+    }
+    .yt-result-card.now-playing { outline: 2px solid var(--yt-red); outline-offset: 2px; }
+
+    @media (max-width: 620px) {
+      .yt-results-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    }
+    @media (max-width: 400px) {
+      .yt-results-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ═══════════════════════════════════════
+       PWA INSTALL BANNER + BG AUDIO NOTICE
+    ═══════════════════════════════════════ */
+    .pwa-banner {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 999;
+      background: linear-gradient(135deg, #1a0a0a 0%, #200808 100%);
+      border-top: 1px solid rgba(255,0,0,0.3);
+      padding: 14px 16px;
+      align-items: center; gap: 12px;
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.6);
+      animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .pwa-banner.show { display: flex; }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .pwa-banner-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--yt-red);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: #fff; flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(255,0,0,0.4);
+    }
+    .pwa-banner-text { flex: 1; min-width: 0; }
+    .pwa-banner-title {
+      font-size: 0.88rem; font-weight: 700; color: #fff;
+      margin-bottom: 3px;
+    }
+    .pwa-banner-sub {
+      font-size: 0.72rem; color: rgba(255,255,255,0.5);
+      line-height: 1.4;
+    }
+    .pwa-banner-sub b { color: #ff6b6b; }
+    .pwa-install-btn {
+      padding: 9px 18px; border-radius: 20px;
+      background: var(--yt-red); color: #fff;
+      font-size: 0.8rem; font-weight: 700;
+      border: none; cursor: pointer; flex-shrink: 0;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(255,0,0,0.35);
+    }
+    .pwa-install-btn:hover { background: var(--yt-red-dark); transform: translateY(-1px); }
+    .pwa-dismiss-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: none; color: rgba(255,255,255,0.4);
+      font-size: 0.85rem; cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .pwa-dismiss-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+    /* Background audio tip toast */
+    .bg-audio-toast {
+      display: none;
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+      z-index: 998;
+      background: rgba(15,15,15,0.97);
+      border: 1px solid rgba(255,60,60,0.2);
+      border-radius: 14px; padding: 14px 18px;
+      max-width: min(360px, 92vw);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,60,60,0.08);
+      animation: fadeIn 0.3s ease;
+    }
+    .bg-audio-toast.show { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+    .bg-toast-title {
+      font-size: 0.85rem; font-weight: 700; color: #ff6b6b;
+      display: flex; align-items: center; gap: 7px; margin-bottom: 8px;
+    }
+    .bg-toast-steps {
+      font-size: 0.75rem; color: rgba(255,255,255,0.6);
+      line-height: 1.7; list-style: none;
+    }
+    .bg-toast-steps li { display: flex; gap: 8px; align-items: flex-start; }
+    .bg-toast-steps li::before {
+      content: attr(data-n);
+      background: rgba(255,60,60,0.1); color: #ff6b6b;
+      border-radius: 50%; width: 18px; height: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.62rem; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    }
+    .bg-toast-close {
+      position: absolute; top: 10px; right: 12px;
+      background: none; border: none; color: rgba(255,255,255,0.3);
+      font-size: 0.9rem; cursor: pointer; padding: 4px;
+    }
+    .bg-toast-close:hover { color: #fff; }
+
+    /* ════════════════════════════════════════
+       BRAVE BACKGROUND PLAY MODAL
+    ════════════════════════════════════════ */
+    .brave-overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      align-items: center; justify-content: center; padding: 16px;
+    }
+    .brave-overlay.show { display: flex; }
+
+    .brave-modal {
+      background: #0f0f0f;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 22px;
+      width: 100%; max-width: 420px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+      animation: bravePopIn 0.32s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes bravePopIn {
+      from { transform: scale(0.8) translateY(40px); opacity: 0; }
+      to   { transform: scale(1)   translateY(0);    opacity: 1; }
+    }
+
+    /* Header */
+    .brave-modal-header {
+      background: linear-gradient(135deg, #1a0800 0%, #2d1000 50%, #1a0a00 100%);
+      padding: 26px 22px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      text-align: center;
+    }
+    .brave-modal-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,90,0,0.15), transparent 70%);
+    }
+    .brave-lion-wrap {
+      width: 72px; height: 72px; border-radius: 20px;
+      background: linear-gradient(135deg, #ff6000, #ff3d00);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; margin: 0 auto 14px;
+      box-shadow: 0 8px 28px rgba(255,80,0,0.45);
+      position: relative; z-index: 1;
+    }
+    .brave-modal-header h2 {
+      font-size: 1.15rem; font-weight: 800; color: #fff;
+      margin-bottom: 6px; position: relative; z-index: 1;
+    }
+    .brave-modal-header p {
+      font-size: 0.78rem; color: rgba(255,255,255,0.45);
+      line-height: 1.5; position: relative; z-index: 1;
+      max-width: 300px; margin: 0 auto;
+    }
+
+    /* Body */
+    .brave-modal-body { padding: 20px 20px 22px; }
+
+    /* Method card */
+    .brave-method {
+      border-radius: 14px; margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .brave-method-title {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px;
+      font-size: 0.82rem; font-weight: 700; color: #fff;
+    }
+    .brave-method-title i { font-size: 1rem; }
+    .brave-badge {
+      margin-left: auto; font-size: 0.58rem; font-weight: 700;
+      padding: 3px 9px; border-radius: 99px;
+      letter-spacing: 0.07em; text-transform: uppercase;
+    }
+    .badge-best { background: rgba(255,100,0,0.2); color: #ff7c33; border: 1px solid rgba(255,100,0,0.3); }
+    .badge-ok   { background: rgba(255,60,60,0.1); color: #ff6b6b; border: 1px solid rgba(255,60,60,0.15); }
+
+    /* Steps */
+    .brave-steps {
+      padding: 0 16px 14px; list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .brave-steps li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.78rem; color: rgba(255,255,255,0.55); line-height: 1.55;
+    }
+    .brave-step-num {
+      min-width: 22px; height: 22px; border-radius: 50%;
+      font-size: 0.6rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .brave-steps li b { color: #fff; }
+    .brave-steps li code {
+      background: rgba(255,255,255,0.09); border-radius: 5px;
+      padding: 1px 7px; font-size: 0.73rem;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* Brave card styling */
+    .brave-method.brave-card {
+      background: linear-gradient(135deg, rgba(255,80,0,0.08), rgba(255,50,0,0.04));
+      border: 1px solid rgba(255,80,0,0.18);
+    }
+    .brave-method.brave-card .brave-method-title { background: rgba(255,80,0,0.1); }
+    .brave-method.brave-card .brave-step-num { background: rgba(255,80,0,0.15); color: #ff7033; border: 1px solid rgba(255,80,0,0.25); }
+
+    /* Chrome card */
+    .brave-method.chrome-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .brave-method.chrome-card .brave-method-title { background: rgba(255,255,255,0.04); }
+    .brave-method.chrome-card .brave-step-num { background: rgba(255,60,60,0.08); color: #ff6b6b; border: 1px solid rgba(255,60,60,0.15); }
+
+    /* Divider */
+    .brave-or {
+      text-align: center; font-size: 0.68rem;
+      color: rgba(255,255,255,0.18);
+      margin: 4px 0 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .brave-or::before, .brave-or::after {
+      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.07);
+    }
+
+    /* Download Brave button */
+    .brave-download-row {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,80,0,0.07);
+      border: 1px solid rgba(255,80,0,0.15);
+      border-radius: 12px; padding: 12px 14px;
+      margin-bottom: 16px; text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .brave-download-row:hover { background: rgba(255,80,0,0.14); border-color: rgba(255,80,0,0.3); }
+    .brave-download-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, #ff6000, #ff3000);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: #fff; flex-shrink: 0;
+    }
+    .brave-download-text { flex: 1; }
+    .brave-download-text strong { display: block; font-size: 0.82rem; color: #fff; margin-bottom: 2px; }
+    .brave-download-text span { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+    .brave-download-arrow { color: rgba(255,80,0,0.6); font-size: 0.8rem; }
+
+    /* Action buttons */
+    .brave-action-btns { display: flex; gap: 10px; }
+    .brave-btn-play {
+      flex: 1; padding: 13px; border-radius: 12px;
+      background: var(--yt-red); color: #fff;
+      font-size: 0.88rem; font-weight: 700;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 20px rgba(255,0,0,0.3);
+    }
+    .brave-btn-play:hover { background: #cc0000; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,0,0,0.4); }
+    .brave-btn-close {
+      padding: 13px 18px; border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.4); font-size: 0.82rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .brave-btn-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    /* Don't show again */
+    .brave-skip-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; margin-top: 14px; cursor: pointer;
+    }
+    .brave-skip-row input { accent-color: #ff6000; cursor: pointer; width: 14px; height: 14px; }
+    .brave-skip-row span { font-size: 0.7rem; color: rgba(255,255,255,0.25); }
+
+
+    /* ═══════════════════════════════════════
+       HOMEPAGE VIDEO GRID
+    ═══════════════════════════════════════ */
+    .yt-homepage {
+      margin-bottom: 32px;
+    }
+    .yt-homepage-title {
+      font-size: 0.72rem; font-weight: 800;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.14em; text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .yt-homepage-title::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(255,0,0,0.2), transparent);
+    }
+    .yt-homepage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 18px;
+    }
+    /* Skeleton loader */
+    .yt-skeleton-card {
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .yt-skeleton-thumb {
+      aspect-ratio: 16/9; border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--bg3) 25%, var(--bg4) 50%, var(--bg3) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      margin-bottom: 10px;
+    }
+    .yt-skeleton-line {
+      height: 12px; border-radius: 6px; margin-bottom: 6px;
+      background: linear-gradient(90deg, var(--bg3) 25%, var(--bg4) 50%, var(--bg3) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    .yt-skeleton-line.short { width: 60%; }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @media (max-width: 620px) {
+      .yt-homepage-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    }
+
+    
+
+    /* ═══════════════════════════════════════════════
+       FULLSCREEN SHORTS PLAYER — YouTube style
+    ═══════════════════════════════════════════════ */
+    .shorts-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 3000;
+      background: #000;
+      flex-direction: column;
+      align-items: center; justify-content: center;
+      overscroll-behavior: none;
+    }
+    .shorts-overlay.open { display: flex; }
+
+    /* Stack of short videos — vertical snap scroll */
+    .shorts-feed {
+      width: 100%; height: 100%;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .shorts-feed::-webkit-scrollbar { display: none; }
+
+    /* Each short slide */
+    .short-slide {
+      width: 100%; height: 100vh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      background: #000;
+      flex-shrink: 0;
+    }
+
+    /* Video/iframe inside */
+    .short-slide iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: none;
+      object-fit: cover;
+    }
+
+    /* Gradient overlays */
+    .short-slide-top {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 140px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+      z-index: 10; pointer-events: none;
+    }
+    .short-slide-bottom {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+      z-index: 10; pointer-events: none;
+    }
+
+    /* Close button */
+    .shorts-close-btn {
+      position: fixed; top: 16px; left: 16px; z-index: 4000;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .shorts-close-btn:hover { background: rgba(255,0,0,0.5); }
+
+    /* Shorts logo in header bar */
+    .shorts-header-bar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 56px; z-index: 4000;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .shorts-header-logo {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 1rem; font-weight: 800; color: #fff;
+      letter-spacing: -0.3px;
+    }
+    .shorts-header-logo span {
+      background: var(--yt-red); color: #fff;
+      font-size: 0.6rem; font-weight: 700;
+      padding: 2px 6px; border-radius: 4px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+
+    /* Info overlay on each slide */
+    .short-info {
+      position: absolute; bottom: 80px; left: 16px; right: 72px;
+      z-index: 20;
+    }
+    .short-info-channel {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 8px;
+    }
+    .short-info-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--yt-red);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; color: #fff;
+      border: 2px solid rgba(255,255,255,0.3); flex-shrink: 0;
+    }
+    .short-info-name {
+      font-size: 0.85rem; font-weight: 700; color: #fff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }
+    .short-info-title {
+      font-size: 0.78rem; color: rgba(255,255,255,0.85);
+      line-height: 1.4; text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    /* Right action buttons */
+    .short-actions {
+      position: absolute; right: 10px; bottom: 90px;
+      z-index: 20;
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
+    }
+    .short-action-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      cursor: pointer;
+    }
+    .short-action-icon {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: #fff;
+      transition: all 0.18s ease;
+    }
+    .short-action-btn:hover .short-action-icon {
+      background: rgba(255,0,0,0.3);
+      border-color: rgba(255,0,0,0.5);
+    }
+    .short-action-label {
+      font-size: 0.62rem; color: rgba(255,255,255,0.7);
+      font-weight: 600; text-align: center;
+    }
+    .short-action-btn.liked .short-action-icon { background: rgba(255,0,0,0.4); color: #ff6b6b; }
+
+    /* Nav arrows */
+    .shorts-nav-up, .shorts-nav-down {
+      position: fixed; right: 14px; z-index: 4000;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; font-size: 0.85rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.18s;
+    }
+    .shorts-nav-up { top: 50%; transform: translateY(-60px); }
+    .shorts-nav-down { top: 50%; transform: translateY(20px); }
+    .shorts-nav-up:hover, .shorts-nav-down:hover { background: rgba(255,0,0,0.4); }
+
+    /* Loading spinner inside short slide */
+    .short-loader {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #111; z-index: 5;
+    }
+    .short-loader.hidden { display: none; }
+
+    /* Swipe hint */
+    .shorts-swipe-hint {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 4000;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      animation: hintFade 3s ease forwards;
+    }
+    @keyframes hintFade {
+      0%,60%{ opacity:1; } 100%{ opacity:0; pointer-events:none; }
+    }
+    .shorts-swipe-hint i { font-size: 1.4rem; color: rgba(255,255,255,0.7); animation: swipeBounce 1s ease infinite; }
+    @keyframes swipeBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .shorts-swipe-hint span { font-size: 0.7rem; color: rgba(255,255,255,0.5); letter-spacing: 0.05em; }
+
+
+    /* ═══════════════════════════════════════
+       UP NEXT SUGGESTIONS PANEL
+    ═══════════════════════════════════════ */
+    .upnext-section {
+      margin-top: 20px;
+    }
+    .upnext-title {
+      font-size: 0.72rem; font-weight: 800;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.14em; text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .upnext-title::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(255,0,0,0.25), transparent);
+    }
+    .upnext-list { display: flex; flex-direction: column; gap: 10px; }
+    .upnext-card {
+      display: flex; gap: 10px; cursor: pointer;
+      border-radius: 10px; padding: 8px;
+      transition: background 0.18s ease;
+    }
+    .upnext-card:hover { background: var(--bg3); }
+    .upnext-thumb {
+      width: 120px; height: 68px; border-radius: 8px;
+      overflow: hidden; flex-shrink: 0; background: var(--bg3);
+      position: relative;
+    }
+    .upnext-thumb img { width:100%; height:100%; object-fit:cover; }
+    .upnext-thumb-play {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0);
+      transition: background 0.18s;
+    }
+    .upnext-card:hover .upnext-thumb-play { background: rgba(0,0,0,0.4); }
+    .upnext-thumb-play i {
+      color: #fff; font-size: 1.1rem;
+      opacity: 0; transition: opacity 0.18s;
+    }
+    .upnext-card:hover .upnext-thumb-play i { opacity: 1; }
+    .upnext-info { flex: 1; min-width: 0; }
+    .upnext-info-title {
+      font-size: 0.78rem; font-weight: 600; color: var(--text);
+      line-height: 1.35; margin-bottom: 4px;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .upnext-info-ch {
+      font-size: 0.68rem; color: var(--text-dim);
+    }
+    .upnext-skeleton {
+      display: flex; gap: 10px; padding: 8px;
+    }
+    .upnext-sk-thumb {
+      width: 120px; height: 68px; border-radius: 8px;
+      background: linear-gradient(90deg, var(--bg3) 25%, var(--bg4) 50%, var(--bg3) 75%);
+      background-size: 200% 100%; animation: shimmer 1.4s infinite; flex-shrink: 0;
+    }
+    .upnext-sk-lines { flex: 1; display: flex; flex-direction: column; gap: 8px; padding-top: 6px; }
+    .upnext-sk-line {
+      height: 10px; border-radius: 5px;
+      background: linear-gradient(90deg, var(--bg3) 25%, var(--bg4) 50%, var(--bg3) 75%);
+      background-size: 200% 100%; animation: shimmer 1.4s infinite;
+    }
+    .upnext-sk-line.short { width: 55%; }
+
+    /* ═══════════════════════════════════════
+       COOKIE HISTORY BANNER
+    ═══════════════════════════════════════ */
+    .cookie-banner {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 1500;
+      background: rgba(15,15,15,0.98);
+      border-top: 1px solid rgba(255,0,0,0.2);
+      padding: 16px 20px;
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.7);
+      animation: slideUp 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .cookie-banner.show { display: block; }
+    .cookie-banner-inner {
+      max-width: 900px; margin: 0 auto;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .cookie-banner-text { flex: 1; min-width: 200px; }
+    .cookie-banner-text strong {
+      display: block; font-size: 0.85rem; color: #fff; margin-bottom: 4px;
+    }
+    .cookie-banner-text span { font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
+    .cookie-accept-btn {
+      padding: 10px 22px; border-radius: 20px;
+      background: var(--yt-red); color: #fff;
+      font-size: 0.82rem; font-weight: 700; border: none; cursor: pointer;
+      transition: all 0.2s; flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(255,0,0,0.3);
+    }
+    .cookie-accept-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,0,0,0.4); }
+    .cookie-decline-btn {
+      padding: 10px 18px; border-radius: 20px;
+      background: transparent; color: rgba(255,255,255,0.4);
+      font-size: 0.82rem; font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .cookie-decline-btn:hover { color: #fff; border-color: rgba(255,255,255,0.25); }
+
+    /* Continue Watching Section */
+    .continue-section { margin-bottom: 28px; }
+    .continue-title {
+      font-size: 0.72rem; font-weight: 800;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.14em; text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .continue-title::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(255,0,0,0.25), transparent);
+    }
+    .continue-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .continue-card {
+      cursor: pointer; border-radius: 10px; overflow: hidden;
+      transition: transform 0.18s; position: relative;
+    }
+    .continue-card:hover { transform: translateY(-3px); }
+    .continue-thumb {
+      aspect-ratio: 16/9; background: var(--bg3); position: relative;
+    }
+    .continue-thumb img { width:100%; height:100%; object-fit:cover; }
+    .continue-progress {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: rgba(255,255,255,0.15);
+    }
+    .continue-progress-bar {
+      height: 100%; background: var(--yt-red);
+      border-radius: 0 2px 2px 0;
+    }
+    .continue-info { padding: 6px 4px; }
+    .continue-info-title {
+      font-size: 0.75rem; font-weight: 500; color: var(--text);
+      line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .continue-remove {
+      position: absolute; top: 4px; right: 4px;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,0,0,0.7); color: #fff;
+      border: none; cursor: pointer; font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.18s;
+    }
+    .continue-card:hover .continue-remove { opacity: 1; }
+
+    /* ═══════════════════════════════════════
+       SHORTS — touch swipe improvements
+    ═══════════════════════════════════════ */
+    .shorts-overlay { touch-action: pan-y; }
+    .shorts-feed    { touch-action: pan-y; overscroll-behavior: contain; }
+  </style>
 </head>
 <body>
 
-<!-- HEADER -->
+<!-- ═══════════════════════════════════
+     HEADER
+═══════════════════════════════════ -->
 <header class="yt-header">
   <div class="yt-header-left">
-    <button class="yt-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="yt-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
     <a href="index.html" class="yt-logo" title="Back to Portfolio">
       <div class="yt-logo-icon"><i class="fa-brands fa-youtube"></i></div>
-      <div><span class="yt-logo-text">MKTube</span><span class="yt-logo-badge">Ad-Free</span></div>
+      <div>
+        <span class="yt-logo-text">MKTube</span>
+        <span class="yt-logo-badge">Ad-Free</span>
+      </div>
     </a>
   </div>
+
   <div class="yt-header-center">
     <div class="yt-search-wrap" id="headerSearchWrap">
-      <input class="yt-search-input" type="text" id="headerSearchInput" placeholder="Search videos…" autocomplete="off" onkeydown="if(event.key==='Enter')doSearch(this.value)"/>
+      <input class="yt-search-input" type="text" id="headerSearchInput"
+        placeholder="Search videos…"
+        autocomplete="off"
+        onkeydown="if(event.key==='Enter') doSearch(this.value)" />
     </div>
-    <button class="yt-search-btn" aria-label="Search" onclick="doSearch(document.getElementById('headerSearchInput').value)"><i class="fa-solid fa-magnifying-glass"></i></button>
-    <button class="yt-mic-btn" aria-label="Voice search" onclick="startVoiceSearch()"><i class="fa-solid fa-microphone" id="micIcon"></i></button>
+    <button class="yt-search-btn" aria-label="Search" onclick="doSearch(document.getElementById('headerSearchInput').value)">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <button class="yt-mic-btn" aria-label="Voice search" onclick="startVoiceSearch()">
+      <i class="fa-solid fa-microphone" id="micIcon"></i>
+    </button>
   </div>
+
   <div class="yt-header-right">
-    <button class="yt-mob-search-btn" aria-label="Search" onclick="openMobSearch()"><i class="fa-solid fa-magnifying-glass"></i></button>
-    <button class="yt-icon-btn" aria-label="Create"><i class="fa-solid fa-video"></i></button>
-    <button class="yt-icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="yt-notif-badge">3</span></button>
+    <!-- Mobile search icon (shown only on small screens) -->
+    <button class="yt-mob-search-btn" aria-label="Search" onclick="openMobSearch()">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    <button class="yt-icon-btn" aria-label="Create">
+      <i class="fa-solid fa-video"></i>
+    </button>
+    <button class="yt-icon-btn" aria-label="Notifications">
+      <i class="fa-solid fa-bell"></i>
+      <span class="yt-notif-badge">3</span>
+    </button>
     <div class="yt-avatar">MK</div>
-    <a href="index.html" class="yt-back-pill" style="margin-left:8px"><i class="fa-solid fa-arrow-left"></i> Portfolio</a>
+    <a href="index.html" class="yt-back-pill" style="margin-left:8px">
+      <i class="fa-solid fa-arrow-left"></i> Portfolio
+    </a>
   </div>
 </header>
 
-<!-- MOBILE SEARCH -->
+<!-- ── MOBILE SEARCH OVERLAY ── -->
 <div class="yt-mob-search-bar" id="mobSearchBar">
-  <button class="yt-mob-search-cancel" onclick="closeMobSearch()" aria-label="Cancel"><i class="fa-solid fa-arrow-left"></i></button>
-  <input class="yt-mob-search-input" type="text" id="mobSearchInput" placeholder="Search videos…" autocomplete="off" onkeydown="if(event.key==='Enter'){doSearch(this.value);closeMobSearch()}"/>
-  <button class="yt-mob-search-go" onclick="doSearch(document.getElementById('mobSearchInput').value);closeMobSearch()" aria-label="Go"><i class="fa-solid fa-magnifying-glass"></i></button>
-  <button class="yt-mob-search-cancel" onclick="startVoiceSearch();closeMobSearch()" aria-label="Voice"><i class="fa-solid fa-microphone"></i></button>
+  <button class="yt-mob-search-cancel" onclick="closeMobSearch()" aria-label="Cancel">
+    <i class="fa-solid fa-arrow-left"></i>
+  </button>
+  <input class="yt-mob-search-input" type="text" id="mobSearchInput"
+    placeholder="Search videos…"
+    autocomplete="off"
+    onkeydown="if(event.key==='Enter'){ doSearch(this.value); closeMobSearch(); }" />
+  <button class="yt-mob-search-go" onclick="doSearch(document.getElementById('mobSearchInput').value); closeMobSearch()" aria-label="Go">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+  <button class="yt-mob-search-cancel" onclick="startVoiceSearch(); closeMobSearch()" aria-label="Voice">
+    <i class="fa-solid fa-microphone" id="mobMicIcon"></i>
+  </button>
 </div>
 
 <div class="yt-layout">
-  <!-- Sidebar overlay (mobile) -->
-  <div class="yt-sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-  <!-- SIDEBAR -->
+
+  <!-- ═══════════════════════════════
+       SIDEBAR
+  ═══════════════════════════════ -->
   <nav class="yt-sidebar">
-    <a href="#" class="yt-nav-item active" onclick="navSearch('trending india 2025',this)"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="#" class="yt-nav-item" onclick="navSearch('explore trending videos 2025',this)"><i class="fa-solid fa-compass"></i> Explore</a>
-    <a href="#" class="yt-nav-item" onclick="navSearch('trending videos today india',this)"><i class="fa-solid fa-fire"></i> Trending</a>
-    <a href="#" class="yt-nav-item" onclick="openShortsPlayer();return false"><i class="fa-brands fa-youtube"></i> Shorts</a>
-    <a href="#" class="yt-nav-item" onclick="navSearch('top music hits 2025',this)"><i class="fa-solid fa-music"></i> Music</a>
-    <a href="#" class="yt-nav-item" onclick="navSearch('gaming videos 2025',this)"><i class="fa-solid fa-gamepad"></i> Gaming</a>
-    <a href="#" class="yt-nav-item" onclick="navSearch('india news today latest',this)"><i class="fa-solid fa-newspaper"></i> News</a>
-    <a href="#" class="yt-nav-item" onclick="navSearch('cricket highlights 2025',this)"><i class="fa-solid fa-cricket-bat-ball"></i> Sports</a>
-    <a href="#" class="yt-nav-item" onclick="navSearch('movies trailer 2025',this)"><i class="fa-solid fa-film"></i> Movies</a>
-    <a href="#" class="yt-nav-item" onclick="navSearch('coding tutorial programming',this)"><i class="fa-solid fa-terminal"></i> Coding</a>
+    <a href="#" class="yt-nav-item active" onclick="navSearch('trending india 2025', this)">
+      <i class="fa-solid fa-house"></i> Home
+    </a>
+    <a href="#" class="yt-nav-item" onclick="navSearch('explore trending videos 2025', this)">
+      <i class="fa-solid fa-compass"></i> Explore
+    </a>
+    <a href="#" class="yt-nav-item" onclick="navSearch('trending videos today india', this)">
+      <i class="fa-solid fa-fire"></i> Trending
+    </a>
+    <a href="#" class="yt-nav-item" onclick="openShortsPlayer(); return false">
+      <i class="fa-brands fa-youtube"></i> Shorts
+    </a>
+    <a href="#" class="yt-nav-item" onclick="navSearch('top music hits 2025', this)">
+      <i class="fa-solid fa-music"></i> Music
+    </a>
+    <a href="#" class="yt-nav-item" onclick="navSearch('gaming videos 2025', this)">
+      <i class="fa-solid fa-gamepad"></i> Gaming
+    </a>
+    <a href="#" class="yt-nav-item" onclick="navSearch('india news today latest', this)">
+      <i class="fa-solid fa-newspaper"></i> News
+    </a>
+    <a href="#" class="yt-nav-item" onclick="navSearch('cricket highlights 2025', this)">
+      <i class="fa-solid fa-cricket-bat-ball"></i> Sports
+    </a>
+    <a href="#" class="yt-nav-item" onclick="navSearch('movies trailer 2025', this)">
+      <i class="fa-solid fa-film"></i> Movies
+    </a>
+    <a href="#" class="yt-nav-item" onclick="navSearch('coding tutorial programming', this)">
+      <i class="fa-solid fa-terminal"></i> Coding
+    </a>
     <div class="yt-sidebar-divider"></div>
     <div class="yt-sidebar-section-title">My Portfolio</div>
-    <a href="index.html" class="yt-nav-item"><i class="fa-solid fa-arrow-left"></i> Portfolio</a>
-    <a href="index.html#projects" class="yt-nav-item"><i class="fa-solid fa-code"></i> Projects</a>
-    <a href="index.html#contact" class="yt-nav-item"><i class="fa-solid fa-envelope"></i> Contact</a>
+    <a href="index.html" class="yt-nav-item">
+      <i class="fa-solid fa-arrow-left"></i> Portfolio
+    </a>
+    <a href="index.html#projects" class="yt-nav-item">
+      <i class="fa-solid fa-code"></i> Projects
+    </a>
+    <a href="index.html#contact" class="yt-nav-item">
+      <i class="fa-solid fa-envelope"></i> Contact
+    </a>
   </nav>
 
-  <!-- MAIN -->
+  <!-- ═══════════════════════════════
+       MAIN
+  ═══════════════════════════════ -->
   <main class="yt-main">
-    <!-- Chips -->
+
+    <!-- Filter chips -->
     <div class="yt-chips" id="chipsRow">
-      <button class="yt-chip active" onclick="doSearch(this.textContent==='All'?'trending':this.textContent,this)">All</button>
-      <button class="yt-chip" onclick="doSearch(this.textContent,this)">Music</button>
-      <button class="yt-chip" onclick="doSearch(this.textContent,this)">Gaming</button>
-      <button class="yt-chip" onclick="doSearch(this.textContent,this)">Tech</button>
-      <button class="yt-chip" onclick="doSearch(this.textContent,this)">Movies</button>
-      <button class="yt-chip" onclick="doSearch(this.textContent,this)">News</button>
-      <button class="yt-chip" onclick="doSearch(this.textContent,this)">Sports</button>
-      <button class="yt-chip" onclick="doSearch(this.textContent,this)">Education</button>
+      <button class="yt-chip active" onclick="doSearch(this.textContent==='All'?'trending':this.textContent, this)">All</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Music</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Gaming</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Tech</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Movies</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">News</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Sports</button>
+      <button class="yt-chip" onclick="doSearch(this.textContent, this)">Education</button>
     </div>
 
-    <!-- Search Results Panel -->
+    <!-- ═══ SEARCH RESULTS PANEL (hidden by default) ═══ -->
     <div id="searchPanel" style="display:none">
       <div class="yt-search-panel-header">
         <span id="searchPanelTitle" class="yt-search-panel-title"></span>
-        <button class="yt-search-panel-close" onclick="closeSearch()"><i class="fa-solid fa-xmark"></i> Close Results</button>
+        <button class="yt-search-panel-close" onclick="closeSearch()">
+          <i class="fa-solid fa-xmark"></i> Close Results
+        </button>
       </div>
       <div id="searchResultsGrid" class="yt-results-grid"></div>
-      <div id="searchLoading" class="yt-search-loading" style="display:none"><div class="yt-search-spinner-row"><div class="yt-spinner"></div><span>Searching…</span></div></div>
-      <div id="searchEmpty" class="yt-search-empty" style="display:none"><i class="fa-solid fa-magnifying-glass"></i><strong>No results found</strong><span>Try a different search term</span></div>
-      <div id="searchLoadMore" class="yt-load-more-wrap" style="display:none"><button class="yt-load-more-btn" onclick="loadMoreResults()"><i class="fa-solid fa-rotate-right"></i> Load More</button></div>
+      <div id="searchLoading" class="yt-search-loading" style="display:none">
+        <div class="yt-search-spinner-row">
+          <div class="yt-spinner"></div>
+          <span>Searching…</span>
+        </div>
+      </div>
+      <div id="searchEmpty" class="yt-search-empty" style="display:none">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <strong>No results found</strong>
+        <span>Try a different search term</span>
+      </div>
+      <div id="searchLoadMore" class="yt-load-more-wrap" style="display:none">
+        <button class="yt-load-more-btn" onclick="loadMoreResults()">
+          <i class="fa-solid fa-rotate-right"></i> Load More
+        </button>
+      </div>
     </div>
 
-    <!-- Homepage Grid -->
+    <!-- ══ COOKIE BANNER ══ -->
+    <div class="cookie-banner" id="cookieBanner">
+      <div class="cookie-banner-inner">
+        <div class="cookie-banner-text">
+          <strong>🍪 Enable Watch History</strong>
+          <span>Allow MKTube to remember your recently watched videos so you can continue where you left off. No data is sent to any server.</span>
+        </div>
+        <button class="cookie-accept-btn" onclick="acceptCookies()">Accept & Remember</button>
+        <button class="cookie-decline-btn" onclick="declineCookies()">No Thanks</button>
+      </div>
+    </div>
+
+    <!-- ══ CONTINUE WATCHING (shown if cookies accepted + history exists) ══ -->
+    <div class="continue-section" id="continueSection" style="display:none">
+      <div class="continue-title">▶ Continue Watching</div>
+      <div class="continue-grid" id="continueGrid"></div>
+    </div>
+
+    <!-- ══ HOMEPAGE TRENDING GRID ══ -->
     <div class="yt-homepage" id="homepageSection">
       <div class="yt-homepage-title">🔥 Trending Now</div>
       <div class="yt-homepage-grid" id="homepageGrid">
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
-        <div class="yt-skeleton-card"><div class="yt-skeleton-thumb"></div><div class="yt-skeleton-line"></div><div class="yt-skeleton-line short"></div></div>
+        <!-- Skeletons shown while loading -->
+        <div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div><div class="yt-skeleton-card">
+          <div class="yt-skeleton-thumb"></div>
+          <div class="yt-skeleton-line"></div>
+          <div class="yt-skeleton-line short"></div>
+        </div>
       </div>
     </div>
 
     <div class="yt-player-section">
-      <!-- PRIMARY -->
+
+      <!-- ─── PRIMARY ─── -->
       <div class="yt-primary">
-        <div class="yt-adfree-badge"><i class="fa-solid fa-shield-halved"></i> Ad-Free Mode Active</div>
+
+        <!-- Ad-free badge -->
+        <div class="yt-adfree-badge">
+          <i class="fa-solid fa-shield-halved"></i> Ad-Free Mode Active
+        </div>
+
+        <!-- Input section -->
         <div class="yt-input-section">
-          <div class="yt-input-label"><i class="fa-brands fa-youtube"></i> Paste YouTube Link to Watch</div>
-          <div class="yt-input-row">
-            <div class="yt-url-wrap"><i class="fa-solid fa-link"></i><input class="yt-url-input" type="text" id="videoUrl" placeholder="youtube.com/watch?v=… or youtu.be/…" autocomplete="off" onkeydown="if(event.key==='Enter')loadVideo()"/></div>
-            <button class="yt-play-btn" onclick="loadVideo()"><i class="fa-solid fa-play"></i> Play</button>
-            <button class="yt-clear-btn" onclick="clearAll()" title="Clear"><i class="fa-solid fa-xmark"></i></button>
+          <div class="yt-input-label">
+            <i class="fa-brands fa-youtube"></i> Paste YouTube Link to Watch
           </div>
-          <div class="yt-error" id="errBox"><i class="fa-solid fa-circle-exclamation"></i><span id="errText"></span></div>
+          <div class="yt-input-row">
+            <div class="yt-url-wrap">
+              <i class="fa-solid fa-link"></i>
+              <input class="yt-url-input" type="text" id="videoUrl"
+                placeholder="youtube.com/watch?v=… or youtu.be/…"
+                autocomplete="off"
+                onkeydown="if(event.key==='Enter') loadVideo()" />
+            </div>
+            <button class="yt-play-btn" onclick="loadVideo()">
+              <i class="fa-solid fa-play"></i> Play
+            </button>
+            <button class="yt-clear-btn" onclick="clearAll()" title="Clear">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="yt-error" id="errBox">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span id="errText"></span>
+          </div>
           <div class="yt-tips">
             <span class="yt-tip"><i class="fa-solid fa-link"></i> /watch?v=</span>
             <span class="yt-tip"><i class="fa-solid fa-link"></i> youtu.be/</span>
@@ -138,98 +1965,1515 @@
             <span class="yt-tip"><i class="fa-solid fa-keyboard"></i> Enter to play</span>
           </div>
         </div>
+
+        <!-- Video player -->
         <div class="yt-video-wrap">
           <div class="yt-video-default" id="defaultState">
             <div class="yt-play-icon"><i class="fa-brands fa-youtube"></i></div>
             <h3>Your video will appear here</h3>
             <p>Paste a YouTube URL above and hit Play — no ads, no interruptions.</p>
           </div>
-          <div class="yt-loader" id="loaderState"><div class="yt-spinner"></div><p>Loading video…</p></div>
-          <iframe id="player" class="yt-video-frame" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <div class="yt-loader" id="loaderState">
+            <div class="yt-spinner"></div>
+            <p>Loading video…</p>
+          </div>
+          <iframe id="player" class="yt-video-frame"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
         </div>
+
+        <!-- Video meta (shown after load) -->
         <div class="yt-video-info">
           <div class="yt-video-title empty" id="videoTitle">Paste a link and press Play to start watching without ads.</div>
           <div class="yt-action-bar" id="actionBar" style="display:none">
-            <div class="yt-action-group"><button class="yt-action-btn"><i class="fa-solid fa-thumbs-up"></i> Like</button><div class="yt-action-divider"></div><button class="yt-action-btn"><i class="fa-solid fa-thumbs-down"></i></button></div>
-            <button class="yt-action-btn" style="background:var(--bg3);border-radius:var(--radius-pill)"><i class="fa-solid fa-share"></i> Share</button>
-            <button class="yt-action-btn" style="background:var(--bg3);border-radius:var(--radius-pill)"><i class="fa-solid fa-download"></i> Download ↓</button>
-            <button class="yt-action-btn yt-sub-btn" id="subBtn"><i class="fa-solid fa-bell"></i> Subscribe</button>
+            <div class="yt-action-group">
+              <button class="yt-action-btn"><i class="fa-solid fa-thumbs-up"></i> Like</button>
+              <div class="yt-action-divider"></div>
+              <button class="yt-action-btn"><i class="fa-solid fa-thumbs-down"></i></button>
+            </div>
+            <button class="yt-action-btn" style="background:var(--bg3);border-radius:var(--radius-pill)">
+              <i class="fa-solid fa-share"></i> Share
+            </button>
+            <button class="yt-action-btn" style="background:var(--bg3);border-radius:var(--radius-pill)">
+              <i class="fa-solid fa-download"></i> Download ↓
+            </button>
+            <button class="yt-action-btn yt-sub-btn" id="subBtn">
+              <i class="fa-solid fa-bell"></i> Subscribe
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ─── SECONDARY (download panel) ─── -->
+      <div class="yt-secondary">
+        <div class="yt-panel">
+          <div class="yt-panel-header">
+            <div class="yt-panel-title">
+              <i class="fa-solid fa-download"></i> Download
+            </div>
+            <span class="yt-panel-badge">Ad-Free Tool</span>
+          </div>
+          <div class="yt-panel-body">
+
+            <!-- Thumb row -->
+            <div class="yt-dl-thumb-row" id="dlThumbRow" style="display:none">
+              <div class="yt-dl-thumb" id="dlThumb"><i class="fa-brands fa-youtube"></i></div>
+              <div>
+                <div class="yt-dl-title-text" id="dlName">Loading…</div>
+                <div class="yt-dl-subtitle">YouTube Video</div>
+              </div>
+            </div>
+
+            <!-- MP4 / MP3 tabs -->
+            <div class="yt-tab-row" id="dlTabs" style="display:none">
+              <button class="yt-tab active" id="tabMp4" onclick="switchTab('mp4')">
+                <i class="fa-solid fa-film" style="color:var(--yt-red)"></i> MP4 Video
+              </button>
+              <button class="yt-tab" id="tabMp3" onclick="switchTab('mp3')">
+                <i class="fa-solid fa-music" style="color:var(--green)"></i> MP3 Audio
+              </button>
+            </div>
+
+            <!-- Lists -->
+            <div class="yt-dl-list" id="mp4List"></div>
+            <div class="yt-dl-list" id="mp3List" style="display:none"></div>
+
+            <!-- Empty state (before video is loaded) -->
+            <div class="yt-dl-empty" id="dlEmpty">
+              <i class="fa-solid fa-arrow-down-to-line"></i>
+              <strong>No video loaded</strong>
+              Paste a YouTube link and press Play to see download options.
+            </div>
+
           </div>
         </div>
       </div>
 
-      <!-- SECONDARY (download + suggestions) -->
-      <div class="yt-secondary">
-        <div class="yt-panel">
-          <div class="yt-panel-header"><div class="yt-panel-title"><i class="fa-solid fa-download"></i> Download</div><span class="yt-panel-badge">Ad-Free Tool</span></div>
-          <div class="yt-panel-body">
-            <div class="yt-dl-thumb-row" id="dlThumbRow" style="display:none"><div class="yt-dl-thumb" id="dlThumb"><i class="fa-brands fa-youtube"></i></div><div><div class="yt-dl-title-text" id="dlName">Loading…</div><div class="yt-dl-subtitle">YouTube Video</div></div></div>
-            <div class="yt-tab-row" id="dlTabs" style="display:none">
-              <button class="yt-tab active" id="tabMp4" onclick="switchTab('mp4')"><i class="fa-solid fa-film" style="color:var(--accent)"></i> MP4 Video</button>
-              <button class="yt-tab" id="tabMp3" onclick="switchTab('mp3')"><i class="fa-solid fa-music" style="color:var(--green)"></i> MP3 Audio</button>
-            </div>
-            <div class="yt-dl-list" id="mp4List"></div>
-            <div class="yt-dl-list" id="mp3List" style="display:none"></div>
-            <div class="yt-dl-empty" id="dlEmpty"><i class="fa-solid fa-arrow-down-to-line"></i><strong>No video loaded</strong>Paste a YouTube link and press Play to see download options.</div>
-          </div>
-        </div>
+    </div><!-- /yt-player-section -->
 
-        <!-- Up Next / Suggested Videos -->
-        <div class="yt-panel yt-suggestions-panel" id="suggestionsPanel" style="display:none;margin-top:16px">
-          <div class="yt-panel-header">
-            <div class="yt-panel-title"><i class="fa-solid fa-list"></i> Up Next</div>
-            <span class="yt-panel-badge">Suggestions</span>
+    <!-- ══ UP NEXT SUGGESTIONS ══ -->
+    <div class="upnext-section" id="upnextSection" style="display:none">
+      <div class="upnext-title">🎯 Up Next</div>
+      <div class="upnext-list" id="upnextList">
+        <div class="upnext-skeleton">
+          <div class="upnext-sk-thumb"></div>
+          <div class="upnext-sk-lines">
+            <div class="upnext-sk-line"></div>
+            <div class="upnext-sk-line short"></div>
           </div>
-          <div class="yt-panel-body" id="suggestionsList" style="padding:8px">
-            <!-- Suggested video cards load here -->
+        </div><div class="upnext-skeleton">
+          <div class="upnext-sk-thumb"></div>
+          <div class="upnext-sk-lines">
+            <div class="upnext-sk-line"></div>
+            <div class="upnext-sk-line short"></div>
+          </div>
+        </div><div class="upnext-skeleton">
+          <div class="upnext-sk-thumb"></div>
+          <div class="upnext-sk-lines">
+            <div class="upnext-sk-line"></div>
+            <div class="upnext-sk-line short"></div>
+          </div>
+        </div><div class="upnext-skeleton">
+          <div class="upnext-sk-thumb"></div>
+          <div class="upnext-sk-lines">
+            <div class="upnext-sk-line"></div>
+            <div class="upnext-sk-line short"></div>
+          </div>
+        </div><div class="upnext-skeleton">
+          <div class="upnext-sk-thumb"></div>
+          <div class="upnext-sk-lines">
+            <div class="upnext-sk-line"></div>
+            <div class="upnext-sk-line short"></div>
           </div>
         </div>
       </div>
     </div>
   </main>
-</div>
+</div><!-- /yt-layout -->
 
-<!-- FOOTER -->
+<!-- ═══════════════════════════════════
+     FOOTER
+═══════════════════════════════════ -->
 <footer class="yt-footer">
+
+  <!-- Main grid -->
   <div class="yt-footer-main">
+
+    <!-- Brand -->
     <div class="yt-footer-brand">
-      <a href="index.html" class="yt-footer-logo"><div class="yt-footer-logo-icon"><i class="fa-brands fa-youtube"></i></div><span class="yt-footer-logo-text">MKTube</span><span class="yt-footer-logo-badge">Ad-Free</span></a>
-      <p class="yt-footer-desc">A portfolio project by Mritunjay Kumar — watch YouTube videos ad-free, search in real-time, and download in MP4 or MP3.</p>
+      <a href="index.html" class="yt-footer-logo">
+        <div class="yt-footer-logo-icon"><i class="fa-brands fa-youtube"></i></div>
+        <span class="yt-footer-logo-text">MKTube</span>
+        <span class="yt-footer-logo-badge">Ad-Free</span>
+      </a>
+      <p class="yt-footer-desc">
+        A portfolio project by Mritunjay Kumar — watch YouTube videos completely ad-free, search in real-time, and download in MP4 or MP3. Built for learning and showcasing frontend skills.
+      </p>
       <div class="yt-footer-socials">
-        <a href="https://github.com/mritunjaykumarr" target="_blank" class="yt-footer-social" title="GitHub"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" class="yt-footer-social" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a href="tel:+919470880956" class="yt-footer-social" title="Phone"><i class="fa-solid fa-phone"></i></a>
-        <a href="index.html#contact" class="yt-footer-social" title="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://github.com/mritunjaykumarr" target="_blank" class="yt-footer-social" title="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" class="yt-footer-social" title="LinkedIn">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="tel:+919470880956" class="yt-footer-social" title="Phone">
+          <i class="fa-solid fa-phone"></i>
+        </a>
+        <a href="index.html#contact" class="yt-footer-social" title="Email">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
       </div>
     </div>
-    <div class="yt-footer-col"><div class="yt-footer-col-title">Portfolio</div><div class="yt-footer-col-links"><a href="index.html" class="yt-footer-link"><i class="fa-solid fa-house"></i> Home</a><a href="index.html#about" class="yt-footer-link"><i class="fa-solid fa-user"></i> About Me</a><a href="index.html#education" class="yt-footer-link"><i class="fa-solid fa-graduation-cap"></i> Education</a><a href="index.html#projects" class="yt-footer-link"><i class="fa-solid fa-code"></i> Projects</a><a href="index.html#skills" class="yt-footer-link"><i class="fa-solid fa-wrench"></i> Skills</a></div></div>
-    <div class="yt-footer-col"><div class="yt-footer-col-title">This Tool</div><div class="yt-footer-col-links"><a href="#" onclick="document.getElementById('headerSearchInput').focus();return false" class="yt-footer-link"><i class="fa-solid fa-magnifying-glass"></i> Search Videos</a><a href="#" onclick="document.getElementById('videoUrl').focus();return false" class="yt-footer-link"><i class="fa-solid fa-play"></i> Play Video</a><a href="#" onclick="switchTab('mp4');return false" class="yt-footer-link"><i class="fa-solid fa-download"></i> Download MP4</a><a href="#" onclick="switchTab('mp3');return false" class="yt-footer-link"><i class="fa-solid fa-music"></i> Download MP3</a></div></div>
-    <div class="yt-footer-col"><div class="yt-footer-col-title">Browse</div><div class="yt-footer-col-links"><a href="#" onclick="doSearch('music trending');return false" class="yt-footer-link"><i class="fa-solid fa-music"></i> Music</a><a href="#" onclick="doSearch('gaming 2025');return false" class="yt-footer-link"><i class="fa-solid fa-gamepad"></i> Gaming</a><a href="#" onclick="doSearch('tech review');return false" class="yt-footer-link"><i class="fa-solid fa-microchip"></i> Tech</a><a href="#" onclick="doSearch('news today india');return false" class="yt-footer-link"><i class="fa-solid fa-newspaper"></i> News</a><a href="#" onclick="doSearch('coding tutorial');return false" class="yt-footer-link"><i class="fa-solid fa-terminal"></i> Coding</a></div></div>
-    <div class="yt-footer-col"><div class="yt-footer-col-title">Info</div><div class="yt-footer-col-links"><a href="index.html#about" class="yt-footer-link"><i class="fa-solid fa-circle-info"></i> About Developer</a><a href="https://github.com/mritunjaykumarr" target="_blank" class="yt-footer-link"><i class="fa-brands fa-github"></i> GitHub</a><a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" class="yt-footer-link"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></div></div>
-  </div>
+
+    <!-- Portfolio -->
+    <div class="yt-footer-col">
+      <div class="yt-footer-col-title">Portfolio</div>
+      <div class="yt-footer-col-links">
+        <a href="index.html" class="yt-footer-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="index.html#about" class="yt-footer-link"><i class="fa-solid fa-user"></i> About Me</a>
+        <a href="index.html#education" class="yt-footer-link"><i class="fa-solid fa-graduation-cap"></i> Education</a>
+        <a href="index.html#projects" class="yt-footer-link"><i class="fa-solid fa-code"></i> Projects</a>
+        <a href="index.html#skills" class="yt-footer-link"><i class="fa-solid fa-wrench"></i> Skills</a>
+        <a href="index.html#blog" class="yt-footer-link"><i class="fa-solid fa-pen"></i> Blog</a>
+        <a href="index.html#contact" class="yt-footer-link"><i class="fa-solid fa-envelope"></i> Contact</a>
+      </div>
+    </div>
+
+    <!-- This Tool -->
+    <div class="yt-footer-col">
+      <div class="yt-footer-col-title">This Tool</div>
+      <div class="yt-footer-col-links">
+        <a href="#" onclick="document.getElementById('headerSearchInput').focus();return false" class="yt-footer-link"><i class="fa-solid fa-magnifying-glass"></i> Search Videos</a>
+        <a href="#" onclick="document.getElementById('videoUrl').focus();return false" class="yt-footer-link"><i class="fa-solid fa-play"></i> Play Video</a>
+        <a href="#" onclick="document.getElementById('dlPanel')?.scrollIntoView({behavior:'smooth'});return false" class="yt-footer-link"><i class="fa-solid fa-download"></i> Download MP4</a>
+        <a href="#" onclick="switchTab('mp3');return false" class="yt-footer-link"><i class="fa-solid fa-music"></i> Download MP3</a>
+        <a href="#" onclick="startVoiceSearch();return false" class="yt-footer-link"><i class="fa-solid fa-microphone"></i> Voice Search</a>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="yt-footer-col">
+      <div class="yt-footer-col-title">Browse</div>
+      <div class="yt-footer-col-links">
+        <a href="#" onclick="doSearch('music trending');return false" class="yt-footer-link"><i class="fa-solid fa-music"></i> Music</a>
+        <a href="#" onclick="doSearch('gaming 2025');return false" class="yt-footer-link"><i class="fa-solid fa-gamepad"></i> Gaming</a>
+        <a href="#" onclick="doSearch('tech review');return false" class="yt-footer-link"><i class="fa-solid fa-microchip"></i> Tech</a>
+        <a href="#" onclick="doSearch('news today india');return false" class="yt-footer-link"><i class="fa-solid fa-newspaper"></i> News</a>
+        <a href="#" onclick="doSearch('coding tutorial');return false" class="yt-footer-link"><i class="fa-solid fa-terminal"></i> Coding</a>
+        <a href="#" onclick="doSearch('bollywood songs');return false" class="yt-footer-link"><i class="fa-solid fa-film"></i> Bollywood</a>
+      </div>
+    </div>
+
+    <!-- Legal / Info -->
+    <div class="yt-footer-col">
+      <div class="yt-footer-col-title">Info</div>
+      <div class="yt-footer-col-links">
+        <a href="index.html#about" class="yt-footer-link"><i class="fa-solid fa-circle-info"></i> About Developer</a>
+        <a href="index.html#certifications" class="yt-footer-link"><i class="fa-solid fa-certificate"></i> Certifications</a>
+        <a href="Updated_resume_sept2025.pdf" download class="yt-footer-link"><i class="fa-solid fa-file-arrow-down"></i> Download CV</a>
+        <a href="https://github.com/mritunjaykumarr" target="_blank" class="yt-footer-link"><i class="fa-brands fa-github"></i> GitHub</a>
+        <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" class="yt-footer-link"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+      </div>
+    </div>
+
+  </div><!-- /yt-footer-main -->
+
   <div class="yt-footer-divider"></div>
+
+  <!-- Bottom bar -->
   <div class="yt-footer-bottom">
-    <div class="yt-footer-copy"><span class="yt-footer-owner">MRITUNJAY KUMAR</span> · © 2025 · Built with <span class="yt-footer-heart">♥</span> for learning · Not affiliated with YouTube or Google</div>
-    <div class="yt-footer-tags"><span class="yt-footer-tag">Ad-Free Player</span><span class="yt-footer-tag">YouTube API v3</span><span class="yt-footer-tag">Frontend Dev</span><span class="yt-footer-tag">Portfolio Project</span></div>
+    <div class="yt-footer-copy">
+      <span class="yt-footer-owner">MRITUNJAY KUMAR</span>
+      &nbsp;·&nbsp; © 2025 &nbsp;·&nbsp;
+      Built with <span class="yt-footer-heart">♥</span> for learning &nbsp;·&nbsp;
+      Not affiliated with YouTube or Google
+    </div>
+    <div class="yt-footer-tags">
+      <span class="yt-footer-tag">Ad-Free Player</span>
+      <span class="yt-footer-tag">YouTube API v3</span>
+      <span class="yt-footer-tag">Frontend Dev</span>
+      <span class="yt-footer-tag">Portfolio Project</span>
+    </div>
   </div>
+
 </footer>
 
-<!-- PWA INSTALL BANNER -->
-<div class="pwa-banner" id="pwaBanner"><div class="pwa-banner-icon"><i class="fa-brands fa-youtube"></i></div><div class="pwa-banner-text"><div class="pwa-banner-title">Install MKTube App</div><div class="pwa-banner-sub">Get <b>background audio</b> — music plays even when screen is off</div></div><button class="pwa-install-btn" id="pwaInstallBtn" onclick="installPWA()">Install</button><button class="pwa-dismiss-btn" onclick="dismissBanner()" aria-label="Dismiss"><i class="fa-solid fa-xmark"></i></button></div>
-
-<!-- BG AUDIO TOAST -->
-<div class="bg-audio-toast" id="bgAudioToast"><button class="bg-toast-close" onclick="document.getElementById('bgAudioToast').classList.remove('show')"><i class="fa-solid fa-xmark"></i></button><div class="bg-toast-title"><i class="fa-solid fa-headphones"></i> Background Audio Guide</div><ul class="bg-toast-steps"><li data-n="1">Install this page as an app (tap Install below)</li><li data-n="2">Open MKTube from your home screen</li><li data-n="3">Search or paste a YouTube link and play</li><li data-n="4">Lock your screen — audio keeps playing ✓</li></ul></div>
-
-<!-- FULLSCREEN SHORTS PLAYER -->
-<div class="shorts-overlay" id="shortsOverlay">
-  <div class="shorts-header-bar"><div class="shorts-header-logo"><i class="fa-brands fa-youtube" style="color:var(--accent);font-size:1.2rem"></i> Shorts <span>Ad-Free</span></div></div>
-  <button class="shorts-close-btn" onclick="closeShortsPlayer()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-  <button class="shorts-nav-up" onclick="shortsPrev()" aria-label="Previous"><i class="fa-solid fa-chevron-up"></i></button>
-  <button class="shorts-nav-down" onclick="shortsNext()" aria-label="Next"><i class="fa-solid fa-chevron-down"></i></button>
-  <div class="shorts-feed" id="shortsFeed"></div>
-  <div class="shorts-swipe-hint" id="shortsSwipeHint"><i class="fa-solid fa-arrow-up"></i><span>Swipe up for next</span></div>
+<!-- ── PWA INSTALL BANNER ── -->
+<div class="pwa-banner" id="pwaBanner">
+  <div class="pwa-banner-icon"><i class="fa-brands fa-youtube"></i></div>
+  <div class="pwa-banner-text">
+    <div class="pwa-banner-title">Install MKTube App</div>
+    <div class="pwa-banner-sub">Get <b>background audio</b> — music plays even when screen is off</div>
+  </div>
+  <button class="pwa-install-btn" id="pwaInstallBtn" onclick="installPWA()">Install</button>
+  <button class="pwa-dismiss-btn" onclick="dismissBanner()" aria-label="Dismiss">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
 </div>
 
-<script src="mktube-script.js"></script>
+<!-- ── BACKGROUND AUDIO GUIDE TOAST ── -->
+<div class="bg-audio-toast" id="bgAudioToast">
+  <button class="bg-toast-close" onclick="document.getElementById('bgAudioToast').classList.remove('show')">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  <div class="bg-toast-title">
+    <i class="fa-solid fa-headphones"></i> Background Audio Guide
+  </div>
+  <ul class="bg-toast-steps">
+    <li data-n="1">Install this page as an app (tap Install below)</li>
+    <li data-n="2">Open MKTube from your home screen</li>
+    <li data-n="3">Search or paste a YouTube link and play</li>
+    <li data-n="4">Lock your screen — audio keeps playing ✓</li>
+  </ul>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     BRAVE / BACKGROUND PLAY MODAL
+════════════════════════════════════════ -->
+<div class="brave-overlay" id="braveOverlay" onclick="if(event.target===this) closeBraveModal(false)">
+  <div class="brave-modal">
+
+    <div class="brave-modal-header">
+      <div class="brave-lion-wrap">🦁</div>
+      <h2>Enable Background Audio</h2>
+      <p>To play audio when your screen is off, use one of these methods</p>
+    </div>
+
+    <div class="brave-modal-body">
+
+      <!-- Brave Method -->
+      <div class="brave-method brave-card">
+        <div class="brave-method-title">
+          🦁 Brave Browser
+          <span class="brave-badge badge-best">Best</span>
+        </div>
+        <ol class="brave-steps">
+          <li><div class="brave-step-num">1</div><span>Install <b>Brave Browser</b> (free, link below)</span></li>
+          <li><div class="brave-step-num">2</div><span>Open this site in Brave</span></li>
+          <li><div class="brave-step-num">3</div><span>Tap <b>⋮ menu</b> → enable <code>Background Playback</code></span></li>
+          <li><div class="brave-step-num">4</div><span>Play any video → lock screen → <b>audio keeps playing ✓</b></span></li>
+        </ol>
+      </div>
+
+      <!-- Download Brave -->
+      <a class="brave-download-row" href="https://play.google.com/store/apps/details?id=com.brave.browser" target="_blank" rel="noopener">
+        <div class="brave-download-icon">🦁</div>
+        <div class="brave-download-text">
+          <strong>Download Brave Browser</strong>
+          <span>Free on Google Play Store</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square brave-download-arrow"></i>
+      </a>
+
+      <div class="brave-or">or use Chrome</div>
+
+      <!-- Chrome Method -->
+      <div class="brave-method chrome-card">
+        <div class="brave-method-title">
+          <i class="fa-brands fa-chrome" style="color:#ff6b6b"></i> Chrome Android
+          <span class="brave-badge badge-ok">Works</span>
+        </div>
+        <ol class="brave-steps">
+          <li><div class="brave-step-num">1</div><span>Tap <b>⋮ menu</b> → check <code>Desktop site</code></span></li>
+          <li><div class="brave-step-num">2</div><span>Press Play on this page</span></li>
+          <li><div class="brave-step-num">3</div><span>Lock screen → audio continues ✓</span></li>
+        </ol>
+      </div>
+
+      <!-- Buttons -->
+      <div class="brave-action-btns">
+        <button class="brave-btn-play" onclick="closeBraveModal(true)">
+          <i class="fa-solid fa-play"></i> Play Anyway
+        </button>
+        <button class="brave-btn-close" onclick="closeBraveModal(false)">Cancel</button>
+      </div>
+
+      <label class="brave-skip-row">
+        <input type="checkbox" id="braveSkipCheck" />
+        <span>Don't show this again</span>
+      </label>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     FULLSCREEN SHORTS PLAYER
+════════════════════════════════════════ -->
+<div class="shorts-overlay" id="shortsOverlay">
+
+  <!-- Header bar -->
+  <div class="shorts-header-bar">
+    <div class="shorts-header-logo">
+      <i class="fa-brands fa-youtube" style="color:var(--yt-red);font-size:1.2rem"></i>
+      Shorts <span>Ad-Free</span>
+    </div>
+  </div>
+
+  <!-- Close -->
+  <button class="shorts-close-btn" onclick="closeShortsPlayer()" aria-label="Close">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+
+  <!-- Nav arrows -->
+  <button class="shorts-nav-up" onclick="shortsPrev()" aria-label="Previous">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+  <button class="shorts-nav-down" onclick="shortsNext()" aria-label="Next">
+    <i class="fa-solid fa-chevron-down"></i>
+  </button>
+
+  <!-- Vertical snap feed -->
+  <div class="shorts-feed" id="shortsFeed"></div>
+
+  <!-- Swipe hint (auto-hides) -->
+  <div class="shorts-swipe-hint" id="shortsSwipeHint">
+    <i class="fa-solid fa-arrow-up"></i>
+    <span>Swipe up for next</span>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+/* ══════════════════════════════════════
+   SEARCH ENGINE — Uses Invidious API
+   (open-source YouTube proxy, no key)
+══════════════════════════════════════ */
+
+/* ══════════════════════════════════════
+   SEARCH ENGINE v3 — YouTube Data API v3
+   Free, official, no CORS issues at all.
+   Get your free key at:
+   console.cloud.google.com → YouTube Data API v3
+   Paste it below ↓
+══════════════════════════════════════ */
+
+const YT_API_KEY = 'AIzaSyBnY6hDxR7JSlPefhfhY8V22flAcZZlJ1s'; // ← user must set their own key
+
+let searchQuery  = '';
+let searchOffset = 0;
+let nextPageToken = '';
+let allResults   = [];
+let isSearching  = false;
+
+async function fetchSearch(query, pageToken = '') {
+  if (!YT_API_KEY) {
+    return null; // show setup message
+  }
+  const params = new URLSearchParams({
+    part: 'snippet',
+    q: query,
+    type: 'video',
+    maxResults: 20,
+    key: YT_API_KEY,
+    ...(pageToken ? { pageToken } : {})
+  });
+  try {
+    const res = await fetch(`https://www.googleapis.com/youtube/v3/search?${params}`,
+      {});
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      console.error('YT API error:', err);
+      return null;
+    }
+    const data = await res.json();
+    nextPageToken = data.nextPageToken || '';
+    return (data.items || []).map(item => ({
+      videoId:   item.id.videoId,
+      title:     item.snippet.title,
+      channel:   item.snippet.channelTitle,
+      published: timeAgo(item.snippet.publishedAt),
+      thumb:     item.snippet.thumbnails?.medium?.url
+                 || item.snippet.thumbnails?.default?.url
+                 || `https://i.ytimg.com/vi/${item.id.videoId}/mqdefault.jpg`,
+      duration:  '',
+      views:     ''
+    }));
+  } catch(e) {
+    console.error('Fetch error:', e);
+    return null;
+  }
+}
+
+function timeAgo(iso) {
+  if (!iso) return '';
+  const diff = (Date.now() - new Date(iso)) / 1000;
+  if (diff < 3600)   return Math.floor(diff/60) + ' minutes ago';
+  if (diff < 86400)  return Math.floor(diff/3600) + ' hours ago';
+  if (diff < 2592000)return Math.floor(diff/86400) + ' days ago';
+  if (diff < 31536000)return Math.floor(diff/2592000) + ' months ago';
+  return Math.floor(diff/31536000) + ' years ago';
+}
+
+async function doSearch(query, chipEl) {
+  query = (query || '').trim();
+  if (!query) return;
+
+  const input = document.getElementById('headerSearchInput');
+  if (input && input.value !== query) input.value = query;
+
+  if (chipEl) {
+    document.querySelectorAll('.yt-chip').forEach(c => c.classList.remove('active'));
+    chipEl.classList.add('active');
+  }
+  closeSuggestions();
+
+  searchQuery   = query;
+  searchOffset  = 0;
+  nextPageToken = '';
+  allResults    = [];
+  isSearching   = true;
+
+  document.getElementById('searchPanel').style.display = 'block';
+  document.getElementById('searchPanelTitle').textContent = `Results for "${query}"`;
+  document.getElementById('searchResultsGrid').innerHTML = '';
+  document.getElementById('searchLoading').style.display = 'flex';
+  document.getElementById('searchEmpty').style.display   = 'none';
+  document.getElementById('searchEmpty').innerHTML = `
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <strong>No results found</strong>
+    <span>Try a different search term</span>`;
+  document.getElementById('searchLoadMore').style.display = 'none';
+
+  const results = await fetchSearch(query);
+  isSearching = false;
+  document.getElementById('searchLoading').style.display = 'none';
+
+  if (!results) {
+    /* API key missing or quota hit */
+    document.getElementById('searchEmpty').style.display = 'flex';
+    document.getElementById('searchEmpty').innerHTML = `
+      <i class="fa-brands fa-youtube" style="color:var(--yt-red);font-size:2.5rem"></i>
+      <strong style="color:var(--text)">API Key Required</strong>
+      <span style="max-width:340px;line-height:1.6">
+        To enable search, add your free YouTube Data API key.<br>
+        <b style="color:var(--text)">Steps:</b><br>
+        1. Go to <a href="https://console.cloud.google.com" target="_blank" style="color:var(--yt-red)">console.cloud.google.com</a><br>
+        2. Create project → Enable <b>YouTube Data API v3</b><br>
+        3. Credentials → Create API Key → Copy it<br>
+        4. Open <b>adfree.html</b> → find <code>YT_API_KEY</code> → paste your key<br><br>
+        Meanwhile, paste any YouTube link directly in the player below ↓
+      </span>`;
+    return;
+  }
+
+  if (!results.length) {
+    document.getElementById('searchEmpty').style.display = 'flex';
+    return;
+  }
+
+  allResults = results;
+  renderResults(allResults);
+  document.getElementById('searchLoadMore').style.display = nextPageToken ? 'block' : 'none';
+}
+window.doSearch = doSearch;
+
+async function loadMoreResults() {
+  if (isSearching || !nextPageToken) return;
+  isSearching = true;
+  document.getElementById('searchLoadMore').style.display = 'none';
+  document.getElementById('searchLoading').style.display = 'flex';
+
+  const results = await fetchSearch(searchQuery, nextPageToken);
+  isSearching = false;
+  document.getElementById('searchLoading').style.display = 'none';
+
+  if (results && results.length) {
+    allResults = [...allResults, ...results];
+    renderResults(results, true);
+    document.getElementById('searchLoadMore').style.display = nextPageToken ? 'block' : 'none';
+  }
+}
+window.loadMoreResults = loadMoreResults;
+
+function renderResults(videos, append = false) {
+  const grid = document.getElementById('searchResultsGrid');
+  const fragment = document.createDocumentFragment();
+
+  videos.forEach(v => {
+    const id = v.videoId;
+    if (!id) return;
+    const thumb = v.thumb || v.videoThumbnails?.[1]?.url || `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+    const title = v.title || 'Untitled';
+    const channel = v.channel || v.author || '';
+    const views = v.views || '';
+    const published = v.published || v.publishedText || '';
+    const duration = v.duration || '';
+
+    const card = document.createElement('div');
+    card.className = 'yt-result-card';
+    card.dataset.id = id;
+    card.innerHTML = `
+      <div class="yt-result-thumb-wrap">
+        <img class="yt-result-thumb" src="${thumb}" alt="${escHtml(title)}" loading="lazy"
+          onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'" />
+        <div class="yt-result-thumb-overlay">
+          <div class="yt-result-play-btn"><i class="fa-solid fa-play" style="margin-left:3px"></i></div>
+        </div>
+        ${duration ? `<span class="yt-result-duration">${duration}</span>` : ''}
+      </div>
+      <div class="yt-result-info">
+        <div class="yt-result-title">${escHtml(title)}</div>
+        <div class="yt-result-meta">
+          ${channel ? `<span class="yt-result-channel">${escHtml(channel)}</span>` : ''}
+          <span>${[views, published].filter(Boolean).join(' · ')}</span>
+        </div>
+      </div>`;
+
+    card.addEventListener('click', () => playFromSearch(id, title, card));
+    fragment.appendChild(card);
+  });
+
+  if (!append) grid.innerHTML = '';
+  grid.appendChild(fragment);
+}
+
+function playFromSearch(id, title, cardEl) {
+  // Highlight card
+  document.querySelectorAll('.yt-result-card').forEach(c => c.classList.remove('now-playing'));
+  if (cardEl) cardEl.classList.add('now-playing');
+
+  // Set URL input
+  const url = `https://www.youtube.com/watch?v=${id}`;
+  document.getElementById('videoUrl').value = url;
+
+  // Load player
+  loadVideo();
+
+  // Scroll to player smoothly
+  document.querySelector('.yt-primary')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+window.playFromSearch = playFromSearch;
+
+function closeSearch() {
+  document.getElementById('searchPanel').style.display = 'none';
+  document.querySelectorAll('.yt-chip').forEach((c,i) => c.classList.toggle('active', i===0));
+}
+window.closeSearch = closeSearch;
+
+/* ── Autocomplete via suggestions (local trending) ── */
+const TRENDING_SUGGESTIONS = [
+  'Lo-fi hip hop', 'Gaming highlights 2024', 'Tech review', 'Coding tutorial',
+  'Music mix', 'Movie trailers 2025', 'Cricket highlights', 'IPL 2025',
+  'India news today', 'Bollywood songs', 'React JS tutorial', 'Node.js beginner',
+  'Python programming', 'AI tools 2025', 'Motivational speech', 'Stand up comedy India',
+];
+let suggestionsEl = null;
+
+function createSuggestionsEl() {
+  suggestionsEl = document.createElement('div');
+  suggestionsEl.className = 'yt-suggestions';
+  suggestionsEl.id = 'headerSuggestions';
+  document.getElementById('headerSearchWrap').appendChild(suggestionsEl);
+}
+
+function showSuggestions(query) {
+  if (!suggestionsEl) createSuggestionsEl();
+  const q = query.toLowerCase().trim();
+  const matches = q
+    ? TRENDING_SUGGESTIONS.filter(s => s.toLowerCase().includes(q)).slice(0, 7)
+    : TRENDING_SUGGESTIONS.slice(0, 6);
+
+  if (matches.length === 0) { closeSuggestions(); return; }
+  suggestionsEl.innerHTML = matches.map(s => `
+    <div class="yt-sug-item" onclick="doSearch('${escHtml(s)}'); document.getElementById('headerSearchInput').value='${escHtml(s)}'">
+      <i class="fa-solid fa-magnifying-glass"></i> ${escHtml(s)}
+    </div>`).join('');
+  suggestionsEl.classList.add('open');
+}
+
+function closeSuggestions() {
+  if (suggestionsEl) suggestionsEl.classList.remove('open');
+}
+
+/* Voice search */
+window.startVoiceSearch = function() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { alert('Voice search not supported in this browser.'); return; }
+  const r = new SR();
+  r.lang = 'en-IN'; r.interimResults = false; r.maxAlternatives = 1;
+  document.getElementById('micIcon').className = 'fa-solid fa-microphone-lines';
+  r.start();
+  r.onresult = e => {
+    const q = e.results[0][0].transcript;
+    document.getElementById('headerSearchInput').value = q;
+    doSearch(q);
+  };
+  r.onend = () => { document.getElementById('micIcon').className = 'fa-solid fa-microphone'; };
+  r.onerror = () => { document.getElementById('micIcon').className = 'fa-solid fa-microphone'; };
+};
+
+/* Search input events */
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('headerSearchInput');
+  if (!input) return;
+  input.addEventListener('input', () => showSuggestions(input.value));
+  input.addEventListener('focus',  () => showSuggestions(input.value));
+  document.addEventListener('click', e => {
+    if (!document.getElementById('headerSearchWrap')?.contains(e.target)) closeSuggestions();
+  });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeSuggestions();
+  });
+});
+
+/* ── Helpers ── */
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function formatViews(n) {
+  if (n >= 1e9) return (n/1e9).toFixed(1)+'B';
+  if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
+  if (n >= 1e3) return (n/1e3).toFixed(0)+'K';
+  return n;
+}
+function formatDuration(s) {
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  if (h) return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  return `${m}:${String(sec).padStart(2,'0')}`;
+}
+
+/* ══════════════════════════════════════
+   ORIGINAL PLAYER LOGIC
+══════════════════════════════════════ */
+
+let currentVideoId = null;
+let currentTab = 'mp4';
+
+/* Chip filter (cosmetic) */
+document.querySelectorAll('.yt-chip').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('.yt-chip').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+  });
+});
+
+/* Subscribe button toggle */
+document.getElementById('subBtn')?.addEventListener('click', function() {
+  const subscribed = this.dataset.sub === '1';
+  if (subscribed) {
+    this.innerHTML = '<i class="fa-solid fa-bell"></i> Subscribe';
+    this.style.background = 'var(--text)';
+    this.style.color = 'var(--bg)';
+    delete this.dataset.sub;
+  } else {
+    this.innerHTML = '<i class="fa-solid fa-bell-slash"></i> Subscribed';
+    this.style.background = 'var(--bg3)';
+    this.style.color = 'var(--text)';
+    this.dataset.sub = '1';
+  }
+});
+
+/* Tab switcher */
+window.switchTab = function(tab) {
+  currentTab = tab;
+  document.getElementById('mp4List').style.display = tab === 'mp4' ? 'flex' : 'none';
+  document.getElementById('mp3List').style.display = tab === 'mp3' ? 'flex' : 'none';
+  document.getElementById('tabMp4').classList.toggle('active', tab === 'mp4');
+  document.getElementById('tabMp3').classList.toggle('active', tab === 'mp3');
+};
+
+/* ══════════════════════════════════════
+   DOWNLOAD SITES
+══════════════════════════════════════ */
+function getSites(id) {
+  const yt = encodeURIComponent(`https://www.youtube.com/watch?v=${id}`);
+  return {
+    mp4: [
+      { name:'SaveFrom', sub:'All qualities · MP4', icon:'fa-download', href:`https://en1.savefrom.net/16xF/#url=${yt}` },
+      { name:'SSYouTube', sub:'Add "ss" trick · MP4', icon:'fa-bolt', href:`https://www.ssyoutube.com/watch?v=${id}` },
+      { name:'9xBuddy', sub:'Multiple resolutions', icon:'fa-video', href:`https://9xbuddy.in/process?url=${yt}` },
+      { name:'SnapSave', sub:'720p – 1080p', icon:'fa-film', href:`https://snapsave.app/result?url=${yt}` },
+    ],
+    mp3: [
+      { name:'SaveFrom MP3', sub:'Via SaveFrom · MP3', icon:'fa-music', href:`https://en1.savefrom.net/16xF/#url=${yt}` },
+      { name:'YTmp3', sub:'320 kbps audio', icon:'fa-headphones', href:`https://ytmp3.cc/en13/youtube-to-mp3/?url=${yt}` },
+      { name:'X2Convert', sub:'Direct convert · MP3', icon:'fa-compact-disc', href:`https://x2convert.com/en16/download-youtube-to-mp3/?url=${yt}` },
+      { name:'ConvertMP3', sub:'Fast MP3 download', icon:'fa-waveform-lines', href:`https://www.convertmp3.io/?video=${yt}` },
+    ]
+  };
+}
+
+function buildDlList(id) {
+  const sites = getSites(id);
+
+  document.getElementById('mp4List').innerHTML = sites.mp4.map(s => `
+    <a class="yt-dl-item" href="${s.href}" target="_blank" rel="noopener noreferrer">
+      <div class="yt-dl-item-ico"><i class="fa-solid ${s.icon}"></i></div>
+      <div class="yt-dl-item-info">
+        <div class="yt-dl-item-name">${s.name}</div>
+        <div class="yt-dl-item-sub">${s.sub}</div>
+      </div>
+      <i class="fa-solid fa-arrow-up-right-from-square yt-dl-item-arrow"></i>
+    </a>
+  `).join('');
+
+  document.getElementById('mp3List').innerHTML = sites.mp3.map(s => `
+    <a class="yt-dl-item mp3-item" href="${s.href}" target="_blank" rel="noopener noreferrer">
+      <div class="yt-dl-item-ico"><i class="fa-solid ${s.icon}"></i></div>
+      <div class="yt-dl-item-info">
+        <div class="yt-dl-item-name">${s.name}</div>
+        <div class="yt-dl-item-sub">${s.sub}</div>
+      </div>
+      <i class="fa-solid fa-arrow-up-right-from-square yt-dl-item-arrow"></i>
+    </a>
+  `).join('');
+
+  // Reset to mp4 tab
+  switchTab('mp4');
+}
+
+/* ── Helpers ── */
+function extractId(url) {
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+function showErr(msg) {
+  document.getElementById('errText').textContent = msg;
+  document.getElementById('errBox').classList.add('show');
+}
+function hideErr() { document.getElementById('errBox').classList.remove('show'); }
+
+async function fetchInfo(id) {
+  try {
+    const r = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent('https://www.youtube.com/watch?v='+id)}&format=json`);
+    if (r.ok) { const d = await r.json(); return { title: d.title, thumb: d.thumbnail_url }; }
+  } catch {}
+  return { title: 'YouTube Video', thumb: null };
+}
+
+function resetPlayer() {
+  document.getElementById('defaultState').style.display = 'flex';
+  document.getElementById('loaderState').classList.remove('show');
+  const p = document.getElementById('player');
+  p.classList.remove('show'); p.src = '';
+  document.getElementById('dlThumbRow').style.display = 'none';
+  document.getElementById('dlTabs').style.display = 'none';
+  document.getElementById('dlEmpty').style.display = 'block';
+  document.getElementById('mp4List').innerHTML = '';
+  document.getElementById('mp3List').innerHTML = '';
+  document.getElementById('videoTitle').textContent = 'Paste a link and press Play to start watching without ads.';
+  document.getElementById('videoTitle').classList.add('empty');
+  document.getElementById('actionBar').style.display = 'none';
+  currentVideoId = null;
+}
+
+/* loadVideo replaced — see _actualLoadVideo above */
+
+/* ── Mobile search bar ── */
+window.openMobSearch = function() {
+  const bar = document.getElementById('mobSearchBar');
+  bar.classList.add('open');
+  setTimeout(() => document.getElementById('mobSearchInput')?.focus(), 120);
+};
+window.closeMobSearch = function() {
+  document.getElementById('mobSearchBar')?.classList.remove('open');
+};
+
+function clearAll() {
+  document.getElementById('videoUrl').value = '';
+  hideErr(); resetPlayer();
+}
+/* ═══════════════════════════════════════════
+   PWA + BACKGROUND AUDIO
+═══════════════════════════════════════════ */
+let deferredPrompt = null;
+
+// Catch the install prompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show banner only if not already installed & not dismissed
+  if (!localStorage.getItem('pwaDismissed')) {
+    document.getElementById('pwaBanner')?.classList.add('show');
+  }
+});
+
+// App installed
+window.addEventListener('appinstalled', () => {
+  document.getElementById('pwaBanner')?.classList.remove('show');
+  deferredPrompt = null;
+  showBgAudioToast();
+});
+
+async function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    if (outcome === 'accepted') {
+      document.getElementById('pwaBanner')?.classList.remove('show');
+    }
+  } else {
+    // Fallback: show manual instructions toast
+    showBgAudioToast();
+    document.getElementById('pwaBanner')?.classList.remove('show');
+  }
+}
+window.installPWA = installPWA;
+
+function dismissBanner() {
+  document.getElementById('pwaBanner')?.classList.remove('show');
+  localStorage.setItem('pwaDismissed', '1');
+}
+window.dismissBanner = dismissBanner;
+
+function showBgAudioToast() {
+  const t = document.getElementById('bgAudioToast');
+  t?.classList.add('show');
+  setTimeout(() => t?.classList.remove('show'), 12000);
+}
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      await navigator.serviceWorker.register('mktube-sw.js');
+      console.log('MKTube SW registered');
+    } catch(e) {
+      console.warn('SW registration failed:', e);
+    }
+  });
+}
+
+// Show background audio tip when a video starts playing
+const _origLoadVideo = window.loadVideo || (() => {});
+document.addEventListener('DOMContentLoaded', () => {
+  const playBtn = document.querySelector('.yt-play-btn');
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      // Show toast after 3s when video starts — only on mobile
+      if (window.innerWidth <= 768 && !localStorage.getItem('bgTipShown')) {
+        setTimeout(() => {
+          showBgAudioToast();
+          localStorage.setItem('bgTipShown', '1');
+        }, 3000);
+      }
+    });
+  }
+});
+
+// Also show banner on mobile if PWA not installed and not dismissed
+if (window.innerWidth <= 768 && !localStorage.getItem('pwaDismissed')) {
+  // Check if already running as PWA
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+  if (!isStandalone) {
+    setTimeout(() => {
+      document.getElementById('pwaBanner')?.classList.add('show');
+    }, 2000);
+  }
+}
+
+/* ════════════════════════════════════════
+   BRAVE BACKGROUND PLAY MODAL
+════════════════════════════════════════ */
+
+function showBraveModal() {
+  document.getElementById('braveOverlay').classList.add('show');
+}
+
+function closeBraveModal(proceed) {
+  document.getElementById('braveOverlay').classList.remove('show');
+  if (document.getElementById('braveSkipCheck')?.checked) {
+    localStorage.setItem('braveModalSkip', '1');
+  }
+  if (proceed) _actualLoadVideo();
+}
+window.closeBraveModal = closeBraveModal;
+
+/* Intercept Play button — show modal once, then play */
+async function loadVideo() {
+  const raw = document.getElementById('videoUrl').value.trim();
+  hideErr();
+  if (!raw) { showErr('Please paste a YouTube URL to continue.'); resetPlayer(); return; }
+  const id = extractId(raw);
+  if (!id) { showErr('Invalid YouTube URL. Try: youtube.com/watch?v=… or youtu.be/…'); resetPlayer(); return; }
+
+  /* Show modal only on mobile and only if not skipped */
+  const isMobile = window.innerWidth <= 900;
+  const skipped  = localStorage.getItem('braveModalSkip') === '1';
+
+  if (isMobile && !skipped) {
+    showBraveModal();
+  } else {
+    _actualLoadVideo();
+  }
+}
+
+async function _actualLoadVideo() {
+  const raw = document.getElementById('videoUrl').value.trim();
+  hideErr();
+  if (!raw) { showErr('Please paste a YouTube URL to continue.'); resetPlayer(); return; }
+  const id = extractId(raw);
+  if (!id) { showErr('Invalid YouTube URL.'); resetPlayer(); return; }
+
+  currentVideoId = id;
+  document.getElementById('defaultState').style.display = 'none';
+  document.getElementById('loaderState').classList.add('show');
+  document.getElementById('player').classList.remove('show');
+  document.getElementById('dlEmpty').style.display = 'none';
+
+  const [info] = await Promise.all([
+    fetchInfo(id),
+    new Promise(r => setTimeout(r, 900))
+  ]);
+
+  const player = document.getElementById('player');
+  player.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+  document.getElementById('loaderState').classList.remove('show');
+  player.classList.add('show');
+
+  document.getElementById('videoTitle').textContent = info.title;
+  document.getElementById('videoTitle').classList.remove('empty');
+  document.getElementById('actionBar').style.display = 'flex';
+
+  document.getElementById('dlName').textContent = info.title;
+  const thumb = document.getElementById('dlThumb');
+  thumb.innerHTML = info.thumb
+    ? `<img src="${info.thumb}" alt="thumb"/>`
+    : `<i class="fa-brands fa-youtube"></i>`;
+  document.getElementById('dlThumbRow').style.display = 'flex';
+  document.getElementById('dlTabs').style.display = 'flex';
+  buildDlList(id);
+}
+
+/* ════════════════════════════════════════
+   SIDEBAR NAV + AUTO HOMEPAGE LOAD
+════════════════════════════════════════ */
+
+/* Wire sidebar nav items */
+function navSearch(query, el) {
+  /* Highlight active nav item */
+  document.querySelectorAll('.yt-nav-item').forEach(n => n.classList.remove('active'));
+  el?.classList.add('active');
+  /* Run search and show in homepage grid */
+  loadHomepage(query);
+  return false;
+}
+window.navSearch = navSearch;
+
+/* Load videos into the homepage grid (not the search panel) */
+async function loadHomepage(query) {
+  const grid = document.getElementById('homepageGrid');
+  const section = document.getElementById('homepageSection');
+  if (!grid) return;
+
+  /* Show title */
+  const titleEl = section?.querySelector('.yt-homepage-title');
+  if (titleEl) titleEl.textContent = query.includes('trending') ? '🔥 Trending Now'
+    : query.includes('music') ? '🎵 Top Music'
+    : query.includes('gaming') ? '🎮 Gaming'
+    : query.includes('news') ? '📰 Latest News'
+    : query.includes('cricket') ? '🏏 Sports'
+    : query.includes('movies') ? '🎬 Movies'
+    : query.includes('coding') ? '💻 Coding'
+    : '🔍 ' + query;
+
+  /* Skeletons */
+  grid.innerHTML = Array(12).fill(`
+    <div class="yt-skeleton-card">
+      <div class="yt-skeleton-thumb"></div>
+      <div class="yt-skeleton-line"></div>
+      <div class="yt-skeleton-line short"></div>
+    </div>`).join('');
+
+  const results = await fetchSearch(query);
+  if (!results || !results.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-dim)">Could not load videos. Check API key.</div>';
+    return;
+  }
+
+  grid.innerHTML = '';
+  results.forEach(v => {
+    const id = v.videoId; if (!id) return;
+    const thumb = v.thumb || `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+    const title = v.title || 'Untitled';
+    const channel = v.channel || '';
+    const published = v.published || '';
+
+    const card = document.createElement('div');
+    card.className = 'yt-result-card';
+    card.innerHTML = `
+      <div class="yt-result-thumb-wrap">
+        <img class="yt-result-thumb" src="${thumb}" alt="" loading="lazy"
+          onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'" />
+        <div class="yt-result-thumb-overlay">
+          <div class="yt-result-play-btn"><i class="fa-solid fa-play" style="margin-left:3px"></i></div>
+        </div>
+      </div>
+      <div class="yt-result-info">
+        <div class="yt-result-title">${escHtml(title)}</div>
+        <div class="yt-result-meta">
+          ${channel ? `<span class="yt-result-channel">${escHtml(channel)}</span>` : ''}
+          <span>${published}</span>
+        </div>
+      </div>`;
+    card.addEventListener('click', () => {
+      document.getElementById('videoUrl').value = `https://www.youtube.com/watch?v=${id}`;
+      loadVideo();
+      document.querySelector('.yt-primary')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    grid.appendChild(card);
+  });
+}
+
+/* Auto-load trending + shorts when page opens */
+document.addEventListener('DOMContentLoaded', () => {
+  loadHomepage('trending india 2025');
+});
+
+
+
+/* ════════════════════════════════════════════
+   FULLSCREEN SHORTS PLAYER — Swipe up/down
+════════════════════════════════════════════ */
+
+let shortsData    = [];   // array of {videoId, title, channel}
+let shortsIndex   = 0;    // current index
+let shortsLoaded  = false;
+let shortsFeedEl  = null;
+let shortsLiked   = {};   // track liked state
+
+/* Open the shorts player */
+async function openShortsPlayer() {
+  document.getElementById('shortsOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  shortsFeedEl = document.getElementById('shortsFeed');
+
+  if (!shortsLoaded) {
+    await fetchShortsData();
+    shortsLoaded = true;
+  }
+
+  /* Show swipe hint briefly */
+  const hint = document.getElementById('shortsSwipeHint');
+  if (hint) {
+    hint.style.animation = 'none';
+    void hint.offsetWidth;
+    hint.style.animation = 'hintFade 3s ease forwards';
+  }
+}
+window.openShortsPlayer = openShortsPlayer;
+
+function closeShortsPlayer() {
+  document.getElementById('shortsOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  /* Pause all iframes */
+  document.querySelectorAll('#shortsFeed iframe').forEach(f => {
+    f.src = f.src; /* reload = pause */
+  });
+}
+window.closeShortsPlayer = closeShortsPlayer;
+
+/* Fetch shorts data from YouTube API */
+async function fetchShortsData() {
+  shortsFeedEl.innerHTML = `
+    <div class="short-slide">
+      <div class="short-loader">
+        <div class="yt-spinner"></div>
+      </div>
+    </div>`;
+
+  const queries = [
+    '#shorts trending india',
+    '#shorts viral 2025',
+    '#shorts funny india',
+    '#shorts music 2025',
+  ];
+
+  let allVideos = [];
+  for (const q of queries) {
+    const res = await fetchSearch(q);
+    if (res) allVideos = allVideos.concat(res);
+  }
+
+  /* Deduplicate */
+  const seen = new Set();
+  allVideos = allVideos.filter(v => {
+    if (!v.videoId || seen.has(v.videoId)) return false;
+    seen.add(v.videoId); return true;
+  });
+
+  if (!allVideos.length) {
+    shortsFeedEl.innerHTML = `<div class="short-slide" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:rgba(255,255,255,0.5)">
+      <i class="fa-brands fa-youtube" style="font-size:3rem;color:var(--yt-red)"></i>
+      <div>Could not load Shorts. Check API key.</div>
+    </div>`;
+    return;
+  }
+
+  shortsData  = allVideos;
+  shortsIndex = 0;
+  shortsFeedEl.innerHTML = '';
+
+  /* Build all slides */
+  allVideos.forEach((v, i) => buildShortSlide(v, i));
+
+  /* Load first iframe immediately */
+  activateSlide(0);
+
+  /* Listen for scroll snap changes */
+  shortsFeedEl.addEventListener('scroll', onShortsScroll, { passive: true });
+}
+
+let _scrollTimer = null;
+function onShortsScroll() {
+  clearTimeout(_scrollTimer);
+  _scrollTimer = setTimeout(() => {
+    const slideH = shortsFeedEl.clientHeight;
+    const newIdx = Math.round(shortsFeedEl.scrollTop / slideH);
+    if (newIdx !== shortsIndex) {
+      shortsIndex = newIdx;
+      activateSlide(shortsIndex);
+    }
+  }, 120);
+}
+
+function buildShortSlide(v, i) {
+  const id      = v.videoId;
+  const title   = v.title   || 'Short';
+  const channel = v.channel || 'Creator';
+  const initial = channel.charAt(0).toUpperCase();
+
+  const slide = document.createElement('div');
+  slide.className = 'short-slide';
+  slide.dataset.index = i;
+  slide.dataset.id    = id;
+
+  slide.innerHTML = `
+    <div class="short-slide-top"></div>
+    <div class="short-loader" id="sl-loader-${i}">
+      <div class="yt-spinner"></div>
+    </div>
+    <iframe id="sl-frame-${i}" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div class="short-slide-bottom"></div>
+
+    <!-- Info -->
+    <div class="short-info">
+      <div class="short-info-channel">
+        <div class="short-info-avatar">${escHtml(initial)}</div>
+        <div class="short-info-name">@${escHtml(channel)}</div>
+      </div>
+      <div class="short-info-title">${escHtml(title)}</div>
+    </div>
+
+    <!-- Actions -->
+    <div class="short-actions">
+      <div class="short-action-btn" id="sl-like-${i}" onclick="toggleShortLike(${i})">
+        <div class="short-action-icon"><i class="fa-solid fa-heart"></i></div>
+        <div class="short-action-label">Like</div>
+      </div>
+      <div class="short-action-btn" onclick="shareShort('${id}')">
+        <div class="short-action-icon"><i class="fa-solid fa-share"></i></div>
+        <div class="short-action-label">Share</div>
+      </div>
+      <div class="short-action-btn" onclick="openInPlayer('${id}', '${escHtml(title).replace(/'/g,"\'")}')">
+        <div class="short-action-icon"><i class="fa-solid fa-play"></i></div>
+        <div class="short-action-label">Play</div>
+      </div>
+    </div>`;
+
+  shortsFeedEl.appendChild(slide);
+}
+
+function activateSlide(idx) {
+  const id     = shortsData[idx]?.videoId;
+  const frame  = document.getElementById(`sl-frame-${idx}`);
+  const loader = document.getElementById(`sl-loader-${idx}`);
+  if (!frame || !id) return;
+
+  /* Only load if not already loaded */
+  if (!frame.src || frame.src === window.location.href) {
+    frame.onload = () => { loader?.classList.add('hidden'); };
+    frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&loop=1&playlist=${id}&modestbranding=1&controls=1`;
+  }
+
+  /* Pause adjacent slides */
+  [idx - 1, idx + 1].forEach(n => {
+    const f = document.getElementById(`sl-frame-${n}`);
+    if (f && f.src && f.src !== window.location.href) {
+      const paused = f.src.replace('autoplay=1', 'autoplay=0');
+      f.src = paused;
+    }
+  });
+
+  /* Pre-load next */
+  const nextId = shortsData[idx + 1]?.videoId;
+  if (nextId) {
+    const nextFrame = document.getElementById(`sl-frame-${idx + 1}`);
+    if (nextFrame && !nextFrame.src) {
+      /* Just preload thumb for next — will autoplay on scroll */
+    }
+  }
+}
+
+function shortsNext() {
+  if (shortsIndex < shortsData.length - 1) {
+    shortsIndex++;
+    scrollToSlide(shortsIndex);
+  }
+}
+function shortsPrev() {
+  if (shortsIndex > 0) {
+    shortsIndex--;
+    scrollToSlide(shortsIndex);
+  }
+}
+window.shortsNext = shortsNext;
+window.shortsPrev = shortsPrev;
+
+function scrollToSlide(idx) {
+  const slideH = shortsFeedEl.clientHeight;
+  shortsFeedEl.scrollTo({ top: idx * slideH, behavior: 'smooth' });
+  activateSlide(idx);
+}
+
+function toggleShortLike(idx) {
+  const btn = document.getElementById(`sl-like-${idx}`);
+  if (!btn) return;
+  shortsLiked[idx] = !shortsLiked[idx];
+  btn.classList.toggle('liked', shortsLiked[idx]);
+  const icon = btn.querySelector('i');
+  if (icon) icon.className = shortsLiked[idx] ? 'fa-solid fa-heart' : 'fa-solid fa-heart';
+}
+window.toggleShortLike = toggleShortLike;
+
+function shareShort(id) {
+  const url = `https://www.youtube.com/shorts/${id}`;
+  if (navigator.share) {
+    navigator.share({ title: 'Watch this Short!', url });
+  } else {
+    navigator.clipboard?.writeText(url).then(() => alert('Link copied!'));
+  }
+}
+window.shareShort = shareShort;
+
+function openInPlayer(id, title) {
+  closeShortsPlayer();
+  document.getElementById('videoUrl').value = `https://www.youtube.com/shorts/${id}`;
+  loadVideo();
+  document.querySelector('.yt-primary')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+window.openInPlayer = openInPlayer;
+
+/* Close on Escape key */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('shortsOverlay')?.classList.contains('open')) {
+    closeShortsPlayer();
+  }
+  if (document.getElementById('shortsOverlay')?.classList.contains('open')) {
+    if (e.key === 'ArrowDown') shortsNext();
+    if (e.key === 'ArrowUp')   shortsPrev();
+  }
+});
+
+/* ════════════════════════════════════════════════
+   COOKIE-BASED WATCH HISTORY
+════════════════════════════════════════════════ */
+const HISTORY_KEY  = 'mktube_history';
+const COOKIE_KEY   = 'mktube_cookies';
+const MAX_HISTORY  = 12;
+
+function getCookieConsent() {
+  return localStorage.getItem(COOKIE_KEY);
+}
+
+function acceptCookies() {
+  localStorage.setItem(COOKIE_KEY, 'yes');
+  document.getElementById('cookieBanner')?.classList.remove('show');
+  renderContinueWatching();
+}
+window.acceptCookies = acceptCookies;
+
+function declineCookies() {
+  localStorage.setItem(COOKIE_KEY, 'no');
+  document.getElementById('cookieBanner')?.classList.remove('show');
+}
+window.declineCookies = declineCookies;
+
+function saveToHistory(id, title, thumb) {
+  if (getCookieConsent() !== 'yes') return;
+  let history = getHistory();
+  /* Remove if already exists */
+  history = history.filter(h => h.id !== id);
+  /* Add to front with progress 0 */
+  history.unshift({ id, title, thumb, ts: Date.now(), progress: 0 });
+  /* Keep only MAX */
+  history = history.slice(0, MAX_HISTORY);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+}
+
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function removeFromHistory(id) {
+  let history = getHistory().filter(h => h.id !== id);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  renderContinueWatching();
+}
+window.removeFromHistory = removeFromHistory;
+
+function renderContinueWatching() {
+  const history = getHistory();
+  const section = document.getElementById('continueSection');
+  const grid    = document.getElementById('continueGrid');
+  if (!section || !grid) return;
+
+  if (!history.length || getCookieConsent() !== 'yes') {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  grid.innerHTML = '';
+
+  history.forEach(h => {
+    const pct = Math.min(100, Math.round((h.progress || 0) * 100));
+    const card = document.createElement('div');
+    card.className = 'continue-card';
+    card.innerHTML = `
+      <div class="continue-thumb">
+        <img src="${h.thumb || `https://i.ytimg.com/vi/${h.id}/mqdefault.jpg`}"
+          alt="" loading="lazy"
+          onerror="this.src='https://i.ytimg.com/vi/${h.id}/mqdefault.jpg'" />
+        <div class="continue-progress">
+          <div class="continue-progress-bar" style="width:${pct}%"></div>
+        </div>
+      </div>
+      <div class="continue-info">
+        <div class="continue-info-title">${escHtml(h.title)}</div>
+      </div>
+      <button class="continue-remove" onclick="event.stopPropagation(); removeFromHistory('${h.id}')" title="Remove">
+        <i class="fa-solid fa-xmark"></i>
+      </button>`;
+    card.addEventListener('click', () => {
+      document.getElementById('videoUrl').value = `https://www.youtube.com/watch?v=${h.id}`;
+      loadVideo();
+      document.querySelector('.yt-primary')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    grid.appendChild(card);
+  });
+}
+
+/* Show cookie banner on first visit */
+document.addEventListener('DOMContentLoaded', () => {
+  const consent = getCookieConsent();
+  if (!consent) {
+    setTimeout(() => {
+      document.getElementById('cookieBanner')?.classList.add('show');
+    }, 2500);
+  } else if (consent === 'yes') {
+    renderContinueWatching();
+  }
+});
+
+/* ════════════════════════════════════════════════
+   UP NEXT SUGGESTIONS
+════════════════════════════════════════════════ */
+async function loadUpNext(currentId, currentTitle) {
+  const section = document.getElementById('upnextSection');
+  const list    = document.getElementById('upnextList');
+  if (!section || !list) return;
+
+  section.style.display = 'block';
+
+  /* Show skeletons */
+  list.innerHTML = Array(5).fill(`
+    <div class="upnext-skeleton">
+      <div class="upnext-sk-thumb"></div>
+      <div class="upnext-sk-lines">
+        <div class="upnext-sk-line"></div>
+        <div class="upnext-sk-line short"></div>
+      </div>
+    </div>`).join('');
+
+  /* Search for related videos using title keywords */
+  const keywords = currentTitle
+    .replace(/[^a-zA-Z0-9 ]/g, ' ')
+    .split(' ')
+    .filter(w => w.length > 3)
+    .slice(0, 4)
+    .join(' ') || 'trending india 2025';
+
+  const results = await fetchSearch(keywords);
+  if (!results || !results.length) {
+    list.innerHTML = '<div style="padding:20px;color:var(--text-dim);font-size:0.8rem;text-align:center">No suggestions available.</div>';
+    return;
+  }
+
+  /* Filter out current video */
+  const filtered = results.filter(v => v.videoId !== currentId).slice(0, 8);
+
+  list.innerHTML = '';
+  filtered.forEach(v => {
+    const id    = v.videoId; if (!id) return;
+    const title = v.title || 'Video';
+    const ch    = v.channel || '';
+    const thumb = v.thumb || `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+    const pub   = v.published || '';
+
+    const card = document.createElement('div');
+    card.className = 'upnext-card';
+    card.innerHTML = `
+      <div class="upnext-thumb">
+        <img src="${thumb}" alt="" loading="lazy"
+          onerror="this.src='https://i.ytimg.com/vi/${id}/mqdefault.jpg'" />
+        <div class="upnext-thumb-play">
+          <i class="fa-solid fa-play"></i>
+        </div>
+      </div>
+      <div class="upnext-info">
+        <div class="upnext-info-title">${escHtml(title)}</div>
+        <div class="upnext-info-ch">${escHtml(ch)}${pub ? ' · ' + pub : ''}</div>
+      </div>`;
+    card.addEventListener('click', () => {
+      document.getElementById('videoUrl').value = `https://www.youtube.com/watch?v=${id}`;
+      loadVideo();
+      document.querySelector('.yt-primary')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    list.appendChild(card);
+  });
+}
+
+/* ════════════════════════════════════════════════
+   PATCH _actualLoadVideo TO SAVE HISTORY + UPNEXT
+════════════════════════════════════════════════ */
+const __origActualLoad = _actualLoadVideo;
+async function _actualLoadVideo() {
+  await __origActualLoad.call(this);
+  /* After video loads, get title and trigger history + upnext */
+  setTimeout(async () => {
+    const titleEl = document.getElementById('videoTitle');
+    const title   = titleEl?.textContent || 'YouTube Video';
+    const raw     = document.getElementById('videoUrl').value.trim();
+    const id      = extractId(raw);
+    if (!id) return;
+    const thumb   = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+
+    /* Save to watch history */
+    saveToHistory(id, title, thumb);
+    renderContinueWatching();
+
+    /* Load Up Next suggestions */
+    loadUpNext(id, title);
+  }, 1200);
+}
+
+</script>
+  <script>
+  const hamburger = document.querySelector(".yt-hamburger");
+  const sidebar = document.querySelector(".yt-sidebar");
+
+  hamburger.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+  });
+</script>
 </body>
 </html>
