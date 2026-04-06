@@ -1,6 +1,6 @@
 'use strict';
 
-const YT_API_KEY = 'AIzaSyBnY6hDxR7JSlPefhfhY8V22flAcZZlJ1s';
+const YT_API_KEY = 'AIzaSyCCVN1yl4awDm5Fpb0thOryWwxKQgZp7OI';
 let searchQuery='',searchOffset=0,nextPageToken='',allResults=[],isSearching=false;
 let currentVideoId=null,currentTab='mp4';
 
