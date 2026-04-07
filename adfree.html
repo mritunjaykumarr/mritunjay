@@ -2148,8 +2148,7 @@
             <p>Loading video…</p>
           </div>
           <iframe id="player" class="yt-video-frame"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-            allowfullscreen></iframe>
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>
 
           <!-- ─── PLAYER CONTROLS OVERLAY ─── -->
           <div class="player-controls-bar" id="playerControlsBar">
@@ -3163,6 +3162,15 @@ async function _actualLoadVideo() {
   document.getElementById('dlThumbRow').style.display = 'flex';
   document.getElementById('dlTabs').style.display = 'flex';
   buildDlList(id);
+
+  /* ── Save to watch history + trigger Up Next ── */
+  setTimeout(() => {
+    const title = document.getElementById('videoTitle')?.textContent || 'YouTube Video';
+    const thumb = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+    saveToHistory(id, title, thumb);
+    renderContinueWatching();
+    loadUpNext(id, title);
+  }, 1200);
 }
 
 /* ════════════════════════════════════════
@@ -3665,29 +3673,7 @@ async function loadUpNext(currentId, currentTitle) {
   });
 }
 
-/* ════════════════════════════════════════════════
-   PATCH _actualLoadVideo TO SAVE HISTORY + UPNEXT
-════════════════════════════════════════════════ */
-const __origActualLoad = _actualLoadVideo;
-async function _actualLoadVideo() {
-  await __origActualLoad.call(this);
-  /* After video loads, get title and trigger history + upnext */
-  setTimeout(async () => {
-    const titleEl = document.getElementById('videoTitle');
-    const title   = titleEl?.textContent || 'YouTube Video';
-    const raw     = document.getElementById('videoUrl').value.trim();
-    const id      = extractId(raw);
-    if (!id) return;
-    const thumb   = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
-
-    /* Save to watch history */
-    saveToHistory(id, title, thumb);
-    renderContinueWatching();
-
-    /* Load Up Next suggestions */
-    loadUpNext(id, title);
-  }, 1200);
-}
+/* history + upnext now merged directly into _actualLoadVideo */
 
 /* ════════════════════════════════════════
    MOBILE SIDEBAR
