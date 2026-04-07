@@ -1788,44 +1788,94 @@
     .voice-close-btn:hover { background: rgba(255,0,0,0.15); color: #fff; }
 
     /* ═══════════════════════════════════════
-       VIDEO PLAYER CONTROLS OVERLAY
+       VIDEO PLAYER CONTROLS — below the frame
     ═══════════════════════════════════════ */
     .player-controls-bar {
       display: none;
       position: absolute; bottom: 0; left: 0; right: 0;
-      z-index: 30; padding: 12px 16px;
-      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
-      align-items: center; justify-content: center; gap: 12px;
+      z-index: 30; padding: 8px 16px 14px;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+      flex-direction: column; gap: 8px;
       border-radius: 0 0 var(--radius) var(--radius);
     }
     .yt-video-wrap:hover .player-controls-bar,
     .player-controls-bar.visible { display: flex; }
-    .player-ctrl-btn {
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-      cursor: pointer; background: none; border: none;
-      color: #fff; font-size: 0.65rem; font-weight: 600;
-      transition: transform 0.18s ease; letter-spacing: 0.04em;
+
+    /* Progress bar row */
+    .ctrl-progress-row {
+      width: 100%; display: flex; align-items: center; gap: 8px;
     }
-    .player-ctrl-btn:hover { transform: scale(1.15); }
-    .player-ctrl-icon {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      border: 1.5px solid rgba(255,255,255,0.25);
+    .ctrl-progress-wrap {
+      flex: 1; height: 4px; background: rgba(255,255,255,0.2);
+      border-radius: 4px; cursor: pointer; position: relative;
+      transition: height 0.18s;
+    }
+    .ctrl-progress-wrap:hover { height: 6px; }
+    .ctrl-progress-fill {
+      height: 100%; background: var(--yt-red);
+      border-radius: 4px; pointer-events: none;
+      transition: width 0.5s linear;
+      width: 0%;
+    }
+    .ctrl-progress-thumb {
+      position: absolute; top: 50%; right: -6px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #fff; transform: translateY(-50%) scale(0);
+      transition: transform 0.18s; pointer-events: none;
+    }
+    .ctrl-progress-wrap:hover .ctrl-progress-thumb { transform: translateY(-50%) scale(1); }
+    .ctrl-time {
+      font-size: 0.65rem; color: rgba(255,255,255,0.8);
+      font-weight: 600; white-space: nowrap; min-width: 70px; text-align: right;
+    }
+
+    /* Buttons row */
+    .ctrl-btns-row {
+      display: flex; align-items: center; gap: 6px; width: 100%;
+    }
+    .ctrl-btn {
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; transition: all 0.18s;
-      backdrop-filter: blur(4px);
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; font-size: 0.9rem; cursor: pointer;
+      transition: all 0.18s ease; flex-shrink: 0;
     }
-    .player-ctrl-btn:hover .player-ctrl-icon {
-      background: rgba(255,0,0,0.4);
-      border-color: rgba(255,0,0,0.6);
+    .ctrl-btn:hover { background: rgba(255,0,0,0.35); border-color: rgba(255,0,0,0.5); transform: scale(1.1); }
+    .ctrl-btn.ctrl-play-pause { width: 42px; height: 42px; font-size: 1.1rem;
+      background: rgba(255,0,0,0.25); border-color: rgba(255,0,0,0.4); }
+    .ctrl-btn.ctrl-play-pause:hover { background: var(--yt-red); }
+
+    /* Volume slider */
+    .ctrl-vol-wrap {
+      display: flex; align-items: center; gap: 6px; margin-left: 4px;
     }
-    .player-ctrl-btn.ctrl-maximize .player-ctrl-icon {
-      background: rgba(255,0,0,0.2);
-      border-color: rgba(255,0,0,0.4);
+    .ctrl-vol-slider {
+      -webkit-appearance: none; appearance: none;
+      width: 0; height: 4px; border-radius: 4px;
+      background: rgba(255,255,255,0.25); outline: none; cursor: pointer;
+      transition: width 0.25s ease, background 0.18s;
+      overflow: hidden;
     }
-    .player-ctrl-btn.ctrl-maximize:hover .player-ctrl-icon {
-      background: var(--yt-red);
+    .ctrl-vol-wrap:hover .ctrl-vol-slider,
+    .ctrl-vol-slider:focus { width: 70px; }
+    .ctrl-vol-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 12px; height: 12px;
+      border-radius: 50%; background: #fff; cursor: pointer;
+      box-shadow: -70px 0 0 66px var(--yt-red);
     }
+    .ctrl-vol-slider::-moz-range-thumb {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #fff; border: none; cursor: pointer;
+    }
+    .ctrl-vol-slider::-moz-range-fill { background: var(--yt-red); }
+
+    /* Spacer */
+    .ctrl-spacer { flex: 1; }
+
+    /* Maximize btn */
+    .ctrl-btn.ctrl-fs { background: rgba(255,0,0,0.15); border-color: rgba(255,0,0,0.3); }
+    .ctrl-btn.ctrl-fs:hover { background: var(--yt-red); border-color: var(--yt-red); }
   </style>
 </head>
 <body>
@@ -2150,31 +2200,53 @@
           <iframe id="player" class="yt-video-frame"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>
 
-          <!-- ─── PLAYER CONTROLS OVERLAY ─── -->
+          <!-- ─── PLAYER CONTROLS BAR ─── -->
           <div class="player-controls-bar" id="playerControlsBar">
-            <!-- Rewind 20s -->
-            <button class="player-ctrl-btn" onclick="seekPlayer(-20)" title="Rewind 20s">
-              <div class="player-ctrl-icon">
+
+            <!-- Progress bar -->
+            <div class="ctrl-progress-row">
+              <div class="ctrl-progress-wrap" id="progressWrap" onclick="ctrlSeekClick(event)">
+                <div class="ctrl-progress-fill" id="progressFill"></div>
+                <div class="ctrl-progress-thumb" id="progressThumb"></div>
+              </div>
+              <div class="ctrl-time" id="ctrlTime">0:00 / 0:00</div>
+            </div>
+
+            <!-- Buttons row -->
+            <div class="ctrl-btns-row">
+              <!-- Rewind 20s -->
+              <button class="ctrl-btn" onclick="ctrlSeek(-20)" title="Rewind 20s">
                 <i class="fa-solid fa-rotate-left"></i>
-              </div>
-              <span>-20s</span>
-            </button>
+              </button>
 
-            <!-- Fullscreen / Maximize -->
-            <button class="player-ctrl-btn ctrl-maximize" onclick="toggleFullscreen()" title="Fullscreen">
-              <div class="player-ctrl-icon">
-                <i class="fa-solid fa-expand" id="fsIcon"></i>
-              </div>
-              <span id="fsLabel">Full</span>
-            </button>
+              <!-- Play / Pause -->
+              <button class="ctrl-btn ctrl-play-pause" id="ctrlPlayPause" onclick="ctrlTogglePlay()" title="Play/Pause">
+                <i class="fa-solid fa-pause" id="playPauseIcon"></i>
+              </button>
 
-            <!-- Forward 20s -->
-            <button class="player-ctrl-btn" onclick="seekPlayer(20)" title="Forward 20s">
-              <div class="player-ctrl-icon">
+              <!-- Forward 20s -->
+              <button class="ctrl-btn" onclick="ctrlSeek(20)" title="Forward 20s">
                 <i class="fa-solid fa-rotate-right"></i>
+              </button>
+
+              <!-- Volume -->
+              <div class="ctrl-vol-wrap">
+                <button class="ctrl-btn" id="ctrlVolBtn" onclick="ctrlToggleMute()" title="Mute/Unmute">
+                  <i class="fa-solid fa-volume-high" id="volIcon"></i>
+                </button>
+                <input class="ctrl-vol-slider" id="ctrlVolSlider" type="range"
+                  min="0" max="100" value="100"
+                  oninput="ctrlSetVolume(this.value)"
+                  title="Volume" />
               </div>
-              <span>+20s</span>
-            </button>
+
+              <div class="ctrl-spacer"></div>
+
+              <!-- Fullscreen -->
+              <button class="ctrl-btn ctrl-fs" onclick="toggleFullscreen()" title="Fullscreen">
+                <i class="fa-solid fa-expand" id="fsIcon"></i>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -3142,13 +3214,23 @@ async function _actualLoadVideo() {
   ]);
 
   const player = document.getElementById('player');
-  player.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`;
+  player.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
   document.getElementById('loaderState').classList.remove('show');
   player.classList.add('show');
-  playerCurrentTime = 0;
-  /* Show controls */
+  /* Reset controls state */
+  ctrlPlaying = true;
+  const ppIcon = document.getElementById('playPauseIcon');
+  if (ppIcon) ppIcon.className = 'fa-solid fa-pause';
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('ctrlTime').textContent = '0:00 / 0:00';
+  /* Show controls briefly */
   document.getElementById('playerControlsBar')?.classList.add('visible');
-  setTimeout(() => document.getElementById('playerControlsBar')?.classList.remove('visible'), 3500);
+  setTimeout(() => document.getElementById('playerControlsBar')?.classList.remove('visible'), 4000);
+  /* Init YouTube API */
+  ytPlayer = null;
+  clearInterval(ctrlPollTimer);
+  loadYTApi();
+  setTimeout(onYTReady, 1500);
 
   document.getElementById('videoTitle').textContent = info.title;
   document.getElementById('videoTitle').classList.remove('empty');
@@ -3758,27 +3840,153 @@ function startVoiceRecognition() {
 window.startVoiceSearch = openVoiceModal;
 
 /* ════════════════════════════════════════
-   VIDEO PLAYER CONTROLS (seek + fullscreen)
+   VIDEO PLAYER CONTROLS — Full YouTube API
 ════════════════════════════════════════ */
-let playerCurrentTime = 0;
 
-function seekPlayer(seconds) {
-  const iframe = document.getElementById('player');
-  if (!iframe || !iframe.classList.contains('show')) return;
+/* YouTube IFrame API */
+let ytPlayer       = null;   // YT.Player instance
+let ctrlPlaying    = true;
+let ctrlMuted      = false;
+let ctrlVolume     = 100;
+let ctrlDuration   = 0;
+let ctrlPollTimer  = null;
 
-  /* Use postMessage to seek via YouTube iframe API */
-  try {
-    iframe.contentWindow.postMessage(
-      JSON.stringify({ event: 'command', func: seconds > 0 ? 'seekTo' : 'seekTo', args: [playerCurrentTime + seconds, true] }),
-      '*'
-    );
-    playerCurrentTime = Math.max(0, playerCurrentTime + seconds);
-  } catch {}
-
-  /* Visual feedback */
-  showSeekToast(seconds > 0 ? `+${seconds}s` : `${seconds}s`);
+/* Load YouTube IFrame API script once */
+function loadYTApi() {
+  if (window.YT && window.YT.Player) { onYTReady(); return; }
+  if (document.getElementById('yt-api-script')) return;
+  const s = document.createElement('script');
+  s.id  = 'yt-api-script';
+  s.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(s);
 }
-window.seekPlayer = seekPlayer;
+
+window.onYouTubeIframeAPIReady = function() { onYTReady(); };
+
+function onYTReady() {
+  /* Hook into the existing iframe */
+  const iframe = document.getElementById('player');
+  if (!iframe || !iframe.src || !iframe.src.includes('youtube')) return;
+  try {
+    ytPlayer = new YT.Player('player', {
+      events: {
+        onReady:       onPlayerReady,
+        onStateChange: onPlayerStateChange,
+      }
+    });
+  } catch(e) {}
+}
+
+function onPlayerReady(e) {
+  ctrlDuration = ytPlayer.getDuration?.() || 0;
+  ctrlVolume   = ytPlayer.getVolume?.()   || 100;
+  document.getElementById('ctrlVolSlider').value = ctrlVolume;
+  startProgressPoll();
+}
+
+function onPlayerStateChange(e) {
+  const icon = document.getElementById('playPauseIcon');
+  if (e.data === YT.PlayerState.PLAYING) {
+    ctrlPlaying = true;
+    if (icon) icon.className = 'fa-solid fa-pause';
+    ctrlDuration = ytPlayer.getDuration?.() || ctrlDuration;
+  } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
+    ctrlPlaying = false;
+    if (icon) icon.className = 'fa-solid fa-play';
+  }
+}
+
+function startProgressPoll() {
+  clearInterval(ctrlPollTimer);
+  ctrlPollTimer = setInterval(() => {
+    if (!ytPlayer || !ytPlayer.getCurrentTime) return;
+    try {
+      const cur = ytPlayer.getCurrentTime() || 0;
+      const dur = ytPlayer.getDuration()    || 1;
+      ctrlDuration = dur;
+      const pct = (cur / dur) * 100;
+      const fill = document.getElementById('progressFill');
+      const thumb = document.getElementById('progressThumb');
+      if (fill)  fill.style.width = pct + '%';
+      if (thumb) thumb.style.left = pct + '%';
+      document.getElementById('ctrlTime').textContent =
+        fmtTime(cur) + ' / ' + fmtTime(dur);
+    } catch {}
+  }, 500);
+}
+
+function fmtTime(s) {
+  s = Math.floor(s || 0);
+  const m = Math.floor(s / 60), sec = s % 60;
+  return m + ':' + String(sec).padStart(2, '0');
+}
+
+/* Controls */
+function ctrlTogglePlay() {
+  if (!ytPlayer) return;
+  try {
+    if (ctrlPlaying) {
+      ytPlayer.pauseVideo();
+    } else {
+      ytPlayer.playVideo();
+    }
+  } catch {}
+}
+window.ctrlTogglePlay = ctrlTogglePlay;
+
+function ctrlSeek(sec) {
+  showSeekToast(sec > 0 ? `+${sec}s` : `${sec}s`);
+  if (!ytPlayer) return;
+  try {
+    const cur = ytPlayer.getCurrentTime() || 0;
+    ytPlayer.seekTo(Math.max(0, cur + sec), true);
+  } catch {}
+}
+window.ctrlSeek = ctrlSeek;
+
+function ctrlSeekClick(e) {
+  const wrap = document.getElementById('progressWrap');
+  if (!wrap || !ytPlayer) return;
+  const rect = wrap.getBoundingClientRect();
+  const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  try {
+    ytPlayer.seekTo(pct * ctrlDuration, true);
+  } catch {}
+}
+window.ctrlSeekClick = ctrlSeekClick;
+
+function ctrlSetVolume(val) {
+  ctrlVolume = parseInt(val);
+  ctrlMuted  = ctrlVolume === 0;
+  const icon = document.getElementById('volIcon');
+  if (icon) {
+    icon.className = ctrlVolume === 0 ? 'fa-solid fa-volume-xmark'
+      : ctrlVolume < 50 ? 'fa-solid fa-volume-low'
+      : 'fa-solid fa-volume-high';
+  }
+  if (!ytPlayer) return;
+  try {
+    ytPlayer.setVolume(ctrlVolume);
+    if (ctrlVolume === 0) ytPlayer.mute(); else ytPlayer.unMute();
+  } catch {}
+}
+window.ctrlSetVolume = ctrlSetVolume;
+
+function ctrlToggleMute() {
+  const slider = document.getElementById('ctrlVolSlider');
+  if (ctrlMuted) {
+    ctrlMuted  = false;
+    ctrlVolume = ctrlVolume || 80;
+    slider.value = ctrlVolume;
+    try { ytPlayer?.unMute(); ytPlayer?.setVolume(ctrlVolume); } catch {}
+  } else {
+    ctrlMuted = true;
+    slider.value = 0;
+    try { ytPlayer?.mute(); } catch {}
+  }
+  ctrlSetVolume(slider.value);
+}
+window.ctrlToggleMute = ctrlToggleMute;
 
 function showSeekToast(text) {
   let toast = document.getElementById('seekToast');
@@ -3786,10 +3994,11 @@ function showSeekToast(text) {
     toast = document.createElement('div');
     toast.id = 'seekToast';
     toast.style.cssText = `
-      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-      background:rgba(0,0,0,0.75); color:#fff; border-radius:10px;
-      padding:10px 20px; font-size:1.1rem; font-weight:700;
-      pointer-events:none; z-index:50; transition:opacity 0.3s;
+      position:absolute; top:42%; left:50%; transform:translate(-50%,-50%);
+      background:rgba(0,0,0,0.82); color:#fff; border-radius:12px;
+      padding:10px 22px; font-size:1.2rem; font-weight:800;
+      pointer-events:none; z-index:50; transition:opacity 0.35s;
+      letter-spacing:0.05em;
     `;
     document.getElementById('videoWrap')?.appendChild(toast);
   }
@@ -3801,43 +4010,57 @@ function showSeekToast(text) {
 
 /* Fullscreen */
 function toggleFullscreen() {
-  const wrap  = document.getElementById('videoWrap');
-  const icon  = document.getElementById('fsIcon');
-  const label = document.getElementById('fsLabel');
+  const wrap = document.getElementById('videoWrap');
+  const icon = document.getElementById('fsIcon');
   if (!wrap) return;
-
-  if (!document.fullscreenElement) {
-    wrap.requestFullscreen?.() || wrap.webkitRequestFullscreen?.() || wrap.mozRequestFullScreen?.();
-    icon.className  = 'fa-solid fa-compress';
-    label.textContent = 'Exit';
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    (wrap.requestFullscreen || wrap.webkitRequestFullscreen || wrap.mozRequestFullScreen).call(wrap);
+    if (icon) icon.className = 'fa-solid fa-compress';
   } else {
-    document.exitFullscreen?.() || document.webkitExitFullscreen?.();
-    icon.className  = 'fa-solid fa-expand';
-    label.textContent = 'Full';
+    (document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen).call(document);
+    if (icon) icon.className = 'fa-solid fa-expand';
   }
 }
 window.toggleFullscreen = toggleFullscreen;
 
-/* Show controls bar when video is playing */
-document.getElementById('videoWrap')?.addEventListener('mouseenter', () => {
-  if (document.getElementById('player')?.classList.contains('show')) {
-    document.getElementById('playerControlsBar')?.classList.add('visible');
-  }
+document.addEventListener('fullscreenchange', () => {
+  const icon = document.getElementById('fsIcon');
+  if (icon) icon.className = document.fullscreenElement
+    ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
 });
-document.getElementById('videoWrap')?.addEventListener('mouseleave', () => {
+
+/* Show / hide controls bar */
+const _vWrap = document.getElementById('videoWrap');
+_vWrap?.addEventListener('mouseenter', () => {
+  if (document.getElementById('player')?.classList.contains('show'))
+    document.getElementById('playerControlsBar')?.classList.add('visible');
+});
+_vWrap?.addEventListener('mouseleave', () => {
   document.getElementById('playerControlsBar')?.classList.remove('visible');
 });
-/* Mobile: tap to toggle controls */
-document.getElementById('videoWrap')?.addEventListener('touchstart', () => {
+_vWrap?.addEventListener('touchstart', () => {
   const bar = document.getElementById('playerControlsBar');
   if (document.getElementById('player')?.classList.contains('show') && bar) {
     bar.classList.toggle('visible');
-    if (bar.classList.contains('visible')) {
-      clearTimeout(bar._hideTimer);
-      bar._hideTimer = setTimeout(() => bar.classList.remove('visible'), 3000);
-    }
+    clearTimeout(bar._ht);
+    if (bar.classList.contains('visible'))
+      bar._ht = setTimeout(() => bar.classList.remove('visible'), 3500);
   }
 }, { passive: true });
+
+/* Keyboard shortcuts */
+document.addEventListener('keydown', e => {
+  if (['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) return;
+  if (document.getElementById('player')?.classList.contains('show')) {
+    if (e.code === 'Space')       { e.preventDefault(); ctrlTogglePlay(); }
+    if (e.code === 'ArrowRight')  { ctrlSeek(20); }
+    if (e.code === 'ArrowLeft')   { ctrlSeek(-20); }
+    if (e.code === 'ArrowUp')     { const s = document.getElementById('ctrlVolSlider'); s.value = Math.min(100,+s.value+10); ctrlSetVolume(s.value); }
+    if (e.code === 'ArrowDown')   { const s = document.getElementById('ctrlVolSlider'); s.value = Math.max(0,+s.value-10);  ctrlSetVolume(s.value); }
+    if (e.code === 'KeyF')        { toggleFullscreen(); }
+    if (e.code === 'KeyM')        { ctrlToggleMute(); }
+  }
+});
 
 /* ════════════════════════════════════════
    SHORTS — RANDOM VIDEO CHANGE
