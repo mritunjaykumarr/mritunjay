@@ -45,7 +45,7 @@ window.addEventListener('load', () => {
 
 /* ---- CUSTOM CURSOR ---- */
 const cursor = document.getElementById('cursor');
-const cursorFollower = document.getElementById('cursorFollower');
+const cursorFollower = document.getElementById('cursorRing');
 let mouseX = 0, mouseY = 0;
 let followerX = 0, followerY = 0;
 
@@ -159,7 +159,7 @@ sections.forEach(section => navObserver.observe(section));
 
 /* ---- SCROLL REVEAL ---- */
 const revealEls = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver((entries) => {
+window.revealObserver = new IntersectionObserver((entries) => {
   entries.forEach((el, i) => {
     if (el.isIntersecting) {
       setTimeout(() => {
@@ -170,7 +170,7 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 revealEls.forEach((el, i) => {
-  revealObserver.observe(el);
+ window.revealObserver.observe(el);
 });
 
 /* ---- COUNTER ANIMATION ---- */
