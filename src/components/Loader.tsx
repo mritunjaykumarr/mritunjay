@@ -2,17 +2,19 @@ import { useEffect, useState } from 'react';
 
 export default function Loader() {
   const [loading, setLoading] = useState(true);
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
     const handleLoad = () => {
       setTimeout(() => setLoading(false), 1200);
+      // Wait for transition to finish before removing from DOM (optional)
+      setTimeout(() => setIsDone(true), 2100); 
     };
     
     if (document.readyState === 'complete') {
       handleLoad();
     } else {
       window.addEventListener('load', handleLoad);
-      // Safety timeout: remove loader after 3s anyway
       const safety = setTimeout(handleLoad, 3000);
       return () => {
         window.removeEventListener('load', handleLoad);
@@ -21,14 +23,15 @@ export default function Loader() {
     }
   }, []);
 
-  if (!loading) return null;
+  if (isDone) return null;
 
   return (
-    <div className="loader" id="loader">
-      <div className="l-content">
-        <div className="l-logo">M.</div>
-        <div className="l-bar"><div className="l-progress"></div></div>
+    <div className={`loader ${!loading ? 'hidden' : ''}`} id="loader">
+      <div className="loader-wordmark">MRITUNJAY</div>
+      <div className="loader-line">
+        <div className="loader-line-fill"></div>
       </div>
+      <div className="loader-label">Architecting the future</div>
     </div>
   );
 }
