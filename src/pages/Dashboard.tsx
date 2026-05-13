@@ -30,10 +30,10 @@ export default function Dashboard() {
       const { data: buckets, error: bucketError } = await supabase.storage.listBuckets();
       if (bucketError) throw bucketError;
       
-      const hasBucket = buckets.find(b => b.name === 'blog-images');
+      const hasBucket = buckets.find(b => b.name === 'blog-post');
       if (!hasBucket) {
         const foundNames = buckets.map(b => b.name).join(', ') || 'None';
-        alert(`Bucket "blog-images" not found! Your project only has: ${foundNames}. Please create it in Supabase.`);
+        alert(`Bucket "blog-post" not found! Your project only has: ${foundNames}. Please create it in Supabase.`);
         setUploading(false);
         return;
       }
@@ -43,7 +43,7 @@ export default function Dashboard() {
       const filePath = `blog/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('blog-images')
+        .from('blog-post')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
