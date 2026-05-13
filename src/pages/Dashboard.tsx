@@ -26,18 +26,6 @@ export default function Dashboard() {
 
     setUploading(true);
     try {
-      // Check if bucket exists first to give better error
-      const { data: buckets, error: bucketError } = await supabase.storage.listBuckets();
-      if (bucketError) throw bucketError;
-      
-      const hasBucket = buckets.find(b => b.name === 'blog-post');
-      if (!hasBucket) {
-        const foundNames = buckets.map(b => b.name).join(', ') || 'None';
-        alert(`Bucket "blog-post" not found! Your project only has: ${foundNames}. Please create it in Supabase.`);
-        setUploading(false);
-        return;
-      }
-
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}.${fileExt}`;
       const filePath = `blog/${fileName}`;
@@ -49,12 +37,12 @@ export default function Dashboard() {
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from('blog-images')
+        .from('blog-post')
         .getPublicUrl(filePath);
 
       setFormData({ ...formData, cover: publicUrl });
     } catch (error: any) {
-      alert(`Error: ${error.message || 'Upload failed'}`);
+      alert(`Upload Error: ${error.message || 'Please check your Supabase Storage policies'}`);
       console.error(error);
     } finally {
       setUploading(false);
