@@ -883,14 +883,27 @@
     function escBlog(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
     function typeEmoji(t){ return t==='Article'?'📰':t==='News'?'📡':'📝'; }
     function readTime(html){ const w=(html||'').replace(/<[^>]+>/g,' ').trim().split(/\s+/).filter(Boolean).length; return Math.max(1,Math.ceil(w/200)); }
+    function timeAgo(dateStr){
+      const diff=Date.now()-new Date(dateStr).getTime();
+      const m=Math.floor(diff/60000), h=Math.floor(diff/3600000), d=Math.floor(diff/86400000);
+      if(m<1) return 'just now';
+      if(m<60) return m+'m ago';
+      if(h<24) return h+'h ago';
+      if(d<7) return d+'d ago';
+      return new Date(dateStr).toLocaleDateString('en-IN',{month:'short',day:'numeric'});
+    }
+    function initials(name){ return (name||'MK').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
 
     const POSTS_PER_PAGE=6;
     let allBlogPosts=[], activeBlogFilter='all', lastFirebaseDoc=null, allLoaded=false, usingFirebase=false;
 
+    /* ── Like helpers ── */
     function getLikeCounts(){ try{ return JSON.parse(localStorage.getItem('dp_likes_count')||'{}'); }catch(e){ return {}; } }
     function getUserLikes(){  try{ return JSON.parse(localStorage.getItem('dp_likes_user') ||'{}'); }catch(e){ return {}; } }
     function getLikeCount(id){ return getLikeCounts()[id]||0; }
     function hasUserLiked(id){ return !!getUserLikes()[id]; }
+    function getSavedPosts(){ try{ return JSON.parse(localStorage.getItem('dp_saved')||'[]'); }catch(e){ return []; } }
+    function hasSaved(id){ return getSavedPosts().includes(id); }
 
     async function toggleLike(postId,event){
       if(event) event.stopPropagation();
@@ -902,11 +915,112 @@
       if(usingFirebase&&window._blogFirestore){
         try{ const{db,doc,updateDoc,increment}=window._blogFirestore; await updateDoc(doc(db,'posts',postId),{likes:increment(liked?-1:1)}); }catch(e){}
       }
-      updateLikeButtons(postId,counts[postId],!liked);
-      if(event&&!liked){ const btn=event.currentTarget; spawnHearts(btn); }
+      updateLikeUI(postId,counts[postId]||0,!liked);
+      if(event&&!liked){ spawnHearts(event.currentTarget); }
     }
     window.toggleLike=toggleLike;
 
+    function toggleSave(postId,event){
+      if(event) event.stopPropagation();
+      let saved=getSavedPosts();
+      const isSaved=saved.includes(postId);
+      if(isSaved) saved=saved.filter(x=>x!==postId);
+      else saved.push(postId);
+      localStorage.setItem('dp_saved',JSON.stringify(saved));
+      document.querySelectorAll(`.save-btn[data-id="${postId}"]`).forEach(btn=>{
+        btn.classList.toggle('saved',!isSaved);
+        btn.querySelector('i').className=!isSaved?'fa-solid fa-bookmark':'fa-regular fa-bookmark';
+      });
+    }
+    window.toggleSave=toggleSave;
+
+    function toggleComments(postId,event){
+      if(event) event.stopPropagation();
+      const sec=document.getElementById(`comments-${postId}`);
+      const btn=document.querySelector(`.comment-btn[data-id="${postId}"]`);
+      if(!sec) return;
+      const isOpen=sec.classList.toggle('open');
+      if(btn) btn.classList.toggle('active',isOpen);
+      if(isOpen){ const field=sec.querySelector('.blog-comment-field'); if(field) field.focus(); }
+    }
+    window.toggleComments=toggleComments;
+
+    /* ── Comment helpers ── */
+    function getComments(postId){ try{ return JSON.parse(localStorage.getItem(`dp_comments_${postId}`)||'[]'); }catch(e){ return []; } }
+    function saveComment(postId,text,name){
+      const comments=getComments(postId);
+      const c={ id:Date.now(), name:name||'Visitor', text, time:new Date().toISOString() };
+      comments.push(c);
+      localStorage.setItem(`dp_comments_${postId}`,JSON.stringify(comments));
+      return c;
+    }
+
+    function postComment(postId,event){
+      if(event) event.stopPropagation();
+      const field=document.getElementById(`comment-input-${postId}`);
+      if(!field||!field.value.trim()) return;
+      const text=field.value.trim();
+      const name=localStorage.getItem('dp_commenter_name')||'You';
+      const c=saveComment(postId,text,name);
+      field.value='';
+      const postBtn=field.closest('.blog-card-comment-input').querySelector('.blog-comment-post-btn');
+      if(postBtn) postBtn.classList.remove('ready');
+      renderCommentsInCard(postId);
+    }
+    window.postComment=postComment;
+
+    function renderCommentsInCard(postId){
+      const list=document.getElementById(`comment-list-${postId}`);
+      if(!list) return;
+      const comments=getComments(postId);
+      if(comments.length===0){ list.innerHTML=`<div class="blog-no-comments">No comments yet. Be the first! 💬</div>`; }
+      else {
+        list.innerHTML=comments.slice(-20).reverse().map(c=>`
+          <div class="blog-comment-item">
+            <div class="blog-comment-item-avatar">${initials(c.name)}</div>
+            <div class="blog-comment-item-body">
+              <div class="blog-comment-item-text"><strong>${escBlog(c.name)}</strong>${escBlog(c.text)}</div>
+              <div class="blog-comment-item-time">${timeAgo(c.time)}</div>
+            </div>
+            <button class="blog-comment-item-like" title="Like comment">♥</button>
+          </div>`).join('');
+      }
+      /* also update preview */
+      const preview=document.querySelector(`.blog-card-comments[data-post="${postId}"] .blog-comment-preview`);
+      const viewAll=document.querySelector(`.blog-card-comments[data-post="${postId}"] .blog-view-all-comments`);
+      if(preview && comments.length>0){
+        const last=comments[comments.length-1];
+        preview.innerHTML=`<strong>${escBlog(last.name)}</strong>${escBlog(last.text)}`;
+      }
+      if(viewAll && comments.length>0){
+        viewAll.textContent=`View all ${comments.length} comment${comments.length!==1?'s':''}`;
+      }
+    }
+
+    function updateLikeUI(postId,count,isLiked){
+      document.querySelectorAll(`.like-btn[data-id="${postId}"]`).forEach(btn=>{
+        btn.classList.toggle('liked',isLiked);
+        const c=btn.querySelector('.like-count');
+        if(c) c.textContent=count>0?count:'';
+        const icon=btn.querySelector('.like-icon');
+        if(icon) icon.textContent=isLiked?'♥':'♡';
+      });
+      document.querySelectorAll(`.blog-card-like-summary[data-id="${postId}"]`).forEach(el=>{
+        el.innerHTML=count>0?`<strong>${count} like${count!==1?'s':''}</strong>`:'';
+      });
+      const pill=document.getElementById(`modalLikeCount_${postId}`); if(pill) pill.textContent=`${count} like${count!==1?'s':''}`;
+    }
+
+    function spawnHearts(btn){
+      const rect=btn.getBoundingClientRect();
+      for(let i=0;i<6;i++){
+        const h=document.createElement('span'); h.className='heart-burst'; h.textContent='♥';
+        h.style.cssText=`left:${rect.left+rect.width/2}px;top:${rect.top+rect.height/2}px;animation-delay:${i*0.05}s;font-size:${Math.random()*8+8}px;`;
+        document.body.appendChild(h); setTimeout(()=>h.remove(),900);
+      }
+    }
+
+    /* ── Share card ── */
     window.openShareCard=function(postId,event){
       if(event) event.stopPropagation();
       const p=allBlogPosts.find(x=>x.id===postId); if(!p) return;
@@ -929,20 +1043,7 @@
       function fallbackCopy(u,cb){ const ta=document.createElement('textarea'); ta.value=u; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb(); }
     };
 
-    function updateLikeButtons(postId,count,isLiked){
-      document.querySelectorAll(`.like-btn[data-id="${postId}"]`).forEach(btn=>{ btn.classList.toggle('liked',isLiked); const c=btn.querySelector('.like-count'); if(c) c.textContent=count>0?count:''; });
-      const pill=document.getElementById(`modalLikeCount_${postId}`); if(pill) pill.textContent=`${count} like${count!==1?'s':''}`;
-    }
-
-    function spawnHearts(btn){
-      const rect=btn.getBoundingClientRect();
-      for(let i=0;i<6;i++){
-        const h=document.createElement('span'); h.className='heart-burst'; h.textContent='♥';
-        h.style.cssText=`left:${rect.left+rect.width/2}px;top:${rect.top+rect.height/2}px;animation-delay:${i*0.05}s;font-size:${Math.random()*8+8}px;`;
-        document.body.appendChild(h); setTimeout(()=>h.remove(),900);
-      }
-    }
-
+    /* ── Firebase ── */
     function isFirebaseConfigured(){
       try{ const c=window.FIREBASE_CONFIG; return c&&c.apiKey&&c.apiKey!=='YOUR_API_KEY'&&c.projectId&&c.projectId!=='YOUR_PROJECT_ID'; }catch(e){ return false; }
     }
@@ -993,54 +1094,152 @@
       btn.querySelector('span').textContent='Load More'; btn.disabled=false;
     };
 
-    function showLoading(on){ document.getElementById('blogLoading').style.display=on?'grid':'none'; if(on) document.getElementById('blogGrid').style.display='none'; }
+    function showLoading(on){ document.getElementById('blogLoading').style.display=on?'flex':'none'; if(on) document.getElementById('blogGrid').style.display='none'; }
 
+    /* ── Instagram-style card renderer ── */
     function renderBlogGrid(){
       const grid=document.getElementById('blogGrid'), empty=document.getElementById('blogEmpty'), moreWrap=document.getElementById('blogMoreWrap');
       const filtered=activeBlogFilter==='all'?allBlogPosts:allBlogPosts.filter(p=>p.type===activeBlogFilter);
       if(filtered.length===0){ grid.style.display='none'; empty.style.display='flex'; moreWrap.style.display='none'; return; }
-      empty.style.display='none'; grid.style.display='grid'; moreWrap.style.display=(allLoaded||!usingFirebase)?'none':'flex';
+      empty.style.display='none'; grid.style.display='flex'; moreWrap.style.display=(allLoaded||!usingFirebase)?'none':'flex';
+
       grid.innerHTML=filtered.map((p,i)=>{
-        const date=new Date(p.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        const cover=p.cover?`<img src="${p.cover}" alt="" class="blog-card-img" loading="lazy"/>`:`<div class="blog-card-img-ph">${typeEmoji(p.type)}</div>`;
-        const tags=(p.tags||[]).slice(0,2).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
-        const featured=i===0&&activeBlogFilter==='all'&&filtered.length>1;
+        const ago=timeAgo(p.createdAt);
+        const cover=p.cover
+          ?`<img src="${p.cover}" alt="" class="blog-card-img" loading="lazy"/>`
+          :`<div class="blog-card-img-ph">${typeEmoji(p.type)}</div>`;
+        const tags=(p.tags||[]).slice(0,4).map(t=>`<button class="blog-tag" onclick="event.stopPropagation()">#${escBlog(t)}</button>`).join('');
         const typeSlug=(p.type||'blog').toLowerCase();
         const likeCount=usingFirebase?(p.likes||0):getLikeCount(p.id);
         const liked=hasUserLiked(p.id);
-        return `<div class="blog-card tilt-card reveal ${featured?'blog-card--featured':''}" onclick="openBlogPost('${p.id}')" style="animation-delay:${i*0.07}s">
-          <div class="blog-card-cover">${cover}<div class="blog-card-cover-overlay"></div><span class="blog-type-badge blog-type-${typeSlug}">${p.type||'Blog'}</span></div>
-          <div class="blog-card-body">
-            <div class="blog-card-meta"><span class="blog-cat"><i class="fa-solid fa-folder-open"></i> ${escBlog(p.category||'General')}</span><span class="blog-date"><i class="fa-regular fa-calendar"></i> ${date}</span></div>
-            <h3 class="blog-card-title">${escBlog(p.title)}</h3>
-            <p class="blog-card-excerpt">${escBlog(p.excerpt||'')}</p>
-            ${tags?`<div class="blog-tags-row">${tags}</div>`:''}
-            <div class="blog-card-footer">
-              <span class="blog-read-more">Read Post <i class="fa-solid fa-arrow-right"></i></span>
-              <div class="blog-card-actions">
-                <span class="blog-read-time"><i class="fa-regular fa-clock"></i> ${readTime(p.body)} min</span>
-                <button class="like-btn ${liked?'liked':''}" data-id="${p.id}" onclick="toggleLike('${p.id}',event)" title="Like" aria-label="Like"><span>♥</span><span class="like-count">${likeCount>0?likeCount:''}</span></button>
-                <button class="share-btn" onclick="openShareCard('${p.id}',event)" title="Share" aria-label="Share"><i class="fa-solid fa-link"></i></button>
+        const saved=hasSaved(p.id);
+        const comments=getComments(p.id);
+        const lastComment=comments[comments.length-1];
+        const excerpt=(p.excerpt||'').slice(0,160);
+
+        return `<div class="blog-card" data-id="${p.id}" style="animation-delay:${i*0.06}s">
+
+          <!-- Header -->
+          <div class="blog-card-header">
+            <div class="blog-card-avatar">MK</div>
+            <div class="blog-card-author-info">
+              <div class="blog-card-author-name">mritunjaykumar</div>
+              <div class="blog-card-author-meta">
+                <span class="blog-type-pill blog-type-${typeSlug}">${p.type||'Blog'}</span>
+                <span>·</span>
+                <span>${ago}</span>
+                <span>·</span>
+                <span><i class="fa-regular fa-clock"></i> ${readTime(p.body)} min</span>
               </div>
             </div>
-          </div></div>`;
+            <button class="blog-card-more-btn" onclick="openBlogPost('${p.id}')" title="Read full post">
+              <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.8rem"></i>
+            </button>
+          </div>
+
+          <!-- Image -->
+          <div class="blog-card-cover">
+            ${cover}
+            <div class="blog-card-cover-overlay"></div>
+            <span class="blog-type-badge blog-type-${typeSlug}">${p.type||'Blog'}</span>
+          </div>
+
+          <!-- Action bar (IG-style) -->
+          <div class="blog-card-actions">
+            <button class="blog-action-btn like-btn ${liked?'liked':''}" data-id="${p.id}" onclick="toggleLike('${p.id}',event)" title="Like">
+              <span class="like-icon">${liked?'♥':'♡'}</span>
+              <span class="like-count">${likeCount>0?likeCount:''}</span>
+            </button>
+            <button class="blog-action-btn comment-btn" data-id="${p.id}" onclick="toggleComments('${p.id}',event)" title="Comments">
+              <i class="fa-regular fa-comment"></i>
+              <span>${comments.length>0?comments.length:''}</span>
+            </button>
+            <button class="blog-action-btn share-btn" onclick="openShareCard('${p.id}',event)" title="Share">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+            <div class="blog-action-spacer"></div>
+            <button class="blog-action-btn save-btn ${saved?'saved':''}" data-id="${p.id}" onclick="toggleSave('${p.id}',event)" title="${saved?'Saved':'Save'}">
+              <i class="${saved?'fa-solid':'fa-regular'} fa-bookmark"></i>
+            </button>
+          </div>
+
+          <!-- Like summary -->
+          <div class="blog-card-like-summary" data-id="${p.id}">
+            ${likeCount>0?`<strong>${likeCount} like${likeCount!==1?'s':''}</strong>`:''}
+          </div>
+
+          <!-- Caption -->
+          <div class="blog-card-body">
+            <div class="blog-card-caption" id="caption-${p.id}">
+              <strong>mritunjaykumar</strong>${escBlog(p.title)}${excerpt?` — ${escBlog(excerpt)}`:''}
+            </div>
+            <button class="blog-caption-toggle" onclick="toggleCaption('${p.id}',this)">more</button>
+            ${tags?`<div class="blog-tags-row">${tags}</div>`:''}
+            <button class="blog-card-read-link" onclick="openBlogPost('${p.id}')">Read full post <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+
+          <!-- Comments preview -->
+          <div class="blog-card-comments" data-post="${p.id}">
+            ${comments.length>1?`<button class="blog-view-all-comments" onclick="toggleComments('${p.id}',event)">View all ${comments.length} comments</button>`:''}
+            ${lastComment?`<div class="blog-comment-preview"><strong>${escBlog(lastComment.name)}</strong>${escBlog(lastComment.text)}</div>`:''}
+          </div>
+
+          <!-- Expandable comments list -->
+          <div class="blog-comments-section" id="comments-${p.id}">
+            <div class="blog-comments-list" id="comment-list-${p.id}">
+              ${comments.length===0?`<div class="blog-no-comments">No comments yet. Be the first! 💬</div>`:
+                comments.slice(-10).reverse().map(c=>`
+                  <div class="blog-comment-item">
+                    <div class="blog-comment-item-avatar">${initials(c.name)}</div>
+                    <div class="blog-comment-item-body">
+                      <div class="blog-comment-item-text"><strong>${escBlog(c.name)}</strong>${escBlog(c.text)}</div>
+                      <div class="blog-comment-item-time">${timeAgo(c.time)}</div>
+                    </div>
+                    <button class="blog-comment-item-like" title="Like comment">♥</button>
+                  </div>`).join('')}
+            </div>
+          </div>
+
+          <!-- Comment input -->
+          <div class="blog-card-comment-input" onclick="event.stopPropagation()">
+            <div class="blog-comment-avatar">U</div>
+            <input class="blog-comment-field" id="comment-input-${p.id}" type="text" placeholder="Add a comment…" maxlength="300"
+              oninput="this.closest('.blog-card-comment-input').querySelector('.blog-comment-post-btn').classList.toggle('ready',this.value.trim().length>0)"
+              onkeydown="if(event.key==='Enter'&&this.value.trim()){postComment('${p.id}',event)}" />
+            <button class="blog-comment-post-btn" onclick="postComment('${p.id}',event)">Post</button>
+          </div>
+
+        </div>`;
       }).join('');
-      document.querySelectorAll('.blog-card.reveal:not(.visible)').forEach(el=>{ if(typeof revealObserver!=='undefined') revealObserver.observe(el); else el.classList.add('visible'); });
-      document.querySelectorAll('.blog-card.tilt-card').forEach(card=>{ card.addEventListener('mousemove',e=>{ const r=card.getBoundingClientRect(); const rX=((e.clientY-r.top-r.height/2)/(r.height/2))*-5; const rY=((e.clientX-r.left-r.width/2)/(r.width/2))*5; card.style.transform=`perspective(700px) rotateX(${rX}deg) rotateY(${rY}deg) scale(1.02)`; }); card.addEventListener('mouseleave',()=>{ card.style.transform=''; }); });
+
+      /* Observe reveals */
+      document.querySelectorAll('.blog-card').forEach(el=>{
+        if(typeof revealObserver!=='undefined') revealObserver.observe(el);
+        else el.classList.add('visible');
+      });
     }
 
+    window.toggleCaption=function(postId,btn){
+      const cap=document.getElementById(`caption-${postId}`);
+      if(!cap) return;
+      const expanded=cap.classList.toggle('expanded');
+      btn.textContent=expanded?'less':'more';
+    };
+
+    /* ── Full post modal ── */
     window.openBlogPost=function(id){
       const p=allBlogPosts.find(x=>x.id===id); if(!p) return;
       const date=new Date(p.createdAt).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
       const cover=p.cover?`<img src="${p.cover}" class="blog-read-cover" alt=""/>` :'';
-      const tags=(p.tags||[]).map(t=>`<span class="blog-tag">${escBlog(t)}</span>`).join('');
+      const tags=(p.tags||[]).map(t=>`<span class="blog-tag" style="background:rgba(124,58,237,0.1);padding:2px 8px;border-radius:4px;font-size:0.6rem">#${escBlog(t)}</span>`).join('');
       const typeSlug=(p.type||'blog').toLowerCase();
       const likeCount=usingFirebase?(p.likes||0):getLikeCount(p.id);
       const liked=hasUserLiked(p.id);
-      document.getElementById('blogReadContent').innerHTML=`${cover}<div class="blog-read-type blog-type-${typeSlug}">${p.type||'Blog'}</div><h1 class="blog-read-title">${escBlog(p.title)}</h1><div class="blog-read-meta"><span><i class="fa-solid fa-folder-open"></i> ${escBlog(p.category||'General')}</span><span><i class="fa-regular fa-calendar"></i> ${date}</span><span><i class="fa-regular fa-clock"></i> ${readTime(p.body)} min read</span></div>${tags?`<div class="blog-tags-row" style="margin-bottom:20px">${tags}</div>`:''}<div class="blog-read-body">${p.body}</div><div class="blog-read-like-bar"><button class="like-btn like-btn--big ${liked?'liked':''}" data-id="${p.id}" onclick="toggleLike('${p.id}',event)" aria-label="Like"><span>♥</span><span class="like-label">${liked?'Liked':'Like this post'}</span><span class="like-count-pill" id="modalLikeCount_${p.id}">${likeCount>0?likeCount:0} likes</span></button><button class="share-btn share-btn--big" onclick="openShareCard('${p.id}',event)"><i class="fa-solid fa-share-nodes"></i><span>Share</span></button></div>`;
+      document.getElementById('blogReadContent').innerHTML=`${cover}<div class="blog-read-type blog-type-${typeSlug}">${p.type||'Blog'}</div><h1 class="blog-read-title">${escBlog(p.title)}</h1><div class="blog-read-meta"><span><i class="fa-solid fa-folder-open"></i> ${escBlog(p.category||'General')}</span><span><i class="fa-regular fa-calendar"></i> ${date}</span><span><i class="fa-regular fa-clock"></i> ${readTime(p.body)} min read</span></div>${tags?`<div class="blog-tags-row" style="margin-bottom:20px">${tags}</div>`:''}<div class="blog-read-body">${p.body}</div><div class="blog-read-like-bar"><button class="like-btn like-btn--big ${liked?'liked':''}" data-id="${p.id}" onclick="toggleLike('${p.id}',event)" aria-label="Like"><span class="like-icon">${liked?'♥':'♡'}</span><span class="like-label">${liked?'Liked':'Like this post'}</span><span class="like-count-pill" id="modalLikeCount_${p.id}">${likeCount>0?likeCount:0} likes</span></button><button class="share-btn--big" onclick="openShareCard('${p.id}',event)"><i class="fa-solid fa-share-nodes"></i><span>Share</span></button></div>`;
       document.getElementById('blogReadModal').classList.add('open'); document.body.style.overflow='hidden';
     };
 
+    /* ── Filter chips ── */
     document.querySelectorAll('.blog-chip').forEach(chip=>{ chip.addEventListener('click',()=>{ document.querySelectorAll('.blog-chip').forEach(c=>c.classList.remove('active')); chip.classList.add('active'); activeBlogFilter=chip.dataset.bf; renderBlogGrid(); }); });
 
     function closeBlogModal(){ document.getElementById('blogReadModal').classList.remove('open'); document.body.style.overflow=''; }
@@ -1055,4 +1254,3 @@
   </script>
 
 </body>
-</html>
