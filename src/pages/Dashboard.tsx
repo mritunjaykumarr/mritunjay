@@ -30,19 +30,21 @@ export default function Dashboard() {
       const fileName = `${Date.now()}.${fileExt}`;
       const filePath = `blog/${fileName}`;
 
+      // Upload to the 'blog-post' bucket you created
       const { error: uploadError } = await supabase.storage
         .from('blog-post')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
+      // Get the URL from the same 'blog-post' bucket
       const { data: { publicUrl } } = supabase.storage
         .from('blog-post')
         .getPublicUrl(filePath);
 
       setFormData({ ...formData, cover: publicUrl });
     } catch (error: any) {
-      alert(`Upload Error: ${error.message || 'Please check your Supabase Storage policies'}`);
+      alert(`Upload Error: ${error.message || 'Check Supabase RLS Policies'}`);
       console.error(error);
     } finally {
       setUploading(false);
