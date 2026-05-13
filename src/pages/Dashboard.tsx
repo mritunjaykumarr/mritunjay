@@ -56,7 +56,7 @@ export default function Dashboard() {
   if (!authenticated) {
     return (
       <div className="db-login-wrap">
-        <form onSubmit={login} className="db-login-card reveal">
+        <form onSubmit={login} className="db-login-card">
           <div className="db-logo" style={{justifyContent: 'center', marginBottom: '32px'}}>
             <span className="db-logo-dot"></span>
             MRITUNJAY ADMIN
@@ -108,7 +108,7 @@ export default function Dashboard() {
 
       <main className="db-content">
         {view === 'dashboard' && (
-          <div className="reveal">
+          <div>
             <header className="db-header">
               <h1 className="db-title">System <span className="grad">Overview</span></h1>
               <p className="db-subtitle">Real-time statistics and content metrics.</p>
@@ -135,7 +135,7 @@ export default function Dashboard() {
         )}
 
         {view === 'compose' && (
-          <div className="reveal">
+          <div>
             <header className="db-header">
               <h1 className="db-title">{formData.id ? 'Refine' : 'Compose'} <span className="grad">Content</span></h1>
               <p className="db-subtitle">Draft your next extraordinary story.</p>
@@ -196,7 +196,7 @@ export default function Dashboard() {
         )}
 
         {view === 'posts' && (
-          <div className="reveal">
+          <div>
             <header className="db-header">
               <h1 className="db-title">Content <span className="grad">Vault</span></h1>
               <p className="db-subtitle">Manage and edit your existing publications.</p>
