@@ -7,6 +7,7 @@ export default function Dashboard() {
   const [posts, setPosts] = useState<any[]>([]);
   const [view, setView] = useState('dashboard'); // 'dashboard', 'compose', 'posts'
   const [formData, setFormData] = useState({ id: '', title: '', excerpt: '', body: '', type: 'Blog', category: 'General', cover: '' });
+  const [uploading, setUploading] = useState(false);
   
   useEffect(() => {
     if (authenticated) {
@@ -17,6 +18,35 @@ export default function Dashboard() {
   const fetchPosts = async () => {
     const { data } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
     if (data) setPosts(data);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `blog/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('blog-images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('blog-images')
+        .getPublicUrl(filePath);
+
+      setFormData({ ...formData, cover: publicUrl });
+    } catch (error) {
+      alert('Error uploading image!');
+      console.error(error);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const login = (e: React.FormEvent) => {
@@ -170,7 +200,18 @@ export default function Dashboard() {
 
               <div className="db-form-group">
                 <label className="db-label">Visual Asset (URL)</label>
-                <input type="text" placeholder="https://..." value={formData.cover} onChange={e => setFormData({...formData, cover: e.target.value})} className="db-input" />
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <input type="text" placeholder="https://..." value={formData.cover} onChange={e => setFormData({...formData, cover: e.target.value})} className="db-input" style={{flex: 1}} />
+                  <label className="btn-ghost" style={{ padding: '12px 20px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                    <i className={`fa-solid ${uploading ? 'fa-spinner fa-spin' : 'fa-upload'}`}></i> {uploading ? 'Uploading...' : 'Upload Image'}
+                    <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} disabled={uploading} />
+                  </label>
+                </div>
+                {formData.cover && (
+                  <div style={{ marginTop: '10px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)', width: '200px', height: '120px' }}>
+                    <img src={formData.cover} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
               </div>
               
               <div className="db-form-group">
