@@ -210,8 +210,15 @@ export default function Dashboard() {
                   </label>
                 </div>
                 {formData.cover && (
-                  <div style={{ marginTop: '10px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)', width: '200px', height: '120px' }}>
-                    <img src={formData.cover} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ marginTop: '10px', position: 'relative', width: '200px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                    <img src={formData.cover} alt="Preview" style={{ width: '100%', height: '120px', objectFit: 'cover' }} />
+                    <button 
+                      onClick={() => setFormData({...formData, cover: ''})}
+                      style={{ position: 'absolute', top: '5px', right: '5px', background: 'rgba(255,0,0,0.8)', color: 'white', border: 'none', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '12px' }}
+                      title="Remove Image"
+                    >
+                      <i className="fa-solid fa-xmark"></i>
+                    </button>
                   </div>
                 )}
               </div>
