@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 
 export default function BlogFeed() {
@@ -40,7 +40,7 @@ export default function BlogFeed() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const { data: postsData, error } = await supabase
+      const { data: postsData } = await supabase
         .from('posts')
         .select('*')
         .eq('status', 'published')
@@ -104,7 +104,7 @@ export default function BlogFeed() {
   const handleComment = async (postId: string) => {
     if (!newComment.trim()) return;
     const commentData = { post_id: postId, author_name: 'Visitor', content: newComment.trim() };
-    const { data, error } = await supabase.from('comments').insert(commentData).select().single();
+    const { data } = await supabase.from('comments').insert(commentData).select().single();
     if (data) {
       setComments([...comments, data]);
       setNewComment('');
