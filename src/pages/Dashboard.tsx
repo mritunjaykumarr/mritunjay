@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
 export default function Dashboard() {
@@ -39,7 +39,6 @@ export default function Dashboard() {
     setFormData({ id: '', title: '', excerpt: '', body: '', type: 'Blog', category: 'General', cover: '' });
     setView('posts');
     fetchPosts();
-    alert(status === 'published' ? 'Post published!' : 'Draft saved!');
   };
 
   const editPost = (p: any) => {
@@ -56,92 +55,185 @@ export default function Dashboard() {
 
   if (!authenticated) {
     return (
-      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
-        <form onSubmit={login} style={{ background: 'var(--surface)', padding: '40px', borderRadius: '16px', border: '1px solid var(--border)' }}>
-          <h2 style={{ marginBottom: '20px' }}>Admin Login</h2>
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" style={{ padding: '10px', width: '100%', marginBottom: '20px', background: 'var(--bg2)', border: '1px solid var(--border2)', color: 'white' }} />
-          <button type="submit" className="btn-glow" style={{ width: '100%', justifyContent: 'center' }}>Login</button>
+      <div className="db-login-wrap">
+        <form onSubmit={login} className="db-login-card reveal">
+          <div className="db-logo" style={{justifyContent: 'center', marginBottom: '32px'}}>
+            <span className="db-logo-dot"></span>
+            MRITUNJAY ADMIN
+          </div>
+          <div className="db-form-group">
+            <label className="db-label">Access Credentials</label>
+            <input 
+              type="password" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              placeholder="Enter password..." 
+              className="db-input"
+            />
+          </div>
+          <button type="submit" className="btn-glow" style={{ width: '100%', justifyContent: 'center' }}>
+            Initialize Access
+          </button>
         </form>
       </div>
     );
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)' }}>
-      <aside style={{ width: '250px', background: 'var(--bg2)', borderRight: '1px solid var(--border)', padding: '20px' }}>
-        <h2 style={{ marginBottom: '30px', color: 'var(--cyan)' }}>Admin Panel</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <button onClick={() => setView('dashboard')} className={`btn-ghost ${view === 'dashboard' ? 'active' : ''}`} style={{justifyContent: 'flex-start'}}>Dashboard</button>
-          <button onClick={() => { setFormData({ id: '', title: '', excerpt: '', body: '', type: 'Blog', category: 'General', cover: '' }); setView('compose'); }} className={`btn-ghost ${view === 'compose' ? 'active' : ''}`} style={{justifyContent: 'flex-start'}}>New Post</button>
-          <button onClick={() => setView('posts')} className={`btn-ghost ${view === 'posts' ? 'active' : ''}`} style={{justifyContent: 'flex-start'}}>All Posts</button>
-          <a href="/" className="btn-ghost" style={{justifyContent: 'flex-start', marginTop: '20px', color: 'var(--dim)'}}><i className="fa-solid fa-arrow-left"></i> Back to Site</a>
+    <div className="db-layout">
+      <aside className="db-sidebar">
+        <div className="db-logo">
+          <span className="db-logo-dot"></span>
+          ADMIN PANEL
         </div>
+        
+        <nav className="db-nav">
+          <button onClick={() => setView('dashboard')} className={`db-nav-btn ${view === 'dashboard' ? 'active' : ''}`}>
+            <i className="fa-solid fa-chart-pie"></i> Overview
+          </button>
+          <button onClick={() => { setFormData({ id: '', title: '', excerpt: '', body: '', type: 'Blog', category: 'General', cover: '' }); setView('compose'); }} className={`db-nav-btn ${view === 'compose' ? 'active' : ''}`}>
+            <i className="fa-solid fa-plus"></i> New Post
+          </button>
+          <button onClick={() => setView('posts')} className={`db-nav-btn ${view === 'posts' ? 'active' : ''}`}>
+            <i className="fa-solid fa-layer-group"></i> All Content
+          </button>
+          
+          <div style={{marginTop: 'auto', paddingTop: '20px', borderTop: '1px solid var(--border)'}}>
+            <a href="/" className="db-nav-btn">
+              <i className="fa-solid fa-arrow-left"></i> Live Site
+            </a>
+          </div>
+        </nav>
       </aside>
 
-      <main style={{ flex: 1, padding: '40px' }}>
+      <main className="db-content">
         {view === 'dashboard' && (
-          <div>
-            <h1>Overview</h1>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginTop: '20px' }}>
-              <div style={{ padding: '20px', background: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+          <div className="reveal">
+            <header className="db-header">
+              <h1 className="db-title">System <span className="grad">Overview</span></h1>
+              <p className="db-subtitle">Real-time statistics and content metrics.</p>
+            </header>
+            
+            <div className="db-grid">
+              <div className="db-stat-card">
+                <i className="fa-solid fa-newspaper db-stat-icon"></i>
                 <h3>Total Posts</h3>
-                <p style={{ fontSize: '2rem', color: 'var(--purple3)' }}>{posts.length}</p>
+                <div className="db-stat-val">{posts.length}</div>
               </div>
-              <div style={{ padding: '20px', background: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+              <div className="db-stat-card">
+                <i className="fa-solid fa-circle-check db-stat-icon" style={{color: 'var(--cyan)'}}></i>
                 <h3>Published</h3>
-                <p style={{ fontSize: '2rem', color: 'var(--cyan)' }}>{posts.filter(p => p.status === 'published').length}</p>
+                <div className="db-stat-val" style={{color: 'var(--cyan)'}}>{posts.filter(p => p.status === 'published').length}</div>
               </div>
-              <div style={{ padding: '20px', background: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+              <div className="db-stat-card">
+                <i className="fa-solid fa-pen-nib db-stat-icon" style={{color: 'var(--purple3)'}}></i>
                 <h3>Drafts</h3>
-                <p style={{ fontSize: '2rem', color: 'var(--muted)' }}>{posts.filter(p => p.status === 'draft').length}</p>
+                <div className="db-stat-val" style={{color: 'var(--purple3)'}}>{posts.filter(p => p.status === 'draft').length}</div>
               </div>
             </div>
           </div>
         )}
 
         {view === 'compose' && (
-          <div style={{ maxWidth: '800px' }}>
-            <h1>{formData.id ? 'Edit Post' : 'New Post'}</h1>
-            <input type="text" placeholder="Post Title" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} style={{ width: '100%', padding: '15px', marginBottom: '15px', background: 'var(--surface)', border: '1px solid var(--border)', color: 'white', borderRadius: '8px' }} />
+          <div className="reveal">
+            <header className="db-header">
+              <h1 className="db-title">{formData.id ? 'Refine' : 'Compose'} <span className="grad">Content</span></h1>
+              <p className="db-subtitle">Draft your next extraordinary story.</p>
+            </header>
             
-            <div style={{ display: 'flex', gap: '15px', marginBottom: '15px' }}>
-              <select value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} style={{ padding: '10px', background: 'var(--surface)', border: '1px solid var(--border)', color: 'white', borderRadius: '8px' }}>
-                <option value="Blog">Blog</option>
-                <option value="Article">Article</option>
-                <option value="News">News</option>
-              </select>
-              <input type="text" placeholder="Category" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} style={{ flex: 1, padding: '10px', background: 'var(--surface)', border: '1px solid var(--border)', color: 'white', borderRadius: '8px' }} />
-            </div>
+            <div className="db-form-container" style={{maxWidth: '900px'}}>
+              <div className="db-form-group">
+                <label className="db-label">Headline</label>
+                <input 
+                  type="text" 
+                  placeholder="Post Title" 
+                  value={formData.title} 
+                  onChange={e => setFormData({...formData, title: e.target.value})} 
+                  className="db-input" 
+                />
+              </div>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                <div className="db-form-group">
+                  <label className="db-label">Content Type</label>
+                  <select value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} className="db-select">
+                    <option value="Blog">Blog</option>
+                    <option value="Article">Article</option>
+                    <option value="News">News</option>
+                  </select>
+                </div>
+                <div className="db-form-group">
+                  <label className="db-label">Category</label>
+                  <input type="text" placeholder="General" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="db-input" />
+                </div>
+              </div>
 
-            <input type="text" placeholder="Cover Image URL" value={formData.cover} onChange={e => setFormData({...formData, cover: e.target.value})} style={{ width: '100%', padding: '15px', marginBottom: '15px', background: 'var(--surface)', border: '1px solid var(--border)', color: 'white', borderRadius: '8px' }} />
-            
-            <textarea placeholder="Short Excerpt" value={formData.excerpt} onChange={e => setFormData({...formData, excerpt: e.target.value})} rows={2} style={{ width: '100%', padding: '15px', marginBottom: '15px', background: 'var(--surface)', border: '1px solid var(--border)', color: 'white', borderRadius: '8px' }} />
-            
-            <textarea placeholder="Post Body (HTML allowed)" value={formData.body} onChange={e => setFormData({...formData, body: e.target.value})} rows={15} style={{ width: '100%', padding: '15px', marginBottom: '15px', background: 'var(--surface)', border: '1px solid var(--border)', color: 'white', borderRadius: '8px' }} />
+              <div className="db-form-group">
+                <label className="db-label">Visual Asset (URL)</label>
+                <input type="text" placeholder="https://..." value={formData.cover} onChange={e => setFormData({...formData, cover: e.target.value})} className="db-input" />
+              </div>
+              
+              <div className="db-form-group">
+                <label className="db-label">Brief Summary</label>
+                <textarea placeholder="Write a short excerpt..." value={formData.excerpt} onChange={e => setFormData({...formData, excerpt: e.target.value})} rows={2} className="db-textarea" />
+              </div>
+              
+              <div className="db-form-group">
+                <label className="db-label">Main Content (Rich Text / HTML)</label>
+                <textarea placeholder="Start writing..." value={formData.body} onChange={e => setFormData({...formData, body: e.target.value})} rows={12} className="db-textarea" />
+              </div>
 
-            <div style={{ display: 'flex', gap: '15px' }}>
-              <button onClick={() => savePost('published')} className="btn-glow">Publish</button>
-              <button onClick={() => savePost('draft')} className="btn-ghost">Save Draft</button>
+              <div style={{ display: 'flex', gap: '15px' }}>
+                <button onClick={() => savePost('published')} className="btn-glow">
+                  <i className="fa-solid fa-paper-plane"></i> Finalize & Publish
+                </button>
+                <button onClick={() => savePost('draft')} className="btn-ghost">
+                  <i className="fa-solid fa-floppy-disk"></i> Save Draft
+                </button>
+              </div>
             </div>
           </div>
         )}
 
         {view === 'posts' && (
-          <div>
-            <h1>All Posts</h1>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '20px' }}>
+          <div className="reveal">
+            <header className="db-header">
+              <h1 className="db-title">Content <span className="grad">Vault</span></h1>
+              <p className="db-subtitle">Manage and edit your existing publications.</p>
+            </header>
+            
+            <div className="db-list">
               {posts.map(p => (
-                <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '15px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px' }}>
-                  <div>
-                    <h3 style={{ marginBottom: '5px' }}>{p.title} <span style={{fontSize: '0.7rem', padding: '2px 8px', borderRadius: '4px', background: p.status === 'published' ? 'rgba(6,182,212,0.2)' : 'rgba(124,58,237,0.2)', color: p.status === 'published' ? 'var(--cyan)' : 'var(--purple3)'}}>{p.status}</span></h3>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>{new Date(p.created_at).toLocaleDateString()} · {p.type} · {p.likes_count} likes</p>
+                <div key={p.id} className="db-post-card">
+                  <div className="db-post-info">
+                    <h4>
+                      {p.title} 
+                      <span className={`db-badge ${p.status}`}>
+                        {p.status}
+                      </span>
+                    </h4>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--muted)', display: 'flex', gap: '15px' }}>
+                      <span><i className="fa-regular fa-calendar"></i> {new Date(p.created_at).toLocaleDateString()}</span>
+                      <span><i className="fa-regular fa-folder"></i> {p.type}</span>
+                      <span><i className="fa-regular fa-heart"></i> {p.likes_count} likes</span>
+                    </p>
                   </div>
-                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                    <button onClick={() => editPost(p)} className="btn-ghost" style={{ padding: '5px 10px' }}>Edit</button>
-                    <button onClick={() => deletePost(p.id)} className="btn-ghost" style={{ padding: '5px 10px', color: 'var(--red)' }}>Delete</button>
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <button onClick={() => editPost(p)} className="btn-ghost" style={{ padding: '8px 16px', fontSize: '0.8rem' }}>
+                      <i className="fa-solid fa-pen"></i> Edit
+                    </button>
+                    <button onClick={() => deletePost(p.id)} className="btn-ghost" style={{ padding: '8px 16px', fontSize: '0.8rem', color: '#ff4444' }}>
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
                   </div>
                 </div>
               ))}
+              {posts.length === 0 && (
+                <div style={{textAlign: 'center', padding: '100px 0', color: 'var(--muted)'}}>
+                  <i className="fa-solid fa-ghost" style={{fontSize: '3rem', marginBottom: '20px', display: 'block', opacity: 0.2}}></i>
+                  No posts found in the vault.
+                </div>
+              )}
             </div>
           </div>
         )}
