@@ -51,7 +51,7 @@ const projectData = [
     title: 'Chat App', 
     desc: 'Real-time messaging platform with WebSocket support, multi-room architecture, and a modern conversational UI.', 
     img: '/assets/chatapp.png', 
-    url: 'https://mritunjaychatapp2.vercel.app',
+    url: 'https://chat-app-peach-eight.vercel.app',
     tags: ['Web'],
     icon: 'fa-comments',
     fullDesc: 'Real-time messaging platform built with Node.js, Socket.io, and responsive frontend. Features room-based chat and live presence indicators.'
