@@ -8,6 +8,13 @@ const certData = [
     img: '/assets/fullstackC.png',
     icon: 'fa-certificate'
   },
+    { 
+    id: 1, 
+    title: 'Fullstack Completion', 
+    issuer: 'Infosys — July 2024', 
+    img: '/assets/fullstackC.png',
+    icon: 'fa-certificate'
+  },
   { 
     id: 2, 
     title: 'Basic Machine Learning', 
