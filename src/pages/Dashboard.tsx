@@ -53,7 +53,7 @@ export default function Dashboard() {
 
   const login = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'mritunjay2025') {
+    if (password === 'Mritunjay') {
       setAuthenticated(true);
     } else {
       alert('Invalid password');
