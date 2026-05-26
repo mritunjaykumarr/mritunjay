@@ -10,9 +10,9 @@ const certData = [
   },
     { 
     id: 1, 
-    title: 'Fullstack Completion', 
-    issuer: 'Infosys — July 2024', 
-    img: '/assets/fullstackC.png',
+    title: 'Claude Code In Action', 
+    issuer: 'Infosys — March 2026', 
+    img: '/assets/cert-6.png',
     icon: 'fa-certificate'
   },
   { 
