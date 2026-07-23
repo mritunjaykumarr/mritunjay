@@ -6,6 +6,8 @@ export default function Header() {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [dateTime, setDateTime] = useState({ date: '', time: '' });
+  const [activeSection, setActiveSection] = useState('home');
+  const [scrollProgress, setScrollProgress] = useState(0);
   const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -15,7 +17,23 @@ export default function Header() {
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+      const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      setScrollProgress(Math.min(window.scrollY / maxScroll, 1));
     };
+
+    const sectionIds = ['home', 'about', 'education', 'projects', 'certifications', 'skills', 'blog', 'pricing', 'contact'];
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id || 'home');
+        }
+      });
+    }, { threshold: 0.45, rootMargin: '-15% 0px -45% 0px' });
+
+    sectionIds.forEach((id) => {
+      const section = document.getElementById(id);
+      if (section) sectionObserver.observe(section);
+    });
     
     const handleClickOutside = (event: MouseEvent) => {
       if (moreRef.current && !moreRef.current.contains(event.target as Node)) {
@@ -27,6 +45,7 @@ export default function Header() {
     document.addEventListener('mousedown', handleClickOutside);
     
     if (window.scrollY > 20) setScrolled(true);
+    handleScroll();
 
     const updateClock = () => {
       const now = new Date();
@@ -54,6 +73,7 @@ export default function Header() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('mousedown', handleClickOutside);
+      sectionObserver.disconnect();
       clearInterval(timer);
     };
   }, []);
@@ -80,6 +100,9 @@ export default function Header() {
 
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`} id="header">
+      <div className="header-progress" aria-hidden="true">
+        <span style={{ transform: `scaleX(${Math.max(scrollProgress, 0.02)})` }}></span>
+      </div>
       <div className="container header-inner">
         <a href="#home" className="logo">
           <span className="logo-text">MRITUNJAY</span>
@@ -88,7 +111,7 @@ export default function Header() {
 
         <nav className="nav" id="nav">
           {navLinks.filter(l => l.primary).map(link => (
-            <a key={link.id} href={link.href} className={`nav-link ${link.id === '01' ? 'active' : ''}`}>
+            <a key={link.id} href={link.href} className={`nav-link ${activeSection === link.href.slice(1) ? 'active' : ''}`}>
               <span className="nav-num">{link.id}</span>{link.label}
             </a>
           ))}
@@ -99,7 +122,7 @@ export default function Header() {
             </button>
             <div className="nav-dropdown">
               {navLinks.filter(l => !l.primary).map(link => (
-                <a key={link.id} href={link.href} className="nav-link" onClick={() => setIsMoreOpen(false)}>
+                <a key={link.id} href={link.href} className={`nav-link ${activeSection === link.href.slice(1) ? 'active' : ''}`} onClick={() => setIsMoreOpen(false)}>
                   <span className="nav-num">{link.id}</span>{link.label}
                 </a>
               ))}
@@ -133,7 +156,7 @@ export default function Header() {
         <ul>
           {navLinks.map(link => (
             <li key={link.id}>
-              <a href={link.href} className="mob-link" onClick={() => setIsMenuOpen(false)}>
+              <a href={link.href} className={`mob-link ${activeSection === link.href.slice(1) ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>
                 <span className="nav-num">{link.id}</span>{link.label}
               </a>
             </li>
