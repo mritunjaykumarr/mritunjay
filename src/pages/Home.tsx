@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import About from '../components/About';
@@ -10,25 +9,10 @@ import BlogFeed from '../components/BlogFeed';
 import Pricing from '../components/Pricing';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
+import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 
 export default function Home() {
-  useEffect(() => {
-    const revealEls = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((el) => {
-        if (el.isIntersecting) {
-          setTimeout(() => {
-            el.target.classList.add('visible');
-          }, Number((el.target as HTMLElement).dataset.delay) || 0);
-          revealObserver.unobserve(el.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    revealEls.forEach((el) => {
-      revealObserver.observe(el);
-    });
-    return () => revealObserver.disconnect();
-  }, []);
+  usePortfolioMotion();
 
   return (
     <div className="home" style={{ overflowX: 'hidden' }}>

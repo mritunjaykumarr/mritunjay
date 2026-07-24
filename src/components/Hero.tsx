@@ -125,9 +125,9 @@ export default function Hero() {
             Available for hire
           </div>
           <h1 className="hero-h1">
-            <span className="hero-line">Building</span>
-            <span className="hero-line grad">Extraordinary</span>
-            <span className="hero-line">Experiences</span>
+            <span className="hero-line" data-split-text>Building</span>
+            <span className="hero-line grad" data-split-text>Extraordinary</span>
+            <span className="hero-line" data-split-text>Experiences</span>
           </h1>
           <p className="hero-sub">
             Frontend Developer with hands-on experience crafting responsive, interactive, and pixel-perfect web applications. Turning complex ideas into elegant digital products.
