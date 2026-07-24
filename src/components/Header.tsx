@@ -147,8 +147,8 @@ export default function Header() {
             <span></span>
           </button>
 
-          <a href="tel:+919470880956" className="btn-hire">
-            <i className="fa-solid fa-phone"></i> Hire Me
+          <a href="#contact" className="btn-hire">
+            <i className="fa-solid fa-envelope"></i> Contact Me
           </a>
         </div>
       </div>

@@ -122,7 +122,7 @@ export default function Hero() {
         <div className="hero-left reveal">
           <div className="hero-badge">
             <span className="badge-pulse"></span>
-            Available for hire
+            Epigroww Global
           </div>
           <h1 className="hero-h1">
             <span className="hero-line" data-split-text>Building</span>
@@ -130,7 +130,7 @@ export default function Hero() {
             <span className="hero-line" data-split-text>Experiences</span>
           </h1>
           <p className="hero-sub">
-            Frontend Developer with hands-on experience crafting responsive, interactive, and pixel-perfect web applications. Turning complex ideas into elegant digital products.
+            Junior Developer at Epigroww Global in Mayapuri, New Delhi with hands-on experience crafting responsive, interactive, and pixel-perfect web applications. Turning complex ideas into elegant digital products.
           </p>
           <div className="hero-btns">
             <a href="#projects" className="btn-glow">
@@ -178,8 +178,11 @@ export default function Hero() {
                   <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" className="social-icon" aria-label="LinkedIn">
                     <i className="fa-brands fa-linkedin-in"></i>
                   </a>
-                  <a href="#" className="social-icon" aria-label="Instagram">
+                  <a href="https://instagram.com/" target="_blank" rel="noreferrer" className="social-icon" aria-label="Instagram">
                     <i className="fa-brands fa-instagram"></i>
+                  </a>
+                  <a href="https://twitter.com/" target="_blank" rel="noreferrer" className="social-icon" aria-label="Twitter">
+                    <i className="fa-brands fa-x-twitter"></i>
                   </a>
                 </div>
               </div>
@@ -192,7 +195,7 @@ export default function Hero() {
               <i className="fa-brands fa-node-js"></i> Node.js
             </div>
             <div className="float-badge badge-open">
-              <span className="badge-open-dot"></span> Open to Work
+              <span className="badge-open-dot"></span> Epigroww Global
             </div>
           </div>
         </div>
