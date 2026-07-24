@@ -160,8 +160,7 @@ export default function Hero() {
 
         <div className="hero-right reveal reveal-right">
           <div className="profile-stage">
-            <div className="profile-ring profile-ring-outer"></div>
-            <div className="profile-ring profile-ring-inner"></div>
+
             <div className="profile-card tilt-card" ref={cardRef}>
               <div className="profile-img-wrap">
                 <img src="/assets/orgpic1.jpg" alt="Mritunjay Kumar" className="profile-photo" loading="eager" />
