@@ -83,7 +83,7 @@ export function usePortfolioMotion() {
           .to('.loader-orbit', { rotate: 360, duration: 3.5, repeat: -1, ease: 'none' }, 0);
 
         const finishLoader = () => {
-          gsap.timeline({ onComplete: () => loader.remove() })
+          gsap.timeline()
             .to(loader, { scale: 0.98, opacity: 0, duration: 0.7, ease: 'power2.inOut' })
             .set(loader, { display: 'none' });
         };

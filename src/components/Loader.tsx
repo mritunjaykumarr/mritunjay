@@ -8,8 +8,8 @@ export default function Loader() {
   useEffect(() => {
     let fadeTimer: number | undefined;
     let removeTimer: number | undefined;
-    let cleanup = () => {};
     let cancelled = false;
+    let introTimeline: { kill: () => void } | null = null;
 
     (async () => {
       const gsapModule = await import('gsap');
@@ -20,7 +20,7 @@ export default function Loader() {
       const loader = loaderRef.current;
 
       if (loader) {
-        gsap.timeline({ defaults: { ease: 'power3.out' } })
+        introTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
           .from('.loader-mark', { scale: 0.68, opacity: 0, duration: 0.85 })
           .from('.loader-ring', { scale: 0.84, opacity: 0, rotate: -120, duration: 1 }, 0)
           .from('.loader-stroke circle', { strokeDashoffset: 520, duration: 1.2 }, 0.1)
@@ -30,8 +30,6 @@ export default function Loader() {
           .to('.loader-ring', { rotate: 360, duration: 2.3, repeat: -1, ease: 'none' }, 0)
           .to('.loader-orbit', { rotate: 360, duration: 3.5, repeat: -1, ease: 'none' }, 0);
       }
-
-      cleanup = () => {};
     })();
 
     const startTimers = () => {
@@ -54,7 +52,7 @@ export default function Loader() {
 
     return () => {
       cancelled = true;
-      cleanup();
+      introTimeline?.kill();
       if (fadeTimer) window.clearTimeout(fadeTimer);
       if (removeTimer) window.clearTimeout(removeTimer);
     };
