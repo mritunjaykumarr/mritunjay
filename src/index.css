@@ -2721,3 +2721,706 @@ code {
     animation: none !important;
   }
 }
+
+/* Strict red-and-white production override */
+:root {
+  color-scheme: light;
+  --bg: #FFFFFF;
+  --bg2: #FFFFFF;
+  --bg3: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface2: #FFFFFF;
+  --surface3: #FFFFFF;
+  --surface-strong: #FFFFFF;
+  --crimson: #EF140B;
+  --crimson-2: #EF140B;
+  --crimson-3: #EF140B;
+  --crimson-soft: #EF140B;
+  --glow: #EF140B;
+  --glow-strong: #EF140B;
+  --text: #EF140B;
+  --text2: #EF140B;
+  --muted: #EF140B;
+  --dim: #EF140B;
+  --border: #EF140B;
+  --border2: #EF140B;
+  --border-crimson: #EF140B;
+  --shadow-soft: none;
+  --shadow-card: none;
+  --shadow-crimson: none;
+}
+
+html {
+  background: #FFFFFF !important;
+}
+
+body {
+  background: #FFFFFF !important;
+  color: #EF140B !important;
+}
+
+body::before,
+.hero::before,
+.hero::after,
+.hero-grid,
+.hero-scan,
+.hero-orb,
+.loader::before,
+.loader::after,
+.about-img-glow,
+.contact-overlay-text,
+.proj-img-overlay,
+.cert-overlay,
+.blog-card-cover::after,
+.prince-ai::before,
+.prince-ai::after,
+.footer::before,
+.footer::after {
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+*, *::before, *::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.container,
+.section,
+.header,
+.mobile-menu,
+.loader,
+.footer,
+.hero,
+.about,
+.education-section,
+.certs-section,
+.skills-section,
+.blog-section,
+.pricing,
+.contact,
+.prince-ai,
+.modal-bg,
+.modal-overlay,
+.modal,
+.modal-box,
+.contact-form,
+.contact-img-card,
+.project-card,
+.cert-card,
+.pricing-card,
+.blog-card,
+.skill-cat,
+.timeline-item,
+.tl-card,
+.about-img-wrap,
+.profile-card,
+.profile-img-wrap,
+.db-layout,
+.db-sidebar,
+.db-content,
+.db-login-card,
+.db-stat-card,
+.db-form-container,
+.nav-dropdown,
+.footer-brand-card,
+.footer-links-grid,
+.footer-col,
+.ai-panel,
+.ai-feature-card,
+.ai-message,
+.ai-prompt-btn,
+.ai-badges span,
+.ai-live-dot,
+.footer-ai-note,
+.footer-tag,
+.footer-status,
+.footer-socials a,
+.social-icon,
+.btn-hire,
+.btn-glow,
+.btn-ghost,
+.btn-sm,
+.filter-btn,
+.tab-btn,
+.pricing-toggle-label,
+.pricing-toggle,
+.blog-chip,
+.theme-toggle,
+.db-nav-btn,
+.blog-action-btn,
+.blog-card-read-link,
+.like-btn,
+.like-btn--big,
+.m-close,
+.modal-close,
+.contact-info-links a,
+.footer-col-link,
+.nav-link,
+.nav-more-btn,
+.clock,
+.badge-open,
+.badge-node,
+.badge-react,
+.hero-badge,
+.float-badge,
+.profile-img-overlay,
+.scroll-hint,
+.ai-kicker,
+.loader-mark,
+.loader-ring,
+.loader-canvas,
+.loader-copy,
+.loader-line,
+.loader-stroke,
+.loader-wordmark {
+  background-color: #FFFFFF !important;
+  color: #EF140B !important;
+  border-color: #EF140B !important;
+}
+
+.header,
+.header.scrolled,
+.footer,
+.loader,
+.hero,
+.section,
+.contact-form,
+.contact-img-card,
+.project-card,
+.cert-card,
+.pricing-card,
+.blog-card,
+.skill-cat,
+.timeline-item,
+.tl-card,
+.profile-card,
+.profile-img-wrap,
+.about-img-wrap,
+.modal,
+.modal-box,
+.db-login-card,
+.db-stat-card,
+.db-form-container,
+.db-sidebar,
+.db-content,
+.footer-brand-card,
+.footer-col,
+.footer-links-grid,
+.ai-panel {
+  background: #FFFFFF !important;
+  color: #EF140B !important;
+  border: 1px solid #EF140B !important;
+}
+
+.hero-grid,
+.hero-scan,
+.hero-orb,
+.hero-particles,
+.loader-orbit,
+.loader-particle,
+.profile-ring,
+.float-badge,
+.badge-open-dot,
+.logo-dot,
+.footer-status-dot,
+.db-logo-dot,
+.scroll-line,
+.badge-pulse,
+.field-line,
+.header-progress span,
+.footer-divider,
+.ai-live-dot,
+.ai-message-user,
+.ai-message-ai,
+.ai-feature-card,
+.ai-prompt-btn,
+.ai-badges span,
+.footer-ai-label,
+.footer-tag,
+.footer-copy .accent,
+.pricing-popular-badge,
+.pricing-save-badge,
+.project-card:hover,
+.cert-card:hover,
+.pricing-card:hover,
+.blog-card:hover,
+.skill-cat:hover,
+.tl-card:hover,
+.contact-info-links a:hover,
+.social-icon:hover,
+.footer-socials a:hover,
+.btn-hire:hover,
+.btn-glow:hover,
+.btn-ghost:hover,
+.btn-sm:hover,
+.filter-btn:hover,
+.tab-btn:hover,
+.pricing-toggle-label:hover,
+.blog-chip:hover,
+.db-nav-btn:hover,
+.nav-link:hover,
+.nav-more-btn:hover {
+  background: #FFFFFF !important;
+  border-color: #EF140B !important;
+  color: #EF140B !important;
+}
+
+.btn-hire,
+.btn-glow,
+.pricing-card.p-popular .pricing-btn,
+.blog-comment-post-btn.ready {
+  background: #EF140B !important;
+  color: #FFFFFF !important;
+  border: 1px solid #EF140B !important;
+}
+
+.btn-ghost,
+.btn-sm,
+.pricing-btn,
+.blog-card-read-link,
+.db-nav-btn,
+.blog-action-btn,
+.blog-comment-post-btn,
+.like-btn,
+.like-btn--big,
+.m-close,
+.modal-close,
+.filter-btn,
+.tab-btn,
+.blog-chip,
+.pricing-toggle,
+.theme-toggle,
+.nav-link,
+.nav-more-btn,
+.footer-col-link,
+.contact-info-links a,
+.footer-socials a,
+.social-icon,
+.ai-prompt-btn {
+  background: #FFFFFF !important;
+  color: #EF140B !important;
+  border: 1px solid #EF140B !important;
+}
+
+.btn-hire:hover,
+.btn-glow:hover,
+.btn-ghost:hover,
+.btn-sm:hover,
+.pricing-btn:hover,
+.blog-card-read-link:hover,
+.db-nav-btn:hover,
+.blog-action-btn:hover,
+.blog-comment-post-btn:hover,
+.like-btn:hover,
+.like-btn--big:hover,
+.m-close:hover,
+.modal-close:hover,
+.filter-btn:hover,
+.tab-btn:hover,
+.blog-chip:hover,
+.pricing-toggle:hover,
+.theme-toggle:hover,
+.nav-link:hover,
+.nav-more-btn:hover,
+.footer-col-link:hover,
+.contact-info-links a:hover,
+.footer-socials a:hover,
+.social-icon:hover,
+.ai-prompt-btn:hover {
+  background: #EF140B !important;
+  color: #FFFFFF !important;
+  border-color: #EF140B !important;
+}
+
+.grad,
+.section-eyebrow,
+.section-title,
+.section-sub,
+.hero-h1,
+.hero-sub,
+.hero-badge,
+.stat-num,
+.stat-lbl,
+.profile-meta strong,
+.profile-meta small,
+.footer-tagline,
+.footer-col-title,
+.footer-copy,
+.footer-brand-title,
+.footer-ai-note,
+.footer-ai-label,
+.clock,
+.clock span,
+.nav-num,
+.logo-text,
+.footer-brand-logo,
+.db-title,
+.db-subtitle,
+.db-label,
+.about-text,
+.tab-content p,
+.pricing-desc,
+.pricing-price,
+.pricing-period,
+.blog-card-caption,
+.blog-card-author-name,
+.blog-card-author-meta,
+.contact-overlay-text h3,
+.contact-overlay-text p,
+.form-header h3,
+.form-header p,
+.form-status,
+.ai-kicker,
+.ai-panel h3,
+.ai-panel p,
+.ai-feature-card h4,
+.ai-feature-card p,
+.ai-message,
+.ai-live-dot,
+.ai-cta-row,
+.ai-prompt-btn,
+.footer-status,
+.footer-col-link,
+.footer-ai-note span,
+.footer-ai-note,
+.footer-bottom,
+.footer-tags,
+.footer-brand-card,
+.footer-links-grid,
+.footer-col,
+.prince-ai .section-sub,
+.prince-ai .section-title {
+  color: #EF140B !important;
+  -webkit-text-fill-color: #EF140B !important;
+}
+
+.grad,
+.header-progress span,
+.loader-line-fill,
+.loader-ring,
+.profile-ring,
+.field-line,
+.scroll-line {
+  background: #EF140B !important;
+}
+
+.header-progress span,
+.loader-stroke circle,
+.profile-ring,
+.profile-ring::before,
+.profile-ring::after,
+.loader-ring,
+.loader-stroke,
+.hero-line,
+.ai-panel,
+.ai-feature-card,
+.ai-message,
+.ai-prompt-btn,
+.footer-shell,
+.footer-brand-card,
+.footer-links-grid,
+.footer-col,
+.footer-ai-note,
+.footer-socials a,
+.logo,
+.footer-brand-logo,
+.btn-hire,
+.btn-glow,
+.btn-ghost,
+.btn-sm,
+.pricing-btn,
+.pricing-toggle,
+.nav-link,
+.nav-more-btn,
+.clock,
+.contact-info-links a,
+.social-icon,
+.footer-col-link,
+.db-nav-btn,
+.blog-action-btn,
+.blog-comment-post-btn,
+.like-btn,
+.like-btn--big,
+.filter-btn,
+.tab-btn,
+.blog-chip,
+.theme-toggle,
+.m-close,
+.modal-close {
+  transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease !important;
+}
+
+.hero-particles,
+.loader-particle,
+.profile-stage .float-badge,
+.hero-right .float-badge {
+  background: transparent !important;
+}
+
+.hero-particles span,
+.loader-particle {
+  background: #EF140B !important;
+}
+
+.project-card,
+.cert-card,
+.pricing-card,
+.blog-card,
+.skill-cat,
+.timeline-item,
+.tl-card,
+.contact-form,
+.contact-img-card,
+.profile-card,
+.profile-img-wrap,
+.about-img-wrap,
+.modal,
+.modal-box,
+.db-login-card,
+.db-stat-card,
+.db-form-container,
+.ai-panel,
+.footer-brand-card,
+.footer-col,
+.footer-links-grid,
+.footer-shell {
+  border-radius: 24px !important;
+}
+
+.hero::after,
+.hero::before,
+.hero-grid,
+.hero-scan,
+.hero-orb,
+.loader::before,
+.loader::after,
+.about-img-glow,
+.contact-overlay-text,
+.proj-img-overlay,
+.cert-overlay,
+.blog-card-cover::after,
+.modal-bg,
+.modal-overlay {
+  opacity: 0 !important;
+}
+
+.clock {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 999px;
+}
+
+.header-progress {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #EF140B !important;
+}
+
+.header-floating,
+.header-hidden {
+  transform: none !important;
+}
+
+.footer-shell,
+.prince-ai-grid,
+.footer-links-grid {
+  display: grid !important;
+  gap: 1rem;
+}
+
+.footer-shell {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+  align-items: start;
+}
+
+.footer-links-grid,
+.prince-ai-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.footer-brand-card,
+.ai-panel,
+.footer-col {
+  padding: 1.25rem;
+}
+
+.footer-brand-title,
+.ai-panel h3 {
+  margin: 0.4rem 0 0.75rem;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 1.05;
+}
+
+.footer-ai-note,
+.ai-badges,
+.ai-prompt-list,
+.ai-cta-row,
+.footer-socials,
+.footer-bottom,
+.footer-tags,
+.footer-col-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.footer-ai-note {
+  margin: 1rem 0;
+  align-items: center;
+}
+
+.footer-ai-label,
+.ai-kicker,
+.ai-live-dot {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.ai-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.ai-feature-card {
+  padding: 1rem;
+  border: 1px solid #EF140B !important;
+}
+
+.ai-message {
+  padding: 0.9rem 1rem;
+  border: 1px solid #EF140B !important;
+  border-radius: 18px;
+}
+
+.ai-message-user {
+  margin-left: auto;
+  max-width: 80%;
+}
+
+.ai-message-ai {
+  max-width: 82%;
+}
+
+.ai-chat {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.ai-prompt-btn {
+  padding: 0.85rem 1rem;
+  border-radius: 999px;
+}
+
+.ai-live-dot {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #EF140B !important;
+  border-radius: 999px;
+}
+
+.prince-ai-shell {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.footer-divider {
+  height: 1px;
+  margin: 1.75rem 0 1rem;
+  background: #EF140B !important;
+}
+
+.footer-bottom {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-tag,
+.ai-badges span,
+.pricing-save-badge,
+.pricing-popular-badge {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #EF140B !important;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero-h1,
+.section-title,
+.footer-brand-title,
+.db-title,
+.ai-panel h3,
+.pricing-price,
+.blog-read-title {
+  font-weight: 800;
+}
+
+.hero-h1 .hero-line,
+.split-char {
+  color: #EF140B !important;
+}
+
+.hero-stats,
+.about-grid,
+.skills-layout,
+.contact-grid,
+.pricing-grid,
+.projects-grid,
+.certs-grid,
+.blog-grid,
+.db-grid {
+  gap: 1rem;
+}
+
+.hero-badge,
+.stat-item,
+.tab-content,
+.pricing-toggle-wrap,
+.db-stat-card,
+.contact-info-links a,
+.footer-col-link,
+.btn-ghost,
+.btn-glow,
+.social-icon,
+.footer-socials a,
+.nav-link,
+.nav-more-btn,
+.filter-btn,
+.tab-btn,
+.blog-chip,
+.pricing-toggle-label,
+.theme-toggle,
+.db-nav-btn,
+.blog-action-btn,
+.blog-card-read-link,
+.like-btn,
+.like-btn--big,
+.m-close,
+.modal-close,
+.ai-prompt-btn {
+  border-radius: 999px;
+}
+
+@media (max-width: 900px) {
+  .footer-shell,
+  .footer-links-grid,
+  .prince-ai-grid,
+  .ai-feature-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .footer-bottom,
+  .footer-socials,
+  .ai-cta-row {
+    align-items: flex-start;
+  }
+}

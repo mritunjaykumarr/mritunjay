@@ -7,6 +7,7 @@ import Certifications from '../components/Certifications';
 import Skills from '../components/Skills';
 import BlogFeed from '../components/BlogFeed';
 import Pricing from '../components/Pricing';
+import PrinceAI from '../components/PrinceAI';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
@@ -26,6 +27,7 @@ export default function Home() {
         <Skills />
         <BlogFeed />
         <Pricing />
+        <PrinceAI />
         <Contact />
       </main>
       <Footer />

@@ -21,7 +21,7 @@ export default function Header() {
       setScrollProgress(Math.min(window.scrollY / maxScroll, 1));
     };
 
-    const sectionIds = ['home', 'about', 'education', 'projects', 'certifications', 'skills', 'blog', 'pricing', 'contact'];
+    const sectionIds = ['home', 'about', 'education', 'projects', 'certifications', 'skills', 'blog', 'pricing', 'prince-ai', 'contact'];
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -94,8 +94,9 @@ export default function Header() {
     { id: '06', label: 'Skills', href: '#skills', primary: false },
     { id: '07', label: 'Blog', href: '#blog', primary: true },
     { id: '08', label: 'Pricing', href: '#pricing', primary: false },
-    { id: '09', label: 'Contact', href: '#contact', primary: true },
-    { id: '10', label: 'Ad-Free', href: '/adfree', primary: false },
+    { id: '09', label: 'Prince AI', href: '#prince-ai', primary: true },
+    { id: '10', label: 'Contact', href: '#contact', primary: true },
+    { id: '11', label: 'Ad-Free', href: '/adfree', primary: false },
   ];
 
   return (
@@ -131,7 +132,7 @@ export default function Header() {
         </nav>
 
         <div className="header-actions">
-          <div className="clock" id="clock">
+          <div className="clock" id="clock" aria-live="polite">
             <span id="clock-date">{dateTime.date}</span>
             <span className="clock-sep">|</span>
             <span id="clock-time">{dateTime.time}</span>

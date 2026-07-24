@@ -115,6 +115,7 @@ export function usePortfolioMotion() {
         '.timeline-item',
         '.contact-form',
         '.contact-img-card',
+        '.ai-panel',
         '.footer',
       ];
 
