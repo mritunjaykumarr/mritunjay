@@ -281,7 +281,6 @@ export default function BlogFeed() {
             </div>
           </div>
         )}
-      </div>
 
       {activePost && (
         <div className="modal-overlay open" onClick={(e) => e.target === e.currentTarget && closePost()}>
