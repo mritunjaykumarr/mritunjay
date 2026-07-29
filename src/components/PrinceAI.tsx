@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bot, SendHorizonal, ArrowRight } from 'lucide-react';
+import { Bot, SendHorizonal, ArrowRight, Copy, Check, Share2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -91,8 +92,31 @@ export default function PrinceAI() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleCopy = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
+  const handleShare = async (text: string) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Prince AI Response',
+          text: text,
+        });
+      } catch (err) {
+        console.error('Share failed', err);
+      }
+    } else {
+      navigator.clipboard.writeText(text);
+      alert('Response copied to clipboard!');
+    }
+  };
 
   useEffect(() => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -169,7 +193,29 @@ export default function PrinceAI() {
               {messages.map((msg, i) => (
                 <div key={i} className={`ai-message ${msg.role === 'user' ? 'ai-message-user' : 'ai-message-ai'}`}>
                   {msg.role === 'assistant' && <div className="ai-avatar-label"><Bot size={14} /> Prince AI</div>}
-                  {msg.content || <div className="ai-typing"><span /><span /><span /></div>}
+                  {msg.content ? (
+                    msg.role === 'assistant' ? (
+                      <div className="ai-markdown-content">
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        {msg.content && (!isLoading || i !== messages.length - 1) && (
+                          <div className="ai-message-actions">
+                            <button onClick={() => handleCopy(msg.content, i)} title="Copy response" className="ai-action-btn">
+                              {copiedIndex === i ? <Check size={14} /> : <Copy size={14} />}
+                              <span>{copiedIndex === i ? 'Copied' : 'Copy'}</span>
+                            </button>
+                            <button onClick={() => handleShare(msg.content)} title="Share response" className="ai-action-btn">
+                              <Share2 size={14} />
+                              <span>Share</span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      msg.content
+                    )
+                  ) : (
+                    <div className="ai-typing"><span /><span /><span /></div>
+                  )}
                 </div>
               ))}
             </div>
