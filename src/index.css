@@ -3447,7 +3447,13 @@ p {
   }
 
   .footer-links-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .footer-col-link {
+    word-break: break-word;
+    white-space: normal;
   }
 
   .footer-bottom {
