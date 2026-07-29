@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  supabase 
-} from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { useScrollLock } from '../hooks/useScrollLock';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { 
@@ -10,10 +8,52 @@ import {
   Clock, FolderOpen, FileEdit, Search, BookOpen 
 } from 'lucide-react';
 
+export const DEFAULT_POSTS = [
+  {
+    id: 'default-1',
+    title: 'Building Next-Gen Web Apps with React 19 & TypeScript',
+    type: 'Blog',
+    category: 'Engineering',
+    created_at: '2026-07-15T10:00:00Z',
+    excerpt: 'Exploring React 19\'s latest capabilities, compiler optimizations, optimistic updates, and strict TypeScript patterns for scalable production apps.',
+    body: `<p>React 19 brings powerful new features to front-end engineering. From compiler optimizations to built-in state transitions, building high-performance web applications is now smoother than ever.</p><h3>Key Architectural Takeaways:</h3><ul><li><strong>Optimistic UI Updates:</strong> Eliminate artificial loading spinners by reflecting user input instantly.</li><li><strong>Strict Type Interfaces:</strong> Catch edge cases early in development with comprehensive type boundaries.</li><li><strong>Lean Asset Bundles:</strong> Tree-shake unnecessary modules to achieve lightning-fast initial load times.</li></ul>`,
+    cover: '/assets/bulkmailP.png',
+    likes_count: 14,
+    comments_count: 3,
+    shares_count: 5
+  },
+  {
+    id: 'default-2',
+    title: 'Mastering Buttery-Smooth GSAP Scroll Animations',
+    type: 'Article',
+    category: 'Performance',
+    created_at: '2026-06-28T14:30:00Z',
+    excerpt: 'How to craft 60fps micro-interactions and scroll triggers without blocking the main thread or causing layout shifts.',
+    body: `<p>User experience is heavily defined by how responsive and tactile an interface feels. By utilizing hardware-accelerated CSS transforms and GSAP ScrollTrigger context management, we can deliver silky smooth motion across all viewport sizes.</p><h3>Best Practices for Motion Engineering:</h3><p>1. Always animate <code>transform</code> and <code>opacity</code> to offload work to the GPU.<br>2. Respect <code>prefers-reduced-motion</code> media queries for accessibility.<br>3. Clean up GSAP timelines on component unmount to prevent memory leaks.</p>`,
+    cover: '/assets/adfree.png',
+    likes_count: 22,
+    comments_count: 5,
+    shares_count: 9
+  },
+  {
+    id: 'default-3',
+    title: 'Integrating OpenRouter AI & Streaming In React',
+    type: 'News',
+    category: 'AI Strategy',
+    created_at: '2026-05-10T09:15:00Z',
+    excerpt: 'A practical guide to building real-time streaming AI chatbot assistants like Prince AI using fetch streams and OpenRouter API.',
+    body: `<p>Generative AI is revolutionizing digital experiences. By implementing server-sent events or fetch ReadableStreams, developers can present AI responses chunk-by-chunk for instant feedback.</p><p>We discuss prompt engineering, fallbacks, and maintaining a clear design system for AI components.</p>`,
+    cover: '/assets/clip.png',
+    likes_count: 35,
+    comments_count: 8,
+    shares_count: 12
+  }
+];
+
 export default function BlogPage() {
   usePortfolioMotion();
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState<any[]>(DEFAULT_POSTS);
+  const [loading] = useState(false);
   const [filterCategory, setFilterCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [activePost, setActivePost] = useState<any>(null);
@@ -34,25 +74,26 @@ export default function BlogPage() {
   useEffect(() => { fetchPosts(); }, []);
 
   const fetchPosts = async () => {
-    setLoading(true);
     try {
-      const { data: postsData } = await supabase
+      const { data: postsData, error } = await supabase
         .from('posts')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (postsData) {
+      if (error) {
+        console.warn("Supabase query error, using defaults:", error);
+      } else if (postsData && postsData.length > 0) {
         const { data: commentsData } = await supabase.from('comments').select('post_id');
         const counts: Record<string, number> = {};
         commentsData?.forEach(c => { counts[c.post_id] = (counts[c.post_id] || 0) + 1; });
         
         const visiblePosts = postsData.filter(p => !p.status || p.status === 'published');
-        setPosts(visiblePosts.map(p => ({ ...p, comments_count: counts[p.id] || 0 })));
+        if (visiblePosts.length > 0) {
+          setPosts(visiblePosts.map(p => ({ ...p, comments_count: counts[p.id] || 0 })));
+        }
       }
     } catch (err) {
-      console.error("Failed to fetch posts:", err);
-    } finally {
-      setLoading(false);
+      console.error("Failed to fetch posts, using defaults:", err);
     }
   };
 
@@ -62,11 +103,15 @@ export default function BlogPage() {
     const newLikes = { ...userLikes };
     if (isLiked) {
       delete newLikes[postId];
-      await supabase.from('post_likes').delete().match({ post_id: postId, user_identifier: anonId });
+      if (!postId.startsWith('default-')) {
+        await supabase.from('post_likes').delete().match({ post_id: postId, user_identifier: anonId });
+      }
       setPosts(posts.map(p => p.id === postId ? { ...p, likes_count: Math.max(0, p.likes_count - 1) } : p));
     } else {
       newLikes[postId] = true;
-      await supabase.from('post_likes').insert({ post_id: postId, user_identifier: anonId });
+      if (!postId.startsWith('default-')) {
+        await supabase.from('post_likes').insert({ post_id: postId, user_identifier: anonId });
+      }
       setPosts(posts.map(p => p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p));
     }
     setUserLikes(newLikes);
@@ -75,8 +120,12 @@ export default function BlogPage() {
 
   const openPost = async (post: any) => {
     setActivePost(post);
-    const { data } = await supabase.from('comments').select('*').eq('post_id', post.id).order('created_at', { ascending: true });
-    if (data) setComments(data);
+    if (!post.id.startsWith('default-')) {
+      const { data } = await supabase.from('comments').select('*').eq('post_id', post.id).order('created_at', { ascending: true });
+      if (data) setComments(data);
+    } else {
+      setComments([]);
+    }
   };
 
   const closePost = () => {
@@ -93,10 +142,15 @@ export default function BlogPage() {
 
   const handleComment = async (postId: string) => {
     if (!newComment.trim()) return;
-    const commentData = { post_id: postId, author_name: 'Visitor', content: newComment.trim() };
-    const { data } = await supabase.from('comments').insert(commentData).select().single();
-    if (data) {
-      setComments([...comments, data]);
+    const commentData = { post_id: postId, author_name: 'Visitor', content: newComment.trim(), created_at: new Date().toISOString() };
+    if (!postId.startsWith('default-')) {
+      const { data } = await supabase.from('comments').insert(commentData).select().single();
+      if (data) {
+        setComments([...comments, data]);
+        setNewComment('');
+      }
+    } else {
+      setComments([...comments, { id: 'temp-' + Date.now(), ...commentData }]);
       setNewComment('');
     }
   };
@@ -123,7 +177,7 @@ export default function BlogPage() {
             <span>/</span>
             <span className="current">Blog</span>
           </div>
-          <div className="page-header-content reveal">
+          <div className="page-header-content">
             <div className="section-eyebrow"><BookOpen size={14} /> Articles & Insights</div>
             <h1 className="page-title">
               Technical Writing & <span className="grad">Insights</span>
@@ -183,9 +237,9 @@ export default function BlogPage() {
         <div className="container">
           {loading ? (
             <div className="blog-loading" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
-              <div className="blog-skeleton" style={{ height: '300px' }} />
-              <div className="blog-skeleton" style={{ height: '300px' }} />
-              <div className="blog-skeleton" style={{ height: '300px' }} />
+              <div className="blog-skeleton card-glass" style={{ height: '300px', borderRadius: 'var(--r-md)' }} />
+              <div className="blog-skeleton card-glass" style={{ height: '300px', borderRadius: 'var(--r-md)' }} />
+              <div className="blog-skeleton card-glass" style={{ height: '300px', borderRadius: 'var(--r-md)' }} />
             </div>
           ) : filteredPosts.length === 0 ? (
             <div className="card-glass text-center" style={{ padding: '4rem 2rem', borderRadius: 'var(--r-md)' }}>
@@ -199,7 +253,7 @@ export default function BlogPage() {
           ) : (
             <div className="blog-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
               {filteredPosts.map((p) => (
-                <div key={p.id} className="card-glass blog-card-grid reveal" style={{ borderRadius: 'var(--r-md)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                <div key={p.id} className="card-glass blog-card-grid" style={{ borderRadius: 'var(--r-md)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                   
                   {/* Card Cover */}
                   <div className="blog-card-cover" onClick={() => openPost(p)} style={{ position: 'relative', height: '200px', cursor: 'pointer' }}>

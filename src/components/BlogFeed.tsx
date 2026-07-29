@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { DEFAULT_POSTS } from '../pages/BlogPage';
 import { useCarousel } from '../hooks/useCarousel';
 import { useScrollLock } from '../hooks/useScrollLock';
-import { Heart, MessageCircle, Send, Maximize2, ArrowRight, ArrowLeft, X, Calendar, Clock, FolderOpen, FileEdit, BookOpen } from 'lucide-react';
+import { Heart, MessageCircle, Send, Maximize2, ArrowRight, ArrowLeft, X, Calendar, Clock, FolderOpen, FileEdit } from 'lucide-react';
 
 export default function BlogFeed() {
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState<any[]>(DEFAULT_POSTS);
+  const [loading] = useState(false);
   const [filter, setFilter] = useState('all');
   const [activePost, setActivePost] = useState<any>(null);
   const [comments, setComments] = useState<any[]>([]);
@@ -30,25 +31,26 @@ export default function BlogFeed() {
   useEffect(() => { fetchPosts(); }, []);
 
   const fetchPosts = async () => {
-    setLoading(true);
     try {
-      const { data: postsData } = await supabase
+      const { data: postsData, error } = await supabase
         .from('posts')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (postsData) {
+      if (error) {
+        console.warn("Supabase query error in feed, using defaults:", error);
+      } else if (postsData && postsData.length > 0) {
         const { data: commentsData } = await supabase.from('comments').select('post_id');
         const counts: Record<string, number> = {};
         commentsData?.forEach(c => { counts[c.post_id] = (counts[c.post_id] || 0) + 1; });
         
         const visiblePosts = postsData.filter(p => !p.status || p.status === 'published');
-        setPosts(visiblePosts.map(p => ({ ...p, comments_count: counts[p.id] || 0 })));
+        if (visiblePosts.length > 0) {
+          setPosts(visiblePosts.map(p => ({ ...p, comments_count: counts[p.id] || 0 })));
+        }
       }
     } catch (err) {
-      console.error("Failed to fetch posts:", err);
-    } finally {
-      setLoading(false);
+      console.error("Failed to fetch posts in feed, using defaults:", err);
     }
   };
 
@@ -58,11 +60,15 @@ export default function BlogFeed() {
     const newLikes = { ...userLikes };
     if (isLiked) {
       delete newLikes[postId];
-      await supabase.from('post_likes').delete().match({ post_id: postId, user_identifier: anonId });
+      if (!postId.startsWith('default-')) {
+        await supabase.from('post_likes').delete().match({ post_id: postId, user_identifier: anonId });
+      }
       setPosts(posts.map(p => p.id === postId ? { ...p, likes_count: Math.max(0, p.likes_count - 1) } : p));
     } else {
       newLikes[postId] = true;
-      await supabase.from('post_likes').insert({ post_id: postId, user_identifier: anonId });
+      if (!postId.startsWith('default-')) {
+        await supabase.from('post_likes').insert({ post_id: postId, user_identifier: anonId });
+      }
       setPosts(posts.map(p => p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p));
     }
     setUserLikes(newLikes);
@@ -71,8 +77,12 @@ export default function BlogFeed() {
 
   const openPost = async (post: any) => {
     setActivePost(post);
-    const { data } = await supabase.from('comments').select('*').eq('post_id', post.id).order('created_at', { ascending: true });
-    if (data) setComments(data);
+    if (!post.id.startsWith('default-')) {
+      const { data } = await supabase.from('comments').select('*').eq('post_id', post.id).order('created_at', { ascending: true });
+      if (data) setComments(data);
+    } else {
+      setComments([]);
+    }
   };
 
   const closePost = () => {
@@ -89,10 +99,15 @@ export default function BlogFeed() {
 
   const handleComment = async (postId: string) => {
     if (!newComment.trim()) return;
-    const commentData = { post_id: postId, author_name: 'Visitor', content: newComment.trim() };
-    const { data } = await supabase.from('comments').insert(commentData).select().single();
-    if (data) {
-      setComments([...comments, data]);
+    const commentData = { post_id: postId, author_name: 'Visitor', content: newComment.trim(), created_at: new Date().toISOString() };
+    if (!postId.startsWith('default-')) {
+      const { data } = await supabase.from('comments').insert(commentData).select().single();
+      if (data) {
+        setComments([...comments, data]);
+        setNewComment('');
+      }
+    } else {
+      setComments([...comments, { id: 'temp-' + Date.now(), ...commentData }]);
       setNewComment('');
     }
   };
@@ -174,7 +189,9 @@ export default function BlogFeed() {
                     try {
                       await navigator.share({ title: p.title, url: window.location.href });
                       const newCount = (p.shares_count || 0) + 1;
-                      await supabase.from('posts').update({ shares_count: newCount }).eq('id', p.id);
+                      if (!p.id.startsWith('default-')) {
+                        await supabase.from('posts').update({ shares_count: newCount }).eq('id', p.id);
+                      }
                       setPosts(posts.map(post => post.id === p.id ? { ...post, shares_count: newCount } : post));
                     } catch { /* share cancelled */ }
                   }}>
@@ -236,7 +253,7 @@ export default function BlogFeed() {
       <div className="container text-center" style={{ marginTop: '3rem' }}>
         <Link to="/blog" className="btn-primary reveal" style={{ display: 'inline-flex', alignItems: 'center' }}>
           <span>Open Full Blog Experience</span>
-          <BookOpen size={16} />
+          <ArrowRight size={16} />
         </Link>
       </div>
 
