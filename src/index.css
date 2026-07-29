@@ -1411,8 +1411,8 @@ p {
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 2rem;
-  padding-left: calc(50% - min(400px, 42.5vw));
-  padding-right: calc(50% - min(400px, 42.5vw));
+  padding-left: calc(50% - min(300px, 42.5vw));
+  padding-right: calc(50% - min(300px, 42.5vw));
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scrollbar-width: none; 
@@ -1422,17 +1422,19 @@ p {
 }
 
 .carousel-card {
-  width: 800px;
+  width: 600px;
   max-width: 85vw;
   flex-shrink: 0;
   scroll-snap-align: center;
   box-shadow: 0 0 15px var(--accent-glow);
-  opacity: 0.3;
+  opacity: 0.35;
+  filter: blur(5px);
   transform: scale(0.85);
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease), opacity var(--dur) var(--ease), filter var(--dur) var(--ease);
 }
 .carousel-card.active {
   opacity: 1;
+  filter: blur(0px);
   transform: scale(1);
 }
 .carousel-card.active:hover { 
@@ -1909,17 +1911,19 @@ p {
   border: 1px solid var(--accent);
   border-radius: var(--r-lg);
   overflow: hidden;
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
-  width: 800px;
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease), opacity var(--dur) var(--ease), filter var(--dur) var(--ease);
+  width: 600px;
   max-width: 85vw;
   flex-shrink: 0;
   scroll-snap-align: center;
   box-shadow: 0 0 15px var(--accent-glow);
-  opacity: 0.3;
+  opacity: 0.35;
+  filter: blur(5px);
   transform: scale(0.85);
 }
 .blog-card.active {
   opacity: 1;
+  filter: blur(0px);
   transform: scale(1);
 }
 .blog-card.active:hover { 
