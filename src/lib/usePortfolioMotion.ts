@@ -105,7 +105,7 @@ export function usePortfolioMotion() {
         });
 
         // Project card parallax
-        gsap.utils.toArray<HTMLElement>('.projects-grid .project-card').forEach((card) => {
+        gsap.utils.toArray<HTMLElement>('.project-card').forEach((card) => {
           const image = card.querySelector<HTMLElement>('.proj-img img');
           if (image) {
             gsap.fromTo(image, { scale: 1.1 }, {
