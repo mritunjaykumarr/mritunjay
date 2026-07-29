@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Code, ArrowRight, Download, CircleCheckBig } from 'lucide-react';
 
 export default function About() {
@@ -62,7 +63,10 @@ export default function About() {
             </div>
 
             <div className="about-btns">
-              <button onClick={() => window.dispatchEvent(new Event('open-contact'))} className="btn-primary" style={{ fontFamily: 'inherit', border: 'none', cursor: 'pointer' }}><span>Work with me</span><ArrowRight size={16} /></button>
+              <Link to="/about" className="btn-primary">
+                <span>Explore Full Story</span>
+                <ArrowRight size={16} />
+              </Link>
               <a href="https://drive.google.com/file/d/1InESJ_ExHbQ5QjUo-ie3bvmDETT9v5Q3/view?usp=sharing" target="_blank" rel="noreferrer" className="btn-outline">
                 <Download size={15} /><span>Download CV</span>
               </a>

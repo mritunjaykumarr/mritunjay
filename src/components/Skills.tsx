@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { Code, Server, Languages, Wrench } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Code, Server, Languages, Wrench, ArrowRight, Cpu } from 'lucide-react';
 
 const skillBars = [
   { label: 'HTML/CSS', value: 95 },
@@ -35,8 +36,14 @@ export default function Skills() {
   return (
     <section id="skills" className="section skills-section">
       <div className="container">
-        <div className="section-eyebrow">Skills</div>
-        <h2 className="section-title reveal">My Technical <span className="grad">Stack</span></h2>
+        <div className="section-eyebrow">Skills Overview</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
+          <h2 className="section-title reveal" style={{ margin: 0 }}>My Technical <span className="grad">Stack</span></h2>
+          <Link to="/skills" className="btn-outline reveal" style={{ padding: '0.6rem 1.25rem' }}>
+            <span>Inspect Interactive Skill Matrix</span>
+            <ArrowRight size={15} />
+          </Link>
+        </div>
 
         <div className="skills-layout">
           <div className="skills-cards reveal horizontal-scroll horizontal-scroll-mobile-only">
@@ -80,6 +87,13 @@ export default function Skills() {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="text-center" style={{ marginTop: '3rem' }}>
+          <Link to="/skills" className="btn-primary reveal" style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <span>View Full Technical Skill Database</span>
+            <Cpu size={16} />
+          </Link>
         </div>
       </div>
     </section>

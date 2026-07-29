@@ -1,4 +1,3 @@
-import Header from '../components/Header';
 import Hero from '../components/Hero';
 import About from '../components/About';
 import Education from '../components/Education';
@@ -9,16 +8,10 @@ import BlogFeed from '../components/BlogFeed';
 import Pricing from '../components/Pricing';
 import PrinceAI from '../components/PrinceAI';
 import Contact from '../components/Contact';
-import Footer from '../components/Footer';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { useState, useEffect } from 'react';
 
-interface HomeProps {
-  theme: string;
-  toggleTheme: () => void;
-}
-
-export default function Home({ theme, toggleTheme }: HomeProps) {
+export default function Home() {
   usePortfolioMotion();
   const [isContactOpen, setIsContactOpen] = useState(false);
 
@@ -30,7 +23,6 @@ export default function Home({ theme, toggleTheme }: HomeProps) {
 
   return (
     <div className="home" style={{ overflowX: 'hidden' }}>
-      <Header theme={theme} toggleTheme={toggleTheme} />
       <main>
         <Hero />
         <About />
@@ -47,7 +39,6 @@ export default function Home({ theme, toggleTheme }: HomeProps) {
           onOpen={() => setIsContactOpen(true)} 
         />
       </main>
-      <Footer />
     </div>
   );
 }

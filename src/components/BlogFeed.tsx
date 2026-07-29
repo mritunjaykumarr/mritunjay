@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useCarousel } from '../hooks/useCarousel';
 import { useScrollLock } from '../hooks/useScrollLock';
-import { Heart, MessageCircle, Send, Maximize2, ArrowRight, ArrowLeft, X, Calendar, Clock, FolderOpen, FileEdit } from 'lucide-react';
+import { Heart, MessageCircle, Send, Maximize2, ArrowRight, ArrowLeft, X, Calendar, Clock, FolderOpen, FileEdit, BookOpen } from 'lucide-react';
 
 export default function BlogFeed() {
   const [posts, setPosts] = useState<any[]>([]);
@@ -41,9 +42,7 @@ export default function BlogFeed() {
         const counts: Record<string, number> = {};
         commentsData?.forEach(c => { counts[c.post_id] = (counts[c.post_id] || 0) + 1; });
         
-        // Filter out drafts on the client side to avoid schema errors if the column is missing
         const visiblePosts = postsData.filter(p => !p.status || p.status === 'published');
-        
         setPosts(visiblePosts.map(p => ({ ...p, comments_count: counts[p.id] || 0 })));
       }
     } catch (err) {
@@ -72,14 +71,12 @@ export default function BlogFeed() {
 
   const openPost = async (post: any) => {
     setActivePost(post);
-    document.body.style.overflow = 'hidden';
     const { data } = await supabase.from('comments').select('*').eq('post_id', post.id).order('created_at', { ascending: true });
     if (data) setComments(data);
   };
 
   const closePost = () => {
     setActivePost(null);
-    document.body.style.overflow = '';
   };
 
   useEffect(() => {
@@ -105,10 +102,16 @@ export default function BlogFeed() {
   return (
     <section className="section blog-section" id="blog" ref={sectionRef}>
       <div className="container">
-        <div className="section-eyebrow">Blog</div>
-        <h2 className="section-title reveal">Latest <span className="grad">Intelligence</span></h2>
+        <div className="section-eyebrow">Blog Overview</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
+          <h2 className="section-title reveal" style={{ margin: 0 }}>Latest <span className="grad">Intelligence</span></h2>
+          <Link to="/blog" className="btn-outline reveal" style={{ padding: '0.6rem 1.25rem' }}>
+            <span>Read All Articles & Insights</span>
+            <ArrowRight size={15} />
+          </Link>
+        </div>
 
-        <div className="blog-filter-row reveal">
+        <div className="blog-filter-row reveal" style={{ marginTop: '1.5rem' }}>
           {['all', 'Blog', 'Article', 'News'].map(f => (
             <button key={f} className={`blog-chip ${filter === f ? 'active' : ''}`} onClick={() => setFilter(f)}>
               {f === 'all' ? 'All' : f}
@@ -229,6 +232,13 @@ export default function BlogFeed() {
             </div>
           </div>
         )}
+
+      <div className="container text-center" style={{ marginTop: '3rem' }}>
+        <Link to="/blog" className="btn-primary reveal" style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <span>Open Full Blog Experience</span>
+          <BookOpen size={16} />
+        </Link>
+      </div>
 
       {activePost && (
         <div className="modal-overlay open" onClick={(e) => e.target === e.currentTarget && closePost()}>

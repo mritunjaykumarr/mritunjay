@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Zap, Rocket, Crown, Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Zap, Rocket, Crown, Check, ArrowRight } from 'lucide-react';
 
 export default function Pricing() {
   const [isRetainer, setIsRetainer] = useState(false);
@@ -7,8 +8,14 @@ export default function Pricing() {
   return (
     <section id="pricing" className="section pricing">
       <div className="container">
-        <div className="section-eyebrow">Pricing</div>
-        <h2 className="section-title reveal">Investment <span className="grad">Options</span></h2>
+        <div className="section-eyebrow">Pricing Overview</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+          <h2 className="section-title reveal" style={{ margin: 0 }}>Investment <span className="grad">Options</span></h2>
+          <Link to="/pricing" className="btn-outline reveal" style={{ padding: '0.6rem 1.25rem' }}>
+            <span>View Detailed Services & Scope</span>
+            <ArrowRight size={15} />
+          </Link>
+        </div>
 
         <div className="pricing-toggle-wrap reveal">
           <span className={`pricing-toggle-label ${!isRetainer ? 'active-label' : ''}`}>Project Based</span>
@@ -42,7 +49,7 @@ export default function Pricing() {
               <li><Check size={16} /> Performance Audit</li>
               <li><Check size={16} /> 24h Response Time</li>
             </ul>
-            <a href="#contact" className="btn-outline pricing-btn">Get Started</a>
+            <Link to="/pricing" className="btn-outline pricing-btn">Get Started</Link>
           </div>
 
           <div className="pricing-card p-popular reveal">
@@ -64,7 +71,7 @@ export default function Pricing() {
               <li><Check size={16} /> SEO & Performance Ready</li>
               <li><Check size={16} /> 1 Month Free Support</li>
             </ul>
-            <a href="#contact" className="btn-primary pricing-btn">Start Project</a>
+            <Link to="/pricing" className="btn-primary pricing-btn">Start Project</Link>
           </div>
 
           <div className="pricing-card reveal">
@@ -85,7 +92,7 @@ export default function Pricing() {
               <li><Check size={16} /> Priority Feature Requests</li>
               <li><Check size={16} /> Unlimited Consultations</li>
             </ul>
-            <a href="#contact" className="btn-outline pricing-btn">Partner Up</a>
+            <Link to="/pricing" className="btn-outline pricing-btn">Partner Up</Link>
           </div>
         </div>
       </div>

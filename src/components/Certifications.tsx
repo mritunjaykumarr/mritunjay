@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Award, Eye, X, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Award, Eye, X, ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useCarousel } from '../hooks/useCarousel';
 import { useScrollLock } from '../hooks/useScrollLock';
 
@@ -20,8 +21,14 @@ export default function Certifications() {
   return (
     <section id="certifications" className="section certs-section" ref={sectionRef}>
       <div className="container">
-        <div className="section-eyebrow">Recognition</div>
-        <h2 className="section-title reveal">Verified <span className="grad">Credentials</span></h2>
+        <div className="section-eyebrow">Recognition Overview</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
+          <h2 className="section-title reveal" style={{ margin: 0 }}>Verified <span className="grad">Credentials</span></h2>
+          <Link to="/certifications" className="btn-outline reveal" style={{ padding: '0.6rem 1.25rem' }}>
+            <span>Explore All Verified Credentials</span>
+            <ArrowRight size={15} />
+          </Link>
+        </div>
       </div>
 
       <div style={{ position: 'relative', marginTop: '2rem' }}>
@@ -55,6 +62,13 @@ export default function Certifications() {
             </button>
           </div>
         )}
+      </div>
+
+      <div className="container text-center" style={{ marginTop: '3rem' }}>
+        <Link to="/certifications" className="btn-primary reveal" style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <span>View All Certificate Accreditations</span>
+          <ShieldCheck size={16} />
+        </Link>
       </div>
 
       {selectedCert && (

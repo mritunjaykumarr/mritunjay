@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { ExternalLink, X, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ExternalLink, X, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 import { useCarousel } from '../hooks/useCarousel';
 import { useScrollLock } from '../hooks/useScrollLock';
 
@@ -86,10 +87,16 @@ export default function Projects() {
   return (
     <section id="projects" className="section" ref={sectionRef}>
       <div className="container">
-        <div className="section-eyebrow">Projects</div>
-        <h2 className="section-title reveal">Work I'm <span className="grad">proud of</span></h2>
+        <div className="section-eyebrow">Projects Overview</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
+          <h2 className="section-title reveal" style={{ margin: 0 }}>Work I'm <span className="grad">proud of</span></h2>
+          <Link to="/projects" className="btn-outline reveal" style={{ padding: '0.6rem 1.25rem' }}>
+            <span>View All Projects & Case Studies</span>
+            <ArrowRight size={15} />
+          </Link>
+        </div>
 
-        <div className="filter-wrap reveal">
+        <div className="filter-wrap reveal" style={{ marginTop: '1.5rem' }}>
           {['all', 'web', 'tools', 'design'].map(f => (
             <button key={f} className={`filter-btn ${filter === f ? 'active' : ''}`} onClick={() => setFilter(f)}>
               {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -134,6 +141,13 @@ export default function Projects() {
         )}
       </div>
 
+      <div className="container text-center" style={{ marginTop: '3rem' }}>
+        <Link to="/projects" className="btn-primary reveal" style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <span>Explore Complete Projects Gallery</span>
+          <Sparkles size={16} />
+        </Link>
+      </div>
+
       {selectedProject && (
         <div className="modal-overlay open" onClick={() => setSelectedProject(null)}>
           <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', padding: 0, overflow: 'hidden' }}>
@@ -146,14 +160,14 @@ export default function Projects() {
                   {selectedProject.tags.map(t => <span key={t}>{t}</span>)}
                 </div>
                 <p style={{ lineHeight: 1.8, color: 'var(--text-2)', marginBottom: '2rem' }}>{selectedProject.fullDesc}</p>
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   <a href={selectedProject.url} target="_blank" rel="noreferrer" className="btn-primary" style={{ flex: 1, justifyContent: 'center' }}>
                     <span>Live Demo</span>
                     <ExternalLink size={16} />
                   </a>
-                  <a href={selectedProject.github} target="_blank" rel="noreferrer" className="btn-outline" style={{ flex: 1, justifyContent: 'center' }}>
-                    <span>GitHub</span>
-                  </a>
+                  <Link to="/projects" className="btn-outline" style={{ flex: 1, justifyContent: 'center' }}>
+                    <span>Full Case Study</span>
+                  </Link>
                 </div>
               </div>
             </div>
