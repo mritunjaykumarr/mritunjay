@@ -50,6 +50,78 @@
   --dur-slow: 0.55s;
 }
 
+/* ── DAY-BASED THEMES ── */
+/* 0 = Sunday (Ruby) */
+html[data-day='0'] {
+  --accent: #f43f5e;
+  --accent-hover: #fb7185;
+  --accent-soft: rgba(244, 63, 94, 0.10);
+  --accent-glow: rgba(244, 63, 94, 0.25);
+  --border-accent: rgba(244, 63, 94, 0.25);
+  --shadow-accent: 0 8px 40px rgba(244, 63, 94, 0.15);
+}
+
+/* 1 = Monday (Purple - Default) */
+html[data-day='1'] {
+  --accent: #7c5cff;
+  --accent-hover: #9178ff;
+  --accent-soft: rgba(124, 92, 255, 0.10);
+  --accent-glow: rgba(124, 92, 255, 0.25);
+  --border-accent: rgba(124, 92, 255, 0.25);
+  --shadow-accent: 0 8px 40px rgba(124, 92, 255, 0.15);
+}
+
+/* 2 = Tuesday (Blue) */
+html[data-day='2'] {
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-soft: rgba(59, 130, 246, 0.10);
+  --accent-glow: rgba(59, 130, 246, 0.25);
+  --border-accent: rgba(59, 130, 246, 0.25);
+  --shadow-accent: 0 8px 40px rgba(59, 130, 246, 0.15);
+}
+
+/* 3 = Wednesday (Emerald) */
+html[data-day='3'] {
+  --accent: #10b981;
+  --accent-hover: #34d399;
+  --accent-soft: rgba(16, 185, 129, 0.10);
+  --accent-glow: rgba(16, 185, 129, 0.25);
+  --border-accent: rgba(16, 185, 129, 0.25);
+  --shadow-accent: 0 8px 40px rgba(16, 185, 129, 0.15);
+}
+
+/* 4 = Thursday (Orange) */
+html[data-day='4'] {
+  --accent: #f97316;
+  --accent-hover: #fb923c;
+  --accent-soft: rgba(249, 115, 22, 0.10);
+  --accent-glow: rgba(249, 115, 22, 0.25);
+  --border-accent: rgba(249, 115, 22, 0.25);
+  --shadow-accent: 0 8px 40px rgba(249, 115, 22, 0.15);
+}
+
+/* 5 = Friday (Magenta) */
+html[data-day='5'] {
+  --accent: #d946ef;
+  --accent-hover: #e879f9;
+  --accent-soft: rgba(217, 70, 239, 0.10);
+  --accent-glow: rgba(217, 70, 239, 0.25);
+  --border-accent: rgba(217, 70, 239, 0.25);
+  --shadow-accent: 0 8px 40px rgba(217, 70, 239, 0.15);
+}
+
+/* 6 = Saturday (Cyan) */
+html[data-day='6'] {
+  --accent: #06b6d4;
+  --accent-hover: #22d3ee;
+  --accent-soft: rgba(6, 182, 212, 0.10);
+  --accent-glow: rgba(6, 182, 212, 0.25);
+  --border-accent: rgba(6, 182, 212, 0.25);
+  --shadow-accent: 0 8px 40px rgba(6, 182, 212, 0.15);
+}
+
+
 html[data-theme='light'] {
   color-scheme: light;
   --bg: #ffffff;
