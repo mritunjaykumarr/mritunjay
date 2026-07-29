@@ -1,4 +1,5 @@
-import { Github, Linkedin, Instagram, Mail, ChevronRight, MapPin, Phone } from 'lucide-react';
+import { Mail, ChevronRight, MapPin, Phone } from 'lucide-react';
+import { GithubIcon, LinkedinIcon, InstagramIcon } from './SocialIcons';
 
 export default function Footer() {
   return (
@@ -15,9 +16,9 @@ export default function Footer() {
               Premium frontend work, product-thinking, and AI-informed storytelling presented in a clean modern identity.
             </p>
             <div className="footer-socials">
-              <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={18} /></a>
-              <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={18} /></a>
-              <a href="https://www.instagram.com/mritunjaykumar.dev/" target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram size={18} /></a>
+              <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" aria-label="GitHub"><GithubIcon size={18} /></a>
+              <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" aria-label="LinkedIn"><LinkedinIcon size={18} /></a>
+              <a href="https://www.instagram.com/mritunjaykumar.dev/" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramIcon size={18} /></a>
               <a href="mailto:mritunjaykumar2025@gmail.com" aria-label="Email"><Mail size={18} /></a>
             </div>
           </div>

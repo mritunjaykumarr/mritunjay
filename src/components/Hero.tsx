@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { ArrowRight, Phone, Github, Linkedin, Instagram, Twitter } from 'lucide-react';
+import { ArrowRight, SendHorizonal } from 'lucide-react';
+import { GithubIcon, LinkedinIcon, InstagramIcon, TwitterIcon } from './SocialIcons';
 
 export default function Hero() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -105,7 +106,7 @@ export default function Hero() {
               <ArrowRight size={16} />
             </a>
             <a href="tel:+919470880956" className="btn-outline">
-              <Phone size={15} />
+              <SendHorizonal size={15} />
               <span>Let's Talk</span>
             </a>
           </div>
@@ -137,19 +138,11 @@ export default function Hero() {
                   <strong>Mritunjay Kumar</strong>
                   <small>Frontend Developer</small>
                 </div>
-                <div className="profile-socials">
-                  <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" className="social-icon" aria-label="GitHub">
-                    <Github size={16} />
-                  </a>
-                  <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" className="social-icon" aria-label="LinkedIn">
-                    <Linkedin size={16} />
-                  </a>
-                  <a href="https://instagram.com/" target="_blank" rel="noreferrer" className="social-icon" aria-label="Instagram">
-                    <Instagram size={16} />
-                  </a>
-                  <a href="https://twitter.com/" target="_blank" rel="noreferrer" className="social-icon" aria-label="Twitter">
-                    <Twitter size={16} />
-                  </a>
+                <div className="hero-socials">
+                  <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" className="social-link" aria-label="GitHub"><GithubIcon size={20} /></a>
+                  <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" className="social-link" aria-label="LinkedIn"><LinkedinIcon size={20} /></a>
+                  <a href="https://www.instagram.com/mritunjaykumar.dev/" target="_blank" rel="noreferrer" className="social-link" aria-label="Instagram"><InstagramIcon size={20} /></a>
+                  <a href="https://x.com/mritunjay2025" target="_blank" rel="noreferrer" className="social-link" aria-label="Twitter"><TwitterIcon size={20} /></a>
                 </div>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Menu, Sun, Moon, Mail, ChevronRight } from 'lucide-react';
+import { Sun, Moon, Mail, ChevronRight } from 'lucide-react';
 
 interface HeaderProps {
   theme: string;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { SendHorizonal, MessageSquare, Linkedin, Mail } from 'lucide-react';
+import { SendHorizonal, MessageSquare, Mail } from 'lucide-react';
+import { LinkedinIcon } from './SocialIcons';
 
 export default function Contact() {
   const [status, setStatus] = useState('');
@@ -54,7 +55,7 @@ export default function Contact() {
                     <span>+91 94708 80956</span>
                   </a>
                   <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer">
-                    <Linkedin size={16} />
+                    <LinkedinIcon size={16} />
                     <span>LinkedIn Profile</span>
                   </a>
                   <a href="mailto:mritunjaykumar2025@gmail.com">

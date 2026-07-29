@@ -7,9 +7,9 @@ export default defineConfig({
     cssCodeSplit: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-gsap': ['gsap'],
+        manualChunks(id) {
+          if (id.includes('node_modules/react')) return 'vendor-react';
+          if (id.includes('node_modules/gsap')) return 'vendor-gsap';
         },
       },
     },
