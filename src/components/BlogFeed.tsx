@@ -167,17 +167,22 @@ export default function BlogFeed() {
             </button>
           ))}
         </div>
+      </div>
 
-        {loading ? (
+      {loading ? (
+        <div className="container">
           <div className="blog-loading">
             <div className="blog-skeleton" />
             <div className="blog-skeleton" style={{ height: '120px' }} />
           </div>
-        ) : filteredPosts.length === 0 ? (
+        </div>
+      ) : filteredPosts.length === 0 ? (
+        <div className="container">
           <div className="blog-empty"><h3>No posts found</h3></div>
-        ) : (
-          <div style={{ position: 'relative', marginTop: '2rem' }}>
-            <div className="blog-grid horizontal-scroll" style={{ paddingBottom: '2rem', paddingLeft: 'calc(50vw - 400px)', paddingRight: 'calc(50vw - 400px)' }} ref={scrollRef}>
+        </div>
+      ) : (
+        <div style={{ position: 'relative', marginTop: '2rem' }}>
+            <div className="blog-carousel-track" ref={scrollRef}>
               {filteredPosts.map((p, i) => (
                 <div key={p.id} className={`blog-card ${i === activeIndex ? 'active' : ''}`}>
                 <div className="blog-card-header">

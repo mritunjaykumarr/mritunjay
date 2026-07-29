@@ -1851,10 +1851,20 @@ p {
   border-color: var(--border-accent);
 }
 
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+.blog-carousel-track {
+  display: flex;
   gap: 1.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 2rem;
+  padding-left: calc(50% - min(400px, 42.5vw));
+  padding-right: calc(50% - min(400px, 42.5vw));
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none; 
+}
+.blog-carousel-track::-webkit-scrollbar {
+  display: none;
 }
 
 .blog-card {
@@ -1866,6 +1876,7 @@ p {
   width: 800px;
   max-width: 85vw;
   flex-shrink: 0;
+  scroll-snap-align: center;
   box-shadow: 0 0 15px var(--accent-glow);
   opacity: 0.3;
   transform: scale(0.85);
