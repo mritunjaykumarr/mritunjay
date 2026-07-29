@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../lib/supabase';
-import { useScrollPin } from '../lib/useScrollPin';
 import { Heart, MessageCircle, Send, Maximize2, ArrowRight, ArrowLeft, X, Calendar, Clock, FolderOpen, FileEdit } from 'lucide-react';
 
 export default function BlogFeed() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
-  const filteredPosts = filter === 'all' ? posts : posts.filter(p => p.type === filter);
-  const { sectionRef, trackRef, activeIndex, scrollTo } = useScrollPin(filteredPosts.length);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [activePost, setActivePost] = useState<any>(null);
   const [comments, setComments] = useState<any[]>([]);
   const [newComment, setNewComment] = useState('');
@@ -22,6 +22,62 @@ export default function BlogFeed() {
   });
 
   useEffect(() => { fetchPosts(); }, []);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const grid = scrollRef.current;
+    if (!section || !grid) return;
+
+    let isScrolling = false;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (e.deltaY === 0) return;
+      const isScrollable = grid.scrollWidth > grid.clientWidth;
+      if (!isScrollable) return;
+      
+      const isAtLeft = grid.scrollLeft === 0;
+      const isAtRight = Math.abs(grid.scrollWidth - grid.clientWidth - grid.scrollLeft) < 1;
+      
+      // Strict scroll lock as requested: no vertical scrolling while hovering the section 
+      
+      e.preventDefault();
+      
+      if (isScrolling) return;
+      isScrolling = true;
+      
+      const cardWidth = grid.querySelector('.blog-card')?.clientWidth || 0;
+      const gap = 24; // 1.5rem gap
+      const scrollAmount = cardWidth + gap;
+      
+      grid.scrollBy({ left: e.deltaY > 0 ? scrollAmount : -scrollAmount, behavior: 'smooth' });
+      
+      setTimeout(() => {
+        isScrolling = false;
+      }, 400); 
+    };
+
+    const handleScroll = () => {
+      const cardWidth = grid.querySelector('.blog-card')?.clientWidth || 0;
+      const gap = 24;
+      const index = Math.round(grid.scrollLeft / (cardWidth + gap));
+      setActiveIndex(index);
+    };
+
+    grid.addEventListener('scroll', handleScroll, { passive: true });
+    section.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      section.removeEventListener('wheel', handleWheel);
+      grid.removeEventListener('scroll', handleScroll);
+    };
+  }, [loading, posts, filter]);
+
+  const scrollTo = (index: number) => {
+    const grid = scrollRef.current;
+    if (!grid) return;
+    const cardWidth = grid.querySelector('.blog-card')?.clientWidth || 0;
+    const gap = 24;
+    grid.scrollTo({ left: index * (cardWidth + gap), behavior: 'smooth' });
+  };
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -95,6 +151,7 @@ export default function BlogFeed() {
     }
   };
 
+  const filteredPosts = filter === 'all' ? posts : posts.filter(p => p.type === filter);
   const readTime = (body: string) => Math.max(1, Math.ceil((body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).length / 200));
 
   return (
@@ -124,8 +181,8 @@ export default function BlogFeed() {
           <div className="blog-empty"><h3>No posts found</h3></div>
         </div>
       ) : (
-        <div className="horizontal-pin-wrap" style={{ marginTop: '2rem' }}>
-            <div className="horizontal-scroll-track" ref={trackRef}>
+        <div style={{ position: 'relative', marginTop: '2rem' }}>
+            <div className="blog-carousel-track" ref={scrollRef}>
               {filteredPosts.map((p, i) => (
                 <div key={p.id} className={`blog-card ${i === activeIndex ? 'active' : ''}`}>
                 <div className="blog-card-header">

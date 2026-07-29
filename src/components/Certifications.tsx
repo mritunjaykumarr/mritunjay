@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Award, Eye, X } from 'lucide-react';
-import { useScrollPin } from '../lib/useScrollPin';
 
 const certData = [
   { id: 1, title: 'Fullstack Completion', issuer: 'Infosys — July 2024', img: '/assets/fullstackC.png' },
@@ -12,20 +11,16 @@ const certData = [
 
 export default function Certifications() {
   const [selectedCert, setSelectedCert] = useState<typeof certData[0] | null>(null);
-  const { sectionRef, trackRef, activeIndex } = useScrollPin(certData.length);
 
   return (
-    <section id="certifications" className="section certs-section" ref={sectionRef}>
+    <section id="certifications" className="section certs-section">
       <div className="container">
         <div className="section-eyebrow">Recognition</div>
         <h2 className="section-title reveal">Verified <span className="grad">Credentials</span></h2>
-        </div>
-      </div>
 
-      <div className="horizontal-pin-wrap">
-        <div className="horizontal-scroll-track" ref={trackRef}>
-          {certData.map((c, i) => (
-            <div key={c.id} className={`cert-card reveal ${i === activeIndex ? 'active' : ''}`} onClick={() => setSelectedCert(c)}>
+        <div className="certs-grid">
+          {certData.map((c) => (
+            <div key={c.id} className="cert-card reveal" onClick={() => setSelectedCert(c)}>
               <div className="cert-thumb">
                 <img src={c.img} alt={c.title} className="cert-photo" loading="lazy" />
                 <div className="cert-overlay">

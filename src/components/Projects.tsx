@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { ExternalLink, X } from 'lucide-react';
-import { useScrollPin } from '../lib/useScrollPin';
 
 const projectData = [
   {
@@ -65,7 +64,6 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<typeof projectData[0] | null>(null);
 
   const filtered = filter === 'all' ? projectData : projectData.filter(p => p.category.includes(filter));
-  const { sectionRef, trackRef, activeIndex } = useScrollPin(filtered.length);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -78,7 +76,7 @@ export default function Projects() {
   }, [selectedProject]);
 
   return (
-    <section id="projects" className="section" ref={sectionRef}>
+    <section id="projects" className="section">
       <div className="container">
         <div className="section-eyebrow">Projects</div>
         <h2 className="section-title reveal">Work I'm <span className="grad">proud of</span></h2>
@@ -90,11 +88,10 @@ export default function Projects() {
             </button>
           ))}
         </div>
-      </div>
-      <div className="horizontal-pin-wrap">
-        <div className="horizontal-scroll-track" ref={trackRef}>
-          {filtered.map((p, i) => (
-            <div key={p.id} className={`project-card reveal ${i === activeIndex ? 'active' : ''}`}>
+
+        <div className="projects-grid horizontal-scroll horizontal-scroll-mobile-only">
+          {filtered.map((p) => (
+            <div key={p.id} className="project-card reveal">
               <div className="proj-img">
                 <img src={p.img} alt={p.title} className="proj-photo" loading="lazy" />
                 <div className="proj-img-overlay" />
