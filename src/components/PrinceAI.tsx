@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bot, SendHorizonal, ArrowRight, Copy, Check, Share2 } from 'lucide-react';
+import { Bot, SendHorizonal, ArrowRight, Copy, Check, Share2, Paperclip, X } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
+  image?: string;
 }
 
 const SYSTEM_PROMPT = `You are Prince AI — a premium AI assistant embedded in Mritunjay Kumar's developer portfolio. You are sharp, helpful, and speak in a confident, modern tone. You help with:
@@ -35,7 +36,18 @@ async function streamChat(
       },
       body: JSON.stringify({
         model: 'openai/gpt-4o',
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages.map(m => ({ role: m.role, content: m.content }))],
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages.map(m => {
+          if (m.role === 'user' && m.image) {
+            return {
+              role: 'user',
+              content: [
+                { type: 'text', text: m.content },
+                { type: 'image_url', image_url: { url: m.image } }
+              ]
+            };
+          }
+          return { role: m.role, content: m.content };
+        })],
         stream: true,
         max_tokens: 512,
         temperature: 0.7,
@@ -93,8 +105,19 @@ export default function PrinceAI() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => setSelectedImage(event.target?.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleCopy = (text: string, index: number) => {
     navigator.clipboard.writeText(text);
@@ -126,11 +149,12 @@ export default function PrinceAI() {
 
   const handleSend = async (text?: string) => {
     const userMessage = (text || input).trim();
-    if (!userMessage || isLoading) return;
+    if ((!userMessage && !selectedImage) || isLoading) return;
 
-    const newMessages: ChatMessage[] = [...messages, { role: 'user', content: userMessage }];
+    const newMessages: ChatMessage[] = [...messages, { role: 'user', content: userMessage, image: selectedImage || undefined }];
     setMessages(newMessages);
     setInput('');
+    setSelectedImage(null);
     setIsLoading(true);
     setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
@@ -213,7 +237,10 @@ export default function PrinceAI() {
                         )}
                       </div>
                     ) : (
-                      msg.content
+                      <div className="ai-user-content">
+                        {msg.image && <img src={msg.image} alt="User Upload" className="ai-message-img" />}
+                        {msg.content && <p>{msg.content}</p>}
+                      </div>
                     )
                   ) : (
                     <div className="ai-typing"><span /><span /><span /></div>
@@ -222,11 +249,25 @@ export default function PrinceAI() {
               ))}
             </div>
 
-            <div className="ai-input-row">
-              <input ref={inputRef} type="text" placeholder="Ask Prince AI anything..." value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }} disabled={isLoading} />
-              <button className="ai-send-btn" onClick={() => handleSend()} disabled={isLoading || !input.trim()} aria-label="Send">
-                <SendHorizonal size={16} />
-              </button>
+            <div className="ai-input-container">
+              {selectedImage && (
+                <div className="ai-image-preview">
+                  <img src={selectedImage} alt="Preview" />
+                  <button onClick={() => setSelectedImage(null)} className="ai-image-remove" aria-label="Remove image">
+                    <X size={14} />
+                  </button>
+                </div>
+              )}
+              <div className="ai-input-row">
+                <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageSelect} style={{ display: 'none' }} />
+                <button className="ai-attach-btn" onClick={() => fileInputRef.current?.click()} aria-label="Attach Image">
+                  <Paperclip size={16} />
+                </button>
+                <input ref={inputRef} type="text" placeholder="Ask Prince AI anything..." value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }} disabled={isLoading} />
+                <button className="ai-send-btn" onClick={() => handleSend()} disabled={isLoading || (!input.trim() && !selectedImage)} aria-label="Send">
+                  <SendHorizonal size={16} />
+                </button>
+              </div>
             </div>
           </article>
 
