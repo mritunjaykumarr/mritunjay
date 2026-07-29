@@ -39,12 +39,12 @@ export default function About() {
               <div className={`tab-content ${activeTab === 'experience' ? 'active' : ''}`}>
                 <div className="mini-timeline">
                   <div className="mt-item">
-                    <span className="mt-year">2025</span>
-                    <span className="mt-role">Frontend Developer — Freelance</span>
+                    <span className="mt-year" style={{ flex: '0 0 70px' }}>Present</span>
+                    <span className="mt-role">Fullstack Developer — Epigroww Global, New Delhi</span>
                   </div>
                   <div className="mt-item">
-                    <span className="mt-year">2024</span>
-                    <span className="mt-role">Frontend Intern — Epigroww Global</span>
+                    <span className="mt-year" style={{ flex: '0 0 70px' }}>2026</span>
+                    <span className="mt-role">Intern (3 Months) — Digicaptain Technology, Noida</span>
                   </div>
                 </div>
               </div>
