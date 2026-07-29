@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Award, Eye, X } from 'lucide-react';
+import { Award, Eye, X, ArrowLeft, ArrowRight } from 'lucide-react';
+import { useCarousel } from '../hooks/useCarousel';
 
 const certData = [
   { id: 1, title: 'Fullstack Completion', issuer: 'Infosys — July 2024', img: '/assets/fullstackC.png' },
@@ -11,16 +12,20 @@ const certData = [
 
 export default function Certifications() {
   const [selectedCert, setSelectedCert] = useState<typeof certData[0] | null>(null);
+  const { sectionRef, scrollRef, activeIndex, scrollTo } = useCarousel(certData.length, '.carousel-card');
 
   return (
-    <section id="certifications" className="section certs-section">
+    <section id="certifications" className="section certs-section" ref={sectionRef}>
       <div className="container">
         <div className="section-eyebrow">Recognition</div>
         <h2 className="section-title reveal">Verified <span className="grad">Credentials</span></h2>
+        </div>
+      </div>
 
-        <div className="certs-grid">
-          {certData.map((c) => (
-            <div key={c.id} className="cert-card reveal" onClick={() => setSelectedCert(c)}>
+      <div style={{ position: 'relative', marginTop: '2rem' }}>
+        <div className="carousel-track" ref={scrollRef}>
+          {certData.map((c, i) => (
+            <div key={c.id} className={`carousel-card cert-card reveal ${i === activeIndex ? 'active' : ''}`} onClick={() => setSelectedCert(c)}>
               <div className="cert-thumb">
                 <img src={c.img} alt={c.title} className="cert-photo" loading="lazy" />
                 <div className="cert-overlay">
@@ -38,6 +43,16 @@ export default function Certifications() {
             </div>
           ))}
         </div>
+        {certData.length > 1 && (
+          <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
+            <button className="btn-outline" onClick={() => scrollTo(Math.max(0, activeIndex - 1))} style={{ padding: '0.5rem' }}>
+              <ArrowLeft size={16} />
+            </button>
+            <button className="btn-outline" onClick={() => scrollTo(Math.min(certData.length - 1, activeIndex + 1))} style={{ padding: '0.5rem' }}>
+              <ArrowRight size={16} />
+            </button>
+          </div>
+        )}
       </div>
 
       {selectedCert && (

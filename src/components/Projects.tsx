@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { ExternalLink, X } from 'lucide-react';
+import { useState } from 'react';
+import { ExternalLink, X, ArrowLeft, ArrowRight } from 'lucide-react';
+import { useCarousel } from '../hooks/useCarousel';
 
 const projectData = [
   {
@@ -63,7 +64,11 @@ export default function Projects() {
   const [filter, setFilter] = useState('all');
   const [selectedProject, setSelectedProject] = useState<typeof projectData[0] | null>(null);
 
-  const filtered = filter === 'all' ? projectData : projectData.filter(p => p.category.includes(filter));
+  const filteredProjects = filter === 'all' 
+    ? projectData 
+    : projectData.filter(p => p.category.includes(filter));
+
+  const { sectionRef, scrollRef, activeIndex, scrollTo } = useCarousel(filteredProjects.length, '.carousel-card');
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -76,7 +81,7 @@ export default function Projects() {
   }, [selectedProject]);
 
   return (
-    <section id="projects" className="section">
+    <section id="projects" className="section" ref={sectionRef}>
       <div className="container">
         <div className="section-eyebrow">Projects</div>
         <h2 className="section-title reveal">Work I'm <span className="grad">proud of</span></h2>
@@ -88,10 +93,13 @@ export default function Projects() {
             </button>
           ))}
         </div>
+        </div>
+      </div>
 
-        <div className="projects-grid horizontal-scroll horizontal-scroll-mobile-only">
-          {filtered.map((p) => (
-            <div key={p.id} className="project-card reveal">
+      <div style={{ position: 'relative', marginTop: '2rem' }}>
+        <div className="carousel-track" ref={scrollRef}>
+          {filteredProjects.map((p, i) => (
+            <div key={p.id} className={`carousel-card project-card reveal ${i === activeIndex ? 'active' : ''}`} onClick={() => setSelectedProject(p)}>
               <div className="proj-img">
                 <img src={p.img} alt={p.title} className="proj-photo" loading="lazy" />
                 <div className="proj-img-overlay" />
@@ -103,8 +111,8 @@ export default function Projects() {
                 <h3>{p.title}</h3>
                 <p>{p.desc}</p>
                 <div className="proj-btns">
-                  <button className="btn-primary btn-sm" onClick={() => setSelectedProject(p)}>Preview</button>
-                  <a href={p.url} target="_blank" rel="noreferrer" className="btn-outline btn-sm">
+                  <button className="btn-primary btn-sm" onClick={(e) => { e.stopPropagation(); setSelectedProject(p); }}>Preview</button>
+                  <a href={p.url} target="_blank" rel="noreferrer" className="btn-outline btn-sm" onClick={(e) => e.stopPropagation()}>
                     Live <ExternalLink size={13} />
                   </a>
                 </div>
@@ -112,6 +120,16 @@ export default function Projects() {
             </div>
           ))}
         </div>
+        {filteredProjects.length > 1 && (
+          <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
+            <button className="btn-outline" onClick={() => scrollTo(Math.max(0, activeIndex - 1))} style={{ padding: '0.5rem' }}>
+              <ArrowLeft size={16} />
+            </button>
+            <button className="btn-outline" onClick={() => scrollTo(Math.min(filteredProjects.length - 1, activeIndex + 1))} style={{ padding: '0.5rem' }}>
+              <ArrowRight size={16} />
+            </button>
+          </div>
+        )}
       </div>
 
       {selectedProject && (

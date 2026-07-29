@@ -1404,6 +1404,43 @@ p {
   }
 }
 
+/* ── GENERIC CAROUSEL ── */
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 2rem;
+  padding-left: calc(50% - min(400px, 42.5vw));
+  padding-right: calc(50% - min(400px, 42.5vw));
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none; 
+}
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-card {
+  width: 800px;
+  max-width: 85vw;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  box-shadow: 0 0 15px var(--accent-glow);
+  opacity: 0.3;
+  transform: scale(0.85);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+.carousel-card.active {
+  opacity: 1;
+  transform: scale(1);
+}
+.carousel-card.active:hover { 
+  transform: scale(1) translateY(-3px); 
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 25px var(--accent-glow);
+}
+
 /* ── PROJECTS ── */
 .filter-wrap {
   display: flex;
