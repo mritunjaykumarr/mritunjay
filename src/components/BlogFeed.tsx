@@ -42,7 +42,7 @@ export default function BlogFeed() {
 
     el.addEventListener('wheel', handleWheel, { passive: false });
     return () => el.removeEventListener('wheel', handleWheel);
-  }, [loading, filteredPosts]);
+  }, [loading, posts, filter]);
 
   const fetchPosts = async () => {
     setLoading(true);
