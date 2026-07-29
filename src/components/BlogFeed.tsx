@@ -26,14 +26,17 @@ export default function BlogFeed() {
       const { data: postsData } = await supabase
         .from('posts')
         .select('*')
-        .eq('status', 'published')
         .order('created_at', { ascending: false });
 
       if (postsData) {
         const { data: commentsData } = await supabase.from('comments').select('post_id');
         const counts: Record<string, number> = {};
         commentsData?.forEach(c => { counts[c.post_id] = (counts[c.post_id] || 0) + 1; });
-        setPosts(postsData.map(p => ({ ...p, comments_count: counts[p.id] || 0 })));
+        
+        // Filter out drafts on the client side to avoid schema errors if the column is missing
+        const visiblePosts = postsData.filter(p => !p.status || p.status === 'published');
+        
+        setPosts(visiblePosts.map(p => ({ ...p, comments_count: counts[p.id] || 0 })));
       }
     } catch (err) {
       console.error("Failed to fetch posts:", err);
@@ -114,7 +117,7 @@ export default function BlogFeed() {
         ) : filteredPosts.length === 0 ? (
           <div className="blog-empty"><h3>No posts found</h3></div>
         ) : (
-          <div className="blog-grid">
+          <div className="blog-grid horizontal-scroll" style={{ paddingBottom: '2rem' }}>
             {filteredPosts.map((p) => (
               <div key={p.id} className="blog-card reveal">
                 <div className="blog-card-header">
