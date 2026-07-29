@@ -11,7 +11,13 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -105,6 +111,11 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
         </nav>
 
         <div className="header-actions">
+          <div className="header-clock" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '0.7rem', color: 'var(--text-muted)', marginRight: '1rem', lineHeight: '1.2' }}>
+            <strong style={{ color: 'var(--text)', fontSize: '0.75rem' }}>{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong>
+            <span>{currentTime.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+          </div>
+
           <button
             className="theme-toggle"
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}

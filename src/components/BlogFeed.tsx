@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../lib/supabase';
-import { Heart, MessageCircle, Send, Maximize2, ArrowRight, X, Calendar, Clock, FolderOpen, FileEdit } from 'lucide-react';
+import { Heart, MessageCircle, Send, Maximize2, ArrowRight, ArrowLeft, X, Calendar, Clock, FolderOpen, FileEdit } from 'lucide-react';
 
 export default function BlogFeed() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -8,6 +8,7 @@ export default function BlogFeed() {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [activeIndex, setActiveIndex] = useState(0);
   const [activePost, setActivePost] = useState<any>(null);
   const [comments, setComments] = useState<any[]>([]);
   const [newComment, setNewComment] = useState('');
@@ -37,8 +38,7 @@ export default function BlogFeed() {
       const isAtLeft = grid.scrollLeft === 0;
       const isAtRight = Math.abs(grid.scrollWidth - grid.clientWidth - grid.scrollLeft) < 1;
       
-      if (e.deltaY > 0 && isAtRight) return; 
-      if (e.deltaY < 0 && isAtLeft) return; 
+      // Strict scroll lock as requested: no vertical scrolling while hovering the section 
       
       e.preventDefault();
       
@@ -53,12 +53,31 @@ export default function BlogFeed() {
       
       setTimeout(() => {
         isScrolling = false;
-      }, 400); // Prevent rapid skipping
+      }, 400); 
     };
 
+    const handleScroll = () => {
+      const cardWidth = grid.querySelector('.blog-card')?.clientWidth || 0;
+      const gap = 24;
+      const index = Math.round(grid.scrollLeft / (cardWidth + gap));
+      setActiveIndex(index);
+    };
+
+    grid.addEventListener('scroll', handleScroll, { passive: true });
     section.addEventListener('wheel', handleWheel, { passive: false });
-    return () => section.removeEventListener('wheel', handleWheel);
+    return () => {
+      section.removeEventListener('wheel', handleWheel);
+      grid.removeEventListener('scroll', handleScroll);
+    };
   }, [loading, posts, filter]);
+
+  const scrollTo = (index: number) => {
+    const grid = scrollRef.current;
+    if (!grid) return;
+    const cardWidth = grid.querySelector('.blog-card')?.clientWidth || 0;
+    const gap = 24;
+    grid.scrollTo({ left: index * (cardWidth + gap), behavior: 'smooth' });
+  };
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -157,9 +176,10 @@ export default function BlogFeed() {
         ) : filteredPosts.length === 0 ? (
           <div className="blog-empty"><h3>No posts found</h3></div>
         ) : (
-          <div className="blog-grid horizontal-scroll" style={{ paddingBottom: '2rem' }} ref={scrollRef}>
-            {filteredPosts.map((p) => (
-              <div key={p.id} className="blog-card">
+          <div style={{ position: 'relative', marginTop: '2rem' }}>
+            <div className="blog-grid horizontal-scroll" style={{ paddingBottom: '2rem', paddingLeft: 'calc(50vw - 400px)', paddingRight: 'calc(50vw - 400px)' }} ref={scrollRef}>
+              {filteredPosts.map((p, i) => (
+                <div key={p.id} className={`blog-card ${i === activeIndex ? 'active' : ''}`}>
                 <div className="blog-card-header">
                   <div className="blog-card-avatar">MK</div>
                   <div className="blog-card-author-info">
@@ -227,6 +247,33 @@ export default function BlogFeed() {
                 </div>
               </div>
             ))}
+            </div>
+
+            <button 
+              className="carousel-btn btn-left" 
+              onClick={() => scrollTo(Math.max(0, activeIndex - 1))}
+              disabled={activeIndex === 0}
+              aria-label="Previous Post"
+            >
+              <ArrowLeft />
+            </button>
+            <button 
+              className="carousel-btn btn-right" 
+              onClick={() => scrollTo(Math.min(filteredPosts.length - 1, activeIndex + 1))}
+              disabled={activeIndex === filteredPosts.length - 1}
+              aria-label="Next Post"
+            >
+              <ArrowRight />
+            </button>
+            
+            <div className="carousel-controls">
+              <div className="carousel-dots">
+                {filteredPosts.map((_, i) => (
+                  <span key={i} className={`carousel-dot ${i === activeIndex ? 'active' : ''}`} onClick={() => scrollTo(i)} />
+                ))}
+              </div>
+              <div className="carousel-counter">{activeIndex + 1} / {filteredPosts.length}</div>
+            </div>
           </div>
         )}
       </div>
