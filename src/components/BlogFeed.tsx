@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 import { Heart, MessageCircle, Send, Maximize2, ArrowRight, X, Calendar, Clock, FolderOpen, FileEdit } from 'lucide-react';
 
 export default function BlogFeed() {
+  const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,26 +23,41 @@ export default function BlogFeed() {
   useEffect(() => { fetchPosts(); }, []);
 
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
+    const section = sectionRef.current;
+    const grid = scrollRef.current;
+    if (!section || !grid) return;
+
+    let isScrolling = false;
 
     const handleWheel = (e: WheelEvent) => {
       if (e.deltaY === 0) return;
-      const isScrollable = el.scrollWidth > el.clientWidth;
+      const isScrollable = grid.scrollWidth > grid.clientWidth;
       if (!isScrollable) return;
       
-      const isAtLeft = el.scrollLeft === 0;
-      const isAtRight = Math.abs(el.scrollWidth - el.clientWidth - el.scrollLeft) < 1;
+      const isAtLeft = grid.scrollLeft === 0;
+      const isAtRight = Math.abs(grid.scrollWidth - grid.clientWidth - grid.scrollLeft) < 1;
       
       if (e.deltaY > 0 && isAtRight) return; 
       if (e.deltaY < 0 && isAtLeft) return; 
       
       e.preventDefault();
-      el.scrollBy({ left: e.deltaY, behavior: 'auto' });
+      
+      if (isScrolling) return;
+      isScrolling = true;
+      
+      const cardWidth = grid.querySelector('.blog-card')?.clientWidth || 0;
+      const gap = 24; // 1.5rem gap
+      const scrollAmount = cardWidth + gap;
+      
+      grid.scrollBy({ left: e.deltaY > 0 ? scrollAmount : -scrollAmount, behavior: 'smooth' });
+      
+      setTimeout(() => {
+        isScrolling = false;
+      }, 400); // Prevent rapid skipping
     };
 
-    el.addEventListener('wheel', handleWheel, { passive: false });
-    return () => el.removeEventListener('wheel', handleWheel);
+    section.addEventListener('wheel', handleWheel, { passive: false });
+    return () => section.removeEventListener('wheel', handleWheel);
   }, [loading, posts, filter]);
 
   const fetchPosts = async () => {
@@ -120,7 +136,7 @@ export default function BlogFeed() {
   const readTime = (body: string) => Math.max(1, Math.ceil((body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).length / 200));
 
   return (
-    <section className="section blog-section" id="blog">
+    <section className="section blog-section" id="blog" ref={sectionRef}>
       <div className="container">
         <div className="section-eyebrow">Blog</div>
         <h2 className="section-title reveal">Latest <span className="grad">Intelligence</span></h2>

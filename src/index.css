@@ -1863,7 +1863,7 @@ p {
   border-radius: var(--r-lg);
   overflow: hidden;
   transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
-  width: 380px;
+  width: 800px;
   max-width: 85vw;
   flex-shrink: 0;
   box-shadow: 0 0 15px var(--accent-glow);
