@@ -39,7 +39,7 @@ export default function Skills() {
         <h2 className="section-title reveal">My Technical <span className="grad">Stack</span></h2>
 
         <div className="skills-layout">
-          <div className="skills-cards reveal">
+          <div className="skills-cards reveal horizontal-scroll horizontal-scroll-mobile-only">
             <div className="skill-cat">
               <h4><Code size={16} /> Frontend</h4>
               <div className="skill-tags">

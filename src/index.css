@@ -2159,6 +2159,34 @@ h1,h2,h3,h4,h5,h6,p { margin: 0; }
 .db-badge.published { background: var(--green-soft); color: var(--green); }
 .db-badge.draft { background: var(--surface-2); color: var(--text-muted); }
 
+/* ── HORIZONTAL SCROLL CAROUSELS ── */
+.horizontal-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 1.5rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: -1.5rem;
+  scrollbar-width: none;
+}
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+.horizontal-scroll > * {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+@media (min-width: 900px) {
+  .horizontal-scroll-mobile-only {
+    display: grid !important;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
 /* ── UTILITIES ── */
 .sr-only {
   position: absolute;

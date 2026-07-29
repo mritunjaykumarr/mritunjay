@@ -71,6 +71,14 @@ export default function BlogFeed() {
     document.body.style.overflow = '';
   };
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && activePost) closePost();
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [activePost]);
+
   const handleComment = async (postId: string) => {
     if (!newComment.trim()) return;
     const commentData = { post_id: postId, author_name: 'Visitor', content: newComment.trim() };

@@ -64,7 +64,6 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
     { label: 'Projects', href: '#projects' },
     { label: 'Skills', href: '#skills' },
     { label: 'Blog', href: '#blog' },
-    { label: 'Contact', href: '#contact' },
   ];
 
   const allLinks = [
@@ -96,6 +95,13 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
               {link.label}
             </a>
           ))}
+          <button 
+            className="nav-link" 
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0 }}
+            onClick={() => window.dispatchEvent(new Event('open-contact'))}
+          >
+            Contact
+          </button>
         </nav>
 
         <div className="header-actions">
@@ -116,9 +122,13 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
             <span /><span /><span />
           </button>
 
-          <a href="#contact" className="btn-hire">
+          <button 
+            onClick={() => window.dispatchEvent(new Event('open-contact'))} 
+            className="btn-hire"
+            style={{ fontFamily: 'inherit', border: 'none', cursor: 'pointer' }}
+          >
             <Mail /> Contact
-          </a>
+          </button>
         </div>
       </div>
 
@@ -136,6 +146,19 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
               </a>
             </li>
           ))}
+          <li>
+            <button
+              className="mob-link"
+              style={{ width: '100%', textAlign: 'left', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+              onClick={() => {
+                setIsMenuOpen(false);
+                window.dispatchEvent(new Event('open-contact'));
+              }}
+            >
+              <ChevronRight size={14} />
+              Contact
+            </button>
+          </li>
         </ul>
       </div>
     </header>

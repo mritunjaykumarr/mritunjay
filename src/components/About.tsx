@@ -37,7 +37,7 @@ export default function About() {
               </div>
 
               <div className={`tab-content ${activeTab === 'experience' ? 'active' : ''}`}>
-                <div className="mini-timeline">
+                <div className="mini-timeline horizontal-scroll horizontal-scroll-mobile-only">
                   <div className="mt-item">
                     <span className="mt-year" style={{ flex: '0 0 70px' }}>Present</span>
                     <span className="mt-role">Fullstack Developer — Epigroww Global, New Delhi</span>
@@ -62,7 +62,7 @@ export default function About() {
             </div>
 
             <div className="about-btns">
-              <a href="#contact" className="btn-primary"><span>Work with me</span><ArrowRight size={16} /></a>
+              <button onClick={() => window.dispatchEvent(new Event('open-contact'))} className="btn-primary" style={{ fontFamily: 'inherit', border: 'none', cursor: 'pointer' }}><span>Work with me</span><ArrowRight size={16} /></button>
               <a href="https://drive.google.com/file/d/1InESJ_ExHbQ5QjUo-ie3bvmDETT9v5Q3/view?usp=sharing" target="_blank" rel="noreferrer" className="btn-outline">
                 <Download size={15} /><span>Download CV</span>
               </a>

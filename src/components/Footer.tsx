@@ -32,7 +32,7 @@ export default function Footer() {
                 <a href="#projects" className="footer-col-link"><ChevronRight size={12} /> Projects</a>
                 <a href="#skills" className="footer-col-link"><ChevronRight size={12} /> Skills</a>
                 <a href="#prince-ai" className="footer-col-link"><ChevronRight size={12} /> Prince AI</a>
-                <a href="#contact" className="footer-col-link"><ChevronRight size={12} /> Contact</a>
+                <button onClick={() => window.dispatchEvent(new Event('open-contact'))} className="footer-col-link" style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0, textAlign: 'left', width: '100%', color: 'inherit' }}><ChevronRight size={12} /> Contact</button>
               </div>
             </div>
 

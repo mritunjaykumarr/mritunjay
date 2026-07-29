@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
-import { SendHorizonal, MessageSquare, Mail } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { SendHorizonal, MessageSquare, Mail, X } from 'lucide-react';
 import { LinkedinIcon } from './SocialIcons';
 
-export default function Contact() {
+interface ContactProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onOpen: () => void;
+}
+
+export default function Contact({ isOpen, onClose, onOpen }: ContactProps) {
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -36,72 +42,87 @@ export default function Contact() {
     }
   };
 
-  return (
-    <section id="contact" className="section contact">
-      <div className="container">
-        <div className="section-eyebrow">Contact</div>
-        <h2 className="section-title reveal">Let's <span className="grad">Connect</span></h2>
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) onClose();
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
 
-        <div className="contact-grid">
-          <div className="contact-left reveal">
-            <div className="contact-img-card">
-              <img src="/assets/contactus.png" alt="Contact" className="contact-photo" loading="lazy" />
-              <div className="contact-overlay-text">
-                <h3>Let's talk about your project</h3>
-                <p>I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.</p>
-                <div className="contact-info-links">
-                  <a href="https://wa.me/919470880956" target="_blank" rel="noreferrer">
-                    <MessageSquare size={16} />
-                    <span>+91 94708 80956</span>
+  return (
+    <>
+      <section className="section contact-cta" style={{ textAlign: 'center', padding: '6rem 0' }}>
+        <div className="container reveal">
+          <h2 className="section-title">Ready to build something <span className="grad">amazing?</span></h2>
+          <p className="section-sub" style={{ margin: '0 auto 2rem', maxWidth: '600px' }}>
+            Whether you have a specific project in mind or just want to say hi, my inbox is always open. Let's create the next big thing together.
+          </p>
+          <button onClick={onOpen} className="btn-primary" style={{ margin: '0 auto' }}>
+            <span>Let's Talk</span> <SendHorizonal size={16} />
+          </button>
+        </div>
+      </section>
+
+      {isOpen && (
+        <div className="modal-overlay open" onClick={(e) => e.target === e.currentTarget && onClose()}>
+          <div className="modal-box" style={{ maxWidth: '800px', padding: '0', overflow: 'hidden' }}>
+            <button className="modal-close" onClick={onClose} aria-label="Close modal"><X size={18} /></button>
+            <div className="contact-grid" style={{ gap: 0 }}>
+              <div className="contact-left" style={{ padding: '2rem', background: 'var(--bg-elevated)' }}>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Let's talk about your project</h3>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.95rem' }}>I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.</p>
+                
+                <div className="contact-info-links" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <a href="https://wa.me/919470880956" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text)', textDecoration: 'none' }}>
+                    <MessageSquare size={18} className="grad-text" /> <span>+91 94708 80956</span>
                   </a>
-                  <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer">
-                    <LinkedinIcon size={16} />
-                    <span>LinkedIn Profile</span>
+                  <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text)', textDecoration: 'none' }}>
+                    <LinkedinIcon size={18} /> <span>LinkedIn Profile</span>
                   </a>
-                  <a href="mailto:mritunjaykumar2025@gmail.com">
-                    <Mail size={16} />
-                    <span>mritunjaykumar2025@gmail.com</span>
+                  <a href="mailto:mritunjaykumar2025@gmail.com" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text)', textDecoration: 'none' }}>
+                    <Mail size={18} /> <span>mritunjaykumar2025@gmail.com</span>
                   </a>
                 </div>
               </div>
+
+              <div className="contact-right" style={{ padding: '2rem' }}>
+                <form className="contact-form" onSubmit={handleSubmit} id="contactForm">
+                  <input type="hidden" name="access_key" value="97011d8a-de48-4384-9c59-bf750ab854ab" />
+                  <div className="form-header" style={{ marginBottom: '1.5rem' }}>
+                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Send a Message</h3>
+                  </div>
+
+                  <div className="float-field">
+                    <input type="text" name="name" placeholder=" " required id="contact-name" />
+                    <label htmlFor="contact-name">Full Name</label>
+                  </div>
+
+                  <div className="float-field">
+                    <input type="email" name="email" placeholder=" " required id="contact-email" />
+                    <label htmlFor="contact-email">Email Address</label>
+                  </div>
+
+                  <div className="float-field">
+                    <textarea name="message" rows={4} placeholder=" " required id="contact-message" />
+                    <label htmlFor="contact-message">Your Message</label>
+                  </div>
+
+                  <button type="submit" className="btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center', marginTop: '0.5rem' }}>
+                    <span>{loading ? 'Sending...' : 'Send Message'}</span>
+                    <SendHorizonal size={16} />
+                  </button>
+
+                  <div className="form-status" style={{ marginTop: '0.75rem' }}>
+                    {status && <span className={status.includes('✓') ? 'success' : 'error'}>{status}</span>}
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-
-          <div className="contact-right reveal reveal-right">
-            <form className="contact-form" onSubmit={handleSubmit} id="contactForm">
-              <input type="hidden" name="access_key" value="97011d8a-de48-4384-9c59-bf750ab854ab" />
-              <div className="form-header">
-                <h3>Send a Message</h3>
-                <p>Fill in the form and I'll get back to you shortly.</p>
-              </div>
-
-              <div className="float-field">
-                <input type="text" name="name" placeholder=" " required id="contact-name" />
-                <label htmlFor="contact-name">Full Name</label>
-              </div>
-
-              <div className="float-field">
-                <input type="email" name="email" placeholder=" " required id="contact-email" />
-                <label htmlFor="contact-email">Email Address</label>
-              </div>
-
-              <div className="float-field">
-                <textarea name="message" rows={4} placeholder=" " required id="contact-message" />
-                <label htmlFor="contact-message">Your Message</label>
-              </div>
-
-              <button type="submit" className="btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center', marginTop: '0.5rem' }}>
-                <span>{loading ? 'Sending...' : 'Send Message'}</span>
-                <SendHorizonal size={16} />
-              </button>
-
-              <div className="form-status" style={{ marginTop: '0.75rem' }}>
-                {status && <span className={status.includes('✓') ? 'success' : 'error'}>{status}</span>}
-              </div>
-            </form>
-          </div>
         </div>
-      </div>
-    </section>
+      )}
+    </>
   );
 }

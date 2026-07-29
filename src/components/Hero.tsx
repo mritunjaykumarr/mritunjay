@@ -105,10 +105,10 @@ export default function Hero() {
               <span>View Projects</span>
               <ArrowRight size={16} />
             </a>
-            <a href="tel:+919470880956" className="btn-outline">
+            <button onClick={() => window.dispatchEvent(new Event('open-contact'))} className="btn-outline" style={{ fontFamily: 'inherit', cursor: 'pointer', border: '1px solid var(--border)', background: 'transparent' }}>
               <SendHorizonal size={15} />
               <span>Let's Talk</span>
-            </a>
+            </button>
           </div>
           <div className="hero-stats" ref={statsRef}>
             <div className="stat-item">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ExternalLink, X } from 'lucide-react';
 
 const projectData = [
@@ -9,6 +9,7 @@ const projectData = [
     desc: 'Mass email platform with CSV upload, Gmail API, Node.js, and Express backend for high-volume campaigns.',
     img: '/assets/bulkmailP.png',
     url: 'https://www.bulkmailsender.online/',
+    github: 'https://github.com/mritunjaykumarr',
     tags: ['Web', 'Tools'],
     fullDesc: 'A web-based bulk email sender with CSV upload, Gmail API, Node.js, Express. Allows sending personalised emails to thousands of recipients from a CSV file.'
   },
@@ -19,6 +20,7 @@ const projectData = [
     desc: 'Interactive terminal portfolio — run npx mritunjay-portfolio to explore skills, projects, and contact info.',
     img: '/assets/clip.png',
     url: 'https://github.com/mritunjaykumarr/CLI-Portfolio.git',
+    github: 'https://github.com/mritunjaykumarr/CLI-Portfolio.git',
     tags: ['Tools'],
     fullDesc: "Run 'npx mritunjay-portfolio' in any terminal to launch an interactive CLI portfolio. Features ASCII art, animated prompts, and navigable project info."
   },
@@ -29,6 +31,7 @@ const projectData = [
     desc: 'Real-time currency converter with live API integration, 150+ currencies, and clean interface.',
     img: '/assets/currencyP.png',
     url: 'https://www.bulkmailsender.online/currency_converter.html',
+    github: 'https://github.com/mritunjaykumarr',
     tags: ['Web'],
     fullDesc: 'Real-time currency converter supporting 150+ currencies via live exchange-rate API. Features instant conversion and a clean UI.'
   },
@@ -39,6 +42,7 @@ const projectData = [
     desc: 'Custom YouTube player with clean UI, zero ads, and distraction-free cinematic viewing.',
     img: '/assets/adfree.png',
     url: 'https://mritunjaykumar2.vercel.app/adfree.html',
+    github: 'https://github.com/mritunjaykumarr',
     tags: ['Web', 'Design'],
     fullDesc: 'Custom YouTube player wrapper that strips all ads and recommendations. Built with JavaScript and YouTube IFrame API.'
   },
@@ -49,6 +53,7 @@ const projectData = [
     desc: 'Real-time messaging platform with WebSocket support, multi-room architecture, and modern UI.',
     img: '/assets/chatapp.png',
     url: 'https://chat-app-peach-eight.vercel.app',
+    github: 'https://github.com/mritunjaykumarr',
     tags: ['Web'],
     fullDesc: 'Real-time messaging platform built with Node.js, Socket.io, and responsive frontend. Features room-based chat and live presence indicators.'
   },
@@ -59,6 +64,16 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<typeof projectData[0] | null>(null);
 
   const filtered = filter === 'all' ? projectData : projectData.filter(p => p.category.includes(filter));
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedProject) {
+        setSelectedProject(null);
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [selectedProject]);
 
   return (
     <section id="projects" className="section">
@@ -74,7 +89,7 @@ export default function Projects() {
           ))}
         </div>
 
-        <div className="projects-grid">
+        <div className="projects-grid horizontal-scroll horizontal-scroll-mobile-only">
           {filtered.map((p) => (
             <div key={p.id} className="project-card reveal">
               <div className="proj-img">
@@ -100,18 +115,27 @@ export default function Projects() {
       </div>
 
       {selectedProject && (
-        <div className="modal-bg open" onClick={() => setSelectedProject(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-head">
-              <h2>{selectedProject.title}</h2>
-              <div className="m-close" onClick={() => setSelectedProject(null)}><X size={18} /></div>
-            </div>
-            <div className="modal-body">
-              <p style={{ lineHeight: 1.8, color: 'var(--text-2)', marginBottom: '1.5rem' }}>{selectedProject.fullDesc}</p>
-              <a href={selectedProject.url} target="_blank" rel="noreferrer" className="btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
-                <span>Visit Project</span>
-                <ExternalLink size={16} />
-              </a>
+        <div className="modal-overlay open" onClick={() => setSelectedProject(null)}>
+          <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', padding: 0, overflow: 'hidden' }}>
+            <button className="modal-close" onClick={() => setSelectedProject(null)} aria-label="Close modal"><X size={18} /></button>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 0 }}>
+              <img src={selectedProject.img} alt={selectedProject.title} style={{ width: '100%', height: '300px', objectFit: 'cover' }} />
+              <div style={{ padding: '2rem' }}>
+                <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>{selectedProject.title}</h2>
+                <div className="proj-tags" style={{ marginBottom: '1.5rem' }}>
+                  {selectedProject.tags.map(t => <span key={t}>{t}</span>)}
+                </div>
+                <p style={{ lineHeight: 1.8, color: 'var(--text-2)', marginBottom: '2rem' }}>{selectedProject.fullDesc}</p>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <a href={selectedProject.url} target="_blank" rel="noreferrer" className="btn-primary" style={{ flex: 1, justifyContent: 'center' }}>
+                    <span>Live Demo</span>
+                    <ExternalLink size={16} />
+                  </a>
+                  <a href={selectedProject.github} target="_blank" rel="noreferrer" className="btn-outline" style={{ flex: 1, justifyContent: 'center' }}>
+                    <span>GitHub</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
