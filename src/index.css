@@ -1859,15 +1859,19 @@ p {
 
 .blog-card {
   background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  border: 1px solid var(--accent);
   border-radius: var(--r-lg);
   overflow: hidden;
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  width: 380px;
+  max-width: 85vw;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px var(--accent-glow);
 }
-
-.blog-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+.blog-card:hover { 
+  transform: translateY(-3px); 
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 25px var(--accent-glow);
 }
 
 .blog-card-header {

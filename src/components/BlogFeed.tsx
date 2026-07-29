@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { Heart, MessageCircle, Send, Maximize2, ArrowRight, X, Calendar, Clock, FolderOpen, FileEdit } from 'lucide-react';
 
 export default function BlogFeed() {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -19,6 +20,29 @@ export default function BlogFeed() {
   });
 
   useEffect(() => { fetchPosts(); }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (e.deltaY === 0) return;
+      const isScrollable = el.scrollWidth > el.clientWidth;
+      if (!isScrollable) return;
+      
+      const isAtLeft = el.scrollLeft === 0;
+      const isAtRight = Math.abs(el.scrollWidth - el.clientWidth - el.scrollLeft) < 1;
+      
+      if (e.deltaY > 0 && isAtRight) return; 
+      if (e.deltaY < 0 && isAtLeft) return; 
+      
+      e.preventDefault();
+      el.scrollBy({ left: e.deltaY, behavior: 'auto' });
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, [loading, filteredPosts]);
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -117,7 +141,7 @@ export default function BlogFeed() {
         ) : filteredPosts.length === 0 ? (
           <div className="blog-empty"><h3>No posts found</h3></div>
         ) : (
-          <div className="blog-grid horizontal-scroll" style={{ paddingBottom: '2rem' }}>
+          <div className="blog-grid horizontal-scroll" style={{ paddingBottom: '2rem' }} ref={scrollRef}>
             {filteredPosts.map((p) => (
               <div key={p.id} className="blog-card">
                 <div className="blog-card-header">
