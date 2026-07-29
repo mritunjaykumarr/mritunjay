@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { useCarousel } from '../hooks/useCarousel';
+import { useScrollLock } from '../hooks/useScrollLock';
 import { Heart, MessageCircle, Send, Maximize2, ArrowRight, ArrowLeft, X, Calendar, Clock, FolderOpen, FileEdit } from 'lucide-react';
 
 export default function BlogFeed() {
@@ -13,6 +14,8 @@ export default function BlogFeed() {
   
   const filteredPosts = filter === 'all' ? posts : posts.filter(p => p.type === filter);
   const { sectionRef, scrollRef, activeIndex, scrollTo } = useCarousel(filteredPosts.length, '.blog-card');
+
+  useScrollLock(!!activePost);
 
   const [userLikes, setUserLikes] = useState<Record<string, boolean>>(() => {
     try { return JSON.parse(localStorage.getItem('user_likes') || '{}'); } catch { return {}; }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Award, Eye, X, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useCarousel } from '../hooks/useCarousel';
+import { useScrollLock } from '../hooks/useScrollLock';
 
 const certData = [
   { id: 1, title: 'Fullstack Completion', issuer: 'Infosys — July 2024', img: '/assets/fullstackC.png' },
@@ -13,6 +14,8 @@ const certData = [
 export default function Certifications() {
   const [selectedCert, setSelectedCert] = useState<typeof certData[0] | null>(null);
   const { sectionRef, scrollRef, activeIndex, scrollTo } = useCarousel(certData.length, '.carousel-card');
+
+  useScrollLock(!!selectedCert);
 
   return (
     <section id="certifications" className="section certs-section" ref={sectionRef}>

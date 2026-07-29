@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ExternalLink, X, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useCarousel } from '../hooks/useCarousel';
+import { useScrollLock } from '../hooks/useScrollLock';
 
 const projectData = [
   {
@@ -69,6 +70,8 @@ export default function Projects() {
     : projectData.filter(p => p.category.includes(filter));
 
   const { sectionRef, scrollRef, activeIndex, scrollTo } = useCarousel(filteredProjects.length, '.carousel-card');
+
+  useScrollLock(!!selectedProject);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
