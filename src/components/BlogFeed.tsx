@@ -119,7 +119,7 @@ export default function BlogFeed() {
         ) : (
           <div className="blog-grid horizontal-scroll" style={{ paddingBottom: '2rem' }}>
             {filteredPosts.map((p) => (
-              <div key={p.id} className="blog-card reveal">
+              <div key={p.id} className="blog-card">
                 <div className="blog-card-header">
                   <div className="blog-card-avatar">MK</div>
                   <div className="blog-card-author-info">
