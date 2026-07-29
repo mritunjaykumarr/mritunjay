@@ -109,7 +109,7 @@ export default function CertificationsPage() {
       {/* Certificates Grid */}
       <section className="section" style={{ padding: '3rem 0 5rem' }}>
         <div className="container">
-          <div className="certs-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
+          <div className="certs-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
             {certsDatabase.map((cert) => (
               <div 
                 key={cert.id} 
