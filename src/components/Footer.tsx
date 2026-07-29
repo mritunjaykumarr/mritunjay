@@ -1,3 +1,4 @@
+import { Github, Linkedin, Instagram, Mail, ChevronRight, MapPin, Phone } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -6,22 +7,18 @@ export default function Footer() {
         <div className="footer-shell">
           <div className="footer-brand-card">
             <a href="#home" className="footer-brand-logo">
-              <span className="logo-text">MRITUNJAY</span>
-              <span className="logo-dot"></span>
+              <span>MRITUNJAY</span>
+              <span className="logo-dot" />
             </a>
-            <h3 className="footer-brand-title">AI-first portfolio system</h3>
+            <h3 className="footer-brand-title">Full Stack Developer</h3>
             <p className="footer-tagline">
-              Premium frontend work, product-thinking, and OpenRouter AI-informed storytelling presented in a clean red-and-white identity.
+              Premium frontend work, product-thinking, and AI-informed storytelling presented in a clean modern identity.
             </p>
-            <div className="footer-ai-note">
-              <span className="footer-ai-label">OpenRouter AI</span>
-              <span>Workflow-ready, modern, and built for intelligent product experiences.</span>
-            </div>
             <div className="footer-socials">
-              <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" aria-label="GitHub"><i className="fa-brands fa-github"></i></a>
-              <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i className="fa-brands fa-linkedin-in"></i></a>
-              <a href="https://www.instagram.com/mritunjaykumar.dev/" target="_blank" rel="noreferrer" aria-label="Instagram"><i className="fa-brands fa-instagram"></i></a>
-              <a href="mailto:mritunjaykumar2025@gmail.com" aria-label="Email"><i className="fa-solid fa-envelope"></i></a>
+              <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={18} /></a>
+              <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={18} /></a>
+              <a href="https://www.instagram.com/mritunjaykumar.dev/" target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram size={18} /></a>
+              <a href="mailto:mritunjaykumar2025@gmail.com" aria-label="Email"><Mail size={18} /></a>
             </div>
           </div>
 
@@ -29,43 +26,43 @@ export default function Footer() {
             <div className="footer-col">
               <h4 className="footer-col-title">Navigation</h4>
               <div className="footer-col-links">
-                <a href="#home" className="footer-col-link"><i className="fa-solid fa-chevron-right"></i> Home</a>
-                <a href="#about" className="footer-col-link"><i className="fa-solid fa-chevron-right"></i> About</a>
-                <a href="#projects" className="footer-col-link"><i className="fa-solid fa-chevron-right"></i> Projects</a>
-                <a href="#skills" className="footer-col-link"><i className="fa-solid fa-chevron-right"></i> Skills</a>
-                <a href="#prince-ai" className="footer-col-link"><i className="fa-solid fa-chevron-right"></i> Prince AI</a>
-                <a href="#contact" className="footer-col-link"><i className="fa-solid fa-chevron-right"></i> Contact</a>
+                <a href="#home" className="footer-col-link"><ChevronRight size={12} /> Home</a>
+                <a href="#about" className="footer-col-link"><ChevronRight size={12} /> About</a>
+                <a href="#projects" className="footer-col-link"><ChevronRight size={12} /> Projects</a>
+                <a href="#skills" className="footer-col-link"><ChevronRight size={12} /> Skills</a>
+                <a href="#prince-ai" className="footer-col-link"><ChevronRight size={12} /> Prince AI</a>
+                <a href="#contact" className="footer-col-link"><ChevronRight size={12} /> Contact</a>
               </div>
             </div>
 
             <div className="footer-col">
-              <h4 className="footer-col-title">AI stack</h4>
+              <h4 className="footer-col-title">Tech Stack</h4>
               <div className="footer-col-links">
-                <span className="footer-col-link"><i className="fa-solid fa-chevron-right"></i> OpenRouter AI</span>
-                <span className="footer-col-link"><i className="fa-solid fa-chevron-right"></i> Prompt design</span>
-                <span className="footer-col-link"><i className="fa-solid fa-chevron-right"></i> UX storytelling</span>
-                <span className="footer-col-link"><i className="fa-solid fa-chevron-right"></i> Product strategy</span>
+                <span className="footer-col-link"><ChevronRight size={12} /> React + TypeScript</span>
+                <span className="footer-col-link"><ChevronRight size={12} /> Node.js + Express</span>
+                <span className="footer-col-link"><ChevronRight size={12} /> OpenRouter AI</span>
+                <span className="footer-col-link"><ChevronRight size={12} /> Supabase</span>
               </div>
             </div>
 
             <div className="footer-col">
               <h4 className="footer-col-title">Contact</h4>
               <div className="footer-col-links">
-                <span className="footer-col-link"><i className="fa-solid fa-location-dot"></i> Bihar, India</span>
-                <a href="tel:+919470880956" className="footer-col-link"><i className="fa-solid fa-phone"></i> +91 94708 80956</a>
-                <a href="mailto:mritunjaykumar2025@gmail.com" className="footer-col-link"><i className="fa-solid fa-envelope"></i> mritunjaykumar2025@gmail.com</a>
+                <span className="footer-col-link"><MapPin size={12} /> Bihar, India</span>
+                <a href="tel:+919470880956" className="footer-col-link"><Phone size={12} /> +91 94708 80956</a>
+                <a href="mailto:mritunjaykumar2025@gmail.com" className="footer-col-link"><Mail size={12} /> mritunjaykumar2025@gmail.com</a>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="footer-divider"></div>
+        <div className="footer-divider" />
 
         <div className="footer-bottom">
-          <div className="footer-copy">© 2026 <span className="accent">Mritunjay Kumar</span>. All rights reserved.</div>
+          <div className="footer-copy">© {new Date().getFullYear()} <span className="accent">Mritunjay Kumar</span>. All rights reserved.</div>
           <div className="footer-tags">
             <span className="footer-tag">REACT</span>
-            <span className="footer-tag">OPENROUTER AI</span>
+            <span className="footer-tag">TYPESCRIPT</span>
             <span className="footer-tag">SUPABASE</span>
           </div>
         </div>

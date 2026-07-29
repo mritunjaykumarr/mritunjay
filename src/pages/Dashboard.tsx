@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { 
+  PieChart, Plus, Layers, ArrowLeft, FileText, CheckCircle, 
+  PenTool, Upload, Loader2, X, Send, Save, Calendar, 
+  Folder, Heart, Edit2, Trash2, Ghost 
+} from 'lucide-react';
 
 export default function Dashboard() {
   const [password, setPassword] = useState('');
@@ -30,14 +35,12 @@ export default function Dashboard() {
       const fileName = `${Date.now()}.${fileExt}`;
       const filePath = `blog/${fileName}`;
 
-      // Upload to the 'blog-post' bucket you created
       const { error: uploadError } = await supabase.storage
         .from('blog-post')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
-      // Get the URL from the same 'blog-post' bucket
       const { data: { publicUrl } } = supabase.storage
         .from('blog-post')
         .getPublicUrl(filePath);
@@ -103,7 +106,7 @@ export default function Dashboard() {
               className="db-input"
             />
           </div>
-          <button type="submit" className="btn-glow" style={{ width: '100%', justifyContent: 'center' }}>
+          <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
             Initialize Access
           </button>
         </form>
@@ -121,18 +124,18 @@ export default function Dashboard() {
         
         <nav className="db-nav">
           <button onClick={() => setView('dashboard')} className={`db-nav-btn ${view === 'dashboard' ? 'active' : ''}`}>
-            <i className="fa-solid fa-chart-pie"></i> Overview
+            <PieChart size={16} /> Overview
           </button>
           <button onClick={() => { setFormData({ id: '', title: '', excerpt: '', body: '', type: 'Blog', category: 'General', cover: '' }); setView('compose'); }} className={`db-nav-btn ${view === 'compose' ? 'active' : ''}`}>
-            <i className="fa-solid fa-plus"></i> New Post
+            <Plus size={16} /> New Post
           </button>
           <button onClick={() => setView('posts')} className={`db-nav-btn ${view === 'posts' ? 'active' : ''}`}>
-            <i className="fa-solid fa-layer-group"></i> All Content
+            <Layers size={16} /> All Content
           </button>
           
           <div style={{marginTop: 'auto', paddingTop: '20px', borderTop: '1px solid var(--border)'}}>
             <a href="/" className="db-nav-btn">
-              <i className="fa-solid fa-arrow-left"></i> Live Site
+              <ArrowLeft size={16} /> Live Site
             </a>
           </div>
         </nav>
@@ -148,19 +151,19 @@ export default function Dashboard() {
             
             <div className="db-grid">
               <div className="db-stat-card">
-                <i className="fa-solid fa-newspaper db-stat-icon"></i>
+                <div className="db-stat-icon"><FileText size={20} /></div>
                 <h3>Total Posts</h3>
                 <div className="db-stat-val">{posts.length}</div>
               </div>
               <div className="db-stat-card">
-                <i className="fa-solid fa-circle-check db-stat-icon" style={{color: 'var(--cyan)'}}></i>
+                <div className="db-stat-icon" style={{color: 'var(--accent-2)'}}><CheckCircle size={20} /></div>
                 <h3>Published</h3>
-                <div className="db-stat-val" style={{color: 'var(--cyan)'}}>{posts.filter(p => p.status === 'published').length}</div>
+                <div className="db-stat-val" style={{color: 'var(--accent-2)'}}>{posts.filter(p => p.status === 'published').length}</div>
               </div>
               <div className="db-stat-card">
-                <i className="fa-solid fa-pen-nib db-stat-icon" style={{color: 'var(--purple3)'}}></i>
+                <div className="db-stat-icon" style={{color: 'var(--accent)'}}><PenTool size={20} /></div>
                 <h3>Drafts</h3>
-                <div className="db-stat-val" style={{color: 'var(--purple3)'}}>{posts.filter(p => p.status === 'draft').length}</div>
+                <div className="db-stat-val" style={{color: 'var(--accent)'}}>{posts.filter(p => p.status === 'draft').length}</div>
               </div>
             </div>
           </div>
@@ -204,8 +207,9 @@ export default function Dashboard() {
                 <label className="db-label">Visual Asset (URL)</label>
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <input type="text" placeholder="https://..." value={formData.cover} onChange={e => setFormData({...formData, cover: e.target.value})} className="db-input" style={{flex: 1}} />
-                  <label className="btn-ghost" style={{ padding: '12px 20px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
-                    <i className={`fa-solid ${uploading ? 'fa-spinner fa-spin' : 'fa-upload'}`}></i> {uploading ? 'Uploading...' : 'Upload Image'}
+                  <label className="btn-outline" style={{ padding: '12px 20px', cursor: 'pointer', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {uploading ? <Loader2 className="animate-spin" size={16} /> : <Upload size={16} />} 
+                    {uploading ? 'Uploading...' : 'Upload Image'}
                     <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} disabled={uploading} />
                   </label>
                 </div>
@@ -217,7 +221,7 @@ export default function Dashboard() {
                       style={{ position: 'absolute', top: '5px', right: '5px', background: 'rgba(255,0,0,0.8)', color: 'white', border: 'none', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '12px' }}
                       title="Remove Image"
                     >
-                      <i className="fa-solid fa-xmark"></i>
+                      <X size={14} />
                     </button>
                   </div>
                 )}
@@ -234,11 +238,11 @@ export default function Dashboard() {
               </div>
 
               <div style={{ display: 'flex', gap: '15px' }}>
-                <button onClick={() => savePost('published')} className="btn-glow">
-                  <i className="fa-solid fa-paper-plane"></i> Finalize & Publish
+                <button onClick={() => savePost('published')} className="btn-primary" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                  <Send size={16} /> Finalize & Publish
                 </button>
-                <button onClick={() => savePost('draft')} className="btn-ghost">
-                  <i className="fa-solid fa-floppy-disk"></i> Save Draft
+                <button onClick={() => savePost('draft')} className="btn-outline" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                  <Save size={16} /> Save Draft
                 </button>
               </div>
             </div>
@@ -256,31 +260,31 @@ export default function Dashboard() {
               {posts.map(p => (
                 <div key={p.id} className="db-post-card">
                   <div className="db-post-info">
-                    <h4>
+                    <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       {p.title} 
                       <span className={`db-badge ${p.status}`}>
                         {p.status}
                       </span>
                     </h4>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--muted)', display: 'flex', gap: '15px' }}>
-                      <span><i className="fa-regular fa-calendar"></i> {new Date(p.created_at).toLocaleDateString()}</span>
-                      <span><i className="fa-regular fa-folder"></i> {p.type}</span>
-                      <span><i className="fa-regular fa-heart"></i> {p.likes_count} likes</span>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', gap: '15px', marginTop: '4px' }}>
+                      <span style={{display: 'flex', alignItems: 'center', gap: '4px'}}><Calendar size={12} /> {new Date(p.created_at).toLocaleDateString()}</span>
+                      <span style={{display: 'flex', alignItems: 'center', gap: '4px'}}><Folder size={12} /> {p.type}</span>
+                      <span style={{display: 'flex', alignItems: 'center', gap: '4px'}}><Heart size={12} /> {p.likes_count} likes</span>
                     </p>
                   </div>
                   <div style={{ display: 'flex', gap: '12px' }}>
-                    <button onClick={() => editPost(p)} className="btn-ghost" style={{ padding: '8px 16px', fontSize: '0.8rem' }}>
-                      <i className="fa-solid fa-pen"></i> Edit
+                    <button onClick={() => editPost(p)} className="btn-outline btn-sm" style={{ padding: '8px 16px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <Edit2 size={14} /> Edit
                     </button>
-                    <button onClick={() => deletePost(p.id)} className="btn-ghost" style={{ padding: '8px 16px', fontSize: '0.8rem', color: '#ff4444' }}>
-                      <i className="fa-solid fa-trash"></i>
+                    <button onClick={() => deletePost(p.id)} className="btn-outline btn-sm" style={{ padding: '8px 16px', fontSize: '0.8rem', color: '#ff4444', borderColor: '#ff4444', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 </div>
               ))}
               {posts.length === 0 && (
-                <div style={{textAlign: 'center', padding: '100px 0', color: 'var(--muted)'}}>
-                  <i className="fa-solid fa-ghost" style={{fontSize: '3rem', marginBottom: '20px', display: 'block', opacity: 0.2}}></i>
+                <div style={{textAlign: 'center', padding: '100px 0', color: 'var(--text-muted)'}}>
+                  <Ghost size={48} style={{opacity: 0.2, margin: '0 auto 20px'}} />
                   No posts found in the vault.
                 </div>
               )}

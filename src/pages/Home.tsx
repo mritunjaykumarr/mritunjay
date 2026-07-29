@@ -12,12 +12,17 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 
-export default function Home() {
+interface HomeProps {
+  theme: string;
+  toggleTheme: () => void;
+}
+
+export default function Home({ theme, toggleTheme }: HomeProps) {
   usePortfolioMotion();
 
   return (
     <div className="home" style={{ overflowX: 'hidden' }}>
-      <Header />
+      <Header theme={theme} toggleTheme={toggleTheme} />
       <main>
         <Hero />
         <About />

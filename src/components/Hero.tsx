@@ -1,25 +1,13 @@
 import { useEffect, useRef } from 'react';
+import { ArrowRight, Phone, Github, Linkedin, Instagram, Twitter } from 'lucide-react';
 
 export default function Hero() {
   const cardRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLElement>(null);
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const revealEls = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    revealEls.forEach((el) => revealObserver.observe(el));
-
     const card = cardRef.current;
-    const hero = heroRef.current;
 
     if (card) {
       const handleMove = (e: MouseEvent) => {
@@ -28,29 +16,18 @@ export default function Hero() {
         const y = e.clientY - rect.top;
         const cx = rect.width / 2;
         const cy = rect.height / 2;
-        const rotX = ((y - cy) / cy) * -7;
-        const rotY = ((x - cx) / cx) * 7;
+        const rotX = ((y - cy) / cy) * -5;
+        const rotY = ((x - cx) / cx) * 5;
 
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
         rafRef.current = requestAnimationFrame(() => {
-          card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
-          if (hero) {
-            const heroRect = hero.getBoundingClientRect();
-            const px = ((e.clientX - heroRect.left) / heroRect.width - 0.5) * 100;
-            const py = ((e.clientY - heroRect.top) / heroRect.height - 0.5) * 100;
-            hero.style.setProperty('--hero-mx', `${px.toFixed(2)}px`);
-            hero.style.setProperty('--hero-my', `${py.toFixed(2)}px`);
-          }
+          card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.01)`;
         });
       };
 
       const handleLeave = () => {
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
         card.style.transform = '';
-        if (hero) {
-          hero.style.removeProperty('--hero-mx');
-          hero.style.removeProperty('--hero-my');
-        }
       };
 
       card.addEventListener('mousemove', handleMove);
@@ -59,20 +36,15 @@ export default function Hero() {
       return () => {
         card.removeEventListener('mousemove', handleMove);
         card.removeEventListener('mouseleave', handleLeave);
-        revealObserver.disconnect();
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
       };
     }
-
-    return () => {
-      revealObserver.disconnect();
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
   }, []);
 
+  // Animated counter
   useEffect(() => {
     const animateCounter = (el: HTMLElement, target: number, decimals = 0) => {
-      const duration = 1800;
+      const duration = 1600;
       const startTime = performance.now();
       const update = (currentTime: number) => {
         const elapsed = currentTime - startTime;
@@ -105,24 +77,19 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="home" className="hero" ref={heroRef}>
-      <div className="hero-grid"></div>
-      <div className="hero-scan"></div>
-      <div className="hero-orb orb-p"></div>
-      <div className="hero-orb orb-b"></div>
-      <div className="hero-orb orb-c"></div>
-      <div className="hero-particles" aria-hidden="true">
-        <span style={{ top: '18%', left: '9%', animationDelay: '-0.2s' }}></span>
-        <span style={{ top: '36%', left: '76%', animationDelay: '-1.4s' }}></span>
-        <span style={{ bottom: '18%', left: '18%', animationDelay: '-2s' }}></span>
-        <span style={{ bottom: '26%', right: '14%', animationDelay: '-0.8s' }}></span>
+    <section id="home" className="hero">
+      <div className="hero-bg" aria-hidden="true">
+        <div className="hero-grid-pattern" />
+        <div className="hero-gradient hero-gradient-1" />
+        <div className="hero-gradient hero-gradient-2" />
+        <div className="hero-gradient hero-gradient-3" />
       </div>
 
       <div className="container hero-inner">
         <div className="hero-left reveal">
           <div className="hero-badge">
-            <span className="badge-pulse"></span>
-            Epigroww Global
+            <span className="badge-pulse" />
+            Available for work
           </div>
           <h1 className="hero-h1">
             <span className="hero-line" data-split-text>Building</span>
@@ -130,15 +97,15 @@ export default function Hero() {
             <span className="hero-line" data-split-text>Experiences</span>
           </h1>
           <p className="hero-sub">
-            Junior Developer at Epigroww Global in Mayapuri, New Delhi with hands-on experience crafting responsive, interactive, and pixel-perfect web applications. Turning complex ideas into elegant digital products.
+            Full Stack Developer at Epigroww Global crafting responsive, interactive, and pixel-perfect web applications. Turning complex ideas into elegant digital products.
           </p>
           <div className="hero-btns">
-            <a href="#projects" className="btn-glow">
+            <a href="#projects" className="btn-primary">
               <span>View Projects</span>
-              <i className="fa-solid fa-arrow-right"></i>
+              <ArrowRight size={16} />
             </a>
-            <a href="tel:+919470880956" className="btn-ghost">
-              <i className="fa-solid fa-phone"></i>
+            <a href="tel:+919470880956" className="btn-outline">
+              <Phone size={15} />
               <span>Let's Talk</span>
             </a>
           </div>
@@ -160,11 +127,10 @@ export default function Hero() {
 
         <div className="hero-right reveal reveal-right">
           <div className="profile-stage">
-
-            <div className="profile-card tilt-card" ref={cardRef}>
+            <div className="profile-card" ref={cardRef}>
               <div className="profile-img-wrap">
-                <img src="/assets/orgpic1.jpg" alt="Mritunjay Kumar" className="profile-photo" loading="eager" />
-                <div className="profile-img-overlay">Software Engineer</div>
+                <img src="/assets/orgpic1.jpg" alt="Mritunjay Kumar" className="profile-photo" loading="eager" width="400" height="500" />
+                <div className="profile-img-overlay">Full Stack Developer</div>
               </div>
               <div className="profile-footer">
                 <div className="profile-meta">
@@ -173,36 +139,39 @@ export default function Hero() {
                 </div>
                 <div className="profile-socials">
                   <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" className="social-icon" aria-label="GitHub">
-                    <i className="fa-brands fa-github"></i>
+                    <Github size={16} />
                   </a>
                   <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" className="social-icon" aria-label="LinkedIn">
-                    <i className="fa-brands fa-linkedin-in"></i>
+                    <Linkedin size={16} />
                   </a>
                   <a href="https://instagram.com/" target="_blank" rel="noreferrer" className="social-icon" aria-label="Instagram">
-                    <i className="fa-brands fa-instagram"></i>
+                    <Instagram size={16} />
                   </a>
                   <a href="https://twitter.com/" target="_blank" rel="noreferrer" className="social-icon" aria-label="Twitter">
-                    <i className="fa-brands fa-x-twitter"></i>
+                    <Twitter size={16} />
                   </a>
                 </div>
               </div>
             </div>
 
             <div className="float-badge badge-react">
-              <i className="fa-brands fa-react"></i> React
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg>
+              React
             </div>
             <div className="float-badge badge-node">
-              <i className="fa-brands fa-node-js"></i> Node.js
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              Node.js
             </div>
             <div className="float-badge badge-open">
-              <span className="badge-open-dot"></span> Epigroww Global
+              <span className="badge-open-dot" />
+              Epigroww Global
             </div>
           </div>
         </div>
       </div>
 
-      <div className="scroll-hint">
-        <div className="scroll-line"></div>
+      <div className="scroll-hint" aria-hidden="true">
+        <div className="scroll-line" />
         <span>Scroll</span>
       </div>
     </section>

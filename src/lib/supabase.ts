@@ -1,10 +1,21 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+let _supabase: SupabaseClient | null = null;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+function getSupabase(): SupabaseClient {
+  if (_supabase) return _supabase;
+
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn('Missing Supabase environment variables. Blog features will be unavailable.');
+    // Return a minimal mock to prevent crashes
+    return createClient('https://placeholder.supabase.co', 'placeholder');
+  }
+
+  _supabase = createClient(supabaseUrl, supabaseAnonKey);
+  return _supabase;
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = getSupabase();
