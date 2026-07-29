@@ -93,7 +93,6 @@ export default function Projects() {
             </button>
           ))}
         </div>
-        </div>
       </div>
 
       <div style={{ position: 'relative', marginTop: '2rem' }}>
