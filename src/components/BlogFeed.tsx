@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useCarousel } from '../hooks/useCarousel';
 import { useScrollLock } from '../hooks/useScrollLock';
