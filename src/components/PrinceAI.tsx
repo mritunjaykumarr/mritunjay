@@ -103,17 +103,19 @@ export default function PrinceAI() {
   };
 
   const handleShare = async (text: string) => {
+    const shareUrl = `${window.location.origin}${window.location.pathname}#prince-ai`;
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Prince AI Response',
+          title: 'Prince AI Response | Mritunjay Kumar',
           text: text,
+          url: shareUrl,
         });
       } catch (err) {
         console.error('Share failed', err);
       }
     } else {
-      navigator.clipboard.writeText(text);
+      navigator.clipboard.writeText(`${text}\n\nShared from: ${shareUrl}`);
       alert('Response copied to clipboard!');
     }
   };
