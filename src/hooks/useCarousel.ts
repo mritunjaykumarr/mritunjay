@@ -13,6 +13,11 @@ export function useCarousel(itemCount: number, cardSelector: string = '.carousel
     let isScrolling = false;
 
     const handleWheel = (e: WheelEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.modal-overlay') || target.closest('.modal-bg') || target.closest('.modal-box') || target.closest('.modal')) {
+        return; // Allow natural scrolling inside modals
+      }
+
       if (e.deltaY === 0) return;
       const isScrollable = grid.scrollWidth > grid.clientWidth;
       if (!isScrollable) return;
