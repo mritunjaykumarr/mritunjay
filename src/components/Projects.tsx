@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ExternalLink, X, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useCarousel } from '../hooks/useCarousel';
 
