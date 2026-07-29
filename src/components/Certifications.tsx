@@ -19,7 +19,6 @@ export default function Certifications() {
       <div className="container">
         <div className="section-eyebrow">Recognition</div>
         <h2 className="section-title reveal">Verified <span className="grad">Credentials</span></h2>
-        </div>
       </div>
 
       <div style={{ position: 'relative', marginTop: '2rem' }}>
