@@ -16,6 +16,7 @@ import Contact from './components/Contact';
 import ScrollToTop from './components/ScrollToTop';
 import Loader from './components/Loader';
 import CustomCursor from './components/CustomCursor';
+import FloatingPrinceAI from './components/FloatingPrinceAI';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const AdFree = lazy(() => import('./pages/AdFree'));
@@ -76,6 +77,7 @@ function App() {
         onClose={() => setIsContactOpen(false)} 
         onOpen={() => setIsContactOpen(true)} 
       />
+      <FloatingPrinceAI />
       <Footer />
     </BrowserRouter>
   );

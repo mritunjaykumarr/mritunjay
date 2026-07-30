@@ -1,74 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink, X, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
+import { ExternalLink, ArrowLeft, ArrowRight, Sparkles, Layers } from 'lucide-react';
 import { useCarousel } from '../hooks/useCarousel';
 import { useScrollLock } from '../hooks/useScrollLock';
-
-const projectData = [
-  {
-    id: 1,
-    category: 'web tools',
-    title: 'Bulk Mail Sender',
-    desc: 'Mass email platform with CSV upload, Gmail API, Node.js, and Express backend for high-volume campaigns.',
-    img: '/assets/bulkmailP.png',
-    url: 'https://www.bulkmailsender.online/',
-    github: 'https://github.com/mritunjaykumarr',
-    tags: ['Web', 'Tools'],
-    fullDesc: 'A web-based bulk email sender with CSV upload, Gmail API, Node.js, Express. Allows sending personalised emails to thousands of recipients from a CSV file.'
-  },
-  {
-    id: 2,
-    category: 'tools',
-    title: 'CLI Portfolio',
-    desc: 'Interactive terminal portfolio — run npx mritunjay-portfolio to explore skills, projects, and contact info.',
-    img: '/assets/clip.png',
-    url: 'https://github.com/mritunjaykumarr/CLI-Portfolio.git',
-    github: 'https://github.com/mritunjaykumarr/CLI-Portfolio.git',
-    tags: ['Tools'],
-    fullDesc: "Run 'npx mritunjay-portfolio' in any terminal to launch an interactive CLI portfolio. Features ASCII art, animated prompts, and navigable project info."
-  },
-  {
-    id: 3,
-    category: 'web',
-    title: 'Currency Converter',
-    desc: 'Real-time currency converter with live API integration, 150+ currencies, and clean interface.',
-    img: '/assets/currencyP.png',
-    url: 'https://www.bulkmailsender.online/currency_converter.html',
-    github: 'https://github.com/mritunjaykumarr',
-    tags: ['Web'],
-    fullDesc: 'Real-time currency converter supporting 150+ currencies via live exchange-rate API. Features instant conversion and a clean UI.'
-  },
-  {
-    id: 4,
-    category: 'web design',
-    title: 'Ad-Free YouTube Player',
-    desc: 'Custom YouTube player with clean UI, zero ads, and distraction-free cinematic viewing.',
-    img: '/assets/adfree.png',
-    url: 'https://mritunjaykumar2.vercel.app/adfree.html',
-    github: 'https://github.com/mritunjaykumarr',
-    tags: ['Web', 'Design'],
-    fullDesc: 'Custom YouTube player wrapper that strips all ads and recommendations. Built with JavaScript and YouTube IFrame API.'
-  },
-  {
-    id: 5,
-    category: 'web',
-    title: 'Chat App',
-    desc: 'Real-time messaging platform with WebSocket support, multi-room architecture, and modern UI.',
-    img: '/assets/chatapp.png',
-    url: 'https://chat-app-peach-eight.vercel.app',
-    github: 'https://github.com/mritunjaykumarr',
-    tags: ['Web'],
-    fullDesc: 'Real-time messaging platform built with Node.js, Socket.io, and responsive frontend. Features room-based chat and live presence indicators.'
-  },
-];
+import ProjectProductModal from './ProjectProductModal';
+import type { ExtendedProjectItem } from './ProjectProductModal';
+import { EXTENDED_PROJECTS_DATA } from '../data/projectsData';
 
 export default function Projects() {
   const [filter, setFilter] = useState('all');
-  const [selectedProject, setSelectedProject] = useState<typeof projectData[0] | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ExtendedProjectItem | null>(null);
 
   const filteredProjects = filter === 'all' 
-    ? projectData 
-    : projectData.filter(p => p.category.includes(filter));
+    ? EXTENDED_PROJECTS_DATA 
+    : EXTENDED_PROJECTS_DATA.filter(p => p.category.toLowerCase().includes(filter.toLowerCase()));
 
   const { sectionRef, scrollRef, activeIndex, scrollTo } = useCarousel(filteredProjects.length, '.carousel-card');
 
@@ -87,19 +32,19 @@ export default function Projects() {
   return (
     <section id="projects" className="section" ref={sectionRef}>
       <div className="container">
-        <div className="section-eyebrow">Projects Overview</div>
+        <div className="section-eyebrow"><Layers size={14} /> Live Product Showcase</div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
-          <h2 className="section-title reveal" style={{ margin: 0 }}>Work I'm <span className="grad">proud of</span></h2>
+          <h2 className="section-title reveal" style={{ margin: 0 }}>Featured <span className="grad">Products & Platforms</span></h2>
           <Link to="/projects" className="btn-outline reveal" style={{ padding: '0.6rem 1.25rem' }}>
-            <span>View All Projects & Case Studies</span>
+            <span>View All Projects & Architecture Diagrams</span>
             <ArrowRight size={15} />
           </Link>
         </div>
 
         <div className="filter-wrap reveal" style={{ marginTop: '1.5rem' }}>
-          {['all', 'web', 'tools', 'design'].map(f => (
+          {['all', 'B2B SaaS', 'web tools', 'web', 'tools'].map(f => (
             <button key={f} className={`filter-btn ${filter === f ? 'active' : ''}`} onClick={() => setFilter(f)}>
-              {f.charAt(0).toUpperCase() + f.slice(1)}
+              {f}
             </button>
           ))}
         </div>
@@ -112,15 +57,30 @@ export default function Projects() {
               <div className="proj-img">
                 <img src={p.img} alt={p.title} className="proj-photo" loading="lazy" />
                 <div className="proj-img-overlay" />
+                <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 2 }}>
+                  <span className="proj-cat-badge" style={{ padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', background: 'rgba(99,102,241,0.9)', color: '#fff', fontWeight: 600 }}>
+                    {p.category.toUpperCase()}
+                  </span>
+                </div>
               </div>
               <div className="proj-body">
                 <div className="proj-tags">
-                  {p.tags.map(t => <span key={t}>{t}</span>)}
+                  {p.tags.slice(0, 3).map(t => <span key={t}>{t}</span>)}
                 </div>
                 <h3>{p.title}</h3>
                 <p>{p.desc}</p>
-                <div className="proj-btns">
-                  <button className="btn-primary btn-sm" onClick={(e) => { e.stopPropagation(); setSelectedProject(p); }}>Preview</button>
+
+                {/* Quick performance metrics preview */}
+                <div className="proj-mini-metrics">
+                  {p.metrics.slice(0, 2).map((m, idx) => (
+                    <div key={idx} className="mini-metric-chip">
+                      <strong>{m.value}</strong> <span>{m.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="proj-btns" style={{ marginTop: '1rem' }}>
+                  <button className="btn-primary btn-sm" onClick={(e) => { e.stopPropagation(); setSelectedProject(p); }}>Product Showcase</button>
                   <a href={p.url} target="_blank" rel="noreferrer" className="btn-outline btn-sm" onClick={(e) => e.stopPropagation()}>
                     Live <ExternalLink size={13} />
                   </a>
@@ -129,6 +89,7 @@ export default function Projects() {
             </div>
           ))}
         </div>
+
         {filteredProjects.length > 1 && (
           <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
             <button className="btn-outline" onClick={() => scrollTo(Math.max(0, activeIndex - 1))} style={{ padding: '0.5rem' }}>
@@ -143,37 +104,16 @@ export default function Projects() {
 
       <div className="container text-center" style={{ marginTop: '3rem' }}>
         <Link to="/projects" className="btn-primary reveal" style={{ display: 'inline-flex', alignItems: 'center' }}>
-          <span>Explore Complete Projects Gallery</span>
+          <span>Explore Complete Product Gallery</span>
           <Sparkles size={16} />
         </Link>
       </div>
 
-      {selectedProject && (
-        <div className="modal-overlay open" onClick={() => setSelectedProject(null)}>
-          <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', padding: 0, overflow: 'hidden' }}>
-            <button className="modal-close" onClick={() => setSelectedProject(null)} aria-label="Close modal"><X size={18} /></button>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 0 }}>
-              <img src={selectedProject.img} alt={selectedProject.title} style={{ width: '100%', height: '300px', objectFit: 'cover' }} />
-              <div style={{ padding: '2rem' }}>
-                <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>{selectedProject.title}</h2>
-                <div className="proj-tags" style={{ marginBottom: '1.5rem' }}>
-                  {selectedProject.tags.map(t => <span key={t}>{t}</span>)}
-                </div>
-                <p style={{ lineHeight: 1.8, color: 'var(--text-2)', marginBottom: '2rem' }}>{selectedProject.fullDesc}</p>
-                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                  <a href={selectedProject.url} target="_blank" rel="noreferrer" className="btn-primary" style={{ flex: 1, justifyContent: 'center' }}>
-                    <span>Live Demo</span>
-                    <ExternalLink size={16} />
-                  </a>
-                  <Link to="/projects" className="btn-outline" style={{ flex: 1, justifyContent: 'center' }}>
-                    <span>Full Case Study</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Product Showcase Modal */}
+      <ProjectProductModal 
+        project={selectedProject} 
+        onClose={() => setSelectedProject(null)} 
+      />
     </section>
   );
 }
