@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Sun, Moon, Mail, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
   theme: string;
@@ -81,7 +82,7 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
         </Link>
 
         <nav className="nav" aria-label="Main navigation">
-          {navLinks.slice(0, 6).map(link => (
+          {navLinks.slice(0, 5).map(link => (
             <Link
               key={link.path}
               to={link.path}
@@ -95,6 +96,12 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
             className={`nav-link ${isLinkActive('/blog') ? 'active' : ''}`}
           >
             Blog
+          </Link>
+          <Link
+            to="/prince-ai"
+            className={`nav-link ${isLinkActive('/prince-ai') ? 'active' : ''}`}
+          >
+            Prince AI
           </Link>
           <Link
             to="/contact"
@@ -137,32 +144,78 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
         </div>
       </div>
 
-      <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`} role="navigation" aria-label="Mobile navigation">
-        <ul>
-          {navLinks.map(link => (
-            <li key={link.path}>
-              <Link
-                to={link.path}
-                className={`mob-link ${isLinkActive(link.path) ? 'active' : ''}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <ChevronRight size={14} />
-                {link.label}
-              </Link>
-            </li>
-          ))}
-          <li>
-            <Link
-              to="/contact"
-              className={`mob-link ${isLinkActive('/contact') ? 'active' : ''}`}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            <motion.div
+              className="mobile-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25, ease: 'easeInOut' }}
               onClick={() => setIsMenuOpen(false)}
+              style={{
+                position: 'fixed', inset: 0, zIndex: 98,
+                background: 'rgba(0,0,0,0.5)',
+                backdropFilter: 'blur(4px)',
+                WebkitBackdropFilter: 'blur(4px)',
+              }}
+            />
+            <motion.div
+              className="mobile-menu"
+              role="navigation"
+              aria-label="Mobile navigation"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                position: 'fixed', top: 0, right: 0, bottom: 0, zIndex: 99,
+                width: 'min(320px, 85vw)',
+                background: 'var(--bg-elevated)',
+                borderLeft: '1px solid var(--border)',
+                padding: '5.5rem 1.5rem 2rem',
+                overflowY: 'auto',
+                boxShadow: '-8px 0 32px rgba(0,0,0,0.3)',
+              }}
             >
-              <ChevronRight size={14} />
-              Contact Page
-            </Link>
-          </li>
-        </ul>
-      </div>
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                {navLinks.map((link, i) => (
+                  <motion.li
+                    key={link.path}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.05 * i, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <Link
+                      to={link.path}
+                      className={`mob-link ${isLinkActive(link.path) ? 'active' : ''}`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <ChevronRight size={14} />
+                      {link.label}
+                    </Link>
+                  </motion.li>
+                ))}
+                <motion.li
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 * navLinks.length, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Link
+                    to="/contact"
+                    className={`mob-link ${isLinkActive('/contact') ? 'active' : ''}`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <ChevronRight size={14} />
+                    Contact Page
+                  </Link>
+                </motion.li>
+              </ul>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
