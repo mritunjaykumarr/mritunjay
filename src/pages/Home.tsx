@@ -4,6 +4,7 @@ import Education from '../components/Education';
 import Projects from '../components/Projects';
 import Certifications from '../components/Certifications';
 import Skills from '../components/Skills';
+import AIPlayground from '../components/AIPlayground';
 import BlogFeed from '../components/BlogFeed';
 import Pricing from '../components/Pricing';
 import PrinceAI from '../components/PrinceAI';
@@ -21,6 +22,7 @@ export default function Home() {
         <Projects />
         <Certifications />
         <Skills />
+        <AIPlayground />
         <BlogFeed />
         <Pricing />
         <PrinceAI />

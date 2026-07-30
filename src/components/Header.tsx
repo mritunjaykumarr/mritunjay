@@ -59,6 +59,7 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
     { label: 'Experience', path: '/experience' },
     { label: 'Projects', path: '/projects' },
     { label: 'Skills', path: '/skills' },
+    { label: 'Playground', path: '/playground' },
     { label: 'Certifications', path: '/certifications' },
     { label: 'Blog', path: '/blog' },
     { label: 'Pricing', path: '/pricing' },
@@ -82,7 +83,7 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
         </Link>
 
         <nav className="nav" aria-label="Main navigation">
-          {navLinks.slice(0, 5).map(link => (
+          {navLinks.slice(0, 4).map(link => (
             <Link
               key={link.path}
               to={link.path}
@@ -91,6 +92,12 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
               {link.label}
             </Link>
           ))}
+          <Link
+            to="/playground"
+            className={`nav-link ${isLinkActive('/playground') ? 'active' : ''}`}
+          >
+            Playground
+          </Link>
           <Link
             to="/blog"
             className={`nav-link ${isLinkActive('/blog') ? 'active' : ''}`}

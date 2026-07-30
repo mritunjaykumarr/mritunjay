@@ -18,6 +18,8 @@ import Loader from './components/Loader';
 import CustomCursor from './components/CustomCursor';
 import FloatingPrinceAI from './components/FloatingPrinceAI';
 
+import PlaygroundPage from './pages/PlaygroundPage';
+
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const AdFree = lazy(() => import('./pages/AdFree'));
 
@@ -68,6 +70,7 @@ function App() {
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/prince-ai" element={<PrinceAIPage />} />
+          <Route path="/playground" element={<PlaygroundPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/adfree" element={<AdFree />} />
         </Routes>
