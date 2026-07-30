@@ -3973,9 +3973,10 @@ p {
   /* ── CONTACT PAGE MOBILE ── */
   .contact-main-grid {
     grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
   }
   .contact-form-col .card-glass {
-    padding: 1.5rem !important;
+    padding: 1.25rem !important;
   }
   .contact-info-col {
     order: 2;
@@ -3985,6 +3986,21 @@ p {
   }
   .contact-main-grid .card-glass {
     padding: 1.25rem !important;
+  }
+  .contact-main-grid .card-glass h3 {
+    font-size: 1.1rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  .contact-main-grid .card-glass a {
+    padding: 0.6rem !important;
+    gap: 10px !important;
+  }
+  .contact-main-grid .card-glass a > div > div:first-child {
+    font-size: 0.7rem !important;
+  }
+  .contact-main-grid .card-glass a > div > div:last-child {
+    font-size: 0.85rem !important;
+    word-break: break-all;
   }
 
   /* ── CONTACT MODAL (global) MOBILE ── */
@@ -3996,6 +4012,15 @@ p {
   .contact-right {
     width: 100% !important;
     padding: 1.25rem !important;
+  }
+  .contact-right form {
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+  }
+  .modal-box {
+    max-height: 95vh !important;
+    overflow-y: auto !important;
   }
 
   /* ── EXPERIENCE PAGE MOBILE ── */
@@ -4071,7 +4096,23 @@ p {
   .blog-card-grid > div:last-child { padding: 1.25rem !important; }
   .blog-card-cover { height: 160px !important; }
   
-  .contact-main-grid { gap: 1.5rem !important; }
+  .contact-main-grid {
+    gap: 1.25rem !important;
+  }
+  .contact-main-grid .card-glass {
+    padding: 1rem !important;
+  }
+  .contact-main-grid .card-glass a {
+    padding: 0.5rem !important;
+  }
+  .contact-main-grid .card-glass a > div > div:last-child {
+    font-size: 0.8rem !important;
+  }
+  .contact-main-grid .card-glass:last-child > div:first-child {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
   
   .experience-list { gap: 1.25rem !important; }
 }
