@@ -1602,6 +1602,7 @@ p {
 
 .proj-tags {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.4rem;
   margin-bottom: 0.75rem;
 }
@@ -3761,7 +3762,7 @@ p {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
+  z-index: 20;
   transition: all var(--dur-fast) var(--ease);
   box-shadow: var(--shadow-md);
 }
@@ -3918,6 +3919,150 @@ p {
   .blog-read-title { font-size: 1.75rem; }
   .blog-read-meta { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
   .contact-layout { grid-template-columns: 1fr; }
+
+  /* ── PROJECT PAGE MOBILE ── */
+  .projects-controls-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 1rem !important;
+  }
+  .projects-controls-bar .search-box {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .projects-controls-bar .filter-wrap {
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ── SKILLS PAGE MOBILE ── */
+  .skills-controls {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 1rem !important;
+  }
+  .skills-controls > div:first-child {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .skills-controls .filter-wrap {
+    justify-content: center;
+  }
+  .skills-matrix-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── BLOG PAGE MOBILE ── */
+  .blog-controls {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 1rem !important;
+  }
+  .blog-controls > div:first-child {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .blog-controls .filter-wrap {
+    justify-content: center;
+  }
+  .blog-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  /* ── CONTACT PAGE MOBILE ── */
+  .contact-main-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .contact-form-col .card-glass {
+    padding: 1.5rem !important;
+  }
+  .contact-info-col {
+    order: 2;
+  }
+  .contact-form-col {
+    order: 1;
+  }
+  .contact-main-grid .card-glass {
+    padding: 1.25rem !important;
+  }
+
+  /* ── EXPERIENCE PAGE MOBILE ── */
+  .experience-card {
+    padding: 1.25rem !important;
+  }
+  .exp-card-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .exp-card-header .exp-meta {
+    text-align: left !important;
+    width: 100%;
+  }
+  .exp-card-header .exp-meta > div {
+    justify-content: flex-start !important;
+  }
+
+  /* ── CERTIFICATION PAGE MOBILE ── */
+  .certs-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+  .cert-card-full > div:last-child {
+    padding: 1.25rem !important;
+  }
+
+  /* ── LANDING PAGE CAROUSEL CENTERING ── */
+  .carousel-track {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+    gap: 1rem;
+    justify-content: flex-start;
+  }
+  .carousel-card, .blog-card {
+    width: 85vw !important;
+    max-width: 85vw !important;
+  }
+
+  /* ── SKILL CARDS HOME ── */
+  .skills-cards.horizontal-scroll {
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+  .skills-cards.horizontal-scroll .skill-cat {
+    min-width: 220px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .container { padding: 0 1rem; }
+  .section { padding: 3rem 0; }
+  .page-title { font-size: 1.75rem !important; }
+  .page-subtitle { font-size: 0.92rem !important; }
+  .page-header { padding: 2rem 0 1.5rem; }
+  
+  .carousel-card, .blog-card { width: 82vw !important; max-width: 82vw !important; }
+  .carousel-track { padding-left: 1rem !important; padding-right: 1rem !important; gap: 0.75rem; }
+  
+  .proj-tags span { font-size: 0.65rem; padding: 0.15rem 0.45rem; }
+  
+  .skills-matrix-grid { gap: 1rem; }
+  .skill-matrix-card { padding: 1.25rem !important; }
+  
+  .cert-thumb { height: 160px !important; }
+  
+  .blog-card-grid > div:last-child { padding: 1.25rem !important; }
+  .blog-card-cover { height: 160px !important; }
+  
+  .contact-main-grid { gap: 1.5rem !important; }
+  
+  .experience-list { gap: 1.25rem !important; }
 }
 
 /* ── MULTI-PAGE & DEDICATED PAGE STYLES ── */

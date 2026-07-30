@@ -103,7 +103,7 @@ export default function SkillsPage() {
         <div className="container">
           <div className="skills-controls card-glass" style={{ padding: '1.25rem 1.5rem', borderRadius: 'var(--r-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
             {/* Search */}
-            <div style={{ position: 'relative', flex: '1', minWidth: '240px' }}>
+            <div style={{ position: 'relative', flex: '1', minWidth: '180px' }}>
               <Search size={18} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
               <input 
                 type="text"

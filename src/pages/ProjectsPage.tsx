@@ -197,7 +197,7 @@ export default function ProjectsPage() {
           <div className="projects-controls-bar card-glass" style={{ padding: '1.25rem 1.5rem', borderRadius: 'var(--r-md)', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
             
             {/* Search Input */}
-            <div className="search-box" style={{ position: 'relative', flex: '1', minWidth: '260px' }}>
+            <div className="search-box" style={{ position: 'relative', flex: '1', minWidth: '200px' }}>
               <Search size={18} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
               <input 
                 type="text" 
