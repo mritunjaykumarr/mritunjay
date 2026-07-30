@@ -3987,6 +3987,17 @@ p {
     padding: 1.25rem !important;
   }
 
+  /* ── CONTACT MODAL (global) MOBILE ── */
+  .contact-grid {
+    flex-direction: column !important;
+    display: flex !important;
+  }
+  .contact-left,
+  .contact-right {
+    width: 100% !important;
+    padding: 1.25rem !important;
+  }
+
   /* ── EXPERIENCE PAGE MOBILE ── */
   .experience-card {
     padding: 1.25rem !important;
