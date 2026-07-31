@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Sun, Moon, Mail, ChevronRight } from 'lucide-react';
+import { Sun, Moon, ArrowRight, FileText, Sparkles, X, Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -47,7 +47,7 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  // Lock body scroll when menu is open
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -58,11 +58,8 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
     { label: 'About', path: '/about' },
     { label: 'Experience', path: '/experience' },
     { label: 'Projects', path: '/projects' },
-    { label: 'Skills', path: '/skills' },
     { label: 'Playground', path: '/playground' },
-    { label: 'Certifications', path: '/certifications' },
     { label: 'Blog', path: '/blog' },
-    { label: 'Pricing', path: '/pricing' },
     { label: 'Prince AI', path: '/prince-ai' },
   ];
 
@@ -72,157 +69,208 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
   };
 
   return (
-    <header className={`header ${scrolled ? 'scrolled' : ''}`} id="header" ref={headerRef}>
-      <div className="header-progress" aria-hidden="true">
-        <span style={{ transform: `scaleX(${Math.max(scrollProgress, 0.01)})` }} />
-      </div>
-      <div className="container header-inner">
-        <Link to="/" className="logo">
-          <span>MRITUNJAY</span>
-          <span className="logo-dot" />
+    <motion.header
+      ref={headerRef}
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className={`header-floating-wrapper ${scrolled ? 'header-scrolled' : ''}`}
+      id="header"
+    >
+      <div className="navbar-pill-container">
+        {/* Scroll Progress Bar */}
+        <div className="header-progress" aria-hidden="true">
+          <span style={{ transform: `scaleX(${Math.max(scrollProgress, 0.005)})` }} />
+        </div>
+
+        {/* LEFT: LOGO */}
+        <Link to="/" className="navbar-logo" aria-label="Mritunjay AI Home">
+          <div className="logo-icon-box">
+            <Sparkles className="logo-sparkle-icon" size={15} />
+            <span className="logo-pulse-ring" />
+          </div>
+          <span className="logo-text">
+            MRITUNJAY<span className="logo-dot-accent">.AI</span>
+          </span>
         </Link>
 
-        <nav className="nav" aria-label="Main navigation">
-          {navLinks.slice(0, 4).map(link => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`nav-link ${isLinkActive(link.path) ? 'active' : ''}`}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link
-            to="/playground"
-            className={`nav-link ${isLinkActive('/playground') ? 'active' : ''}`}
-          >
-            Playground
-          </Link>
-          <Link
-            to="/blog"
-            className={`nav-link ${isLinkActive('/blog') ? 'active' : ''}`}
-          >
-            Blog
-          </Link>
-          <Link
-            to="/prince-ai"
-            className={`nav-link ${isLinkActive('/prince-ai') ? 'active' : ''}`}
-          >
-            Prince AI
-          </Link>
-          <Link
-            to="/contact"
-            className={`nav-link ${isLinkActive('/contact') ? 'active' : ''}`}
-          >
-            Contact
-          </Link>
+        {/* CENTER: DESKTOP NAVIGATION LINKS */}
+        <nav className="navbar-center-nav" aria-label="Main navigation">
+          {navLinks.map((link) => {
+            const active = isLinkActive(link.path);
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`nav-pill-item ${active ? 'active' : ''}`}
+                aria-current={active ? 'page' : undefined}
+              >
+                {active && (
+                  <motion.span
+                    layoutId="navbar-active-pill"
+                    className="nav-active-bg"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="nav-pill-label">{link.label}</span>
+              </Link>
+            );
+          })}
         </nav>
 
-        <div className="header-actions">
-          <div className="header-clock" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '0.7rem', color: 'var(--text-muted)', marginRight: '0.75rem', lineHeight: '1.2' }}>
-            <strong style={{ color: 'var(--text)', fontSize: '0.75rem' }}>{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong>
-            <span>{currentTime.toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
+        {/* RIGHT: ACTIONS (Live Time, Theme Toggle, Resume, Contact CTA) */}
+        <div className="navbar-right-actions">
+          {/* Live Time Display */}
+          <div className="navbar-live-time" title="Current Local Time (IST)">
+            <span className="live-pulse-dot" aria-hidden="true" />
+            <span className="time-text">
+              {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </span>
+            <span className="time-tz">IST</span>
           </div>
 
-          <button
-            className="theme-toggle"
+          {/* Theme Toggle Button */}
+          <motion.button
+            className="navbar-theme-btn"
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             onClick={toggleTheme}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92, rotate: 180 }}
+            transition={{ duration: 0.2 }}
           >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
+            {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+          </motion.button>
 
+          {/* Secondary Resume Button */}
+          <a
+            href="/updated_resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="navbar-resume-btn"
+            aria-label="Download or view Resume PDF"
+          >
+            <FileText size={14} />
+            <span>Resume</span>
+          </a>
+
+          {/* Primary Gradient Contact CTA Button */}
+          <Link to="/contact" className="navbar-contact-cta">
+            <span>Contact</span>
+            <ArrowRight size={14} className="cta-arrow-icon" />
+          </Link>
+
+          {/* Mobile Hamburger Button */}
           <button
-            className={`hamburger ${isMenuOpen ? 'open' : ''}`}
+            className={`navbar-hamburger-btn ${isMenuOpen ? 'open' : ''}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label="Toggle Navigation Menu"
             aria-expanded={isMenuOpen}
           >
-            <span /><span /><span />
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-
-          <Link 
-            to="/contact" 
-            className="btn-hire"
-            style={{ textDecoration: 'none' }}
-          >
-            <Mail size={15} /> Contact
-          </Link>
         </div>
       </div>
 
+      {/* MOBILE SLIDE-DOWN GLASS MENU */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
             <motion.div
-              className="mobile-overlay"
+              className="navbar-mobile-backdrop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.25, ease: 'easeInOut' }}
+              transition={{ duration: 0.25 }}
               onClick={() => setIsMenuOpen(false)}
-              style={{
-                position: 'fixed', inset: 0, zIndex: 98,
-                background: 'rgba(0,0,0,0.5)',
-                backdropFilter: 'blur(4px)',
-                WebkitBackdropFilter: 'blur(4px)',
-              }}
             />
             <motion.div
-              className="mobile-menu"
+              className="navbar-mobile-menu"
               role="navigation"
               aria-label="Mobile navigation"
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                position: 'fixed', top: 0, right: 0, bottom: 0, zIndex: 99,
-                width: 'min(320px, 85vw)',
-                background: 'var(--bg-elevated)',
-                borderLeft: '1px solid var(--border)',
-                padding: '5.5rem 1.5rem 2rem',
-                overflowY: 'auto',
-                boxShadow: '-8px 0 32px rgba(0,0,0,0.3)',
-              }}
+              initial={{ opacity: 0, y: -20, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.96 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
-              <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                {navLinks.map((link, i) => (
-                  <motion.li
-                    key={link.path}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.05 * i, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <Link
-                      to={link.path}
-                      className={`mob-link ${isLinkActive(link.path) ? 'active' : ''}`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <ChevronRight size={14} />
-                      {link.label}
-                    </Link>
-                  </motion.li>
-                ))}
-                <motion.li
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 * navLinks.length, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              <div className="mobile-menu-header">
+                <div className="mobile-menu-brand">
+                  <Sparkles size={16} className="text-accent" />
+                  <span>Navigation</span>
+                </div>
+                <button
+                  className="mobile-close-btn"
+                  onClick={() => setIsMenuOpen(false)}
+                  aria-label="Close menu"
                 >
-                  <Link
-                    to="/contact"
-                    className={`mob-link ${isLinkActive('/contact') ? 'active' : ''}`}
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="mobile-menu-links">
+                {navLinks.map((link, i) => {
+                  const active = isLinkActive(link.path);
+                  return (
+                    <motion.div
+                      key={link.path}
+                      initial={{ opacity: 0, x: -16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.04 * i, duration: 0.25 }}
+                    >
+                      <Link
+                        to={link.path}
+                        className={`mobile-nav-item ${active ? 'active' : ''}`}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <span>{link.label}</span>
+                        {active && <span className="mobile-active-dot" />}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              <div className="mobile-menu-footer">
+                <div className="mobile-meta-row">
+                  <div className="mobile-time-badge">
+                    <span className="live-pulse-dot" />
+                    <span>{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} IST</span>
+                  </div>
+
+                  <button
+                    className="mobile-theme-btn"
+                    onClick={toggleTheme}
+                    aria-label="Toggle theme"
+                  >
+                    {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+                    <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                  </button>
+                </div>
+
+                <div className="mobile-actions-grid">
+                  <a
+                    href="/updated_resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mobile-resume-btn"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <ChevronRight size={14} />
-                    Contact Page
+                    <FileText size={15} />
+                    <span>Resume</span>
+                  </a>
+                  <Link
+                    to="/contact"
+                    className="mobile-contact-btn"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <span>Contact Me</span>
+                    <ArrowRight size={15} />
                   </Link>
-                </motion.li>
-              </ul>
+                </div>
+              </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }
