@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import { 
   PieChart, Plus, Layers, ArrowLeft, FileText, CheckCircle, 
   PenTool, Upload, Loader2, X, Send, Save, Calendar, 
-  Folder, Heart, Edit2, Trash2, Ghost 
+  Folder, Heart, Edit2, Trash2, Ghost, Clock
 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -13,6 +14,7 @@ export default function Dashboard() {
   const [view, setView] = useState('dashboard'); // 'dashboard', 'compose', 'posts'
   const [formData, setFormData] = useState({ id: '', title: '', excerpt: '', body: '', type: 'Blog', category: 'General', cover: '' });
   const [uploading, setUploading] = useState(false);
+  const [previewPost, setPreviewPost] = useState<any>(null);
   
   useEffect(() => {
     if (authenticated) {
@@ -247,6 +249,49 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+        )}
+
+        {previewPost && (
+          <AnimatePresence>
+            <motion.div 
+              className="modal-bg open" 
+              onClick={() => setPreviewPost(null)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <motion.div 
+                className="modal-box blog-read-modal" 
+                onClick={e => e.stopPropagation()}
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              >
+                <button 
+                  className="modal-close" 
+                  onClick={() => setPreviewPost(null)}
+                  aria-label="Close modal"
+                ><X size={18} /></button>
+                <div>
+                  {previewPost.cover && <img src={previewPost.cover} className="blog-read-cover" alt="" />}
+                  <div style={{ padding: '2rem' }}>
+                    <div className={`blog-read-type blog-type-${previewPost.type?.toLowerCase()}`}>{previewPost.type || 'Blog'}</div>
+                    <h1 className="blog-read-title" style={{ fontSize: '2.2rem', margin: '0.75rem 0' }}>{previewPost.title}</h1>
+                    
+                    <div className="blog-read-meta" style={{ display: 'flex', gap: '1.25rem', color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '2rem' }}>
+                      <span><Folder size={14} /> {previewPost.category || 'General'}</span>
+                      <span><Calendar size={14} /> {new Date(previewPost.created_at).toLocaleDateString()}</span>
+                      <span><Clock size={14} /> {Math.max(1, Math.ceil((previewPost.body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).length / 200))} min read</span>
+                    </div>
+
+                    <div className="blog-read-body" dangerouslySetInnerHTML={{ __html: previewPost.body }} style={{ fontSize: '1.05rem', lineHeight: 1.8 }} />
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </AnimatePresence>
         )}
 
         {view === 'posts' && (
