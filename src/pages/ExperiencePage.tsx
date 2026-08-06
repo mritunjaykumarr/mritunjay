@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Briefcase, GraduationCap, Calendar, MapPin, CheckCircle, ArrowRight, Download } from 'lucide-react';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
 export default function ExperiencePage() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.experience);
 
   const experiences = [
     {

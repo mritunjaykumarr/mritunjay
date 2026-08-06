@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
 import AIPlayground from '../components/AIPlayground';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
 export default function PlaygroundPage() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.playground);
 
   return (
     <div className="page-wrapper playground-page" style={{ paddingTop: '5.5rem', paddingBottom: '5rem' }}>

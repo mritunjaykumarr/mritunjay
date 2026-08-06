@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom';
 import { Bot } from 'lucide-react';
 import PrinceAI from '../components/PrinceAI';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
 export default function PrinceAIPage() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.princeAI);
 
   return (
     <div className="page-wrapper prince-ai-page" style={{ paddingTop: '5.5rem', paddingBottom: '5rem' }}>

@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { ExternalLink, Search, Layers, X, Sparkles, Code2 } from 'lucide-react';
 import { useScrollLock } from '../hooks/useScrollLock';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 import ProjectProductModal from '../components/ProjectProductModal';
 import type { ExtendedProjectItem } from '../components/ProjectProductModal';
 import { EXTENDED_PROJECTS_DATA } from '../data/projectsData';
 
 export default function ProjectsPage() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.projects);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [selectedProject, setSelectedProject] = useState<ExtendedProjectItem | null>(null);

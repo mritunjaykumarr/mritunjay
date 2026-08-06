@@ -9,9 +9,11 @@ import BlogFeed from '../components/BlogFeed';
 import Pricing from '../components/Pricing';
 import PrinceAI from '../components/PrinceAI';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
 export default function Home() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.home);
 
   return (
     <div className="home" style={{ overflowX: 'hidden' }}>

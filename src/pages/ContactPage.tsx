@@ -6,9 +6,11 @@ import {
 } from 'lucide-react';
 import { LinkedinIcon } from '../components/SocialIcons';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
 export default function ContactPage() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.contact);
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());

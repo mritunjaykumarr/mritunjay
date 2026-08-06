@@ -166,6 +166,7 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   background: var(--bg);
+  overflow-x: hidden;
 }
 
 body {
@@ -7285,4 +7286,436 @@ p {
 @keyframes spin {
   100% { transform: rotate(360deg); }
 }
+
+/* ================================================================
+   COMPREHENSIVE MOBILE RESPONSIVE FIXES
+   Fixes: navbar overflow, hero content cut-off, page grids, 
+   floating badges, terminal, all pages on phone screens
+   ================================================================ */
+
+/* ── TABLET: 768px and below ── */
+@media (max-width: 768px) {
+
+  /* Navbar: hide Contact CTA + resume on tablet/phone */
+  .navbar-contact-cta {
+    display: none !important;
+  }
+
+  .navbar-resume-btn {
+    display: none !important;
+  }
+
+  /* Hero: stack to single column */
+  .hero-inner {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    text-align: center;
+  }
+
+  .hero-left {
+    order: 1;
+  }
+
+  .hero-right {
+    order: 2;
+  }
+
+  /* Hero text: prevent overflow */
+  .hero-h1 {
+    font-size: clamp(1.75rem, 7vw, 2.8rem) !important;
+    word-break: break-word;
+  }
+
+  .hero-sub {
+    font-size: 0.95rem !important;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+  }
+
+  .hero-badge {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Hero buttons */
+  .hero-btns {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Hero stats */
+  .hero-stats {
+    justify-content: center;
+    gap: 1.5rem !important;
+  }
+
+  .stat-num {
+    font-size: 1.5rem !important;
+  }
+
+  /* AI Prompt Box: constrain to viewport */
+  .hero-ai-prompt-box {
+    padding: 0.65rem 0.75rem !important;
+    margin: 1rem 0 !important;
+  }
+
+  .ai-prompt-input-wrapper {
+    gap: 0.5rem !important;
+  }
+
+  .ai-prompt-input-wrapper input {
+    font-size: 0.8rem !important;
+    min-width: 0;
+  }
+
+  .ai-prompt-input-wrapper .btn-primary {
+    padding: 0.4rem 0.65rem !important;
+    font-size: 0.72rem !important;
+    white-space: nowrap;
+  }
+
+  .hero-prompt-chips {
+    gap: 0.35rem !important;
+  }
+
+  .hero-prompt-chips button {
+    font-size: 0.68rem !important;
+    padding: 0.15rem 0.5rem !important;
+  }
+
+  /* Hero right: terminal + floating badges */
+  .profile-stage-redesign {
+    max-width: 100% !important;
+    margin: 0 auto;
+  }
+
+  .hero-terminal-card {
+    max-width: 100% !important;
+  }
+
+  /* Hide floating orbit badges on mobile — they cause overflow */
+  .float-orbit-1,
+  .float-orbit-2,
+  .float-orbit-3,
+  .float-orbit-4,
+  .float-orbit-5 {
+    display: none !important;
+  }
+
+  /* Hero socials bar */
+  .hero-socials-bar {
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem !important;
+    flex-wrap: wrap;
+  }
+
+  .hero-socials-bar span {
+    font-size: 0.8rem;
+  }
+
+  /* Scroll hint */
+  .scroll-hint {
+    display: none !important;
+  }
+
+  /* 3D Canvas */
+  .hero-canvas-3d {
+    height: 200px !important;
+    max-height: 200px !important;
+  }
+
+  /* About grid */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  /* Experience list */
+  .experience-list {
+    gap: 1.5rem !important;
+  }
+
+  .experience-card {
+    padding: 1.25rem !important;
+  }
+
+  /* Footer */
+  .footer-shell {
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+
+  .footer-links-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .footer-bottom {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    text-align: center;
+  }
+
+  /* Page-level styles */
+  .page-header-content {
+    text-align: center;
+  }
+
+  .page-title {
+    font-size: clamp(1.5rem, 6vw, 2.5rem) !important;
+    word-break: break-word;
+  }
+
+  .page-subtitle {
+    font-size: 0.95rem !important;
+    max-width: 100%;
+  }
+
+  .section-eyebrow {
+    justify-content: center;
+  }
+
+  .breadcrumb {
+    justify-content: center;
+  }
+
+  /* Contact page grid */
+  .contact-main-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Pricing grid */
+  .pricing-grid,
+  .pricing-tiers-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Blog grid */
+  .blog-grid,
+  .blog-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Skills matrix */
+  .skills-matrix-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Floating AI button */
+  .floating-ai-btn {
+    bottom: 16px !important;
+    right: 16px !important;
+    padding: 0.6rem 1rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .floating-ai-drawer {
+    max-width: 100% !important;
+    height: 70vh !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+}
+
+/* ── SMALL PHONE: 480px and below ── */
+@media (max-width: 480px) {
+
+  /* Even tighter container */
+  .container {
+    width: calc(100% - 1.5rem) !important;
+  }
+
+  /* Navbar: smaller padding */
+  .navbar-pill-container {
+    padding: 0.4rem 0.6rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .navbar-logo {
+    font-size: 0.8rem !important;
+    gap: 0.4rem !important;
+  }
+
+  .logo-icon-box {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .navbar-theme-btn {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .navbar-hamburger-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  /* Hero: even smaller text */
+  .hero {
+    padding: 6rem 0 2rem !important;
+    min-height: auto !important;
+  }
+
+  .hero-h1 {
+    font-size: clamp(1.5rem, 6.5vw, 2.2rem) !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .hero-sub {
+    font-size: 0.85rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .hero-btns {
+    gap: 0.5rem !important;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    padding: 0.6rem 1.15rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .hero-stats {
+    gap: 1rem !important;
+  }
+
+  .stat-num {
+    font-size: 1.25rem !important;
+  }
+
+  .stat-lbl {
+    font-size: 0.65rem !important;
+  }
+
+  /* AI Prompt: even smaller */
+  .hero-ai-prompt-box {
+    padding: 0.5rem 0.6rem !important;
+  }
+
+  .ai-prompt-input-wrapper input {
+    font-size: 0.75rem !important;
+  }
+
+  .ai-prompt-input-wrapper .btn-primary {
+    padding: 0.35rem 0.55rem !important;
+    font-size: 0.68rem !important;
+  }
+
+  .ai-prompt-input-wrapper .btn-primary span {
+    display: none;
+  }
+
+  /* Terminal card */
+  .hero-terminal-card {
+    font-size: 0.72rem !important;
+  }
+
+  .terminal-body {
+    padding: 0.75rem !important;
+    max-height: 200px !important;
+  }
+
+  /* Footer: single column */
+  .footer-links-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .footer-tags {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem !important;
+  }
+
+  /* Section padding */
+  .section {
+    padding: 3rem 0 !important;
+  }
+
+  /* Page header */
+  .page-header {
+    padding: 1.5rem 0 1rem !important;
+  }
+
+  /* About page */
+  .about-summary-row {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .about-philosophy-tabs {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Experience timeline */
+  .exp-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Mobile menu adjustments */
+  .navbar-mobile-menu {
+    left: 0.5rem !important;
+    right: 0.5rem !important;
+    top: 4rem !important;
+    padding: 1rem !important;
+    border-radius: 20px !important;
+  }
+
+  .mobile-nav-item {
+    padding: 0.55rem 0.7rem !important;
+    font-size: 0.88rem !important;
+  }
+
+  .mobile-actions-grid {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  .mobile-resume-btn,
+  .mobile-contact-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+}
+
+/* ── EXTRA SMALL: 360px and below (tiny phones) ── */
+@media (max-width: 360px) {
+  .container {
+    width: calc(100% - 1rem) !important;
+  }
+
+  .navbar-pill-container {
+    padding: 0.35rem 0.5rem !important;
+  }
+
+  .navbar-logo .logo-text {
+    font-size: 0.72rem !important;
+  }
+
+  .hero-h1 {
+    font-size: 1.35rem !important;
+  }
+
+  .hero-sub {
+    font-size: 0.8rem !important;
+  }
+
+  .hero-ai-prompt-box {
+    margin: 0.75rem 0 !important;
+  }
+
+  .hero-prompt-chips {
+    display: none !important;
+  }
+}
+
 

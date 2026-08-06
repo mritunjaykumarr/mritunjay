@@ -5,9 +5,11 @@ import {
   Compass, Layers, Zap, Heart, Award
 } from 'lucide-react';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
 export default function AboutPage() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.about);
   const [activeTab, setActiveTab] = useState<'philosophy' | 'values' | 'milestones'>('philosophy');
 
   return (

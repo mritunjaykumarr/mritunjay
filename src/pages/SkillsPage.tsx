@@ -5,6 +5,7 @@ import {
   Cpu, Layers, CheckCircle2 
 } from 'lucide-react';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
 interface SkillItem {
   name: string;
@@ -46,6 +47,7 @@ const skillsDatabase: SkillItem[] = [
 
 export default function SkillsPage() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.skills);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<'all' | 'frontend' | 'backend' | 'languages' | 'tools'>('all');
   const visualRef = useRef<HTMLDivElement>(null);

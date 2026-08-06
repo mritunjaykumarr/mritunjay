@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Award, Eye, X, ExternalLink, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { useScrollLock } from '../hooks/useScrollLock';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
 export interface CertItem {
   id: number;
@@ -70,6 +71,7 @@ export const certsDatabase: CertItem[] = [
 
 export default function CertificationsPage() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.certifications);
   const [selectedCert, setSelectedCert] = useState<CertItem | null>(null);
 
   useScrollLock(!!selectedCert);

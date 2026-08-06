@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useScrollLock } from '../hooks/useScrollLock';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 import { 
   Heart, MessageCircle, ArrowRight, X, Calendar, 
   Clock, FolderOpen, FileEdit, Search, BookOpen 
@@ -52,6 +53,7 @@ export const DEFAULT_POSTS = [
 
 export default function BlogPage() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.blog);
   const [posts, setPosts] = useState<any[]>(DEFAULT_POSTS);
   const [loading] = useState(false);
   const [filterCategory, setFilterCategory] = useState('all');

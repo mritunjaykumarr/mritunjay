@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Check, ArrowRight, Sparkles, HelpCircle } from 'lucide-react';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
+import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
 export default function PricingPage() {
   usePortfolioMotion();
+  useSEO(SEO_CONFIGS.pricing);
 
   const pricingTiers = [
     {
