@@ -18,7 +18,7 @@ const TERMINAL_DATA: TerminalTab[] = [
       '💼 Role:       Full Stack & AI Application Developer',
       '🏢 Current:    Full Stack Developer @ Epigroww Global',
       '🌟 Specialty:  AI Products, B2B SaaS, System Architecture',
-      '⚡ Best Proj:   RetailConnect (B2B Retail Automation)',
+      '⚡ Best Proj:   Bulk Mail Sender (High-Volume Email)',
       '------------------------------------------------',
       '✨ Use arrow keys or chat with Prince AI to explore!',
     ],
@@ -50,7 +50,7 @@ const TERMINAL_DATA: TerminalTab[] = [
     command: 'git log --oneline -n 4',
     output: [
       'a7b3d2e (HEAD -> main) feat(hero): 3D canvas, animated terminal & Ask Prince AI',
-      'f91e02c feat(saas): launch RetailConnect B2B distribution platform',
+      'f91e02c feat(saas): launch B2B SaaS platform',
       'c4d812b feat(ai): integrate Prince AI portfolio intelligence agent',
       'e83109a perf(core): 99.9% uptime & sub-20ms WebSocket chat engine',
     ],

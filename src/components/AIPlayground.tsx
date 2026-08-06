@@ -27,11 +27,11 @@ const TOOLS: ToolConfig[] = [
 const PRESETS = {
   email: [
     { label: 'Cold Client Outreach', topic: 'Offering full-stack SaaS & AI consulting for automated workflow reduction.', target: 'CTO at Tech Startup', tone: 'Persuasive' },
-    { label: 'Project Follow-up', topic: 'Checking status on RetailConnect integration proposal sent last Friday.', target: 'Product Director', tone: 'Professional' },
+    { label: 'Project Follow-up', topic: 'Checking status on software integration proposal sent last Friday.', target: 'Product Director', tone: 'Professional' },
     { label: 'Technical Bug Escalation', topic: 'Reporting API rate limit bottleneck during peak traffic spikes.', target: 'DevOps Lead', tone: 'Direct' },
   ],
   summary: [
-    { label: 'System Architecture Doc', text: `RetailConnect utilizes a decoupled microservices architecture with a React Vite frontend hosted on Cloudflare Pages, communicating via GraphQL and REST endpoints with Node.js microservices. PostgreSQL serves as the primary relational store with Redis caching layer reducing database latency by 65%. Event-driven data updates flow via WebSockets for live inventory tracking across 12,000 active retail locations.` },
+    { label: 'System Architecture Doc', text: `The SaaS platform utilizes a decoupled microservices architecture with a React Vite frontend hosted on Cloudflare Pages, communicating via GraphQL and REST endpoints with Node.js microservices. PostgreSQL serves as the primary relational store with Redis caching layer reducing database latency by 65%. Event-driven data updates flow via WebSockets for live tracking across active locations.` },
     { label: 'AI Model Deployment Specs', text: `The custom LLM agent framework is deployed across serverless GPU instances with fallback routing. Streaming responses use Server-Sent Events (SSE) with exponential backoff on retry. Average time to first token is under 180ms, maintaining strict P99 response constraints under 1.2 seconds for full context windows.` },
   ],
   sql: [

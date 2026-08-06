@@ -8,7 +8,6 @@ interface ChatMessage {
 }
 
 const PRESET_QUESTIONS = [
-  { label: 'Tell me about RetailConnect', prompt: 'Tell me about RetailConnect' },
   { label: 'Show your best project', prompt: 'Show your best project' },
   { label: 'What technologies do you know?', prompt: 'What technologies do you know?' },
   { label: 'Why should we hire you?', prompt: 'Why should we hire you?' },
@@ -18,29 +17,13 @@ const PRESET_QUESTIONS = [
 
 export function generatePrinceAIResponse(query: string): string {
   const q = query.toLowerCase();
-
-  if (q.includes('retailconnect') || q.includes('retail connect')) {
-    return `### 🛍️ RetailConnect — Enterprise B2B Retail & Distribution SaaS
-
-**RetailConnect** is Mritunjay's flagship enterprise B2B platform designed to automate inventory distribution, retailer order flows, and multi-tier analytics.
-
-- **Key Highlights:**
-  - 📈 45% faster order processing cycle
-  - 🔄 Real-time multi-branch inventory synchronization
-  - 🚀 Modern stack: React, Node.js, PostgreSQL, Redis, Docker
-  - ⚡ Sub-100ms API response latency
-
-[Explore RetailConnect Case Study](#projects)`;
-  }
-
   if (q.includes('best project') || q.includes('top project') || q.includes('featured')) {
     return `### 🏆 Mritunjay's Top Featured Projects
 
-1. **RetailConnect (B2B Retail Automation SaaS)** — Enterprise inventory & distributor order management platform.
-2. **Bulk Mail Sender** — High-volume email platform with CSV engine & Gmail API (10k+ emails sent).
-3. **Interactive CLI Portfolio** — Developer terminal experience (\`npx mritunjay-portfolio\`).
-4. **Ad-Free YouTube Experience** — Custom minimalist video streaming interface.
-5. **Real-Time WebSocket Chat** — Multi-room instant messaging application.
+1. **Bulk Mail Sender** — High-volume email platform with CSV engine & Gmail API (10k+ emails sent).
+2. **Interactive CLI Portfolio** — Developer terminal experience (\`npx mritunjay-portfolio\`).
+3. **Ad-Free YouTube Experience** — Custom minimalist video streaming interface.
+4. **Real-Time WebSocket Chat** — Multi-room instant messaging application.
 
 [View Full Projects Showcase](/projects)`;
   }
@@ -60,7 +43,7 @@ export function generatePrinceAIResponse(query: string): string {
 - **Product-Minded Engineer:** Focuses on real business impact, performance, and clean UX.
 - **AI-First Integration:** Proficient in building modern AI-powered applications, dynamic chat engines, and workflow automation.
 - **Full-Stack Competency:** End-to-end capabilities from DB schema design & microservices to pixel-perfect responsive UIs.
-- **Proven Execution:** Developed production platforms like RetailConnect & Bulk Mail Sender with 99.9% uptime.`;
+- **Proven Execution:** Developed production platforms like Bulk Mail Sender with 99.9% uptime.`;
   }
 
   if (q.includes('github') || q.includes('code') || q.includes('repo')) {
@@ -82,7 +65,7 @@ Mritunjay designs systems with:
 4. **AI Routing:** Seamless fallbacks between cloud LLM providers and local heuristic logic.`;
   }
 
-  return `Thanks for asking! Mritunjay Kumar is a Full Stack & AI Application Developer specializing in enterprise SaaS, AI product integrations, and high-performance Web applications. Feel free to click any quick question below or ask about RetailConnect, tech stack, or projects!`;
+  return `Thanks for asking! Mritunjay Kumar is a Full Stack & AI Application Developer specializing in enterprise SaaS, AI product integrations, and high-performance Web applications. Feel free to click any quick question below or ask about the tech stack, or projects!`;
 }
 
 export default function FloatingPrinceAI() {

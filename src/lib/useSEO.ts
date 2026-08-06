@@ -197,9 +197,9 @@ export const SEO_CONFIGS = {
   projects: {
     title: 'Projects by Mritunjay Kumar | React, Node.js, AI & Shopify Portfolio',
     description:
-      'Explore projects by Mritunjay Kumar — RetailConnect, AI chatbots, Shopify apps, SaaS platforms, and more. Full stack development portfolio showcasing production-grade applications.',
+      'Explore projects by Mritunjay Kumar — AI chatbots, Shopify apps, SaaS platforms, and more. Full stack development portfolio showcasing production-grade applications.',
     keywords:
-      'Mritunjay Kumar Projects, RetailConnect, React Projects, Node.js Projects, AI Projects, Shopify Projects, Full Stack Portfolio, Web App Projects, SaaS Development',
+      'Mritunjay Kumar Projects, React Projects, Node.js Projects, AI Projects, Shopify Projects, Full Stack Portfolio, Web App Projects, SaaS Development',
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',

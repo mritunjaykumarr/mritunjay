@@ -114,7 +114,7 @@ export default function Hero() {
           </h1>
 
           <p className="hero-sub">
-            Full Stack Developer at <strong>Epigroww Global</strong>. Creator of <strong>RetailConnect</strong> & AI automation platforms. Engineering pixel-perfect, sub-100ms digital products with cutting-edge AI integration.
+            Full Stack Developer at <strong>Epigroww Global</strong>. Creator of AI automation platforms. Engineering pixel-perfect, sub-100ms digital products with cutting-edge AI integration.
           </p>
 
           {/* Quick AI Prompt Input in Hero */}
@@ -123,7 +123,7 @@ export default function Hero() {
               <Bot size={18} className="text-primary" />
               <input 
                 type="text"
-                placeholder="Ask Prince AI about RetailConnect, tech stack, or hiring..."
+                placeholder="Ask Prince AI about projects, tech stack, or hiring..."
                 value={heroInput}
                 onChange={(e) => setHeroInput(e.target.value)}
                 onKeyDown={(e) => {
@@ -136,7 +136,7 @@ export default function Hero() {
               </button>
             </div>
             <div className="hero-prompt-chips">
-              <button onClick={() => { setHeroInput('Tell me about RetailConnect'); handleAskPrinceAI(); }}>RetailConnect</button>
+              <button onClick={() => { setHeroInput('What is your tech stack?'); handleAskPrinceAI(); }}>Tech Stack</button>
               <button onClick={() => { setHeroInput('Show best project'); handleAskPrinceAI(); }}>Best Projects</button>
               <button onClick={() => { setHeroInput('Why should we hire you?'); handleAskPrinceAI(); }}>Why Hire Me?</button>
             </div>

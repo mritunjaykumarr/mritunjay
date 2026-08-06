@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bot, SendHorizonal, ArrowRight, Copy, Check, Share2, Paperclip, X, Sparkles } from 'lucide-react';
+import { Bot, SendHorizonal, ArrowRight, Copy, Check, Share2, Paperclip, X, Sparkles, Maximize, Minimize } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { generatePrinceAIResponse } from './FloatingPrinceAI';
 
@@ -10,7 +10,6 @@ interface ChatMessage {
 }
 
 const MANDATORY_PROMPT_CHIPS = [
-  'Tell me about RetailConnect',
   'Show your best project',
   'What technologies do you know?',
   'Why should we hire you?',
@@ -18,7 +17,32 @@ const MANDATORY_PROMPT_CHIPS = [
   'Explain your architecture',
 ];
 
-const SYSTEM_PROMPT = `You are Prince AI — a premium AI assistant embedded in Mritunjay Kumar's developer portfolio. Mritunjay is a Full Stack & AI Application Developer at Epigroww Global. He built RetailConnect (B2B SaaS), Bulk Mail Sender, Interactive CLI Portfolio (npx mritunjay-portfolio), and real-time platforms.
+const SYSTEM_PROMPT = `You are Prince AI — a premium AI assistant embedded in Mritunjay Kumar's developer portfolio. Mritunjay is a Full Stack & AI Application Developer at Epigroww Global. 
+
+### Mritunjay's Top Featured Projects:
+1. Bulk Mail Sender — High-volume email platform with CSV engine & Gmail API (10k+ emails sent).
+2. Interactive CLI Portfolio — Developer terminal experience (npx mritunjay-portfolio).
+3. Ad-Free YouTube Experience — Custom minimalist video streaming interface.
+4. Real-Time WebSocket Chat — Multi-room instant messaging application.
+
+### Technology Stack & Expertise:
+- Frontend: React, TypeScript, Next.js, Vite, Tailwind CSS, GSAP, Framer Motion
+- Backend & APIs: Node.js, Express, Python, FastAPI, REST, WebSockets, GraphQL
+- AI & Cloud: OpenRouter API, Gemini AI models, Supabase, PostgreSQL, Docker, CI/CD
+- Architecture: System Design, Microservices, Async Event Pipelines, Performance Optimization
+
+### Why Hire Mritunjay Kumar?
+- Product-Minded Engineer: Focuses on real business impact, performance, and clean UX.
+- AI-First Integration: Proficient in building modern AI-powered applications, dynamic chat engines, and workflow automation.
+- Full-Stack Competency: End-to-end capabilities from DB schema design & microservices to pixel-perfect responsive UIs.
+- Proven Execution: Developed production platforms like Bulk Mail Sender with 99.9% uptime.
+
+### Engineering Architecture Philosophy:
+1. Separation of Concerns: Decoupled frontend components & lightweight API services.
+2. Real-time Event Architecture: WebSockets for instant state sync and streaming updates.
+3. Resilient Data Pipelines: Caching layers (Redis/LocalCache) & retrying backoffs.
+4. AI Routing: Seamless fallbacks between cloud LLM providers and local heuristic logic.
+
 Respond with high authority, crisp structure, markdown formatting, key metrics, and direct links when relevant.`;
 
 async function streamChat(
@@ -123,6 +147,7 @@ export default function PrinceAI() {
   const [isLoading, setIsLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -204,7 +229,7 @@ export default function PrinceAI() {
         <div className="section-eyebrow"><Sparkles size={14} /> Differentiator Feature</div>
         <h2 className="section-title reveal">AI Portfolio <span className="grad">Assistant</span></h2>
         <p className="section-sub reveal">
-          Instead of scrolling through text, ask <strong>Prince AI</strong> anything about Mritunjay's projects, RetailConnect architecture, skills, and why to hire him.
+          Instead of scrolling through text, ask <strong>Prince AI</strong> anything about Mritunjay's projects, architecture, skills, and why to hire him.
         </p>
 
         <div className="prince-ai-grid">
@@ -243,16 +268,26 @@ export default function PrinceAI() {
           </article>
 
           {/* Right Panel: Live Chat Box */}
-          <article className="ai-panel ai-preview reveal reveal-right" style={{ gridColumn: 'span 2' }}>
+          <article className="ai-panel ai-preview reveal reveal-right" style={{ gridColumn: 'span 2', ...(isFullScreen ? { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999, borderRadius: 0, display: 'flex', flexDirection: 'column' } : {}) }}>
             <div className="ai-preview-head">
               <div>
                 <p className="ai-kicker">Interactive Assistant</p>
                 <h3>Talk to Prince AI</h3>
               </div>
-              <span className="ai-live-dot">Knowledge Engine Ready</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <span className="ai-live-dot">Knowledge Engine Ready</span>
+                <button 
+                  onClick={() => setIsFullScreen(!isFullScreen)} 
+                  className="ai-action-btn"
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
+                  aria-label={isFullScreen ? "Minimize" : "Maximize"}
+                >
+                  {isFullScreen ? <Minimize size={18} /> : <Maximize size={18} />}
+                </button>
+              </div>
             </div>
 
-            <div className="ai-chat" ref={chatRef} style={{ minHeight: '380px', maxHeight: '480px' }}>
+            <div className="ai-chat" ref={chatRef} style={{ minHeight: isFullScreen ? '0' : '380px', maxHeight: isFullScreen ? 'none' : '480px', flex: isFullScreen ? 1 : 'none', overflowY: 'auto' }}>
               {messages.map((msg, i) => (
                 <div key={i} className={`ai-message ${msg.role === 'user' ? 'ai-message-user' : 'ai-message-ai'}`}>
                   {msg.role === 'assistant' && <div className="ai-avatar-label"><Bot size={14} /> Prince AI</div>}
@@ -304,7 +339,7 @@ export default function PrinceAI() {
                 <input 
                   ref={inputRef} 
                   type="text" 
-                  placeholder="Ask Prince AI about RetailConnect, architecture, tech stack..." 
+                  placeholder="Ask Prince AI about architecture, tech stack..." 
                   value={input} 
                   onChange={e => setInput(e.target.value)} 
                   onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }} 

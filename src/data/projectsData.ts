@@ -1,44 +1,7 @@
 import type { ExtendedProjectItem } from '../components/ProjectProductModal';
 
 export const EXTENDED_PROJECTS_DATA: ExtendedProjectItem[] = [
-  {
-    id: 1,
-    category: 'B2B SaaS',
-    title: 'RetailConnect',
-    tagline: 'Enterprise B2B Retail & Inventory Distribution Automation Platform',
-    desc: 'Flagship enterprise B2B platform designed to automate inventory distribution, retailer order flows, multi-tier pricing, and live analytics.',
-    img: '/assets/bulkmailP.png', // Or placeholder/screenshot
-    url: 'https://github.com/mritunjaykumarr',
-    github: 'https://github.com/mritunjaykumarr',
-    tags: ['B2B SaaS', 'React', 'Node.js', 'PostgreSQL', 'Docker'],
-    fullDesc: 'RetailConnect streamlines supply chain relationships between FMCG distributors and retail store owners. It replaces manual telephone ordering with automated real-time catalog ordering, inventory synchronization, ledger updates, and dynamic fulfillment workflows.',
-    features: [
-      'Automated digital product catalog with real-time stock status',
-      'Multi-tier retailer pricing & promotional discount engines',
-      'Instant purchase order generation with automated SMS/Email alerts',
-      'Distributor ledger reconciliation & invoice PDF generation',
-      'Real-time inventory deduction with optimistic locking',
-      'Executive analytics dashboard with daily revenue trends'
-    ],
-    metrics: [
-      { label: 'Order Speed', value: '45%', sub: 'Faster fulfillment cycle' },
-      { label: 'Uptime', value: '99.9%', sub: 'High availability SLA' },
-      { label: 'API Latency', value: '<85ms', sub: 'Optimized PostgreSQL queries' },
-      { label: 'Retailer Retention', value: '94%', sub: 'High user satisfaction' }
-    ],
-    stack: ['React', 'TypeScript', 'Node.js', 'Express', 'PostgreSQL', 'Redis', 'Docker', 'Vite'],
-    architecture: {
-      client: 'React 19 + TypeScript + Vite SPA',
-      api: 'Express REST API + Redis Session Gateway',
-      services: ['Order Fulfillment Microservice', 'PDF Invoice Generator', 'SMS Notification Queue'],
-      database: 'PostgreSQL Relational DB with Connection Pooling'
-    },
-    problemSolved: {
-      problem: 'Retail store owners wasted hours daily placing phone orders to multiple distributors, leading to stockouts, misplaced orders, and delayed ledger payments.',
-      solution: 'Built a centralized digital portal providing 24/7 catalog ordering, automated stock sync, and instant digital invoicing.',
-      impact: 'Reduced order processing lead times from 24 hours to under 30 minutes while eliminating order transcription errors.'
-    }
-  },
+
   {
     id: 2,
     category: 'web tools',
