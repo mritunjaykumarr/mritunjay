@@ -17,7 +17,7 @@ export default function PrinceAIPage() {
             <span>/</span>
             <span className="current">Prince AI</span>
           </div>
-          <div className="page-header-content reveal">
+          <div className="page-header-content reveal visible">
             <div className="section-eyebrow"><Bot size={14} /> AI Assistant</div>
             <h1 className="page-title">
               Prince <span className="grad">AI Experience</span>

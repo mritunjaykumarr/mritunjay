@@ -227,14 +227,14 @@ export default function PrinceAI() {
     <section id="prince-ai" className="section prince-ai">
       <div className="container prince-ai-shell">
         <div className="section-eyebrow"><Sparkles size={14} /> Differentiator Feature</div>
-        <h2 className="section-title reveal">AI Portfolio <span className="grad">Assistant</span></h2>
-        <p className="section-sub reveal">
+        <h2 className="section-title reveal visible">AI Portfolio <span className="grad">Assistant</span></h2>
+        <p className="section-sub reveal visible">
           Instead of scrolling through text, ask <strong>Prince AI</strong> anything about Mritunjay's projects, architecture, skills, and why to hire him.
         </p>
 
         <div className="prince-ai-grid">
           {/* Left Panel: Intro & Interactive Prompt Chips */}
-          <article className="ai-panel ai-intro reveal">
+          <article className="ai-panel ai-intro reveal visible">
             <p className="ai-kicker">Interactive Prompts</p>
             <h3>Click any question to ask Prince AI:</h3>
             
@@ -268,7 +268,7 @@ export default function PrinceAI() {
           </article>
 
           {/* Right Panel: Live Chat Box */}
-          <article className="ai-panel ai-preview reveal reveal-right" style={{ gridColumn: 'span 2', ...(isFullScreen ? { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999, borderRadius: 0, display: 'flex', flexDirection: 'column' } : {}) }}>
+          <article className="ai-panel ai-preview reveal reveal-right visible" style={{ gridColumn: 'span 2', ...(isFullScreen ? { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999, borderRadius: 0, display: 'flex', flexDirection: 'column' } : {}) }}>
             <div className="ai-preview-head">
               <div>
                 <p className="ai-kicker">Interactive Assistant</p>
