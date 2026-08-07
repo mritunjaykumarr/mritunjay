@@ -5,10 +5,9 @@ import { LinkedinIcon } from './SocialIcons';
 interface ContactProps {
   isOpen: boolean;
   onClose: () => void;
-  onOpen: () => void;
 }
 
-export default function Contact({ isOpen, onClose, onOpen }: ContactProps) {
+export default function Contact({ isOpen, onClose }: ContactProps) {
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -53,18 +52,6 @@ export default function Contact({ isOpen, onClose, onOpen }: ContactProps) {
 
   return (
     <>
-      <section className="section contact-cta" style={{ textAlign: 'center', padding: '6rem 0' }}>
-        <div className="container reveal">
-          <h2 className="section-title">Ready to build something <span className="grad">amazing?</span></h2>
-          <p className="section-sub" style={{ margin: '0 auto 2rem', maxWidth: '600px' }}>
-            Whether you have a specific project in mind or just want to say hi, my inbox is always open. Let's create the next big thing together.
-          </p>
-          <button onClick={onOpen} className="btn-primary" style={{ margin: '0 auto' }}>
-            <span>Let's Talk</span> <SendHorizonal size={16} />
-          </button>
-        </div>
-      </section>
-
       {isOpen && (
         <div className="modal-overlay open" onClick={(e) => e.target === e.currentTarget && onClose()}>
           <div className="modal-box" style={{ maxWidth: '800px', padding: '0', overflow: 'hidden' }}>

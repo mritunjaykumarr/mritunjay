@@ -55,12 +55,11 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
 
   const navLinks = [
     { label: 'Home', path: '/' },
-    { label: 'About', path: '/about' },
-    { label: 'Experience', path: '/experience' },
-    { label: 'Projects', path: '/projects' },
-    { label: 'Playground', path: '/playground' },
-    { label: 'Blog', path: '/blog' },
-    { label: 'Prince AI', path: '/prince-ai' },
+    { label: 'Projects', path: '/#projects' },
+    { label: 'Experience', path: '/#experience' },
+    { label: 'Skills', path: '/#skills' },
+    { label: 'Blog', path: '/#blog' },
+    { label: 'Contact', path: '/#contact' },
   ];
 
   const isLinkActive = (path: string) => {
@@ -154,8 +153,8 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
           </a>
 
           {/* Primary Gradient Contact CTA Button */}
-          <Link to="/contact" className="navbar-contact-cta">
-            <span>Contact</span>
+          <Link to="/#contact" className="navbar-contact-cta">
+            <span>Hire Me</span>
             <ArrowRight size={14} className="cta-arrow-icon" />
           </Link>
 
@@ -258,7 +257,7 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
                     <span>Resume</span>
                   </a>
                   <Link
-                    to="/contact"
+                    to="/#contact"
                     className="mobile-contact-btn"
                     onClick={() => setIsMenuOpen(false)}
                   >

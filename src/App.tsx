@@ -11,7 +11,6 @@ import PricingPage from './pages/PricingPage';
 import ContactPage from './pages/ContactPage';
 import PrinceAIPage from './pages/PrinceAIPage';
 import Header from './components/Header';
-import Footer from './components/Footer';
 import Contact from './components/Contact';
 import ScrollToTop from './components/ScrollToTop';
 import Loader from './components/Loader';
@@ -78,10 +77,8 @@ function App() {
       <Contact 
         isOpen={isContactOpen} 
         onClose={() => setIsContactOpen(false)} 
-        onOpen={() => setIsContactOpen(true)} 
       />
       <FloatingPrinceAI />
-      <Footer />
     </BrowserRouter>
   );
 }
