@@ -1,0 +1,6 @@
+<svg width="520" height="128" viewBox="0 0 520 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="animated-gradient" x1="10" y1="12" x2="120" y2="117" gradientUnits="userSpaceOnUse"><stop stop-color="#60A5FA"><animate attributeName="stop-color" values="#60A5FA;#8B5CF6;#60A5FA" dur="4s" repeatCount="indefinite"/></stop><stop offset="1" stop-color="#8B5CF6"><animate attributeName="stop-color" values="#8B5CF6;#3B82F6;#8B5CF6" dur="4s" repeatCount="indefinite"/></stop></linearGradient></defs>
+  <rect x="8" y="8" width="112" height="112" rx="32" fill="#0B1120"/><rect x="8.75" y="8.75" width="110.5" height="110.5" rx="31.25" stroke="url(#animated-gradient)" stroke-opacity=".85" stroke-width="1.5"/>
+  <path d="M31 89V39L49.5 67.5L64 44L78.5 67.5L97 39V89" stroke="url(#animated-gradient)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="97" cy="89" r="5" fill="#A78BFA"><animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/></circle>
+  <text x="145" y="75" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="45" font-weight="800" letter-spacing="-2">Mritunjay</text><circle cx="462" cy="78" r="6" fill="url(#animated-gradient)"/>
+</svg>

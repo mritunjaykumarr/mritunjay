@@ -1,0 +1,5 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="mritunjay-gradient" x1="20" y1="14" x2="110" y2="116" gradientUnits="userSpaceOnUse"><stop stop-color="#60A5FA"/><stop offset=".52" stop-color="#3B82F6"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient><filter id="mritunjay-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <rect x="8" y="8" width="112" height="112" rx="32" fill="#0B1120"/><rect x="8.75" y="8.75" width="110.5" height="110.5" rx="31.25" stroke="url(#mritunjay-gradient)" stroke-opacity=".7" stroke-width="1.5"/>
+  <path d="M31 89V39L49.5 67.5L64 44L78.5 67.5L97 39V89" stroke="url(#mritunjay-gradient)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" filter="url(#mritunjay-glow)"/><circle cx="97" cy="89" r="5" fill="#A78BFA"/>
+</svg>

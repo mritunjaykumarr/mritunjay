@@ -55,6 +55,8 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
 
   const navLinks = [
     { label: 'Home', path: '/' },
+    { label: 'About', path: '/#about' },
+    { label: 'PrinceAI', path: '/#prince-ai' },
     { label: 'Projects', path: '/#projects' },
     { label: 'Experience', path: '/#experience' },
     { label: 'Skills', path: '/#skills' },
@@ -84,13 +86,7 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
 
         {/* LEFT: LOGO */}
         <Link to="/" className="navbar-logo" aria-label="Mritunjay AI Home">
-          <div className="logo-icon-box">
-            <Sparkles className="logo-sparkle-icon" size={15} />
-            <span className="logo-pulse-ring" />
-          </div>
-          <span className="logo-text">
-            MRITUNJAY<span className="logo-dot-accent">.AI</span>
-          </span>
+          <img src="/brand/mritunjay-logo.svg" className="navbar-brand-logo" alt="Mritunjay" />
         </Link>
 
         {/* CENTER: DESKTOP NAVIGATION LINKS */}

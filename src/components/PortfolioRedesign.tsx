@@ -3,13 +3,14 @@ import type { FormEvent, MouseEvent, ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowRight, ArrowUpRight, Award, Bot, BrainCircuit, BriefcaseBusiness,
-  Check, ChevronRight, Cloud, Code2, Database, ExternalLink,
+  Check, ChevronRight, CircleDot, Cloud, Code2, Database, ExternalLink,
   GraduationCap, Mail, MapPin,
-  MessageCircle, MonitorSmartphone, Send, Server, Sparkles,
+  MessageCircle, MonitorSmartphone, Network, Send, Server, Sparkles,
   WandSparkles, Workflow, Zap
 } from 'lucide-react';
 import { EXTENDED_PROJECTS_DATA } from '../data/projectsData';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
+import PrinceAI from './PrinceAI';
 
 const socials = [
   { label: 'GitHub', href: 'https://github.com/mritunjaykumarr', icon: GithubIcon },
@@ -76,6 +77,27 @@ function FadeIn({ children, delay = 0, className = '' }: { children: ReactNode; 
     >
       {children}
     </motion.div>
+  );
+}
+
+function ProvidedImage({ name, fallback, alt, className }: { name: 'img1' | 'img2'; fallback: string; alt: string; className?: string }) {
+  const [source, setSource] = useState(`/assets/${name}.jpeg`);
+  const [triedPng, setTriedPng] = useState(false);
+
+  return (
+    <img
+      className={className}
+      src={source}
+      alt={alt}
+      onError={() => {
+        if (!triedPng) {
+          setTriedPng(true);
+          setSource(`/assets/${name}.png`);
+        } else {
+          setSource(fallback);
+        }
+      }}
+    />
   );
 }
 
@@ -153,7 +175,7 @@ export default function PortfolioRedesign() {
                   </div>
                 </div>
                 <motion.div className="v3-stage-photo" animate={{ y: [0, -7, 0] }} transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}>
-                  <img src="/assets/profile2.jpg" alt="Developer portrait" />
+                  <ProvidedImage name="img1" fallback="/assets/profile2.jpg" alt="Mritunjay Kumar" />
                   <div className="v3-photo-sheen" />
                 </motion.div>
                 <motion.div className="v3-tech-chip v3-chip-react" animate={{ y: [0, -9, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}><Code2 size={16} /> React 19</motion.div>
@@ -200,19 +222,27 @@ export default function PortfolioRedesign() {
           </div>
         </section>
 
-        <section className="v3-section" id="skills">
-          <div className="v3-container"><FadeIn className="v3-section-heading v3-split-heading"><div><p className="v3-eyebrow">03 / Technical range</p><h2>A versatile stack, <span>one high bar.</span></h2></div><p>Right tools, clear decisions, and the care to make a solution durable.</p></FadeIn><div className="v3-skill-grid">{skills.map((skill, i) => { const Icon = skill.icon; return <FadeIn key={skill.name} delay={i * 0.05} className="v3-skill-card"><div className="v3-skill-top"><span><Icon size={20} /></span><small>{skill.years}</small></div><h3>{skill.name}</h3><div className="v3-skill-list">{skill.items.map(item => <b key={item}>{item}</b>)}</div><div className="v3-skill-meter"><i style={{ width: `${95 - i * 4}%` }} /></div></FadeIn>; })}</div></div>
+        <section className="v3-prince-section" id="prince-ai">
+          <div className="v3-container v3-prince-intro">
+            <FadeIn className="v3-section-heading"><p className="v3-eyebrow">03 / Flagship AI product</p><h2>Meet <span>PrinceAI™</span></h2><p>Personal AI Assistant powered by my own LLM. A production-minded demonstration of conversational AI, intelligent automation, and API-connected product engineering.</p></FadeIn>
+            <FadeIn delay={0.08} className="v3-ai-capabilities"><span><Bot size={16} /> LLM powered</span><span><Network size={16} /> Custom API integration</span><span><BrainCircuit size={16} /> Context aware</span><span><Zap size={16} /> Fast responses</span><span><Workflow size={16} /> AI automation</span><span><CircleDot size={16} /> Secure architecture</span></FadeIn>
+          </div>
+          <PrinceAI />
         </section>
 
-        <section className="v3-section v3-experience" id="experience"><div className="v3-container"><FadeIn className="v3-section-heading"><p className="v3-eyebrow">04 / Experience</p><h2>A progression built in <span>real product teams.</span></h2></FadeIn><div className="v3-timeline"><FadeIn className="v3-timeline-item"><div className="v3-timeline-mark"><BriefcaseBusiness size={18} /></div><div><p className="v3-date">Present · New Delhi, India</p><h3>Fullstack Developer <span>@ Epigroww Global</span></h3><p>Leading frontend architecture and full-stack feature development for client platforms. Shipping responsive UI, API integrations, and production-ready workflows.</p><div className="v3-timeline-tags"><span>React 19</span><span>TypeScript</span><span>Node.js</span><span>Supabase</span></div></div></FadeIn><FadeIn delay={0.12} className="v3-timeline-item"><div className="v3-timeline-mark"><Code2 size={18} /></div><div><p className="v3-date">2026 · Noida, India</p><h3>Software Developer Intern <span>@ Digicaptain Technology</span></h3><p>Built client-facing interfaces and utility tools, integrated APIs, and refined responsive experiences across desktop and mobile.</p><div className="v3-timeline-tags"><span>JavaScript</span><span>HTML/CSS</span><span>GitHub</span><span>Vercel</span></div></div></FadeIn><FadeIn delay={0.2} className="v3-timeline-item"><div className="v3-timeline-mark"><GraduationCap size={18} /></div><div><p className="v3-date">2022 — 2026 · Salem, India</p><h3>B.Tech Computer Science <span>@ VMKV Engineering College</span></h3><p>Built a strong software-engineering foundation across web technologies, data structures, and system design.</p></div></FadeIn></div></div></section>
+        <section className="v3-section" id="skills">
+          <div className="v3-container"><FadeIn className="v3-section-heading v3-split-heading"><div><p className="v3-eyebrow">04 / Technical range</p><h2>A versatile stack, <span>one high bar.</span></h2></div><p>Right tools, clear decisions, and the care to make a solution durable.</p></FadeIn><div className="v3-skill-grid">{skills.map((skill, i) => { const Icon = skill.icon; return <FadeIn key={skill.name} delay={i * 0.05} className="v3-skill-card"><div className="v3-skill-top"><span><Icon size={20} /></span><small>{skill.years}</small></div><h3>{skill.name}</h3><div className="v3-skill-list">{skill.items.map(item => <b key={item}>{item}</b>)}</div><div className="v3-skill-meter"><i style={{ width: `${95 - i * 4}%` }} /></div></FadeIn>; })}</div></div>
+        </section>
 
-        <section className="v3-section v3-credentials"><div className="v3-container"><FadeIn className="v3-section-heading"><p className="v3-eyebrow">05 / Credentials</p><h2>Always learning. <span>Always shipping.</span></h2></FadeIn><div className="v3-cert-grid">{certifications.map((cert, index) => <FadeIn delay={index * 0.08} key={cert.title} className="v3-cert-card"><div className="v3-cert-image"><img src={cert.image} alt={`${cert.title} certificate`} loading="lazy" /></div><div><span><Award size={15} /> Verified credential</span><h3>{cert.title}</h3><p>{cert.issuer} · {cert.year}</p></div></FadeIn>)}</div></div></section>
+        <section className="v3-section v3-experience" id="experience"><div className="v3-container"><FadeIn className="v3-section-heading"><p className="v3-eyebrow">05 / Experience</p><h2>A progression built in <span>real product teams.</span></h2></FadeIn><div className="v3-timeline"><FadeIn className="v3-timeline-item"><div className="v3-timeline-mark"><BriefcaseBusiness size={18} /></div><div><p className="v3-date">Present · New Delhi, India</p><h3>Fullstack Developer <span>@ Epigroww Global</span></h3><p>Leading frontend architecture and full-stack feature development for client platforms. Shipping responsive UI, API integrations, and production-ready workflows.</p><div className="v3-timeline-tags"><span>React 19</span><span>TypeScript</span><span>Node.js</span><span>Supabase</span></div></div></FadeIn><FadeIn delay={0.12} className="v3-timeline-item"><div className="v3-timeline-mark"><Code2 size={18} /></div><div><p className="v3-date">2026 · Noida, India</p><h3>Software Developer Intern <span>@ Digicaptain Technology</span></h3><p>Built client-facing interfaces and utility tools, integrated APIs, and refined responsive experiences across desktop and mobile.</p><div className="v3-timeline-tags"><span>JavaScript</span><span>HTML/CSS</span><span>GitHub</span><span>Vercel</span></div></div></FadeIn><FadeIn delay={0.2} className="v3-timeline-item"><div className="v3-timeline-mark"><GraduationCap size={18} /></div><div><p className="v3-date">2022 — 2026 · Salem, India</p><h3>B.Tech Computer Science <span>@ VMKV Engineering College</span></h3><p>Built a strong software-engineering foundation across web technologies, data structures, and system design.</p></div></FadeIn></div></div></section>
 
-        <section className="v3-section" id="blog"><div className="v3-container"><FadeIn className="v3-section-heading v3-blog-heading"><div><p className="v3-eyebrow">06 / Notes from the build</p><h2>Ideas beyond <span>the commit.</span></h2></div><a className="v3-text-link" href="/blog">Read all notes <ArrowRight size={17} /></a></FadeIn><div className="v3-article-grid">{articles.map((article, index) => <FadeIn delay={index * 0.08} key={article.title} className="v3-article-card"><img src={article.image} alt="" loading="lazy" /><div><span>{article.category} <i /> {article.time}</span><h3>{article.title}</h3><a href="/blog">Read article <ArrowUpRight size={15} /></a></div></FadeIn>)}</div></div></section>
+        <section className="v3-section v3-credentials"><div className="v3-container"><FadeIn className="v3-section-heading"><p className="v3-eyebrow">06 / Credentials</p><h2>Always learning. <span>Always shipping.</span></h2></FadeIn><div className="v3-cert-grid">{certifications.map((cert, index) => <FadeIn delay={index * 0.08} key={cert.title} className="v3-cert-card"><div className="v3-cert-image"><img src={cert.image} alt={`${cert.title} certificate`} loading="lazy" /></div><div><span><Award size={15} /> Verified credential</span><h3>{cert.title}</h3><p>{cert.issuer} · {cert.year}</p></div></FadeIn>)}</div></div></section>
 
-        <section className="v3-section v3-contact-section" id="contact"><div className="v3-container v3-contact-grid"><FadeIn><p className="v3-eyebrow">07 / Let’s work together</p><h2>Let’s build something <span>that matters.</span></h2><p className="v3-contact-copy">Have an ambitious product, a workflow worth automating, or a role where engineering craft matters? I’d love to hear about it.</p><div className="v3-contact-details"><a href="mailto:mritunjaykumar2025@gmail.com"><Mail size={18} /><span><small>Email me</small>mritunjaykumar2025@gmail.com</span></a><a href="https://wa.me/919470880956" target="_blank" rel="noreferrer"><MessageCircle size={18} /><span><small>WhatsApp</small>+91 94708 80956</span></a><span><MapPin size={18} /><span><small>Based in</small>India · available globally</span></span></div><div className="v3-social-row">{socials.map(({ label, href, icon: Icon }) => <a key={label} href={href} target={label === 'Email' ? undefined : '_blank'} rel="noreferrer"><Icon size={18} />{label}</a>)}</div></FadeIn><FadeIn delay={0.1} className="v3-contact-form-wrap"><form onSubmit={handleSubmit}><input type="hidden" name="access_key" value="af71a9aa-dfeb-4439-a91b-afa7bc2e17d8" /><div className="v3-form-field"><input required id="v3-name" name="name" placeholder=" " /><label htmlFor="v3-name">Your name</label></div><div className="v3-form-field"><input required id="v3-email" name="email" type="email" placeholder=" " /><label htmlFor="v3-email">Work email</label></div><div className="v3-form-field"><input id="v3-subject" name="subject" placeholder=" " /><label htmlFor="v3-subject">What are we building?</label></div><div className="v3-form-field"><textarea required id="v3-message" name="message" rows={5} placeholder=" " /><label htmlFor="v3-message">Tell me a little about it</label></div><button className="v3-button v3-button-primary" disabled={sending} type="submit">{sending ? 'Sending…' : 'Send message'} <Send size={16} /></button>{status && <p className="v3-form-status">{status}</p>}</form></FadeIn></div></section>
+        <section className="v3-section" id="blog"><div className="v3-container"><FadeIn className="v3-section-heading v3-blog-heading"><div><p className="v3-eyebrow">07 / Notes from the build</p><h2>Ideas beyond <span>the commit.</span></h2></div><a className="v3-text-link" href="/blog">Read all notes <ArrowRight size={17} /></a></FadeIn><div className="v3-article-grid">{articles.map((article, index) => <FadeIn delay={index * 0.08} key={article.title} className="v3-article-card"><img src={article.image} alt="" loading="lazy" /><div><span>{article.category} <i /> {article.time}</span><h3>{article.title}</h3><a href="/blog">Read article <ArrowUpRight size={15} /></a></div></FadeIn>)}</div></div></section>
+
+        <section className="v3-section v3-contact-section" id="contact"><div className="v3-container v3-contact-grid"><FadeIn><p className="v3-eyebrow">08 / Let’s work together</p><h2>Let’s build something <span>that matters.</span></h2><p className="v3-contact-copy">Have an ambitious product, a workflow worth automating, or a role where engineering craft matters? I’d love to hear about it.</p><motion.div className="v3-contact-photo" animate={{ y: [0, -6, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}><ProvidedImage name="img2" fallback="/assets/aboutme.jpg" alt="Mritunjay Kumar" /><span>Let’s create something useful</span></motion.div><div className="v3-contact-details"><a href="mailto:mritunjaykumar2025@gmail.com"><Mail size={18} /><span><small>Email me</small>mritunjaykumar2025@gmail.com</span></a><a href="https://wa.me/919470880956" target="_blank" rel="noreferrer"><MessageCircle size={18} /><span><small>WhatsApp</small>+91 94708 80956</span></a><span><MapPin size={18} /><span><small>Based in</small>India · available globally</span></span></div><div className="v3-social-row">{socials.map(({ label, href, icon: Icon }) => <a key={label} href={href} target={label === 'Email' ? undefined : '_blank'} rel="noreferrer"><Icon size={18} />{label}</a>)}</div></FadeIn><FadeIn delay={0.1} className="v3-contact-form-wrap"><form onSubmit={handleSubmit}><input type="hidden" name="access_key" value="af71a9aa-dfeb-4439-a91b-afa7bc2e17d8" /><div className="v3-form-field"><input required id="v3-name" name="name" placeholder=" " /><label htmlFor="v3-name">Your name</label></div><div className="v3-form-field"><input required id="v3-email" name="email" type="email" placeholder=" " /><label htmlFor="v3-email">Work email</label></div><div className="v3-form-field"><input id="v3-subject" name="subject" placeholder=" " /><label htmlFor="v3-subject">What are we building?</label></div><div className="v3-form-field"><textarea required id="v3-message" name="message" rows={5} placeholder=" " /><label htmlFor="v3-message">Tell me a little about it</label></div><button className="v3-button v3-button-primary" disabled={sending} type="submit">{sending ? 'Sending…' : 'Send message'} <Send size={16} /></button>{status && <p className="v3-form-status">{status}</p>}</form></FadeIn></div></section>
       </main>
-      <footer className="v3-footer"><div className="v3-container"><div className="v3-footer-top"><a href="#home" className="v3-wordmark"><span>M</span> MRITUNJAY<span className="v3-dot">.</span></a><p>AI engineer & full stack developer<br />building useful things on the internet.</p><a href="#home" className="v3-back-top">Back to top <ArrowUpRight size={16} /></a></div><div className="v3-footer-bottom"><span>© {new Date().getFullYear()} Mritunjay Kumar</span><div><a href="/updated_resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer">GitHub</a><a href="mailto:mritunjaykumar2025@gmail.com">Email</a></div></div></div></footer>
+      <footer className="v3-footer"><div className="v3-container"><div className="v3-footer-top"><a href="#home" className="v3-wordmark"><img src="/brand/mritunjay-logo.svg" alt="Mritunjay" /></a><p>AI engineer & full stack developer<br />building useful things on the internet.</p><a href="#home" className="v3-back-top">Back to top <ArrowUpRight size={16} /></a></div><div className="v3-footer-bottom"><span>© {new Date().getFullYear()} Mritunjay Kumar</span><div><a href="/updated_resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer">GitHub</a><a href="mailto:mritunjaykumar2025@gmail.com">Email</a></div></div></div></footer>
     </div>
   );
 }
