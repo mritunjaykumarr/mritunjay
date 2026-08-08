@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import { 
@@ -7,25 +7,48 @@ import {
   Folder, Heart, Edit2, Trash2, Ghost, Clock
 } from 'lucide-react';
 
+type Post = {
+  id: string;
+  title: string;
+  excerpt: string;
+  body: string;
+  type: string;
+  category: string;
+  cover: string;
+  status?: string;
+  created_at: string;
+  likes_count: number;
+};
+
+type FormData = {
+  id: string;
+  title: string;
+  excerpt: string;
+  body: string;
+  type: string;
+  category: string;
+  cover: string;
+};
+
 export default function Dashboard() {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
-  const [posts, setPosts] = useState<any[]>([]);
-  const [view, setView] = useState('dashboard'); // 'dashboard', 'compose', 'posts'
-  const [formData, setFormData] = useState({ id: '', title: '', excerpt: '', body: '', type: 'Blog', category: 'General', cover: '' });
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [view, setView] = useState('dashboard');
+  const [formData, setFormData] = useState<FormData>({ id: '', title: '', excerpt: '', body: '', type: 'Blog', category: 'General', cover: '' });
   const [uploading, setUploading] = useState(false);
-  const [previewPost, setPreviewPost] = useState<any>(null);
+  const [previewPost, setPreviewPost] = useState<Post | null>(null);
   
+  const fetchPosts = useCallback(async () => {
+    const { data } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+    if (data) setPosts(data as Post[]);
+  }, []);
+
   useEffect(() => {
     if (authenticated) {
-      fetchPosts();
+      fetchPosts(); // eslint-disable-line react-hooks/set-state-in-effect
     }
-  }, [authenticated]);
-
-  const fetchPosts = async () => {
-    const { data } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
-    if (data) setPosts(data);
-  };
+  }, [authenticated, fetchPosts]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,8 +71,8 @@ export default function Dashboard() {
         .getPublicUrl(filePath);
 
       setFormData({ ...formData, cover: publicUrl });
-    } catch (error: any) {
-      alert(`Upload Error: ${error.message || 'Check Supabase RLS Policies'}`);
+    } catch (error: unknown) {
+      alert(`Upload Error: ${error instanceof Error ? error.message : 'Check Supabase RLS Policies'}`);
       console.error(error);
     } finally {
       setUploading(false);
@@ -70,7 +93,8 @@ export default function Dashboard() {
     if (formData.id) {
       await supabase.from('posts').update(payload).eq('id', formData.id);
     } else {
-      const { id, ...newPayload } = payload as any;
+      const { id, ...newPayload } = payload;
+      void id;
       await supabase.from('posts').insert(newPayload);
     }
     setFormData({ id: '', title: '', excerpt: '', body: '', type: 'Blog', category: 'General', cover: '' });
@@ -78,7 +102,7 @@ export default function Dashboard() {
     fetchPosts();
   };
 
-  const editPost = (p: any) => {
+  const editPost = (p: Post) => {
     setFormData(p);
     setView('compose');
   };

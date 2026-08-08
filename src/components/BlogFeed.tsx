@@ -1,19 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import { DEFAULT_POSTS } from '../pages/BlogPage';
 import { Calendar, Clock, ArrowRight, BookOpen } from 'lucide-react';
 
+type Post = {
+  id: string;
+  title: string;
+  excerpt: string;
+  body: string;
+  type?: string;
+  cover?: string;
+  created_at: string;
+  status?: string;
+  comments_count?: number;
+};
+
 export default function BlogFeed() {
-  const [posts, setPosts] = useState<any[]>(DEFAULT_POSTS);
+  const [posts, setPosts] = useState<Post[]>(DEFAULT_POSTS as Post[]);
   const [loading] = useState(false);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const { data: postsData, error } = await supabase
         .from('posts')
@@ -25,17 +33,21 @@ export default function BlogFeed() {
       } else if (postsData && postsData.length > 0) {
         const { data: commentsData } = await supabase.from('comments').select('post_id');
         const counts: Record<string, number> = {};
-        commentsData?.forEach(c => { counts[c.post_id] = (counts[c.post_id] || 0) + 1; });
+        commentsData?.forEach((c: { post_id: string }) => { counts[c.post_id] = (counts[c.post_id] || 0) + 1; });
 
         const visiblePosts = postsData.filter(p => !p.status || p.status === 'published');
         if (visiblePosts.length > 0) {
-          setPosts(visiblePosts.map(p => ({ ...p, comments_count: counts[p.id] || 0 })));
+          setPosts(visiblePosts.map((p: Post) => ({ ...p, comments_count: counts[p.id] || 0 })));
         }
       }
     } catch (err) {
       console.error("Failed to fetch posts in feed, using defaults:", err);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchPosts(); // eslint-disable-line react-hooks/set-state-in-effect
+  }, [fetchPosts]);
 
   const readTime = (body: string) => Math.max(1, Math.ceil((body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).length / 200));
 
