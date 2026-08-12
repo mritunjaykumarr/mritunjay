@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { motion, type Variants } from 'framer-motion';
 import { ArrowRight, SendHorizonal, Bot, Sparkles } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, InstagramIcon, TwitterIcon } from './SocialIcons';
 import HeroCanvas3D from './HeroCanvas3D';
@@ -64,11 +65,40 @@ export default function Hero() {
 
   const handleAskPrinceAI = () => {
     if (!heroInput.trim()) return;
-    // Dispatch event or scroll to Prince AI section
     const princeSection = document.getElementById('prince-ai');
     if (princeSection) {
       princeSection.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.65, ease: 'easeOut' },
+    },
+  };
+
+  const rightVariants: Variants = {
+    hidden: { opacity: 0, x: 40, scale: 0.96 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      transition: { duration: 0.8, ease: 'easeOut', delay: 0.25 },
+    },
   };
 
   return (
@@ -80,7 +110,7 @@ export default function Hero() {
       <div 
         className="hero-spotlight-overlay" 
         style={{
-          background: `radial-gradient(600px circle at ${spotlightPos.x}% ${spotlightPos.y}%, rgba(99, 102, 241, 0.12), transparent 80%)`,
+          background: `radial-gradient(600px circle at ${spotlightPos.x}% ${spotlightPos.y}%, var(--accent-glow), transparent 80%)`,
         }}
       />
 
@@ -92,14 +122,20 @@ export default function Hero() {
 
       <div className="container hero-inner">
         {/* HERO LEFT COLUMN */}
-        <div className="hero-left reveal">
-          <div className="hero-badge">
+        <motion.div 
+          className="hero-left"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Badge */}
+          <motion.div variants={itemVariants} className="hero-badge">
             <span className="badge-pulse" />
             <span>Available for Enterprise & AI Projects</span>
-          </div>
+          </motion.div>
 
           {/* Live Typewriter Headline */}
-          <h1 className="hero-h1">
+          <motion.h1 variants={itemVariants} className="hero-h1">
             <TypewriterText 
               phrases={[
                 "Hello, I'm Mritunjay Kumar",
@@ -111,14 +147,20 @@ export default function Hero() {
               delayBetween={2200}
               className="grad"
             />
-          </h1>
+          </motion.h1>
 
-          <p className="hero-sub">
+          {/* Subtitle */}
+          <motion.p variants={itemVariants} className="hero-sub">
             Full Stack Developer at <strong>Epigroww Global</strong>. Creator of AI automation platforms. Engineering pixel-perfect, sub-100ms digital products with cutting-edge AI integration.
-          </p>
+          </motion.p>
 
           {/* Quick AI Prompt Input in Hero */}
-          <div className="hero-ai-prompt-box card-glass">
+          <motion.div 
+            variants={itemVariants} 
+            className="hero-ai-prompt-box card-glass"
+            whileHover={{ scale: 1.012, boxShadow: '0 12px 35px var(--shadow-accent)' }}
+            transition={{ duration: 0.2 }}
+          >
             <div className="ai-prompt-input-wrapper">
               <Bot size={18} className="text-primary" />
               <input 
@@ -130,98 +172,169 @@ export default function Hero() {
                   if (e.key === 'Enter') handleAskPrinceAI();
                 }}
               />
-              <button onClick={handleAskPrinceAI} className="btn-primary btn-sm" aria-label="Ask AI">
+              <motion.button 
+                onClick={handleAskPrinceAI} 
+                className="btn-primary btn-sm" 
+                aria-label="Ask AI"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <span>Ask AI</span>
                 <Sparkles size={14} />
-              </button>
+              </motion.button>
             </div>
             <div className="hero-prompt-chips">
-              <button onClick={() => { setHeroInput('What is your tech stack?'); handleAskPrinceAI(); }}>Tech Stack</button>
-              <button onClick={() => { setHeroInput('Show best project'); handleAskPrinceAI(); }}>Best Projects</button>
-              <button onClick={() => { setHeroInput('Why should we hire you?'); handleAskPrinceAI(); }}>Why Hire Me?</button>
+              <motion.button 
+                whileHover={{ scale: 1.06, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => { setHeroInput('What is your tech stack?'); handleAskPrinceAI(); }}
+              >
+                Tech Stack
+              </motion.button>
+              <motion.button 
+                whileHover={{ scale: 1.06, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => { setHeroInput('Show best project'); handleAskPrinceAI(); }}
+              >
+                Best Projects
+              </motion.button>
+              <motion.button 
+                whileHover={{ scale: 1.06, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => { setHeroInput('Why should we hire you?'); handleAskPrinceAI(); }}
+              >
+                Why Hire Me?
+              </motion.button>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="hero-btns">
-            <a href="#projects" className="btn-primary">
+          {/* CTA Buttons */}
+          <motion.div variants={itemVariants} className="hero-btns">
+            <motion.a 
+              href="#projects" 
+              className="btn-primary"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <span>Explore Projects</span>
               <ArrowRight size={16} />
-            </a>
-            <button 
+            </motion.a>
+            <motion.button 
               onClick={() => window.dispatchEvent(new Event('open-contact'))} 
               className="btn-outline" 
               style={{ fontFamily: 'inherit', cursor: 'pointer' }}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
             >
               <SendHorizonal size={15} />
               <span>Let's Talk</span>
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
-          <div className="hero-stats" ref={statsRef}>
-            <div className="stat-item">
+          {/* Animated Stats */}
+          <motion.div variants={itemVariants} className="hero-stats" ref={statsRef}>
+            <motion.div className="stat-item" whileHover={{ y: -4, scale: 1.03 }}>
               <span className="stat-num" data-val="12">0</span>
               <span className="stat-lbl">Projects Shipped</span>
-            </div>
-            <div className="stat-item">
+            </motion.div>
+            <motion.div className="stat-item" whileHover={{ y: -4, scale: 1.03 }}>
               <span className="stat-num" data-val="99.9">0</span>
               <span className="stat-lbl">% SLA Uptime</span>
-            </div>
-            <div className="stat-item">
+            </motion.div>
+            <motion.div className="stat-item" whileHover={{ y: -4, scale: 1.03 }}>
               <span className="stat-num" data-val="4.9">0</span>
               <span className="stat-lbl">Client Rating</span>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
         {/* HERO RIGHT COLUMN: Interactive Terminal & Floating Tech Badges */}
-        <div className="hero-right reveal reveal-right">
+        <motion.div 
+          className="hero-right"
+          variants={rightVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <div className="profile-stage-redesign">
             {/* Interactive Terminal Component */}
             <HeroTerminal />
 
-            {/* Orbiting Floating Tech Icons */}
-            <div className="float-badge badge-react float-orbit-1" title="React 19">
+            {/* Orbiting Floating Tech Icons with Framer Motion floating loop */}
+            <motion.div 
+              className="float-badge badge-react float-orbit-1" 
+              title="React 19"
+              animate={{ y: [0, -12, 0], rotate: [0, 2, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            >
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg>
               <span>React</span>
-            </div>
+            </motion.div>
 
-            <div className="float-badge badge-node float-orbit-2" title="Node.js">
+            <motion.div 
+              className="float-badge badge-node float-orbit-2" 
+              title="Node.js"
+              animate={{ y: [0, 10, 0], rotate: [0, -2, 0] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+            >
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
               <span>Node.js</span>
-            </div>
+            </motion.div>
 
-            <div className="float-badge badge-ai float-orbit-3" title="OpenRouter & Gemini AI">
+            <motion.div 
+              className="float-badge badge-ai float-orbit-3" 
+              title="OpenRouter & Gemini AI"
+              animate={{ y: [0, -10, 0], scale: [1, 1.04, 1] }}
+              transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            >
               <Bot size={16} />
               <span>Gemini / OpenRouter</span>
-            </div>
+            </motion.div>
 
-            <div className="float-badge badge-ts float-orbit-4" title="TypeScript">
+            <motion.div 
+              className="float-badge badge-ts float-orbit-4" 
+              title="TypeScript"
+              animate={{ y: [0, 12, 0], rotate: [0, 3, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
+            >
               <span className="badge-code-lang">TS</span>
               <span>TypeScript</span>
-            </div>
+            </motion.div>
 
-            <div className="float-badge badge-open float-orbit-5">
+            <motion.div 
+              className="float-badge badge-open float-orbit-5"
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+            >
               <span className="badge-open-dot" />
               <span>Full Stack @ Epigroww</span>
-            </div>
+            </motion.div>
           </div>
 
-          <div className="hero-socials-bar card-glass">
+          <motion.div 
+            className="hero-socials-bar card-glass"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
             <span>Connect:</span>
             <div className="hero-socials">
-              <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" className="social-link" aria-label="GitHub"><GithubIcon size={18} /></a>
-              <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" className="social-link" aria-label="LinkedIn"><LinkedinIcon size={18} /></a>
-              <a href="https://www.instagram.com/mritunjaykumar.dev/" target="_blank" rel="noreferrer" className="social-link" aria-label="Instagram"><InstagramIcon size={18} /></a>
-              <a href="https://x.com/mritunjay2025" target="_blank" rel="noreferrer" className="social-link" aria-label="Twitter"><TwitterIcon size={18} /></a>
+              <motion.a whileHover={{ scale: 1.25, y: -2 }} href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" className="social-link" aria-label="GitHub"><GithubIcon size={18} /></motion.a>
+              <motion.a whileHover={{ scale: 1.25, y: -2 }} href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" className="social-link" aria-label="LinkedIn"><LinkedinIcon size={18} /></motion.a>
+              <motion.a whileHover={{ scale: 1.25, y: -2 }} href="https://www.instagram.com/mritunjaykumar.dev/" target="_blank" rel="noreferrer" className="social-link" aria-label="Instagram"><InstagramIcon size={18} /></motion.a>
+              <motion.a whileHover={{ scale: 1.25, y: -2 }} href="https://x.com/mritunjay2025" target="_blank" rel="noreferrer" className="social-link" aria-label="Twitter"><TwitterIcon size={18} /></motion.a>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
-      <div className="scroll-hint" aria-hidden="true">
+      <motion.div 
+        className="scroll-hint" 
+        aria-hidden="true"
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+      >
         <div className="scroll-line" />
         <span>Scroll Down</span>
-      </div>
+      </motion.div>
     </section>
   );
 }
