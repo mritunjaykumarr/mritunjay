@@ -1,11 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Bot, Sparkles, X, SendHorizonal } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { streamPrinceAIChat, generatePrinceAIResponse, type ChatMessage } from '../lib/princeAiService';
 
-interface ChatMessage {
-  role: 'user' | 'assistant';
-  content: string;
-}
+export { generatePrinceAIResponse };
 
 const PRESET_QUESTIONS = [
   { label: 'Show your best project', prompt: 'Show your best project' },
@@ -14,59 +12,6 @@ const PRESET_QUESTIONS = [
   { label: 'Show your GitHub', prompt: 'Show your GitHub' },
   { label: 'Explain your architecture', prompt: 'Explain your architecture' },
 ];
-
-export function generatePrinceAIResponse(query: string): string {
-  const q = query.toLowerCase();
-  if (q.includes('best project') || q.includes('top project') || q.includes('featured')) {
-    return `### 🏆 Mritunjay's Top Featured Projects
-
-1. **Bulk Mail Sender** — High-volume email platform with CSV engine & Gmail API (10k+ emails sent).
-2. **Interactive CLI Portfolio** — Developer terminal experience (\`npx mritunjay-portfolio\`).
-3. **Ad-Free YouTube Experience** — Custom minimalist video streaming interface.
-4. **Real-Time WebSocket Chat** — Multi-room instant messaging application.
-
-[View Full Projects Showcase](/projects)`;
-  }
-
-  if (q.includes('technology') || q.includes('technologies') || q.includes('stack') || q.includes('skills') || q.includes('know')) {
-    return `### ⚡ Technology Stack & Expertise
-
-- **Frontend:** React, TypeScript, Next.js, Vite, Tailwind CSS, GSAP, Framer Motion
-- **Backend & APIs:** Node.js, Express, Python, FastAPI, REST, WebSockets, GraphQL
-- **AI & Cloud:** OpenRouter API, Gemini AI models, Supabase, PostgreSQL, Docker, CI/CD
-- **Architecture:** System Design, Microservices, Async Event Pipelines, Performance Optimization`;
-  }
-
-  if (q.includes('hire') || q.includes('why') || q.includes('reason')) {
-    return `### 💼 Why Hire Mritunjay Kumar?
-
-- **Product-Minded Engineer:** Focuses on real business impact, performance, and clean UX.
-- **AI-First Integration:** Proficient in building modern AI-powered applications, dynamic chat engines, and workflow automation.
-- **Full-Stack Competency:** End-to-end capabilities from DB schema design & microservices to pixel-perfect responsive UIs.
-- **Proven Execution:** Developed production platforms like Bulk Mail Sender with 99.9% uptime.`;
-  }
-
-  if (q.includes('github') || q.includes('code') || q.includes('repo')) {
-    return `### 🐙 GitHub & Open Source
-
-Mritunjay actively builds and publishes open-source software:
-- **GitHub Profile:** [github.com/mritunjaykumarr](https://github.com/mritunjaykumarr)
-- **CLI Portfolio NPM:** [CLI Portfolio Repo](https://github.com/mritunjaykumarr/CLI-Portfolio.git)
-- **Email Platform:** [Bulk Mail Sender](https://www.bulkmailsender.online/)`;
-  }
-
-  if (q.includes('architecture') || q.includes('system') || q.includes('design')) {
-    return `### 🏗️ Engineering Architecture Philosophy
-
-Mritunjay designs systems with:
-1. **Separation of Concerns:** Decoupled frontend components & lightweight API services.
-2. **Real-time Event Architecture:** WebSockets for instant state sync and streaming updates.
-3. **Resilient Data Pipelines:** Caching layers (Redis/LocalCache) & retrying backoffs.
-4. **AI Routing:** Seamless fallbacks between cloud LLM providers and local heuristic logic.`;
-  }
-
-  return `Thanks for asking! Mritunjay Kumar is a Full Stack & AI Application Developer specializing in enterprise SaaS, AI product integrations, and high-performance Web applications. Feel free to click any quick question below or ask about the tech stack, or projects!`;
-}
 
 export default function FloatingPrinceAI() {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,19 +22,50 @@ export default function FloatingPrinceAI() {
     },
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const bodyRef = useRef<HTMLDivElement>(null);
 
-  const handleSend = (userText?: string) => {
+  useEffect(() => {
+    if (bodyRef.current) {
+      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const handleSend = async (userText?: string) => {
     const text = (userText || input).trim();
-    if (!text) return;
+    if (!text || isLoading) return;
 
     const newMsgs: ChatMessage[] = [...messages, { role: 'user', content: text }];
     setMessages(newMsgs);
     setInput('');
+    setIsLoading(true);
+    setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
-    setTimeout(() => {
-      const reply = generatePrinceAIResponse(text);
-      setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
-    }, 400);
+    await streamPrinceAIChat(
+      newMsgs,
+      (chunk) => {
+        setMessages((prev) => {
+          const updated = [...prev];
+          const last = updated[updated.length - 1];
+          if (last?.role === 'assistant') {
+            updated[updated.length - 1] = { ...last, content: last.content + chunk };
+          }
+          return updated;
+        });
+      },
+      () => setIsLoading(false),
+      (err) => {
+        setMessages((prev) => {
+          const updated = [...prev];
+          const last = updated[updated.length - 1];
+          if (last?.role === 'assistant') {
+            updated[updated.length - 1] = { ...last, content: `⚠️ ${err}` };
+          }
+          return updated;
+        });
+        setIsLoading(false);
+      }
+    );
   };
 
   return (
@@ -140,14 +116,18 @@ export default function FloatingPrinceAI() {
             </div>
 
             {/* Chat Body */}
-            <div className="floating-ai-body">
+            <div className="floating-ai-body" ref={bodyRef}>
               {messages.map((m, i) => (
                 <div key={i} className={`ai-msg ${m.role === 'user' ? 'ai-msg-user' : 'ai-msg-assistant'}`}>
                   {m.role === 'assistant' && (
                     <span className="ai-sender-name"><Bot size={12} /> Prince AI</span>
                   )}
                   <div className="ai-bubble">
-                    <ReactMarkdown>{m.content}</ReactMarkdown>
+                    {m.content ? (
+                      <ReactMarkdown>{m.content}</ReactMarkdown>
+                    ) : (
+                      <span className="ai-typing"><span /><span /><span /></span>
+                    )}
                   </div>
                 </div>
               ))}
@@ -166,10 +146,11 @@ export default function FloatingPrinceAI() {
                     handleSend();
                   }
                 }}
+                disabled={isLoading}
               />
               <button
                 onClick={() => handleSend()}
-                disabled={!input.trim()}
+                disabled={!input.trim() || isLoading}
                 className="ai-send-action"
                 aria-label="Send"
               >

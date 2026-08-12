@@ -1,13 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Bot, SendHorizonal, ArrowRight, Copy, Check, Share2, Paperclip, X, Sparkles, Maximize, Minimize } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import { generatePrinceAIResponse } from './FloatingPrinceAI';
-
-interface ChatMessage {
-  role: 'user' | 'assistant';
-  content: string;
-  image?: string;
-}
+import { streamPrinceAIChat, type ChatMessage } from '../lib/princeAiService';
 
 const MANDATORY_PROMPT_CHIPS = [
   'Show your best project',
@@ -16,125 +10,6 @@ const MANDATORY_PROMPT_CHIPS = [
   'Show your GitHub',
   'Explain your architecture',
 ];
-
-const SYSTEM_PROMPT = `You are Prince AI — a premium AI assistant embedded in Mritunjay Kumar's developer portfolio. Mritunjay is a Full Stack & AI Application Developer at Epigroww Global. 
-
-### Mritunjay's Top Featured Projects:
-1. Bulk Mail Sender — High-volume email platform with CSV engine & Gmail API (10k+ emails sent).
-2. Interactive CLI Portfolio — Developer terminal experience (npx mritunjay-portfolio).
-3. Ad-Free YouTube Experience — Custom minimalist video streaming interface.
-4. Real-Time WebSocket Chat — Multi-room instant messaging application.
-
-### Technology Stack & Expertise:
-- Frontend: React, TypeScript, Next.js, Vite, Tailwind CSS, GSAP, Framer Motion
-- Backend & APIs: Node.js, Express, Python, FastAPI, REST, WebSockets, GraphQL
-- AI & Cloud: OpenRouter API, Gemini AI models, Supabase, PostgreSQL, Docker, CI/CD
-- Architecture: System Design, Microservices, Async Event Pipelines, Performance Optimization
-
-### Why Hire Mritunjay Kumar?
-- Product-Minded Engineer: Focuses on real business impact, performance, and clean UX.
-- AI-First Integration: Proficient in building modern AI-powered applications, dynamic chat engines, and workflow automation.
-- Full-Stack Competency: End-to-end capabilities from DB schema design & microservices to pixel-perfect responsive UIs.
-- Proven Execution: Developed production platforms like Bulk Mail Sender with 99.9% uptime.
-
-### Engineering Architecture Philosophy:
-1. Separation of Concerns: Decoupled frontend components & lightweight API services.
-2. Real-time Event Architecture: WebSockets for instant state sync and streaming updates.
-3. Resilient Data Pipelines: Caching layers (Redis/LocalCache) & retrying backoffs.
-4. AI Routing: Seamless fallbacks between cloud LLM providers and local heuristic logic.
-
-Respond with high authority, crisp structure, markdown formatting, key metrics, and direct links when relevant.`;
-
-async function streamChat(
-  messages: ChatMessage[],
-  onChunk: (text: string) => void,
-  onDone: () => void,
-  _onError: (err: string) => void
-) {
-  const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-  const lastUserMsg = messages[messages.length - 1]?.content || '';
-
-  // Smart fallback if API Key not present or if user clicked quick question
-  if (!apiKey) {
-    const fallbackReply = generatePrinceAIResponse(lastUserMsg);
-    // Simulate streaming effect
-    const chars = fallbackReply.split('');
-    let idx = 0;
-    const timer = setInterval(() => {
-      if (idx < chars.length) {
-        onChunk(chars[idx]);
-        idx++;
-      } else {
-        clearInterval(timer);
-        onDone();
-      }
-    }, 8);
-    return;
-  }
-
-  try {
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': window.location.origin,
-        'X-Title': 'Mritunjay Kumar Portfolio - Prince AI',
-      },
-      body: JSON.stringify({
-        model: 'openai/gpt-4o',
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages.map(m => ({ role: m.role, content: m.content }))],
-        stream: true,
-        max_tokens: 600,
-        temperature: 0.7,
-      }),
-    });
-
-    if (!res.ok) {
-      // Fallback on HTTP error
-      const fallbackReply = generatePrinceAIResponse(lastUserMsg);
-      onChunk(fallbackReply);
-      onDone();
-      return;
-    }
-
-    const reader = res.body?.getReader();
-    if (!reader) {
-      const fallbackReply = generatePrinceAIResponse(lastUserMsg);
-      onChunk(fallbackReply);
-      onDone();
-      return;
-    }
-
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
-
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || !trimmed.startsWith('data: ')) continue;
-        const data = trimmed.slice(6);
-        if (data === '[DONE]') { onDone(); return; }
-        try {
-          const parsed = JSON.parse(data);
-          const delta = parsed.choices?.[0]?.delta?.content;
-          if (delta) onChunk(delta);
-        } catch { /* skip */ }
-      }
-    }
-    onDone();
-  } catch {
-    const fallbackReply = generatePrinceAIResponse(lastUserMsg);
-    onChunk(fallbackReply);
-    onDone();
-  }
-}
 
 export default function PrinceAI() {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -200,7 +75,7 @@ export default function PrinceAI() {
     setIsLoading(true);
     setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
-    await streamChat(
+    await streamPrinceAIChat(
       newMessages,
       (chunk) => {
         setMessages(prev => {
