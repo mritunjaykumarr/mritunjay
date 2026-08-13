@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
-import { DEFAULT_POSTS } from '../pages/BlogPage';
+import { DEFAULT_POSTS } from '../data/blogData';
 import { Calendar, Clock, ArrowRight, BookOpen } from 'lucide-react';
 
 type Post = {

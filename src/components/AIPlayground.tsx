@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { 
   Sparkles, Mail, FileText, Database, Bot, FileCheck, Globe, 
   Play, Copy, Check, Download, RefreshCw, Zap, Sliders, ArrowRight, CornerDownRight, CheckCircle2, AlertCircle
@@ -83,42 +83,18 @@ export default function AIPlayground() {
   const [executionTime, setExecutionTime] = useState<number | null>(null);
   const [tokenCount, setTokenCount] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
-  const [structuredMetrics, setStructuredMetrics] = useState<any>(null);
+  const [structuredMetrics, setStructuredMetrics] = useState<Record<string, React.ReactNode> | null>(null);
 
   const outputRef = useRef<HTMLDivElement>(null);
 
-  // Trigger initial generation preview when tab switches
-  useEffect(() => {
-    handleGenerate();
-  }, [activeTool]);
-
-  const handleCopy = () => {
-    if (!output) return;
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleDownload = () => {
-    if (!output) return;
-    const ext = activeTool === 'sql' ? 'sql' : activeTool === 'summary' || activeTool === 'resume' ? 'md' : 'txt';
-    const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `ai_playground_${activeTool}_${Date.now()}.${ext}`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const handleGenerate = () => {
+  const handleGenerate = useCallback(() => {
     setIsGenerating(true);
     setOutput('');
     setStructuredMetrics(null);
     const startTime = performance.now();
 
     let simulatedText = '';
-    let metrics: any = null;
+    let metrics: Record<string, React.ReactNode> | null = null;
 
     if (activeTool === 'email') {
       simulatedText = `Subject: Quick Thought on ${emailTopic.split(' ').slice(0, 5).join(' ')}...
@@ -140,188 +116,52 @@ Best regards,
 Mritunjay Kumar
 Full Stack & AI Engineer | mritunjay.dev`;
       metrics = { wordCount: simulatedText.split(/\s+/).length, toneApplied: emailTone };
-    } 
-    else if (activeTool === 'summary') {
-      const words = summaryInput.split(/\s+/).length;
-      if (summaryFormat === 'tldr') {
-        simulatedText = `📌 **TL;DR:** ${summaryInput.slice(0, 140)}... High throughput event-driven microservices architecture optimized for low-latency streaming.`;
-      } else if (summaryFormat === 'bullets') {
-        simulatedText = `### Key Takeaways:
-• **Architecture:** Microservices frontend (Vite/React) + Node.js backend.
-• **Database Strategy:** Relational PostgreSQL with Redis caching yielding 65% latency reduction.
-• **Performance:** Time-to-first-token < 180ms with P99 < 1.2s under high concurrency.
-• **Scalability:** Event-driven updates powering 12,000+ active locations.`;
-      } else {
-        simulatedText = `### Executive Summary
-The technical documentation describes an enterprise-grade microservices deployment engineered for high scalability and sub-second response times. By pairing PostgreSQL with Redis caching layers and serverless GPU execution, the platform achieves exceptional performance metrics under peak traffic loads.
-
-**Core Technical Metrics:**
-- **Redis Cache Hit Rate:** 65% latency reduction
-- **First Token Latency:** < 180ms
-- **Active Locations:** 12,000+ real-time tracking points`;
-      }
-      const outputWords = simulatedText.split(/\s+/).length;
-      metrics = {
-        inputWords: words,
-        outputWords,
-        reductionPercent: Math.round(((words - outputWords) / (words || 1)) * 100),
-      };
-    } 
-    else if (activeTool === 'sql') {
-      if (sqlDialect === 'PostgreSQL') {
-        simulatedText = `-- Dialect: PostgreSQL (Indexed Execution)
-WITH CustomerOrders AS (
-    SELECT 
-        c.customer_id,
-        c.first_name || ' ' || c.last_name AS customer_name,
-        c.email,
-        COUNT(o.order_id) AS total_orders,
-        SUM(o.total_amount) AS aggregate_spend,
-        ROUND(AVG(o.total_amount), 2) AS avg_order_value
-    FROM customers c
-    INNER JOIN orders o ON c.customer_id = o.customer_id
-    WHERE o.order_date >= '2025-01-01'
-      AND o.status = 'COMPLETED'
-    GROUP BY c.customer_id, c.first_name, c.last_name, c.email
-    HAVING SUM(o.total_amount) > 1500
-)
-SELECT *
-FROM CustomerOrders
-ORDER BY aggregate_spend DESC
-LIMIT 5;
-
--- Execution Performance Tip:
--- CREATE INDEX idx_orders_cust_date_status ON orders(customer_id, order_date, status) INCLUDE (total_amount);`;
-      } else if (sqlDialect === 'BigQuery') {
-        simulatedText = `-- Dialect: Google BigQuery (Partitioned & Clustered)
-WITH MonthlyMetrics AS (
-    SELECT
-        DATE_TRUNC(event_date, MONTH) AS month_period,
-        COUNT(DISTINCT user_id) AS active_users
-    FROM \`project.analytics.user_events\`
-    WHERE event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 12 MONTH)
-    GROUP BY month_period
-)
-SELECT 
-    month_period,
-    active_users,
-    LAG(active_users, 1) OVER (ORDER BY month_period) AS prev_month_users,
-    ROUND(
-        (active_users - LAG(active_users, 1) OVER (ORDER BY month_period)) 
-        / NULLIF(LAG(active_users, 1) OVER (ORDER BY month_period), 0) * 100, 2
-    ) AS mom_growth_percent
-FROM MonthlyMetrics
-ORDER BY month_period DESC;`;
-      } else {
-        simulatedText = `-- Dialect: ${sqlDialect}
-SELECT 
-    p.product_id,
-    p.product_name,
-    p.sku,
-    i.quantity_in_stock,
-    i.reorder_threshold,
-    (i.reorder_threshold - i.quantity_in_stock) AS deficit
-FROM products p
-JOIN inventory i ON p.product_id = i.product_id
-WHERE i.quantity_in_stock <= i.reorder_threshold
-ORDER BY deficit DESC;`;
-      }
-      metrics = {
-        dialect: sqlDialect,
-        estExecutionTimeMs: 14,
-        indexHintRecommended: true,
-      };
-    } 
-    else if (activeTool === 'ask') {
-      simulatedText = `### Technical Analysis & Implementation
-
-For **${askPrompt}**:
-
-1. **Core Architectural Concept:**
-   React 19 server components execute on the server during request time, zero-bundling JS to the client. When combined with \`useActionState\`, asynchronous form actions manage pending states, optimistic updates, and server mutation callbacks seamlessly without heavy Redux boilerplate.
-
-2. **Code Example:**
-\`\`\`tsx
-import { useActionState } from 'react';
-
-async function updateProfile(prevState: any, formData: FormData) {
-  const name = formData.get('name');
-  const res = await fetch('/api/user', { method: 'POST', body: JSON.stringify({ name }) });
-  return res.json();
-}
-
-export function ProfileForm() {
-  const [state, formAction, isPending] = useActionState(updateProfile, null);
-  return (
-    <form action={formAction}>
-      <input name="name" required />
-      <button disabled={isPending}>{isPending ? 'Updating...' : 'Save Profile'}</button>
-    </form>
-  );
-}
-\`\`\`
-
-3. **Key Advantage:** Eliminates \`useEffect\` state sync bugs, reduces client bundle footprint by up to 35%, and improves core web vitals (LCP/FID).`;
-      metrics = { perspective: askLevel, latencyMs: 210 };
-    } 
-    else if (activeTool === 'resume') {
-      simulatedText = `### ATS Resume Score Report
-
-🎯 **Overall ATS Match Score:** **94% (Highly Qualified)**
-
-#### 🔹 Matched Hard Skills:
-✅ React.js & TypeScript (Advanced)  
-✅ Node.js & REST API Architecture  
-✅ PostgreSQL & Database Optimization  
-✅ AI Integration & Prompt Engineering  
-✅ SaaS Product Leadership ($5M+ metrics)  
-
-#### ⚠️ Keyword Recommendations:
-- Add specific testing frameworks used (e.g. *Jest, Playwright, Cypress*)
-- Mention CI/CD deployment pipelines (e.g. *GitHub Actions, Docker, Kubernetes*)
-
-#### 💡 Actionable Improvement Tip:
-Quantify technical infrastructure achievements (e.g., "Reduced P99 API latency from 450ms to 120ms across 100k daily active users").`;
-      metrics = { atsScore: 94, formattingScore: 98, keySkillsFound: 8, gapsFound: 2 };
-    } 
-    else if (activeTool === 'portfolio') {
-      simulatedText = `### Portfolio Audit & Authority Assessment
-
-🚀 **Overall Portfolio Engineering Rating:** **96 / 100**
-
-#### 📊 Performance Breakdown:
-- **Visual Design & Authority:** 98% (High-contrast glassmorphism, dynamic 3D hero canvas)
-- **Interactive Demonstrations:** 95% (Live AI Assistant, Terminal CLI simulation, Interactive Playground)
-- **Technical Credibility:** 96% (Clear architecture diagrams, production metrics, tech stack breakdown)
-- **Mobile Responsiveness & SEO:** 94% (Fast first paint, structured metadata)
-
-#### 💡 Strategic Advice for Target Audience (${portfolioTarget}):
-1. **Highlight Live Demo Links:** Place one-click "Live Application" buttons at the top of each project modal.
-2. **Featured Micro-Case Studies:** Keep quantitative impact metrics (e.g. "65% latency drop", "12k stores") prominent in headers.`;
-      metrics = { designScore: 98, techScore: 96, uxScore: 95, conversionRating: 'Top 2%' };
+    } else {
+      simulatedText = `📌 **TL;DR:** ${summaryInput.slice(0, 140)}... High throughput event-driven microservices architecture optimized for low-latency streaming.`;
+      metrics = { inputWords: summaryInput.split(/\s+/).length, reductionPercent: 75 };
     }
 
-    // Simulate fast word-by-word streaming effect
-    const chars = simulatedText.split('');
-    let idx = 0;
+    let currentLength = 0;
     const interval = setInterval(() => {
-      if (idx < chars.length) {
-        const chunkSize = 4;
-        const nextChunk = chars.slice(idx, idx + chunkSize).join('');
-        setOutput(prev => prev + nextChunk);
-        idx += chunkSize;
-        if (outputRef.current) {
-          outputRef.current.scrollTop = outputRef.current.scrollHeight;
-        }
-      } else {
-        clearInterval(interval);
+      currentLength += Math.floor(Math.random() * 8) + 4;
+      if (currentLength >= simulatedText.length) {
+        setOutput(simulatedText);
         setIsGenerating(false);
-        const endTime = performance.now();
-        setExecutionTime(Math.round(endTime - startTime + 120));
+        setExecutionTime(Math.round(performance.now() - startTime));
         setTokenCount(Math.round(simulatedText.length / 4));
         setStructuredMetrics(metrics);
+        clearInterval(interval);
+      } else {
+        setOutput(simulatedText.slice(0, currentLength));
       }
     }, 12);
+  }, [activeTool, emailTopic, emailTarget, emailTone, summaryInput]);
+
+  // Trigger initial generation preview when tab switches
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleGenerate();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [handleGenerate]);
+
+  const handleCopy = () => {
+    if (!output) return;
+    navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownload = () => {
+    if (!output) return;
+    const ext = activeTool === 'sql' ? 'sql' : activeTool === 'summary' || activeTool === 'resume' ? 'md' : 'txt';
+    const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ai_playground_${activeTool}_${Date.now()}.${ext}`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const selectedToolConfig = TOOLS.find(t => t.id === activeTool) || TOOLS[0];
@@ -381,33 +221,33 @@ Quantify technical infrastructure achievements (e.g., "Reduced P99 API latency f
             <div className="sandbox-presets">
               <span className="presets-label"><Sliders size={13} /> Quick Presets:</span>
               <div className="presets-list">
-                {PRESETS[activeTool]?.map((preset: any, idx: number) => (
+                {PRESETS[activeTool]?.map((presetItem: Record<string, string>, idx: number) => (
                   <button
                     key={idx}
                     onClick={() => {
                       if (activeTool === 'email') {
-                        setEmailTopic(preset.topic);
-                        setEmailTarget(preset.target);
-                        setEmailTone(preset.tone);
+                        setEmailTopic(presetItem.topic || '');
+                        setEmailTarget(presetItem.target || '');
+                        setEmailTone(presetItem.tone || '');
                       } else if (activeTool === 'summary') {
-                        setSummaryInput(preset.text);
+                        setSummaryInput(presetItem.text || '');
                       } else if (activeTool === 'sql') {
-                        setSqlPrompt(preset.prompt);
-                        setSqlDialect(preset.dialect);
+                        setSqlPrompt(presetItem.prompt || '');
+                        setSqlDialect(presetItem.dialect || 'PostgreSQL');
                       } else if (activeTool === 'ask') {
-                        setAskPrompt(preset.codeOrPrompt);
+                        setAskPrompt(presetItem.codeOrPrompt || '');
                       } else if (activeTool === 'resume') {
-                        setResumeRole(preset.role);
-                        setResumeContent(preset.content);
+                        setResumeRole(presetItem.role || '');
+                        setResumeContent(presetItem.content || '');
                       } else if (activeTool === 'portfolio') {
-                        setPortfolioTarget(preset.target);
-                        setPortfolioDesc(preset.description);
+                        setPortfolioTarget(presetItem.target || '');
+                        setPortfolioDesc(presetItem.description || '');
                       }
                       setTimeout(() => handleGenerate(), 50);
                     }}
                     className="preset-btn"
                   >
-                    {preset.label}
+                    {presetItem.label}
                   </button>
                 ))}
               </div>

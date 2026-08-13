@@ -49,7 +49,7 @@ export default function HeroCanvas3D() {
     }
 
     const particles: Particle[] = [];
-    const colors = ['#6366f1', '#8b5cf6', '#3b82f6', '#06b6d4', '#ec4899'];
+    const colors = ['#8FFFE0', '#03313A', '#8FFFE0', '#062F36', '#8FFFE0'];
 
     for (let i = 0; i < particleCount; i++) {
       const x = (Math.random() - 0.5) * width * 1.5;
@@ -112,10 +112,10 @@ export default function HeroCanvas3D() {
       const ry = poly.ry + rotMouseX * 0.0004;
 
       const projected = vertices.map(([vx, vy, vz]) => {
-        let x1 = vx * Math.cos(ry) + vz * Math.sin(ry);
-        let z1 = -vx * Math.sin(ry) + vz * Math.cos(ry);
-        let y2 = vy * Math.cos(rx) - z1 * Math.sin(rx);
-        let z2 = vy * Math.sin(rx) + z1 * Math.cos(rx);
+        const x1 = vx * Math.cos(ry) + vz * Math.sin(ry);
+        const z1 = -vx * Math.sin(ry) + vz * Math.cos(ry);
+        const y2 = vy * Math.cos(rx) - z1 * Math.sin(rx);
+        const z2 = vy * Math.sin(rx) + z1 * Math.cos(rx);
         return project3D(poly.x + x1, poly.y + y2, poly.z + z2);
       });
 

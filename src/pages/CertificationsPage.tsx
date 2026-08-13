@@ -5,7 +5,7 @@ import { useScrollLock } from '../hooks/useScrollLock';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
-export interface CertItem {
+interface CertItem {
   id: number;
   title: string;
   issuer: string;
@@ -16,7 +16,7 @@ export interface CertItem {
   desc: string;
 }
 
-export const certsDatabase: CertItem[] = [
+const certsDatabase: CertItem[] = [
   {
     id: 1,
     title: 'Fullstack Web Development Completion',

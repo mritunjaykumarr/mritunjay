@@ -165,8 +165,8 @@ export async function streamPrinceAIChat(
     }
 
     onDone();
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Prince AI Stream Exception:', err);
-    onError(err?.message || 'Network error reaching OpenRouter API.');
+    onError((err as Error)?.message || 'Network error reaching OpenRouter API.');
   }
 }

@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Bot, Sparkles, X, SendHorizonal } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import { streamPrinceAIChat, generatePrinceAIResponse, type ChatMessage } from '../lib/princeAiService';
-
-export { generatePrinceAIResponse };
+import { streamPrinceAIChat, type ChatMessage } from '../lib/princeAiService';
 
 const PRESET_QUESTIONS = [
   { label: 'Show your best project', prompt: 'Show your best project' },

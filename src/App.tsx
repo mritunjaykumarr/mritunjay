@@ -51,7 +51,7 @@ function App() {
     localStorage.setItem('theme', theme);
     const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) {
-      metaTheme.setAttribute('content', theme === 'dark' ? '#0a0a0f' : '#ffffff');
+      metaTheme.setAttribute('content', theme === 'dark' ? '#03313A' : '#F4FFFC');
     }
   }, [theme]);
 

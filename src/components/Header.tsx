@@ -101,7 +101,8 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
 
   /* ── Close drawer on route change ── */
   useEffect(() => {
-    setIsDrawerOpen(false);
+    const timer = setTimeout(() => setIsDrawerOpen(false), 0);
+    return () => clearTimeout(timer);
   }, [currentPath]);
 
   /* ── Desktop hover triggers ── */

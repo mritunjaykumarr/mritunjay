@@ -137,7 +137,7 @@ export default function SkillsPage() {
                 <button
                   key={cat.id}
                   className={`filter-btn ${activeCategory === cat.id ? 'active' : ''}`}
-                  onClick={() => setActiveCategory(cat.id as any)}
+                  onClick={() => setActiveCategory(cat.id as 'all' | 'frontend' | 'backend' | 'languages' | 'tools')}
                 >
                   {cat.label}
                 </button>

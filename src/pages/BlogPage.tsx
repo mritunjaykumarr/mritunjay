@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useScrollLock } from '../hooks/useScrollLock';
@@ -8,58 +8,17 @@ import {
   Heart, MessageCircle, ArrowRight, X, Calendar, 
   Clock, FolderOpen, FileEdit, Search, BookOpen 
 } from 'lucide-react';
-
-export const DEFAULT_POSTS = [
-  {
-    id: 'default-1',
-    title: 'Building Next-Gen Web Apps with React 19 & TypeScript',
-    type: 'Blog',
-    category: 'Engineering',
-    created_at: '2026-07-15T10:00:00Z',
-    excerpt: 'Exploring React 19\'s latest capabilities, compiler optimizations, optimistic updates, and strict TypeScript patterns for scalable production apps.',
-    body: `<p>React 19 brings powerful new features to front-end engineering. From compiler optimizations to built-in state transitions, building high-performance web applications is now smoother than ever.</p><h3>Key Architectural Takeaways:</h3><ul><li><strong>Optimistic UI Updates:</strong> Eliminate artificial loading spinners by reflecting user input instantly.</li><li><strong>Strict Type Interfaces:</strong> Catch edge cases early in development with comprehensive type boundaries.</li><li><strong>Lean Asset Bundles:</strong> Tree-shake unnecessary modules to achieve lightning-fast initial load times.</li></ul>`,
-    cover: '/assets/bulkmailP.png',
-    likes_count: 14,
-    comments_count: 3,
-    shares_count: 5
-  },
-  {
-    id: 'default-2',
-    title: 'Mastering Buttery-Smooth GSAP Scroll Animations',
-    type: 'Article',
-    category: 'Performance',
-    created_at: '2026-06-28T14:30:00Z',
-    excerpt: 'How to craft 60fps micro-interactions and scroll triggers without blocking the main thread or causing layout shifts.',
-    body: `<p>User experience is heavily defined by how responsive and tactile an interface feels. By utilizing hardware-accelerated CSS transforms and GSAP ScrollTrigger context management, we can deliver silky smooth motion across all viewport sizes.</p><h3>Best Practices for Motion Engineering:</h3><p>1. Always animate <code>transform</code> and <code>opacity</code> to offload work to the GPU.<br>2. Respect <code>prefers-reduced-motion</code> media queries for accessibility.<br>3. Clean up GSAP timelines on component unmount to prevent memory leaks.</p>`,
-    cover: '/assets/adfree.png',
-    likes_count: 22,
-    comments_count: 5,
-    shares_count: 9
-  },
-  {
-    id: 'default-3',
-    title: 'Integrating OpenRouter AI & Streaming In React',
-    type: 'News',
-    category: 'AI Strategy',
-    created_at: '2026-05-10T09:15:00Z',
-    excerpt: 'A practical guide to building real-time streaming AI chatbot assistants like Prince AI using fetch streams and OpenRouter API.',
-    body: `<p>Generative AI is revolutionizing digital experiences. By implementing server-sent events or fetch ReadableStreams, developers can present AI responses chunk-by-chunk for instant feedback.</p><p>We discuss prompt engineering, fallbacks, and maintaining a clear design system for AI components.</p>`,
-    cover: '/assets/clip.png',
-    likes_count: 35,
-    comments_count: 8,
-    shares_count: 12
-  }
-];
+import { DEFAULT_POSTS, type BlogPost, type CommentItem } from '../data/blogData';
 
 export default function BlogPage() {
   usePortfolioMotion();
   useSEO(SEO_CONFIGS.blog);
-  const [posts, setPosts] = useState<any[]>(DEFAULT_POSTS);
+  const [posts, setPosts] = useState<BlogPost[]>(DEFAULT_POSTS);
   const [loading] = useState(false);
   const [filterCategory, setFilterCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [activePost, setActivePost] = useState<any>(null);
-  const [comments, setComments] = useState<any[]>([]);
+  const [activePost, setActivePost] = useState<BlogPost | null>(null);
+  const [comments, setComments] = useState<CommentItem[]>([]);
   const [newComment, setNewComment] = useState('');
 
   useScrollLock(!!activePost);
@@ -73,9 +32,7 @@ export default function BlogPage() {
     return id;
   });
 
-  useEffect(() => { fetchPosts(); }, []);
-
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const { data: postsData, error } = await supabase
         .from('posts')
@@ -87,17 +44,24 @@ export default function BlogPage() {
       } else if (postsData && postsData.length > 0) {
         const { data: commentsData } = await supabase.from('comments').select('post_id');
         const counts: Record<string, number> = {};
-        commentsData?.forEach(c => { counts[c.post_id] = (counts[c.post_id] || 0) + 1; });
+        commentsData?.forEach((c: { post_id: string }) => { counts[c.post_id] = (counts[c.post_id] || 0) + 1; });
         
-        const visiblePosts = postsData.filter(p => !p.status || p.status === 'published');
+        const visiblePosts = postsData.filter((p: { status?: string }) => !p.status || p.status === 'published');
         if (visiblePosts.length > 0) {
-          setPosts(visiblePosts.map(p => ({ ...p, comments_count: counts[p.id] || 0 })));
+          setPosts(visiblePosts.map((p: BlogPost) => ({ ...p, comments_count: counts[p.id] || 0 })));
         }
       }
     } catch (err) {
       console.error("Failed to fetch posts, using defaults:", err);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchPosts();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchPosts]);
 
   const toggleLike = async (postId: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -120,7 +84,7 @@ export default function BlogPage() {
     localStorage.setItem('user_likes', JSON.stringify(newLikes));
   };
 
-  const openPost = async (post: any) => {
+  const openPost = async (post: BlogPost) => {
     setActivePost(post);
     if (!post.id.startsWith('default-')) {
       const { data } = await supabase.from('comments').select('*').eq('post_id', post.id).order('created_at', { ascending: true });
@@ -347,15 +311,18 @@ export default function BlogPage() {
                     {comments.length === 0 ? (
                       <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No comments yet. Be the first to leave a thought!</p>
                     ) : (
-                      comments.map(c => (
-                        <div key={c.id} className="blog-comment-item">
-                          <div className="blog-comment-item-avatar">{c.author_name.substring(0, 2).toUpperCase()}</div>
-                          <div>
-                            <div className="blog-comment-item-text"><strong>{c.author_name}</strong> {c.content}</div>
-                            <div className="blog-comment-item-time">{new Date(c.created_at).toLocaleString()}</div>
+                      comments.map(c => {
+                        const name = c.author_name || c.user_name || 'Visitor';
+                        return (
+                          <div key={c.id} className="blog-comment-item">
+                            <div className="blog-comment-item-avatar">{name.substring(0, 2).toUpperCase()}</div>
+                            <div>
+                              <div className="blog-comment-item-text"><strong>{name}</strong> {c.content}</div>
+                              <div className="blog-comment-item-time">{new Date(c.created_at).toLocaleString()}</div>
+                            </div>
                           </div>
-                        </div>
-                      ))
+                        );
+                      })
                     )}
                   </div>
 

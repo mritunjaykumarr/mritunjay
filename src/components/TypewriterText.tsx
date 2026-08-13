@@ -45,8 +45,10 @@ export default function TypewriterText({
           setCurrentText(targetPhrase.slice(0, currentText.length - 1));
         }, deletingSpeed);
       } else {
-        setIsDeleting(false);
-        setPhraseIndex(prev => prev + 1);
+        timer = setTimeout(() => {
+          setIsDeleting(false);
+          setPhraseIndex(prev => prev + 1);
+        }, 50);
       }
     }
 

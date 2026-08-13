@@ -66,9 +66,11 @@ export default function HeroTerminal() {
   const currentTab = TERMINAL_DATA[activeTab];
 
   useEffect(() => {
-    setIsRunning(true);
-    setTypedOutput([]);
     let currentLineIndex = 0;
+    const startTimer = setTimeout(() => {
+      setIsRunning(true);
+      setTypedOutput([]);
+    }, 0);
 
     const interval = setInterval(() => {
       if (currentLineIndex < currentTab.output.length) {
@@ -81,8 +83,11 @@ export default function HeroTerminal() {
       }
     }, 120);
 
-    return () => clearInterval(interval);
-  }, [activeTab]);
+    return () => {
+      clearTimeout(startTimer);
+      clearInterval(interval);
+    };
+  }, [activeTab, currentTab.output]);
 
   const handleCopyCommand = () => {
     navigator.clipboard.writeText(currentTab.command);
