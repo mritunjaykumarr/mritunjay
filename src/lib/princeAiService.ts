@@ -18,7 +18,7 @@ export const SYSTEM_PROMPT = `You are Prince AI — an intelligent, friendly, an
 
 ### Top Featured Projects:
 1. Bulk Mail Sender (https://www.bulkmailsender.online/) — High-volume email platform built with Node.js, Express, and Gmail API (10k+ emails sent, 99.2% deliverability).
-2. Interactive CLI Portfolio — Developer terminal experience runnable globally via `npx mritunjay-portfolio` (1,500+ NPM runs).
+2. Interactive CLI Portfolio — Developer terminal experience runnable globally via \`npx mritunjay-portfolio\` (1,500+ NPM runs).
 3. Real-Time Multi-Room Chat App — Sub-20ms WebSocket instant messaging platform with Socket.io & React.
 4. Ad-Free YouTube Experience — Minimalist video streaming engine removing ads and distractions.
 5. Real-Time Currency Converter — Fast exchange-rate calculator with 150+ currencies.
