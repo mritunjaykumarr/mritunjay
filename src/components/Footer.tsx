@@ -20,7 +20,7 @@ export default function Footer() {
               <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" aria-label="GitHub"><GithubIcon size={18} /></a>
               <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" aria-label="LinkedIn"><LinkedinIcon size={18} /></a>
               <a href="https://www.instagram.com/mritunjaykumar.dev/" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramIcon size={18} /></a>
-              <a href="mailto:mritunjaykumar2025@gmail.com" aria-label="Email"><Mail size={18} /></a>
+              <a href="mailto:me@mritify.online" aria-label="Email"><Mail size={18} /></a>
             </div>
           </div>
 
@@ -52,11 +52,13 @@ export default function Footer() {
             </div>
 
             <div className="footer-col">
-              <h4 className="footer-col-title">Contact</h4>
+              <h4 className="footer-col-title">Contact & Support</h4>
               <div className="footer-col-links">
                 <span className="footer-col-link"><MapPin size={12} /> Bihar / New Delhi, India</span>
                 <a href="tel:+919470880956" className="footer-col-link"><Phone size={12} /> +91 94708 80956</a>
-                <a href="mailto:mritunjaykumar2025@gmail.com" className="footer-col-link"><Mail size={12} /> mritunjaykumar2025@gmail.com</a>
+                <a href="mailto:me@mritify.online" className="footer-col-link" title="Direct Email"><Mail size={12} /> me@mritify.online (Direct)</a>
+                <a href="mailto:support@mritify.online" className="footer-col-link" title="Tech Support"><Mail size={12} /> support@mritify.online (Support)</a>
+                <a href="mailto:info@mritify.online" className="footer-col-link" title="General Info"><Mail size={12} /> info@mritify.online (Info)</a>
               </div>
             </div>
           </div>

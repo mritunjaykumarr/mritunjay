@@ -113,15 +113,41 @@ export default function ContactPage() {
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                   <a 
-                    href="mailto:mritunjaykumar2025@gmail.com"
+                    href="mailto:me@mritify.online"
                     style={{ display: 'flex', alignItems: 'center', gap: '14px', color: 'var(--text)', textDecoration: 'none', padding: '0.75rem', borderRadius: 'var(--r-sm)', background: 'var(--bg-elevated)', transition: 'transform 0.2s ease' }}
                   >
                     <div className="icon-box" style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'var(--primary-glow)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
                       <Mail size={18} />
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Email</div>
-                      <div style={{ fontWeight: 600, fontSize: '0.92rem' }}>mritunjaykumar2025@gmail.com</div>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Direct / Founder Email</div>
+                      <div style={{ fontWeight: 600, fontSize: '0.92rem' }}>me@mritify.online</div>
+                    </div>
+                  </a>
+
+                  <a 
+                    href="mailto:support@mritify.online"
+                    style={{ display: 'flex', alignItems: 'center', gap: '14px', color: 'var(--text)', textDecoration: 'none', padding: '0.75rem', borderRadius: 'var(--r-sm)', background: 'var(--bg-elevated)', transition: 'transform 0.2s ease' }}
+                  >
+                    <div className="icon-box" style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'var(--primary-glow)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
+                      <Mail size={18} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Client & Technical Support</div>
+                      <div style={{ fontWeight: 600, fontSize: '0.92rem' }}>support@mritify.online</div>
+                    </div>
+                  </a>
+
+                  <a 
+                    href="mailto:info@mritify.online"
+                    style={{ display: 'flex', alignItems: 'center', gap: '14px', color: 'var(--text)', textDecoration: 'none', padding: '0.75rem', borderRadius: 'var(--r-sm)', background: 'var(--bg-elevated)', transition: 'transform 0.2s ease' }}
+                  >
+                    <div className="icon-box" style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'var(--primary-glow)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
+                      <Mail size={18} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>General Inquiries & Info</div>
+                      <div style={{ fontWeight: 600, fontSize: '0.92rem' }}>info@mritify.online</div>
                     </div>
                   </a>
 

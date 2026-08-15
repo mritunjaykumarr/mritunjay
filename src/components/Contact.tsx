@@ -59,17 +59,23 @@ export default function Contact({ isOpen, onClose }: ContactProps) {
             <div className="contact-grid" style={{ gap: 0 }}>
               <div className="contact-left" style={{ padding: '2rem', background: 'var(--bg-elevated)' }}>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Let's talk about your project</h3>
-                <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.95rem' }}>I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.</p>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.</p>
                 
-                <div className="contact-info-links" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div className="contact-info-links" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                  <a href="mailto:me@mritify.online" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text)', textDecoration: 'none' }}>
+                    <Mail size={18} className="grad-text" /> <span>me@mritify.online <small style={{ color: 'var(--text-muted)' }}>(Direct)</small></span>
+                  </a>
+                  <a href="mailto:support@mritify.online" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text)', textDecoration: 'none' }}>
+                    <Mail size={18} className="grad-text" /> <span>support@mritify.online <small style={{ color: 'var(--text-muted)' }}>(Support)</small></span>
+                  </a>
+                  <a href="mailto:info@mritify.online" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text)', textDecoration: 'none' }}>
+                    <Mail size={18} className="grad-text" /> <span>info@mritify.online <small style={{ color: 'var(--text-muted)' }}>(Info)</small></span>
+                  </a>
                   <a href="https://wa.me/919470880956" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text)', textDecoration: 'none' }}>
                     <MessageSquare size={18} className="grad-text" /> <span>+91 94708 80956</span>
                   </a>
                   <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text)', textDecoration: 'none' }}>
                     <LinkedinIcon size={18} /> <span>LinkedIn Profile</span>
-                  </a>
-                  <a href="mailto:mritunjaykumar2025@gmail.com" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text)', textDecoration: 'none' }}>
-                    <Mail size={18} /> <span>mritunjaykumar2025@gmail.com</span>
                   </a>
                 </div>
               </div>

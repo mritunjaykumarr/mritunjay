@@ -11,12 +11,14 @@ export const SYSTEM_PROMPT = `You are Prince AI — an intelligent, friendly, an
 - Focus: Building modern AI-powered applications, high-performance web platforms, enterprise SaaS tools, and resilient event-driven architectures.
 - Contact / Links:
   - GitHub: https://github.com/mritunjaykumarr
-  - Email: mritunjaykumar2522@gmail.com
+  - Direct Email: me@mritify.online
+  - Support: support@mritify.online
+  - General Info: info@mritify.online
   - Portfolio CLI: npx mritunjay-portfolio
 
 ### Top Featured Projects:
 1. Bulk Mail Sender (https://www.bulkmailsender.online/) — High-volume email platform built with Node.js, Express, and Gmail API (10k+ emails sent, 99.2% deliverability).
-2. Interactive CLI Portfolio — Developer terminal experience runnable globally via \`npx mritunjay-portfolio\` (1,500+ NPM runs).
+2. Interactive CLI Portfolio — Developer terminal experience runnable globally via `npx mritunjay-portfolio` (1,500+ NPM runs).
 3. Real-Time Multi-Room Chat App — Sub-20ms WebSocket instant messaging platform with Socket.io & React.
 4. Ad-Free YouTube Experience — Minimalist video streaming engine removing ads and distractions.
 5. Real-Time Currency Converter — Fast exchange-rate calculator with 150+ currencies.
@@ -48,8 +50,8 @@ export function generatePrinceAIResponse(query: string): string {
     return `### 💼 Why Hire Mritunjay Kumar?\n\n- **Product-Minded Engineer:** Focuses on business impact & clean UX.\n- **AI-First Integration:** Proficient in building modern LLM-driven tools.\n- **Full-Stack Competency:** End-to-end capabilities from DB design to pixel-perfect UI.`;
   }
 
-  if (q.includes('github') || q.includes('code') || q.includes('contact') || q.includes('email')) {
-    return `### 🔗 Links & Contact\n\n- **GitHub:** [github.com/mritunjaykumarr](https://github.com/mritunjaykumarr)\n- **CLI Portfolio:** \`npx mritunjay-portfolio\`\n- **Email:** mritunjaykumar2522@gmail.com`;
+  if (q.includes('github') || q.includes('code') || q.includes('contact') || q.includes('email') || q.includes('support')) {
+    return `### 🔗 Links & Contact\n\n- **Direct / Work Email:** me@mritify.online\n- **Tech & Client Support:** support@mritify.online\n- **General Inquiries:** info@mritify.online\n- **GitHub:** [github.com/mritunjaykumarr](https://github.com/mritunjaykumarr)\n- **CLI Portfolio:** \`npx mritunjay-portfolio\``;
   }
 
   return `Thanks for asking! Mritunjay Kumar is a Full Stack & AI Application Developer specializing in enterprise SaaS, AI product integrations, and high-performance web applications. Feel free to ask about his projects, architecture, or tech stack!`;
