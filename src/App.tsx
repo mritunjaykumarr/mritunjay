@@ -11,6 +11,7 @@ import PricingPage from './pages/PricingPage';
 import ContactPage from './pages/ContactPage';
 import PrinceAIPage from './pages/PrinceAIPage';
 import Header from './components/Header';
+import AnnouncementBar from './components/AnnouncementBar';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -64,6 +65,7 @@ function App() {
       <ScrollToTop />
       <CustomCursor />
       <Loader />
+      <AnnouncementBar />
       <Header theme={theme} toggleTheme={toggleTheme} />
       <Suspense fallback={null}>
         <Routes>
