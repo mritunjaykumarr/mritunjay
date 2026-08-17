@@ -664,9 +664,15 @@ p {
   }
 }
 
-/* ── TOP ANNOUNCEMENT BAR (LIVE TV RELEASE) ── */
+/* ── TOP ANNOUNCEMENT BAR (LIVE TV RELEASE - STATIC & PERMANENT) ── */
 :root {
-  --announcement-bar-height: 0px;
+  --announcement-bar-height: 42px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --announcement-bar-height: 38px;
+  }
 }
 
 .announcement-bar-wrapper {
@@ -841,38 +847,6 @@ p {
   transition: transform 0.2s ease;
 }
 
-.announcement-dismiss-btn {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(240, 253, 250, 0.7);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 2;
-}
-
-[data-theme='light'] .announcement-dismiss-btn {
-  background: rgba(3, 49, 58, 0.08);
-  border-color: rgba(3, 49, 58, 0.15);
-  color: #03313A;
-}
-
-.announcement-dismiss-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.4);
-  color: #FF6B6B;
-  transform: translateY(-50%) scale(1.1);
-}
-
 @media (max-width: 900px) {
   .announcement-subtext {
     display: none;
@@ -882,7 +856,7 @@ p {
 @media (max-width: 640px) {
   .announcement-bar-wrapper {
     height: 38px;
-    padding: 0 2rem 0 0.5rem;
+    padding: 0 0.5rem;
   }
   .announcement-bar-content {
     font-size: 0.75rem;
@@ -907,7 +881,7 @@ p {
 /* ── ENTERPRISE AI FLOATING NAVBAR (LINEAR / VERCEL / RAYCAST STYLED) ── */
 .header-floating-wrapper {
   position: fixed;
-  top: calc(1.25rem + var(--announcement-bar-height, 0px));
+  top: calc(1.25rem + var(--announcement-bar-height, 42px));
   left: 0;
   right: 0;
   z-index: 1000;
