@@ -21,6 +21,10 @@ import ScrollTrail from './components/ScrollTrail';
 import FloatingPrinceAI from './components/FloatingPrinceAI';
 
 import PlaygroundPage from './pages/PlaygroundPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
+import Disclaimer from './pages/Disclaimer';
+import NotFound from './pages/NotFound';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const AdFree = lazy(() => import('./pages/AdFree'));
@@ -53,7 +57,7 @@ function App() {
     localStorage.setItem('theme', theme);
     const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) {
-      metaTheme.setAttribute('content', theme === 'dark' ? '#03313A' : '#F4FFFC');
+      metaTheme.setAttribute('content', theme === 'dark' ? '#0F172A' : '#FFFDF5');
     }
   }, [theme]);
 
@@ -82,8 +86,12 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/prince-ai" element={<PrinceAIPage />} />
           <Route path="/playground" element={<PlaygroundPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/adfree" element={<AdFree />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
       <ConditionalFooter />

@@ -81,6 +81,12 @@ export default function Footer() {
 
         <div className="footer-bottom" style={{ display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:'1rem' }}>
           <div className="footer-copy" style={{ fontFamily:'var(--font-body)', fontWeight:500, color:'var(--muted-foreground)', fontSize:'0.85rem' }}>© {new Date().getFullYear()} <span style={{ color:'var(--accent)', fontWeight:800 }}>Mritunjay Kumar</span>. All rights reserved.</div>
+          <div style={{ display:'flex', gap:'1rem', flexWrap:'wrap', fontSize:'0.8rem', fontFamily:'var(--font-body)' }}>
+            <Link to="/privacy-policy" style={{ color:'var(--muted-foreground)', fontWeight:600, textDecoration:'underline', textUnderlineOffset:'3px' }}>Privacy Policy</Link>
+            <Link to="/terms-and-conditions" style={{ color:'var(--muted-foreground)', fontWeight:600, textDecoration:'underline', textUnderlineOffset:'3px' }}>Terms</Link>
+            <Link to="/disclaimer" style={{ color:'var(--muted-foreground)', fontWeight:600, textDecoration:'underline', textUnderlineOffset:'3px' }}>Disclaimer</Link>
+            <Link to="/contact" style={{ color:'var(--muted-foreground)', fontWeight:600, textDecoration:'underline', textUnderlineOffset:'3px' }}>Contact</Link>
+          </div>
           <div className="footer-tags" style={{ display:'flex', gap:'0.5rem' }}>
             <span className="badge-playful" style={{ background:'var(--accent)', color:'white', fontSize:'0.7rem', padding:'0.25rem 0.6rem' }}>REACT 19</span>
             <span className="badge-playful secondary" style={{ background:'var(--secondary)', color:'white', fontSize:'0.7rem', padding:'0.25rem 0.6rem' }}>TYPESCRIPT</span>

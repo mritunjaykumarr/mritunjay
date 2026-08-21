@@ -275,3 +275,79 @@
   opacity: 0.9;
 }
 .v3-section:nth-child(even) .v3-section-heading::after { background: var(--secondary); border-radius: 4px; transform: rotate(12deg); }
+
+/* ——— CORE TEXT VISIBILITY FIXES — light/dark ——— */
+/* Story / Principles cards: hard-coded #B8D8D4 on white → invisible in light */
+.v3-story-card p,
+.v3-story-card .v3-check-list li,
+.v3-story-card .v3-check-list li span,
+.v3-featured-copy p,
+.v3-project-body p,
+.v3-skill-card p,
+.v3-timeline p,
+.v3-cert-card p {
+  color: var(--muted-foreground) !important;
+}
+.v3-story-card h3,
+.v3-featured-copy h3,
+.v3-project-body h3,
+.v3-skill-card h3 { color: var(--foreground) !important; }
+
+/* Links: light mint #8FFFE0 on white → invisible → use accent violet */
+.v3-inline-link, .v3-text-link, .v3-article-card a {
+  color: var(--accent) !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+  border-bottom: 2px solid var(--accent) !important;
+}
+.v3-inline-link:hover, .v3-text-link:hover { color: var(--foreground) !important; border-color: var(--foreground) !important; }
+
+/* Prince AI prompt chips: first chip light-on-light → fix */
+.ai-chip-prompt-btn,
+.ai-chip-btn,
+.prince-ai .ai-chip {
+  background: var(--card) !important;
+  color: var(--foreground) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  box-shadow: var(--shadow-pop) !important;
+}
+.ai-chip-prompt-btn:hover, .ai-chip-btn:hover {
+  background: var(--tertiary) !important;
+  color: var(--foreground) !important;
+}
+.prince-ai .ai-chip.active,
+.ai-chip-prompt-btn.active {
+  background: var(--accent) !important;
+  color: white !important;
+  border-color: var(--foreground) !important;
+}
+
+/* Contact photo pill: dark-on-dark invisible → tertiary yellow + dark text */
+.v3-contact-photo span,
+.about-photo + span, .v3-contact-photo > span {
+  background: var(--tertiary) !important;
+  color: var(--foreground) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  box-shadow: var(--shadow-pop) !important;
+  font-family: var(--font-heading) !important;
+  font-weight: 800 !important;
+}
+
+/* Hero: prevent fixed navbar covering content */
+.v3-hero {
+  padding-top: 9rem !important;
+  scroll-margin-top: 120px;
+}
+@media (max-width: 860px) {
+  .v3-hero { padding-top: 8rem !important; }
+}
+
+/* Prince AI chat: ensure dark text on light card in light mode */
+html[data-theme='light'] .ai-message,
+html[data-theme='light'] .prince-ai .ai-bubble {
+  color: var(--foreground) !important;
+}
+html[data-theme='light'] .ai-message.assistant {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+}
