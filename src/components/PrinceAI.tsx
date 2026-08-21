@@ -113,7 +113,7 @@ export default function PrinceAI() {
             <p className="ai-kicker">Interactive Prompts</p>
             <h3>Click any question to ask Prince AI:</h3>
             
-            <div className="ai-mandatory-chips-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginTop: '1.25rem' }}>
+            <div className="ai-mandatory-chips-list" style={{ gap: '0.65rem', marginTop: '0.6rem' }}>
               {MANDATORY_PROMPT_CHIPS.map((chip, idx) => (
                 <button
                   key={idx}

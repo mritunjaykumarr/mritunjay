@@ -50,7 +50,7 @@ export default function AboutPage() {
 
               {/* Quick Info Box */}
               <div className="card-glass" style={{ marginTop: '1.5rem', padding: '1.5rem' }}>
-                <h4 style={{ fontSize: '1rem', marginBottom: '1rem', color: 'var(--text)' }}>Quick Facts</h4>
+                <h2 style={{ fontSize: '1rem', marginBottom: '1rem', color: 'var(--text)', fontWeight: 700 }}>Quick Facts</h2>
                 <ul className="quick-facts-list">
                   <li><strong>Based in:</strong> Bihar / New Delhi, India</li>
                   <li><strong>Current Role:</strong> Fullstack Dev @ Epigroww Global</li>

@@ -26,7 +26,7 @@ export default function AnnouncementBar() {
 
         {/* Main Message */}
         <div className="announcement-message">
-          <span className="announcement-highlight">🎉 Live TV Channel website created by Mritify!</span>
+          <span className="announcement-highlight">Live TV Channel website created by Mritify</span>
           <span className="announcement-subtext">Stream 100+ live channels instantly</span>
         </div>
 
