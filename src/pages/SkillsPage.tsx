@@ -83,7 +83,7 @@ export default function SkillsPage() {
                   style={{
                     padding:'0.5rem 1rem', borderRadius:'9999px', border:'2px solid var(--foreground)', fontFamily:'var(--font-heading)', fontWeight:700, fontSize:'0.8rem',
                     background: activeCategory===cat.id ? cat.color : 'var(--card)',
-                    color: activeCategory===cat.id ? (cat.color==='var(--tertiary)'?'var(--foreground)':'white') : 'var(--foreground)',
+                    color: activeCategory===cat.id ? (cat.color==='var(--accent)' ? 'white' : 'var(--foreground)') : 'var(--foreground)',
                     boxShadow: activeCategory===cat.id ? 'var(--shadow-pop)' : 'none', cursor:'pointer'
                   }}>
                   {cat.label}
@@ -133,12 +133,12 @@ export default function SkillsPage() {
               <p style={{ color:'var(--muted-foreground)', fontSize:'0.9rem', marginTop:'0.5rem', lineHeight:1.6, fontFamily:'var(--font-body)' }}>Leveraging TypeScript to catch errors early at compile-time and enforce reliable interfaces across components and API models.</p>
             </div>
             <div className="card-sticker" style={{ padding:'1.75rem', paddingTop:'2.5rem', position:'relative', transform:'rotate(0.4deg)' }}>
-              <div className="card-icon-circle secondary" aria-hidden="true"><Layers size={18} strokeWidth={2.5} color="white"/></div>
+              <div className="card-icon-circle secondary" aria-hidden="true" style={{ background:'var(--secondary)', border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)' }}><Layers size={18} strokeWidth={2.5} color="var(--foreground)"/></div>
               <h3 style={{ fontFamily:'var(--font-heading)', fontWeight:800 }}>Decoupled Architecture</h3>
               <p style={{ color:'var(--muted-foreground)', fontSize:'0.9rem', marginTop:'0.5rem', lineHeight:1.6, fontFamily:'var(--font-body)' }}>Keeping presentation components isolated from business logic and data providers for seamless testing and scalability.</p>
             </div>
             <div className="card-sticker" style={{ padding:'1.75rem', paddingTop:'2.5rem', position:'relative', transform:'rotate(-0.4deg)' }}>
-              <div className="card-icon-circle tertiary" aria-hidden="true"><Sparkles size={18} strokeWidth={2.5}/></div>
+              <div className="card-icon-circle tertiary" aria-hidden="true" style={{ background:'var(--tertiary)', border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)' }}><Sparkles size={18} strokeWidth={2.5} color="var(--foreground)"/></div>
               <h3 style={{ fontFamily:'var(--font-heading)', fontWeight:800 }}>Modern Web Performance</h3>
               <p style={{ color:'var(--muted-foreground)', fontSize:'0.9rem', marginTop:'0.5rem', lineHeight:1.6, fontFamily:'var(--font-body)' }}>Optimizing bundle sizes, utilizing lazy-loaded React routes, image webp formats, and GPU-accelerated CSS animations.</p>
             </div>

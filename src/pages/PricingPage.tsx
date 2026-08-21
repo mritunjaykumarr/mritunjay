@@ -74,7 +74,7 @@ export default function PricingPage() {
                     <Star size={12} strokeWidth={2.5} fill="var(--foreground)"/> MOST POPULAR
                   </div>
                 )}
-                <div style={{ width:44, height:44, borderRadius:'50%', background:tier.color, border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)', display:'grid', placeItems:'center', marginBottom:'1rem', color: tier.color==='var(--tertiary)'?'var(--foreground)':'white' }}>
+                <div style={{ width:44, height:44, borderRadius:'50%', background:tier.color, border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)', display:'grid', placeItems:'center', marginBottom:'1rem', color: tier.color==='var(--accent)'?'white':'var(--foreground)' }}>
                   <Sparkles size={18} strokeWidth={2.5} />
                 </div>
                 <h3 style={{ fontSize:'1.35rem', fontFamily:'var(--font-heading)', fontWeight:800, color:'var(--foreground)', marginBottom:'0.5rem' }}>{tier.name}</h3>

@@ -63,7 +63,7 @@ export default function ProjectsPage() {
                   style={{
                     padding:'0.5rem 1rem', borderRadius:'var(--radius-full)', border:'2px solid var(--foreground)', fontFamily:'var(--font-heading)', fontWeight:700, fontSize:'0.8rem',
                     background: filterCategory===f ? (f==='all'?'var(--accent)': f==='B2B SaaS'?'var(--secondary)':'var(--tertiary)') : 'var(--card)',
-                    color: filterCategory===f ? (f==='all'||f==='B2B SaaS'?'white':'var(--foreground)') : 'var(--foreground)',
+                    color: filterCategory===f ? (f==='all' ? 'white' : 'var(--foreground)') : 'var(--foreground)',
                     boxShadow: filterCategory===f ? 'var(--shadow-pop)' : 'none', cursor:'pointer', textTransform:'capitalize'
                   }}>
                   {f}
@@ -88,7 +88,7 @@ export default function ProjectsPage() {
               {filteredProjects.map((p, idx) => (
                 <div key={p.id} onClick={()=>setSelectedProject(p)} className="card-sticker" style={{ overflow:'hidden', cursor:'pointer', position:'relative', padding:0, transform: idx%2===0 ? 'rotate(-0.3deg)' : 'rotate(0.3deg)' }}>
                   {/* icon half-out */}
-                  <div className="card-icon-circle" aria-hidden="true" style={{ position:'absolute', top:-14, left:16, width:36, height:36, borderRadius:'50%', background: idx%3===0?'var(--accent)': idx%3===1?'var(--secondary)':'var(--quaternary)', border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)', display:'grid', placeItems:'center', color:'white', zIndex:2 }}>
+                  <div className="card-icon-circle" aria-hidden="true" style={{ position:'absolute', top:-14, left:16, width:36, height:36, borderRadius:'50%', background: idx%3===0?'var(--accent)': idx%3===1?'var(--secondary)':'var(--quaternary)', border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)', display:'grid', placeItems:'center', color: idx%3===0 ? 'white' : 'var(--foreground)', zIndex:2 }}>
                     <Code2 size={16} strokeWidth={2.5} />
                   </div>
                   <div className="proj-img" style={{ position:'relative', height:220, overflow:'hidden', borderBottom:'2px solid var(--foreground)' }}>

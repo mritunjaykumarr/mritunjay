@@ -108,6 +108,28 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   color: var(--foreground);
 }
 
+/* ——— Orphans → balance & measure 65ch ——— */
+h1, h2 { text-wrap: balance; }
+.page-subtitle, .about-text, .domain-card p, .value-card p, .pricing-card p, .blog-card-grid p, .section-sub {
+  max-width: 65ch;
+}
+p { max-width: 65ch; }
+h1 + p, h2 + p { margin-top: 0.75rem; }
+
+/* ——— Card padding unify — every sticker uses 24px (spec: one fixed value) ——— */
+.card-sticker, .card-glass, .value-card, .domain-card { padding: 1.5rem !important; }
+.card-sticker.featured, .pricing-card.featured { padding: 1.5rem !important; } /* keeps star badge space via ::before, not extra padding */
+
+/* ——— Hide wild decoration on mobile (spec) ——— */
+@media (max-width: 768px) {
+  .page-header [aria-hidden="true"],
+  .page-wrapper > div[aria-hidden="true"],
+  .v3-hero-copy::before,
+  .v3-stage-grid,
+  .confetti,
+  .squiggle-divider { display: none !important; }
+}
+
 /* ——— Reduced motion ——— */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
