@@ -1,0 +1,119 @@
+/* ============================================================
+   PLAYFUL GEOMETRIC — Global Styles
+   - Dot-grid paper texture
+   - Base type (Outfit 700/800 + Plus Jakarta 400/500, scale 1.25)
+   - Focus + selection + reduced-motion
+   ============================================================ */
+
+/* ——— Dot Grid Paper ——— */
+html {
+  background: var(--background);
+}
+body {
+  background-color: var(--background);
+  /* Strict dot formation — 24px grid, 1px dot */
+  background-image: radial-gradient(circle, rgba(30,41,59,0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0;
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ——— Typography — scale 1.25 ——— */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: var(--foreground);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+h1 { font-size: clamp(2.75rem, 6vw, 4.5rem); }
+h2 { font-size: clamp(2rem, 4vw, 2.5rem); }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.25rem; }
+
+p, li, span, a, label, input, textarea, button {
+  font-family: var(--font-body);
+}
+p { font-weight: 400; line-height: 1.7; color: var(--foreground); }
+strong, b { font-weight: 700; }
+
+/* Override legacy serif */
+body, .section-title, .page-title, .grad { font-family: inherit; }
+
+/* Grad now confetti: rotate emphasized word to accent/secondary/tertiary in sequence */
+.grad {
+  background: none !important;
+  -webkit-text-fill-color: unset !important;
+  background-clip: unset !important;
+  color: var(--accent);
+}
+.grad-alt-2 { color: var(--secondary); }
+.grad-alt-3 { color: var(--tertiary); }
+.grad-alt-4 { color: var(--quaternary); }
+
+/* ——— Layout ——— */
+.container {
+  width: min(1152px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+.section {
+  padding: 6rem 0; /* py-24 = 96px */
+  position: relative;
+  overflow: clip;
+}
+
+/* ——— Dot / squiggle / confetti utilities ——— */
+.playful-dot-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(30,41,59,0.08) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+.squiggle-divider {
+  width: 100%;
+  height: 24px;
+  display: block;
+  color: var(--border);
+}
+.confetti {
+  position: absolute;
+  pointer-events: none;
+  aria-hidden: true;
+}
+.confetti-circle { border-radius: 50%; }
+.confetti-tri {
+  width: 0; height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 18px solid currentColor;
+}
+
+/* ——— Focus — thick border + hard shadow (not thin outline) ——— */
+:focus-visible {
+  outline: none;
+  border-color: var(--ring) !important;
+  box-shadow: var(--shadow-pop);
+}
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-pop);
+}
+::selection {
+  background: var(--tertiary);
+  color: var(--foreground);
+}
+
+/* ——— Reduced motion ——— */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -69,11 +69,11 @@ function CountUp({ end, suffix = '' }: { end: number; suffix?: string }) {
 function FadeIn({ children, delay = 0, className = '' }: { children: ReactNode; delay?: number; className?: string }) {
   return (
     <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      className={`${className} playful-enter`}
+      initial={{ opacity: 0, scale: 0.92, y: 12 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true, amount: 0.18 }}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5, delay, ease: [0.34, 1.56, 0.64, 1] as any }}
     >
       {children}
     </motion.div>

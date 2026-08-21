@@ -1,0 +1,108 @@
+/* ============================================================
+   PLAYFUL GEOMETRIC — Central Design Tokens
+   Stable Grid, Wild Decoration — Memphis 80s, cleaned up
+   Loaded AFTER src/index.css so :root values override legacy
+   ============================================================ */
+
+:root {
+  /* ——— Core Palette ——— */
+  --background:        #FFFDF5;
+  --foreground:        #1E293B;
+  --muted:             #F1F5F9;
+  --muted-foreground:  #64748B;
+  --accent:            #8B5CF6;
+  --accent-foreground: #FFFFFF;
+  --secondary:         #F472B6;
+  --tertiary:          #FBBF24;
+  --quaternary:        #34D399;
+  --border:            #E2E8F0;
+  --input:             #FFFFFF;
+  --card:              #FFFFFF;
+  --ring:              #8B5CF6;
+
+  /* ——— Typography ——— */
+  --font-heading: "Outfit", system-ui, sans-serif;
+  --font-body:    "Plus Jakarta Sans", system-ui, sans-serif;
+  --font:         var(--font-body);
+  --mono:         var(--font-body);
+
+  /* ——— Radius & Border ——— */
+  --radius-sm:   8px;
+  --radius-md:   16px;
+  --radius-lg:   24px;
+  --radius-full: 9999px;
+  --border-width: 2px;
+
+  /* ——— Shadows — Pop (hard, no blur) ——— */
+  --shadow-pop:         4px 4px 0px 0px #1E293B;
+  --shadow-pop-hover:   6px 6px 0px 0px #1E293B;
+  --shadow-pop-active:  2px 2px 0px 0px #1E293B;
+  --shadow-sm:          var(--shadow-pop);
+  --shadow-md:          var(--shadow-pop);
+  --shadow-lg:          var(--shadow-pop);
+  --shadow-accent:      var(--shadow-pop);
+
+  /* ——— Confetti rotation helpers ——— */
+  --confetti-1: var(--secondary);
+  --confetti-2: var(--tertiary);
+  --confetti-3: var(--quaternary);
+  --confetti-4: var(--accent);
+
+  /* ——— Legacy mappings — so old components automatically re-skin ——— */
+  --bg:            var(--background);
+  --bg-elevated:   var(--card);
+  --bg-overlay:    var(--card);
+  --bg-inset:      var(--muted);
+  --surface:       var(--card);
+  --surface-2:     var(--muted);
+  --surface-3:     var(--border);
+  --teal-surface:  var(--card);
+  --glass:         var(--card);
+  --glass-border:  var(--border);
+  --accent-soft:   rgba(139,92,246,0.12);
+  --accent-glow:   rgba(139,92,246,0.20);
+  --accent-2:      var(--secondary);
+  --accent-2-soft: rgba(244,114,182,0.12);
+  --green:         var(--quaternary);
+  --green-soft:    rgba(52,211,153,0.12);
+  --orange:        var(--tertiary);
+  --red:           var(--secondary);
+  --text:          var(--foreground);
+  --text-2:        var(--muted-foreground);
+  --text-muted:    var(--muted-foreground);
+  --border-accent: var(--border);
+  --teal-accent:   var(--accent);
+  --teal-accent-rgb: 139,92,246;
+  --accent-rgb:    139,92,246;
+  --accent-hover:  #7C3AED;
+
+  /* ——— Legacy radius mappings ——— */
+  --r-xs: var(--radius-sm);
+  --r-sm: var(--radius-sm);
+  --r-md: var(--radius-md);
+  --r-lg: var(--radius-lg);
+  --r-xl: var(--radius-lg);
+  --r-full: var(--radius-full);
+  --r-pill: var(--radius-full);
+  --r-chip: var(--radius-sm);
+  --r-card: var(--radius-lg);
+  --r-lg-card: var(--radius-lg);
+  --r-xl-card: var(--radius-lg);
+
+  /* ——— Ease — playful bounce ——— */
+  --ease: cubic-bezier(0.34,1.56,0.64,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+}
+
+/* Dark mode keeps playful but on slate — respects existing toggle */
+html[data-theme='dark'] {
+  color-scheme: light; /* keep AAA cream-on-slate, not inverted teal */
+  --background:        #FFFDF5;
+  --foreground:        #1E293B;
+  --muted:             #F1F5F9;
+  --muted-foreground:  #64748B;
+  --card:              #FFFFFF;
+  --border:            #E2E8F0;
+  --input:             #FFFFFF;
+  /* accent trio unchanged — confetti stays vivid */
+}

@@ -1,0 +1,170 @@
+/* ============================================================
+   PLAYFUL GEOMETRIC — Layout Shell
+   Navbar (pill + hard shadow), Footer (squiggle), Announcement
+   ============================================================ */
+
+/* ——— Navbar — playful pill ——— */
+.header-floating-wrapper {
+  top: calc(0.75rem + var(--announcement-bar-height, 42px)) !important;
+}
+.navbar-pill-container {
+  background: var(--card) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  border-radius: var(--radius-full) !important;
+  box-shadow: var(--shadow-pop) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  padding: 0.5rem 1rem !important;
+  max-width: 1152px !important; /* max-w-6xl */
+}
+.header-floating-wrapper.header-scrolled .navbar-pill-container {
+  background: var(--card) !important;
+  border-color: var(--foreground) !important;
+  box-shadow: var(--shadow-pop) !important;
+}
+.navbar-center-nav {
+  background: var(--muted) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  border-radius: var(--radius-full) !important;
+  padding: 0.2rem !important;
+  gap: 0.15rem !important;
+}
+.nav-pill-item {
+  font-family: var(--font-heading) !important;
+  font-weight: 700 !important;
+  color: var(--foreground) !important;
+  border-radius: var(--radius-full) !important;
+  padding: 0.45rem 1rem !important;
+  border: 2px solid transparent !important;
+}
+.nav-pill-item:hover {
+  background: var(--tertiary) !important;
+  color: var(--foreground) !important;
+  transform: none !important;
+}
+.nav-pill-item.active {
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+  border-color: var(--foreground) !important;
+  box-shadow: var(--shadow-pop) !important;
+  border-radius: var(--radius-full) !important;
+}
+.nav-active-bg { display: none !important; }
+.nav-pill-label { position: relative; z-index: 1; }
+
+.navbar-logo { font-family: var(--font-heading) !important; }
+.navbar-brand-logo { filter: none !important; }
+
+.navbar-right-actions .navbar-theme-btn,
+.navbar-drawer-trigger-btn {
+  background: var(--card) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  border-radius: var(--radius-full) !important;
+  box-shadow: var(--shadow-pop) !important;
+  color: var(--foreground) !important;
+  width: 42px; height: 42px;
+}
+.navbar-resume-btn {
+  background: var(--tertiary) !important;
+  color: var(--foreground) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  border-radius: var(--radius-full) !important;
+  box-shadow: var(--shadow-pop) !important;
+  font-family: var(--font-heading) !important;
+  font-weight: 700 !important;
+}
+.navbar-live-time {
+  background: var(--quaternary) !important;
+  color: var(--foreground) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  border-radius: var(--radius-full) !important;
+  box-shadow: var(--shadow-pop) !important;
+  font-family: var(--font-body) !important;
+  font-weight: 700 !important;
+}
+.live-pulse-dot { background: var(--foreground) !important; box-shadow: none !important; }
+
+/* ——— Announcement — confetti strip ——— */
+.announcement-bar-wrapper {
+  background: var(--tertiary) !important;
+  border-bottom: var(--border-width) solid var(--foreground) !important;
+  box-shadow: none !important;
+  height: 44px !important;
+}
+.announcement-shimmer { display: none !important; }
+.announcement-badge {
+  background: var(--card) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  color: var(--foreground) !important;
+  box-shadow: var(--shadow-pop) !important;
+  border-radius: var(--radius-full) !important;
+}
+.announcement-live-dot { background: var(--secondary) !important; box-shadow: none !important; }
+.announcement-highlight { color: var(--foreground) !important; font-family: var(--font-heading) !important; font-weight: 800 !important; }
+.announcement-subtext { color: var(--muted-foreground) !important; font-family: var(--font-body) !important; }
+.announcement-cta-btn {
+  background: var(--accent) !important;
+  color: white !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  border-radius: var(--radius-full) !important;
+  box-shadow: var(--shadow-pop) !important;
+  font-family: var(--font-heading) !important;
+  font-weight: 700 !important;
+}
+.announcement-cta-btn:hover {
+  background: var(--accent) !important;
+  transform: translate(-1px,-1px) !important;
+  box-shadow: var(--shadow-pop-hover) !important;
+}
+
+/* ——— Footer — squiggle divider ——— */
+.v3-footer, footer {
+  background: var(--background) !important;
+  border-top: var(--border-width) solid var(--foreground) !important;
+  position: relative;
+}
+.v3-footer::before {
+  content: "";
+  position: absolute;
+  top: -12px; left: 0; right: 0;
+  height: 12px;
+  background: url("data:image/svg+xml,%3Csvg width='120' height='12' viewBox='0 0 120 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 6 Q15 0 30 6 T60 6 T90 6 T120 6' stroke='%231E293B' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;
+  background-size: 60px 12px;
+}
+.footer-divider, .v3-footer-bottom {
+  border-color: var(--foreground) !important;
+  border-top: var(--border-width) solid var(--foreground) !important;
+}
+
+/* ——— Page container ——— */
+.container, .v3-container {
+  max-width: 1152px !important;
+  width: min(1152px, calc(100% - 2rem)) !important;
+}
+.page-header {
+  background: var(--background) !important;
+  border-bottom: none !important;
+  position: relative;
+  overflow: clip;
+}
+.page-header::after {
+  content: "";
+  position: absolute;
+  right: -40px; top: 20px;
+  width: 200px; height: 200px;
+  background: var(--tertiary);
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-pop);
+  opacity: 0.9;
+  z-index: 0;
+}
+.page-header > .container { position: relative; z-index: 1; }
+
+/* Mobile: reduce shadows */
+@media (max-width: 768px) {
+  .navbar-pill-container,
+  .card-glass,
+  .announcement-cta-btn { box-shadow: 2px 2px 0px 0px #1E293B !important; }
+  .header-floating-wrapper { padding: 0 0.5rem !important; }
+}
