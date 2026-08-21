@@ -136,6 +136,98 @@
   border-top: var(--border-width) solid var(--foreground) !important;
 }
 
+/* ——— Drawer — same playful theme, consistent (three lines) ——— */
+.navbar-drawer-trigger-btn {
+  display: flex !important;
+}
+.navbar-drawer-slide-panel {
+  background: var(--card) !important;
+  color: var(--foreground) !important;
+  border-left: var(--border-width) solid var(--foreground) !important;
+  box-shadow: var(--shadow-pop) !important;
+}
+.drawer-panel-topbar {
+  background: var(--muted) !important;
+  border-bottom: var(--border-width) solid var(--foreground) !important;
+}
+.drawer-panel-brand .drawer-sparkle-icon,
+.drawer-brand-name { color: var(--foreground) !important; }
+.drawer-brand-sub { color: var(--muted-foreground) !important; }
+.drawer-close-btn {
+  background: var(--card) !important;
+  color: var(--foreground) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  box-shadow: var(--shadow-pop) !important;
+}
+.drawer-primary-card {
+  background: var(--card) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  color: var(--foreground) !important;
+  box-shadow: var(--shadow-pop) !important;
+}
+.drawer-primary-card:hover, .drawer-primary-card.active {
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+  border-color: var(--foreground) !important;
+}
+.drawer-item-link {
+  background: var(--card) !important;
+  border: var(--border-width) solid var(--foreground) !important;
+  color: var(--foreground) !important;
+  box-shadow: var(--shadow-pop) !important;
+}
+.drawer-item-link:hover, .drawer-item-link.active {
+  background: var(--tertiary) !important;
+  color: var(--foreground) !important;
+  border-color: var(--foreground) !important;
+}
+.drawer-panel-footer {
+  background: var(--muted) !important;
+  border-top: var(--border-width) solid var(--foreground) !important;
+}
+
+/* ——— Light mode invisible text fixes — v3 legacy hardcoded white on light card ——— */
+html[data-theme='light'] .portfolio-v3 .ai-intro h3,
+html[data-theme='light'] .portfolio-v3 .ai-preview-head h3,
+html[data-theme='light'] .portfolio-v3 .ai-message-ai,
+html[data-theme='light'] .portfolio-v3 .ai-message-ai p,
+html[data-theme='light'] .portfolio-v3 .ai-input-row input,
+html[data-theme='light'] .v3-footer,
+html[data-theme='light'] .v3-footer h3,
+html[data-theme='light'] .v3-footer p,
+html[data-theme='light'] .v3-footer a,
+html[data-theme='light'] .v3-contact-photo span,
+html[data-theme='light'] .v3-stage-photo,
+html[data-theme='light'] .v3-tech-chip,
+html[data-theme='light'] .v3-hero-proof strong,
+html[data-theme='light'] .project-card h3,
+html[data-theme='light'] .skill-card h3 {
+  color: var(--foreground) !important;
+}
+html[data-theme='light'] .v3-footer {
+  background: var(--card) !important;
+  border-top: var(--border-width) solid var(--foreground) !important;
+}
+html[data-theme='light'] .portfolio-v3 .ai-message-ai {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+}
+html[data-theme='light'] .portfolio-v3 .ai-input-row input::placeholder {
+  color: var(--muted-foreground) !important;
+}
+html[data-theme='light'] .drawer-group-heading,
+html[data-theme='light'] .drawer-item-title,
+html[data-theme='light'] .drawer-brand-name {
+  color: var(--foreground) !important;
+}
+html[data-theme='light'] .drawer-group-heading {
+  background: var(--muted) !important;
+  border: 2px solid var(--foreground) !important;
+  border-radius: var(--radius-full) !important;
+  padding: 0.25rem 0.6rem !important;
+  box-shadow: var(--shadow-pop) !important;
+}
+
 /* ——— Page container ——— */
 .container, .v3-container {
   max-width: 1152px !important;

@@ -1944,9 +1944,6 @@ p {
   .navbar-hamburger-btn {
     display: none !important;
   }
-  .navbar-drawer-trigger-btn {
-    display: none;
-  }
 }
 
 @media (max-width: 480px) {
