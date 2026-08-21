@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent, MouseEvent, ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   ArrowRight, ArrowUpRight, Award, Bot, BrainCircuit, BriefcaseBusiness,
   Check, ChevronRight, CircleDot, Cloud, Code2, Database, ExternalLink,
@@ -103,10 +105,32 @@ function ProvidedImage({ name, fallback, alt, className }: { name: 'img1' | 'img
 
 export default function PortfolioRedesign() {
   const canvasRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState('');
   const featured = EXTENDED_PROJECTS_DATA[0];
   const projectRows = EXTENDED_PROJECTS_DATA.slice(1);
+  const shouldReduce = useReducedMotion() ?? false;
+  const { scrollY } = useScroll();
+  const heroCircleY = useTransform(scrollY, [0, 600], [0, shouldReduce ? 0 : -50]);
+  const heroDotsY = useTransform(scrollY, [0, 600], [0, shouldReduce ? 0 : -30]);
+
+  // GSAP ScrollTrigger — animaster scroll trail for stats + story cards
+  useEffect(() => {
+    if (shouldReduce) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      gsap.from('.v3-stats-grid > div', {
+        y: 24, opacity: 0, scale: 0.96, duration: 0.6, stagger: 0.08, ease: 'back.out(1.7)',
+        scrollTrigger: { trigger: '.v3-stats', start: 'top 85%', once: true },
+      });
+      gsap.from('.v3-story-card', {
+        y: 30, opacity: 0, rotation: -1, duration: 0.7, stagger: 0.1, ease: 'back.out(1.5)',
+        scrollTrigger: { trigger: '#about', start: 'top 80%', once: true },
+      });
+    }, canvasRef);
+    return () => ctx.revert();
+  }, [shouldReduce]);
 
   const setSpotlight = (event: MouseEvent<HTMLDivElement>) => {
     const box = canvasRef.current?.getBoundingClientRect();
@@ -144,8 +168,27 @@ export default function PortfolioRedesign() {
     <div className="portfolio-v3" ref={canvasRef} onMouseMove={setSpotlight}>
       <div className="v3-ambient" aria-hidden="true"><i /><b /><em /></div>
       <main>
-        <section className="v3-hero" id="home">
-          <div className="v3-container v3-hero-grid">
+        <section ref={heroRef} className="v3-hero" id="home" style={{ position:'relative', overflow:'clip' }}>
+          {/* Animaster scroll trail — yellow circle parallax */}
+          <motion.div
+            aria-hidden="true"
+            style={{
+              y: heroCircleY,
+              position:'absolute', left:'5%', top:'12%', width:380, height:380,
+              background:'var(--tertiary)', border:'2px solid var(--foreground)',
+              borderRadius:'50%', boxShadow:'var(--shadow-pop)', opacity:0.18, zIndex:0,
+            }}
+          />
+          <motion.div
+            aria-hidden="true"
+            style={{
+              y: heroDotsY,
+              position:'absolute', right:'2%', top:'8%', width:260, height:260,
+              backgroundImage:'radial-gradient(circle, var(--foreground) 1.6px, transparent 1.6px)',
+              backgroundSize:'18px 18px', opacity:0.06, borderRadius:'var(--radius-lg)', zIndex:0,
+            }}
+          />
+          <div className="v3-container v3-hero-grid" style={{ position:'relative', zIndex:1 }}>
             <FadeIn className="v3-hero-copy">
               <div className="v3-kicker"><span className="v3-live-dot" /> Available for select projects</div>
               <p className="v3-eyebrow"><Sparkles size={14} /> AI Engineer · Full Stack Developer</p>

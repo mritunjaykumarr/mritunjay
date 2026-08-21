@@ -17,6 +17,7 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import Loader from './components/Loader';
 import CustomCursor from './components/CustomCursor';
+import ScrollTrail from './components/ScrollTrail';
 import FloatingPrinceAI from './components/FloatingPrinceAI';
 
 import PlaygroundPage from './pages/PlaygroundPage';
@@ -64,6 +65,7 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
       <CustomCursor />
+      <ScrollTrail />
       <Loader />
       <AnnouncementBar />
       <Header theme={theme} toggleTheme={toggleTheme} />

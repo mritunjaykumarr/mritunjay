@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Search, Layers, X, Sparkles, Code2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useScrollLock } from '../hooks/useScrollLock';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
@@ -86,7 +87,17 @@ export default function ProjectsPage() {
           ) : (
             <div className="projects-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(340px, 1fr))', gap:'2rem' }}>
               {filteredProjects.map((p, idx) => (
-                <div key={p.id} onClick={()=>setSelectedProject(p)} className="card-sticker" style={{ overflow:'hidden', cursor:'pointer', position:'relative', padding:0, transform: idx%2===0 ? 'rotate(-0.3deg)' : 'rotate(0.3deg)' }}>
+                <motion.div
+                  key={p.id}
+                  onClick={()=>setSelectedProject(p)}
+                  className="card-sticker"
+                  initial={{ opacity:0, y:18, scale:0.96 }}
+                  whileInView={{ opacity:1, y:0, scale:1 }}
+                  viewport={{ once:true, amount:0.15 }}
+                  transition={{ duration:0.5, delay: idx*0.04, ease:[0.34,1.56,0.64,1] as any }}
+                  whileHover={{ y:-5, rotate: idx%2===0 ? -1 : 1, scale:1.02 }}
+                  style={{ overflow:'hidden', cursor:'pointer', position:'relative', padding:0, transformOrigin:'center' }}
+                >
                   {/* icon half-out */}
                   <div className="card-icon-circle" aria-hidden="true" style={{ position:'absolute', top:-14, left:16, width:36, height:36, borderRadius:'50%', background: idx%3===0?'var(--accent)': idx%3===1?'var(--secondary)':'var(--quaternary)', border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)', display:'grid', placeItems:'center', color: idx%3===0 ? 'white' : 'var(--foreground)', zIndex:2 }}>
                     <Code2 size={16} strokeWidth={2.5} />
@@ -114,7 +125,7 @@ export default function ProjectsPage() {
                       <a href={p.url} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} style={{ width:44, height:44, borderRadius:'50%', background:'var(--card)', border:'2px solid var(--foreground)', display:'grid', placeItems:'center', boxShadow:'var(--shadow-pop)', color:'var(--foreground)' }} aria-label="Live Demo"><ExternalLink size={16} strokeWidth={2.5}/></a>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}

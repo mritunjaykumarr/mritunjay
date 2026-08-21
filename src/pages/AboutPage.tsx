@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { 
   Code, ArrowRight, Download, CircleCheckBig, Sparkles, 
   Compass, Layers, Zap, Heart, Award
 } from 'lucide-react';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
+import { Stagger, itemPop } from '../components/Reveal';
 
 export default function AboutPage() {
   usePortfolioMotion();
@@ -190,19 +192,19 @@ export default function AboutPage() {
       {/* Metrics — sticker cards with confetti dots */}
       <section className="section" style={{ padding:'4rem 0', background:'var(--muted)', borderTop:'2px solid var(--foreground)', borderBottom:'2px solid var(--foreground)', position:'relative' }}>
         <div className="container">
-          <div className="stats-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:'1.5rem' }}>
+          <Stagger className="stats-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:'1.5rem' }}>
             {[
               { n:'2+', l:'Years of Experience', c:'var(--accent)' },
               { n:'10+', l:'Projects Delivered', c:'var(--secondary)' },
               { n:'150+', l:'Currencies & APIs', c:'var(--tertiary)' },
               { n:'99%', l:'Lighthouse Quality Score', c:'var(--quaternary)' },
             ].map(item=> (
-              <div key={item.l} className="card-sticker" style={{ padding:'1.5rem', textAlign:'center', background:'var(--card)' }}>
+              <motion.div key={item.l} variants={itemPop} className="card-sticker" style={{ padding:'1.5rem', textAlign:'center', background:'var(--card)' }}>
                 <div className="stat-num" style={{ fontFamily:'var(--font-heading)', fontWeight:800, fontSize:'2rem', color:item.c }}>{item.n}</div>
                 <div className="stat-lbl" style={{ fontFamily:'var(--font-heading)', fontWeight:700, fontSize:'0.75rem', textTransform:'uppercase', letterSpacing:'0.06em', color:'var(--muted-foreground)', marginTop:'0.25rem' }}>{item.l}</div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 
@@ -211,7 +213,7 @@ export default function AboutPage() {
         <div className="container">
           <div className="badge-playful" style={{ background:'var(--quaternary)' }}><Sparkles size={14} strokeWidth={2.5}/> Domains &amp; Expertise</div>
           <h2 className="section-title reveal" style={{ fontFamily:'var(--font-heading)', fontWeight:800, marginTop:'0.5rem' }}>What drives my <span style={{ color:'var(--accent)' }}>craft</span></h2>
-          <div className="domains-grid" style={{ marginTop:'2rem', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:'1.25rem', position:'relative' }}>
+          <Stagger className="domains-grid" style={{ marginTop:'2rem', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:'1.25rem', position:'relative' }}>
             {/* dashed SVG line is in playful-pages.css .v3-story-grid::before — similar here via inline border */}
             {[
               { Icon: Code, title:'Modern Web Applications', desc:'Engineering reactive SPA/MPA applications with React 19, TypeScript, Vite, and custom CSS design systems.', color:'var(--accent)' },
@@ -219,15 +221,15 @@ export default function AboutPage() {
               { Icon: Sparkles, title:'AI & Intelligent Workflows', desc:'Integrating generative AI models, custom prompt engineering, and intelligent chatbot interfaces into production.', color:'var(--quaternary)' },
               { Icon: Award, title:'Performance & Micro-Interactions', desc:'Crafting silky 60fps animations with GSAP and CSS while keeping bundle sizes lean and fast loading.', color:'var(--tertiary)' },
             ].map(({Icon, title, desc, color})=> (
-              <div key={title} className="card-sticker" style={{ padding:'1.75rem', paddingTop:'2.5rem', position:'relative' }}>
+              <motion.div key={title} variants={itemPop} className="card-sticker" style={{ padding:'1.75rem', paddingTop:'2.5rem', position:'relative' }}>
                 <div className="icon-circle" aria-hidden="true" style={{ position:'absolute', top:-16, left:20, background:color, border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)' }}>
                   <Icon size={20} strokeWidth={2.5} color={color==='var(--tertiary)'?'var(--foreground)':'white'} />
                 </div>
                 <h3 style={{ fontFamily:'var(--font-heading)', fontWeight:800, marginBottom:'0.5rem' }}>{title}</h3>
                 <p style={{ fontFamily:'var(--font-body)', color:'var(--muted-foreground)', lineHeight:1.6 }}>{desc}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
     </div>
