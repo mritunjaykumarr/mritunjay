@@ -13,6 +13,7 @@ import {
 import { EXTENDED_PROJECTS_DATA } from '../data/projectsData';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
 import PrinceAI from './PrinceAI';
+import AdUnit from './AdUnit';
 
 const socials = [
   { label: 'GitHub', href: 'https://github.com/mritunjaykumarr', icon: GithubIcon },
@@ -262,6 +263,13 @@ export default function PortfolioRedesign() {
             <div className="v3-project-grid">
               {projectRows.map((project, index) => <FadeIn key={project.id} delay={index * 0.06} className="v3-project-card"><div className="v3-project-image"><img src={project.img} alt={project.title} loading="lazy" /><div className="v3-card-scrim" /><a href={project.url} target="_blank" rel="noreferrer" aria-label={`Open ${project.title}`}><ArrowUpRight size={20} /></a></div><div className="v3-project-body"><span>{project.category}</span><h3>{project.title}</h3><p>{project.desc}</p><div>{project.tags.slice(0, 3).map(tag => <b key={tag}>{tag}</b>)}</div></div></FadeIn>)}
             </div>
+          </div>
+        </section>
+
+        {/* AdSense — after content-rich projects, before next section. Policy-safe: below fold, labeled, not near nav */}
+        <section className="section" style={{ padding: '2rem 0' }}>
+          <div className="v3-container">
+            <AdUnit slot="6189533583" />
           </div>
         </section>
 

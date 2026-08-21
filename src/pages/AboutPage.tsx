@@ -8,6 +8,7 @@ import {
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 import { Stagger, itemPop } from '../components/Reveal';
+import AdUnit from '../components/AdUnit';
 
 export default function AboutPage() {
   usePortfolioMotion();
@@ -230,6 +231,13 @@ export default function AboutPage() {
               </motion.div>
             ))}
           </Stagger>
+        </div>
+      </section>
+
+      {/* AdSense — after content-rich domains, before footer, labeled */}
+      <section className="section" style={{ padding: '2rem 0' }}>
+        <div className="container">
+          <AdUnit slot="6189533583" />
         </div>
       </section>
     </div>

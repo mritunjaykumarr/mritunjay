@@ -6,6 +6,7 @@ import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 import { Heart, MessageCircle, ArrowRight, X, Calendar, Clock, FolderOpen, FileEdit, Search, BookOpen, Sparkles } from 'lucide-react';
 import { DEFAULT_POSTS, type BlogPost, type CommentItem } from '../data/blogData';
+import AdUnit from '../components/AdUnit';
 
 // Playful: blog cards as sticker cards with half-out icon, filter pills confetti, header confetti
 export default function BlogPage() {
@@ -143,6 +144,13 @@ export default function BlogPage() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* AdSense — after content-rich posts grid, not inside modal, labeled */}
+      <section className="section" style={{ padding: '2rem 0' }}>
+        <div className="container">
+          <AdUnit slot="6189533583" />
         </div>
       </section>
 
