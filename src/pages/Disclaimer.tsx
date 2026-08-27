@@ -20,40 +20,63 @@ export default function Disclaimer() {
   });
 
   return (
-    <div className="page-wrapper" style={{ paddingTop: '5.5rem', paddingBottom: '5rem' }}>
-      <section className="page-header">
+    <div className="page-wrapper" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: '#000000', color: '#ffffff', minHeight: '100vh' }}>
+      <section className="page-header" style={{ padding: '2rem 0 3rem' }}>
         <div className="container">
-          <div className="breadcrumb"><Link to="/">Home</Link><span>/</span><span className="current">Disclaimer</span></div>
-          <div className="page-header-content reveal">
-            <div className="section-eyebrow"><AlertTriangle size={14} /> Transparency</div>
-            <h1 className="page-title">Disclaimer & <span className="grad">Disclosure</span></h1>
-            <p className="page-subtitle">Clear information about the purpose of this portfolio, external content, and advertising.</p>
+          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: '#888888', marginBottom: '1rem' }}>
+            <Link to="/" style={{ color: '#888888', textDecoration: 'none' }}>Home</Link>
+            <span style={{ margin: '0 8px' }}>/</span>
+            <span style={{ color: '#ffffff' }}>Disclaimer</span>
+          </div>
+          <div className="page-header-content">
+            <div className="badge-playful" style={{ marginBottom: '1rem' }}>
+              <AlertTriangle size={13} />
+              <span>Transparency &amp; Disclosures</span>
+            </div>
+            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem' }}>
+              Disclaimer &amp; <em>Disclosures</em>
+            </h1>
+            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: '#9a9a9a', maxWidth: '600px', lineHeight: 1.65 }}>
+              Transparent information about project demonstrations, benchmarks, and external links.
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="section" style={{ padding: '3rem 0' }}>
+      <section className="section" style={{ padding: '2rem 0 4rem' }}>
         <div className="container" style={{ maxWidth: 860 }}>
-          <div className="card-sticker" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.75rem', display: 'flex', gap: 8, alignItems: 'center' }}><Info size={18} /> Informational Purpose</h2>
-            <p style={{ color: 'var(--muted-foreground)', lineHeight: 1.7 }}>mritify.online is a personal portfolio. Project case studies, articles, and experience descriptions are based on the author’s actual work and learning. They are not professional financial, legal, or medical advice. Any code snippets are provided for educational purposes — test them in your own environment before production use.</p>
+          <div style={{ padding: '2rem', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+            <h2 style={{ fontWeight: 600, fontSize: '1.2rem', marginBottom: '0.75rem', display: 'flex', gap: 8, alignItems: 'center', color: '#ffffff' }}>
+              <Info size={18} /> Informational Purpose
+            </h2>
+            <p style={{ color: '#9a9a9a', lineHeight: 1.7, fontSize: '0.92rem' }}>
+              mritify.online is a personal engineering portfolio. Project case studies, benchmarks, and articles describe the author’s practical work. Code snippets are provided for educational review and should be evaluated before production use.
+            </p>
           </div>
 
-          <div className="card-sticker" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.75rem' }}>External Content & Accuracy</h2>
-            <p style={{ color: 'var(--muted-foreground)', lineHeight: 1.7 }}>We link to live demos, GitHub repositories, certificate validators, and articles across the web. We aim for accuracy but cannot guarantee that external sites or project metrics remain unchanged over time. Metrics shown (e.g., “99.2% deliverability”, “sub-20ms latency”) reflect our testing conditions and are not guarantees for every user.</p>
+          <div style={{ padding: '2rem', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+            <h2 style={{ fontWeight: 600, fontSize: '1.2rem', marginBottom: '0.75rem', color: '#ffffff' }}>
+              External Content &amp; Accuracy
+            </h2>
+            <p style={{ color: '#9a9a9a', lineHeight: 1.7, fontSize: '0.92rem' }}>
+              We link to live demos, GitHub repositories, certificate verification portals, and technical documentation. We strive for precision across all metrics, which reflect empirical testing in our development environments.
+            </p>
           </div>
 
-          <div className="card-sticker" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.75rem' }}>Advertising & Affiliate Disclosure</h2>
-            <p style={{ color: 'var(--muted-foreground)', lineHeight: 1.7 }}>If ads are displayed via Google AdSense, they are clearly marked as advertisements and are not endorsements. We may also link to tools we use (Vercel, Supabase, etc.) without receiving affiliate compensation unless explicitly stated. We never place ads to induce accidental clicks, and we never encourage ad clicks.</p>
+          <div style={{ padding: '2rem', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+            <h2 style={{ fontWeight: 600, fontSize: '1.2rem', marginBottom: '0.75rem', color: '#ffffff' }}>
+              Advertising Disclosure
+            </h2>
+            <p style={{ color: '#9a9a9a', lineHeight: 1.7, fontSize: '0.92rem' }}>
+              Advertising banners served by Google AdSense are marked as sponsored placements. We do not promote accidental clicks or misleading ad representations.
+            </p>
           </div>
 
-          <div className="card-sticker" style={{ padding: '2rem', background: 'var(--muted)', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <Mail size={20} style={{ color: 'var(--accent)' }} />
+          <div style={{ padding: '1.5rem 2rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <Mail size={20} style={{ color: '#ffffff', flexShrink: 0 }} />
             <div>
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700 }}>Questions?</h3>
-              <p style={{ color: 'var(--muted-foreground)', fontSize: '0.92rem' }}>Contact <a href="mailto:me@mritify.online" style={{ color: 'var(--accent)', fontWeight: 700 }}>me@mritify.online</a> for clarifications.</p>
+              <h3 style={{ fontWeight: 600, fontSize: '1rem', color: '#ffffff', margin: '0 0 0.2rem' }}>Questions?</h3>
+              <p style={{ color: '#9a9a9a', fontSize: '0.86rem', margin: 0 }}>Contact <a href="mailto:me@mritify.online" style={{ color: '#ffffff', textDecoration: 'underline' }}>me@mritify.online</a> for any inquiries.</p>
             </div>
           </div>
         </div>

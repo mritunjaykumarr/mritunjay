@@ -9,18 +9,23 @@ import ProjectProductModal from '../components/ProjectProductModal';
 import type { ExtendedProjectItem } from '../components/ProjectProductModal';
 import { EXTENDED_PROJECTS_DATA } from '../data/projectsData';
 
-// Playful: every card is sticker card with hard shadow, filter pills rotate accent/secondary/tertiary, search input playful focus shadow
 export default function ProjectsPage() {
   usePortfolioMotion();
   useSEO(SEO_CONFIGS.projects);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [selectedProject, setSelectedProject] = useState<ExtendedProjectItem | null>(null);
+
   useScrollLock(!!selectedProject);
+
   useEffect(() => {
-    const h = (e: KeyboardEvent) => { if (e.key === 'Escape' && selectedProject) setSelectedProject(null); };
-    window.addEventListener('keydown', h); return () => window.removeEventListener('keydown', h);
+    const h = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedProject) setSelectedProject(null);
+    };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
   }, [selectedProject]);
+
   const filteredProjects = useMemo(() => {
     return EXTENDED_PROJECTS_DATA.filter(p => {
       const matchesCategory = filterCategory === 'all' || p.category.toLowerCase().includes(filterCategory.toLowerCase());
@@ -30,43 +35,78 @@ export default function ProjectsPage() {
   }, [filterCategory, searchQuery]);
 
   return (
-    <div className="page-wrapper projects-page" style={{ paddingTop: '5.5rem', paddingBottom: '5rem', background:'var(--background)', position:'relative' }}>
-      {/* confetti behind header */}
-      <div aria-hidden="true" style={{ position:'absolute', right:'5%', top:90, width:72, height:72, background:'var(--tertiary)', border:'2px solid var(--foreground)', borderRadius:'50%', boxShadow:'var(--shadow-pop)' }} />
-      <section className="page-header" style={{ position:'relative', overflow:'clip' }}>
+    <div className="page-wrapper projects-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: '#000000', color: '#ffffff', minHeight: '100vh' }}>
+      {/* Page Header */}
+      <section className="page-header" style={{ padding: '2rem 0 3rem' }}>
         <div className="container">
-          <div className="breadcrumb" style={{ fontFamily:'var(--font-body)' }}><Link to="/">Home</Link><span>/</span><span className="current">Projects</span></div>
-          <div className="page-header-content reveal playful-enter">
-            <div className="badge-playful" style={{ background:'var(--accent)', color:'white' }}><Layers size={14} strokeWidth={2.5}/> Complete Product Gallery</div>
-            <h1 className="page-title" style={{ fontFamily:'var(--font-heading)', fontWeight:800, marginTop:'0.6rem' }}>
-              Live Projects & <span style={{ color:'var(--accent)' }}>Product Showcase</span>
+          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: '#888888', marginBottom: '1rem' }}>
+            <Link to="/" style={{ color: '#888888', textDecoration: 'none' }}>Home</Link>
+            <span style={{ margin: '0 8px' }}>/</span>
+            <span style={{ color: '#ffffff' }}>Projects</span>
+          </div>
+
+          <div className="page-header-content">
+            <div className="badge-playful" style={{ marginBottom: '1rem' }}>
+              <Layers size={13} />
+              <span>Complete Product Portfolio</span>
+            </div>
+            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem' }}>
+              Live Projects & <em>Product Architecture</em>
             </h1>
-            <p className="page-subtitle" style={{ fontFamily:'var(--font-body)', color:'var(--muted-foreground)' }}>
-              Detailed case studies, architecture diagrams, video demos, performance metrics, and problem-solved breakdowns for production SaaS applications.
+            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: '#9a9a9a', maxWidth: '600px', lineHeight: 1.65 }}>
+              Detailed case studies, metrics, problem-solved breakdowns, and live deployments for production applications and engineering tools.
             </p>
           </div>
         </div>
-        <svg aria-hidden="true" viewBox="0 0 120 12" preserveAspectRatio="none" style={{ position:'absolute', bottom:0, left:0, width:'100%', height:12, color:'var(--foreground)' }}><path d="M0 6 Q15 0 30 6 T60 6 T90 6 T120 6" stroke="currentColor" strokeWidth={2} fill="none" strokeLinecap="round"/></svg>
       </section>
 
-      <section className="section" style={{ padding:'2.5rem 0 1.5rem' }}>
+      {/* Filter & Search Bar */}
+      <section className="section" style={{ padding: '0 0 2rem' }}>
         <div className="container">
-          <div className="card-sticker" style={{ padding:'1.25rem 1.5rem', display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:'1rem' }}>
-            <div className="search-box" style={{ position:'relative', flex:'1', minWidth:'200px' }}>
-              <Search size={18} strokeWidth={2.5} style={{ position:'absolute', left:'14px', top:'50%', transform:'translateY(-50%)', color:'var(--muted-foreground)' }} />
-              <input type="text" placeholder="Search by product name, technology, or domain..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}
-                style={{ width:'100%', padding:'0.75rem 1rem 0.75rem 2.6rem', borderRadius:'var(--radius-md)', background:'var(--input)', border:'2px solid var(--foreground)', color:'var(--foreground)', fontFamily:'var(--font-body)', fontSize:'0.92rem', boxShadow:'var(--shadow-pop)' }} />
-              {searchQuery && (<button onClick={()=>setSearchQuery('')} style={{ position:'absolute', right:12, top:'50%', transform:'translateY(-50%)', background:'white', border:'2px solid var(--foreground)', borderRadius:'50%', width:26, height:26, display:'grid', placeItems:'center', cursor:'pointer' }}><X size={14} strokeWidth={2.5}/></button>)}
-            </div>
-            <div className="filter-wrap" style={{ display:'flex', gap:'0.5rem', flexWrap:'wrap', margin:0 }}>
-              {['all','B2B SaaS','web tools','web','tools'].map(f => (
-                <button key={f} onClick={()=>setFilterCategory(f)}
+          <div style={{
+            padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem',
+            background: 'rgba(12, 12, 12, 0.8)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px'
+          }}>
+            <div style={{ position: 'relative', flex: '1', minWidth: '220px' }}>
+              <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#666666' }} />
+              <input
+                type="text"
+                placeholder="Search by product name, technology, or keywords..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{
+                  width: '100%', padding: '0.65rem 1rem 0.65rem 2.5rem', borderRadius: '8px',
+                  background: 'rgba(5, 5, 5, 0.8)', border: '1px solid rgba(255, 255, 255, 0.12)',
+                  color: '#ffffff', fontSize: '0.88rem'
+                }}
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
                   style={{
-                    padding:'0.5rem 1rem', borderRadius:'var(--radius-full)', border:'2px solid var(--foreground)', fontFamily:'var(--font-heading)', fontWeight:700, fontSize:'0.8rem',
-                    background: filterCategory===f ? (f==='all'?'var(--accent)': f==='B2B SaaS'?'var(--secondary)':'var(--tertiary)') : 'var(--card)',
-                    color: filterCategory===f ? (f==='all' ? 'white' : 'var(--foreground)') : 'var(--foreground)',
-                    boxShadow: filterCategory===f ? 'var(--shadow-pop)' : 'none', cursor:'pointer', textTransform:'capitalize'
-                  }}>
+                    position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)',
+                    background: 'rgba(255, 255, 255, 0.1)', border: 'none', borderRadius: '50%',
+                    width: 22, height: 22, display: 'grid', placeItems: 'center', color: '#ffffff', cursor: 'pointer'
+                  }}
+                >
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+              {['all', 'web tools', 'web', 'tools'].map(f => (
+                <button
+                  key={f}
+                  onClick={() => setFilterCategory(f)}
+                  className="nav-pill-item"
+                  style={{
+                    height: '34px', padding: '0 12px', fontSize: '0.78rem', textTransform: 'capitalize',
+                    background: filterCategory === f ? 'linear-gradient(180deg, #ffffff 0%, #d5d5d5 100%)' : 'rgba(15, 15, 15, 0.8)',
+                    color: filterCategory === f ? '#000000' : '#cccccc',
+                    borderColor: filterCategory === f ? '#ffffff' : 'rgba(255, 255, 255, 0.1)'
+                  }}
+                >
                   {f}
                 </button>
               ))}
@@ -75,54 +115,98 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <section className="section" style={{ padding:'1.5rem 0 4rem' }}>
+      {/* Projects Grid */}
+      <section className="section" style={{ padding: '1rem 0 5rem' }}>
         <div className="container">
-          {filteredProjects.length===0 ? (
-            <div className="card-sticker text-center" style={{ padding:'4rem 2rem', textAlign:'center' }}>
-              <Code2 size={40} strokeWidth={2.5} style={{ margin:'0 auto 1rem', color:'var(--accent)' }} />
-              <h3 style={{ fontFamily:'var(--font-heading)', fontWeight:800 }}>No matching projects found</h3>
-              <p style={{ color:'var(--muted-foreground)', marginTop:'0.5rem', fontFamily:'var(--font-body)' }}>Try refining your search query or switching filters.</p>
-              <button className="btn-secondary" onClick={()=>{setSearchQuery(''); setFilterCategory('all');}} style={{ marginTop:'1.5rem' }}>Reset Filters</button>
+          {filteredProjects.length === 0 ? (
+            <div style={{ padding: '4rem 2rem', textAlign: 'center', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px' }}>
+              <Code2 size={36} style={{ margin: '0 auto 1rem', color: '#666666' }} />
+              <h3 style={{ fontSize: '1.2rem', color: '#ffffff' }}>No matching projects found</h3>
+              <p style={{ color: '#888888', marginTop: '0.5rem', fontSize: '0.88rem' }}>Try refining your search query or switching category filters.</p>
+              <button className="btn-secondary" onClick={() => { setSearchQuery(''); setFilterCategory('all'); }} style={{ marginTop: '1.25rem' }}>
+                Reset Filters
+              </button>
             </div>
           ) : (
-            <div className="projects-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(340px, 1fr))', gap:'2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1.5rem' }}>
               {filteredProjects.map((p, idx) => (
                 <motion.div
                   key={p.id}
-                  onClick={()=>setSelectedProject(p)}
-                  className="card-sticker"
-                  initial={{ opacity:0, y:18, scale:0.96 }}
-                  whileInView={{ opacity:1, y:0, scale:1 }}
-                  viewport={{ once:true, amount:0.15 }}
-                  transition={{ duration:0.5, delay: idx*0.04, ease:[0.34,1.56,0.64,1] as any }}
-                  whileHover={{ y:-5, rotate: idx%2===0 ? -1 : 1, scale:1.02 }}
-                  style={{ overflow:'hidden', cursor:'pointer', position:'relative', padding:0, transformOrigin:'center' }}
+                  onClick={() => setSelectedProject(p)}
+                  className="v3-project-card"
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ duration: 0.5, delay: idx * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    background: 'rgba(10, 10, 10, 0.8)', border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px', overflow: 'hidden', cursor: 'pointer', display: 'flex', flexDirection: 'column'
+                  }}
                 >
-                  {/* icon half-out */}
-                  <div className="card-icon-circle" aria-hidden="true" style={{ position:'absolute', top:-14, left:16, width:36, height:36, borderRadius:'50%', background: idx%3===0?'var(--accent)': idx%3===1?'var(--secondary)':'var(--quaternary)', border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)', display:'grid', placeItems:'center', color: idx%3===0 ? 'white' : 'var(--foreground)', zIndex:2 }}>
-                    <Code2 size={16} strokeWidth={2.5} />
-                  </div>
-                  <div className="proj-img" style={{ position:'relative', height:220, overflow:'hidden', borderBottom:'2px solid var(--foreground)' }}>
-                    <img src={p.img} alt={p.title} loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
-                    <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(30,41,59,0.12), transparent)' }} />
-                    <div style={{ position:'absolute', top:12, right:12, zIndex:2 }}>
-                      <span style={{ padding:'4px 10px', borderRadius:'9999px', fontSize:'0.7rem', background:'var(--card)', color:'var(--foreground)', fontWeight:800, border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)', fontFamily:'var(--font-heading)', textTransform:'uppercase' }}>{p.category}</span>
+                  <div style={{ position: 'relative', height: 210, overflow: 'hidden', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                    <img src={p.img} alt={p.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{ position: 'absolute', top: 12, right: 12 }}>
+                      <span style={{
+                        padding: '4px 10px', borderRadius: '5px', fontSize: '0.72rem',
+                        background: 'rgba(0, 0, 0, 0.8)', color: '#ffffff', fontWeight: 500,
+                        border: '1px solid rgba(255, 255, 255, 0.2)', textTransform: 'uppercase'
+                      }}>
+                        {p.category}
+                      </span>
                     </div>
                   </div>
-                  <div className="proj-body" style={{ padding:'1.5rem' }}>
-                    <div style={{ display:'flex', gap:'0.4rem', flexWrap:'wrap', marginBottom:'0.75rem' }}>
-                      {p.tags.slice(0,3).map(t => <span key={t} style={{ fontSize:'0.7rem', fontWeight:700, padding:'0.25rem 0.6rem', borderRadius:'9999px', background:'var(--muted)', border:'1px solid var(--foreground)', fontFamily:'var(--font-heading)' }}>{t}</span>)}
+
+                  <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                    <div>
+                      <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+                        {p.tags.slice(0, 3).map(t => (
+                          <span key={t} style={{
+                            fontSize: '0.72rem', padding: '0.2rem 0.55rem', borderRadius: '4px',
+                            background: 'rgba(25, 25, 25, 0.8)', border: '1px solid rgba(255, 255, 255, 0.08)', color: '#cccccc'
+                          }}>
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h3 style={{ fontSize: '1.2rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.5rem' }}>{p.title}</h3>
+                      <p style={{ color: '#9a9a9a', fontSize: '0.86rem', lineHeight: 1.6, marginBottom: '1.25rem' }}>{p.desc}</p>
                     </div>
-                    <h3 style={{ fontSize:'1.25rem', fontFamily:'var(--font-heading)', fontWeight:800, color:'var(--foreground)', marginBottom:'0.5rem' }}>{p.title}</h3>
-                    <p style={{ color:'var(--muted-foreground)', fontSize:'0.9rem', lineHeight:1.6, marginBottom:'1rem', fontFamily:'var(--font-body)' }}>{p.desc}</p>
-                    <div style={{ display:'flex', gap:'8px', marginBottom:'1.25rem' }}>
-                      {p.metrics.slice(0,2).map((m,i)=>(<div key={i} style={{ padding:'6px 10px', borderRadius:'9999px', background:'var(--card)', border:'2px solid var(--foreground)', fontSize:'0.75rem', boxShadow:'var(--shadow-pop)', fontFamily:'var(--font-body)' }}><strong style={{ color: i===0?'var(--accent)':'var(--secondary)' }}>{m.value}</strong> <span style={{ color:'var(--muted-foreground)' }}>{m.label}</span></div>))}
-                    </div>
-                    <div style={{ display:'flex', gap:'0.75rem' }}>
-                      <button className="btn-candy" onClick={(e)=>{e.stopPropagation(); setSelectedProject(p);}} style={{ flex:1, justifyContent:'center', fontSize:'0.85rem' }}>
-                        <span>Product Showcase</span><span style={{ background:'white', borderRadius:'50%', width:22, height:22, display:'grid', placeItems:'center', border:'2px solid var(--foreground)' }}><Sparkles size={12} strokeWidth={2.5} color="var(--foreground)"/></span>
-                      </button>
-                      <a href={p.url} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} style={{ width:44, height:44, borderRadius:'50%', background:'var(--card)', border:'2px solid var(--foreground)', display:'grid', placeItems:'center', boxShadow:'var(--shadow-pop)', color:'var(--foreground)' }} aria-label="Live Demo"><ExternalLink size={16} strokeWidth={2.5}/></a>
+
+                    <div>
+                      <div style={{ display: 'flex', gap: '8px', marginBottom: '1.25rem' }}>
+                        {p.metrics.slice(0, 2).map((m, i) => (
+                          <div key={i} style={{
+                            padding: '4px 8px', borderRadius: '5px', background: 'rgba(18, 18, 18, 0.8)',
+                            border: '1px solid rgba(255, 255, 255, 0.08)', fontSize: '0.74rem'
+                          }}>
+                            <strong style={{ color: '#ffffff' }}>{m.value}</strong> <span style={{ color: '#888888' }}>{m.label}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
+                        <button
+                          className="btn-primary"
+                          onClick={(e) => { e.stopPropagation(); setSelectedProject(p); }}
+                          style={{ flex: 1, justifyContent: 'center', height: '38px', fontSize: '0.82rem', gap: '6px' }}
+                        >
+                          <Sparkles size={13} />
+                          <span>Case Study</span>
+                        </button>
+                        <a
+                          href={p.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={e => e.stopPropagation()}
+                          className="btn-secondary"
+                          style={{ height: '38px', padding: '0 14px', borderRadius: '7px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '0.82rem' }}
+                          aria-label={`Visit live demo for ${p.title}`}
+                        >
+                          <span>Live</span>
+                          <ExternalLink size={13} />
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -131,7 +215,8 @@ export default function ProjectsPage() {
           )}
         </div>
       </section>
-      <ProjectProductModal project={selectedProject} onClose={()=>setSelectedProject(null)} />
+
+      <ProjectProductModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </div>
   );
 }

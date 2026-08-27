@@ -1,98 +1,148 @@
 import { Link } from 'react-router-dom';
-import { Check, ArrowRight, Sparkles, HelpCircle, Star } from 'lucide-react';
+import { Check, ArrowRight, Sparkles, Star } from 'lucide-react';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 
-// Playful: middle tier scaled + rotated star badge, all tiers sticker cards with hard shadows, confetti CTA
 export default function PricingPage() {
   usePortfolioMotion();
   useSEO(SEO_CONFIGS.pricing);
+
   const pricingTiers = [
     {
       name: 'Starter Landing Page',
       price: '$299',
       period: 'one-time',
       desc: 'Ideal for startups, portfolios, or product launches requiring a high-impact, performant single-page website.',
-      features: ['Custom Responsive Design System','Lightweight Animated Interactions (GSAP)','SEO Metadata & OpenGraph Optimization','Contact Form Integration (Web3Forms/API)','1-Year Free Hosting Setup & Domain Help','Fast 3-Day Turnaround'],
+      features: [
+        'Custom Responsive Design System',
+        'Lightweight Animated Interactions (GSAP)',
+        'SEO Metadata & OpenGraph Optimization',
+        'Contact Form Integration (Web3Forms/API)',
+        '1-Year Free Hosting Setup & Domain Help',
+        'Fast 3-Day Turnaround'
+      ],
       cta: 'Start Landing Project',
-      popular: false,
-      color: 'var(--quaternary)'
+      popular: false
     },
     {
       name: 'Modern Web Application',
       price: '$699',
       period: 'one-time',
       desc: 'Complete multi-page React / TypeScript web application with custom state, routing, and dynamic data APIs.',
-      features: ['Full Multi-Page React 19 / TypeScript SPA','Custom Component Architecture & Micro-Animations','Supabase / REST API Integration & Database Setup','Dark / Light Mode Theme Switching','Admin Dashboard & Content Management','Mobile App-like PWA Optimization','1-Month Post-Launch Tech Support'],
+      features: [
+        'Full Multi-Page React 19 / TypeScript SPA',
+        'Custom Component Architecture & Micro-Animations',
+        'Supabase / REST API Integration & Database Setup',
+        'Dark / Light Mode Theme Switching',
+        'Admin Dashboard & Content Management',
+        'Mobile App-like PWA Optimization',
+        '1-Month Post-Launch Tech Support'
+      ],
       cta: 'Build Web App',
-      popular: true,
-      color: 'var(--accent)'
+      popular: true
     },
     {
       name: 'Enterprise / Custom Software',
       price: '$1,299+',
       period: 'custom',
       desc: 'Full-scale custom software platforms, real-time socket applications, AI assistant tools, and API backend architecture.',
-      features: ['Custom Fullstack Node.js / Express Backend','Realtime WebSockets / Socket.io Integrations','Generative AI Models & Chatbot Assistants','PostgreSQL / Supabase Row-Level Security','High Volume Email / Automation Tools','Priority Tech Support & Dedicated Maintenance'],
+      features: [
+        'Custom Fullstack Node.js / Express Backend',
+        'Realtime WebSockets / Socket.io Integrations',
+        'Generative AI Models & Chatbot Assistants',
+        'PostgreSQL / Supabase Row-Level Security',
+        'High Volume Email / Automation Tools',
+        'Priority Tech Support & Dedicated Maintenance'
+      ],
       cta: 'Discuss Enterprise Scope',
-      popular: false,
-      color: 'var(--secondary)'
+      popular: false
     }
   ];
+
   const faqs = [
-    { q: 'How long does a web project typically take?', a: 'Landing pages 3-5 days. Full web apps 1.5-3 weeks depending on complexity.' },
-    { q: 'What technologies do you use?', a: 'React 19, TypeScript, Node.js, Express, Supabase, PostgreSQL, CSS3/Sass, GSAP — fast, scalable, modern.' },
-    { q: 'Can you help update an existing website?', a: 'Yes — performance audits, UI/UX redesigns, React refactoring, responsiveness upgrades.' }
+    { q: 'How long does a web project typically take?', a: 'Landing pages take 3-5 days. Full web applications take 1.5-3 weeks depending on scope and feature complexity.' },
+    { q: 'What technologies do you use?', a: 'React 19, TypeScript, Node.js, Express, Supabase, PostgreSQL, CSS3/Sass, and Framer Motion for fast, maintainable builds.' },
+    { q: 'Can you help update an existing website?', a: 'Yes — performance audits, UI/UX redesigns, React modernizations, and responsive overhaul projects.' }
   ];
+
   return (
-    <div className="page-wrapper pricing-page" style={{ paddingTop:'5.5rem', paddingBottom:'5rem', background:'var(--background)', position:'relative' }}>
-      <div aria-hidden="true" style={{ position:'absolute', right:'6%', top:80, width:64, height:64, background:'var(--secondary)', border:'2px solid var(--foreground)', borderRadius:'50%', boxShadow:'var(--shadow-pop)', transform:'rotate(-8deg)' }} />
-      <section className="page-header" style={{ position:'relative', overflow:'clip' }}>
+    <div className="page-wrapper pricing-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: '#000000', color: '#ffffff', minHeight: '100vh' }}>
+      {/* Page Header */}
+      <section className="page-header" style={{ padding: '2rem 0 3rem' }}>
         <div className="container">
-          <div className="breadcrumb" style={{ fontFamily:'var(--font-body)' }}><Link to="/">Home</Link><span>/</span><span className="current">Services & Pricing</span></div>
-          <div className="page-header-content reveal playful-enter">
-            <div className="badge-playful" style={{ background:'var(--tertiary)' }}><Sparkles size={14} strokeWidth={2.5}/> Clear & Transparent Rates</div>
-            <h1 className="page-title" style={{ fontFamily:'var(--font-heading)', fontWeight:800, marginTop:'0.6rem' }}>Services, Packages & <span style={{ color:'var(--accent)' }}>Investment</span></h1>
-            <p className="page-subtitle" style={{ fontFamily:'var(--font-body)', color:'var(--muted-foreground)' }}>Straightforward pricing for handcrafted web development, product engineering, and AI-powered digital experiences.</p>
+          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: '#888888', marginBottom: '1rem' }}>
+            <Link to="/" style={{ color: '#888888', textDecoration: 'none' }}>Home</Link>
+            <span style={{ margin: '0 8px' }}>/</span>
+            <span style={{ color: '#ffffff' }}>Services &amp; Pricing</span>
+          </div>
+
+          <div className="page-header-content">
+            <div className="badge-playful" style={{ marginBottom: '1rem' }}>
+              <Sparkles size={13} />
+              <span>Clear &amp; Transparent Rates</span>
+            </div>
+            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem' }}>
+              Services, Packages &amp; <em>Investment</em>
+            </h1>
+            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: '#9a9a9a', maxWidth: '600px', lineHeight: 1.65 }}>
+              Straightforward pricing for handcrafted web applications, production engineering, and AI-powered digital products.
+            </p>
           </div>
         </div>
-        <svg aria-hidden="true" viewBox="0 0 120 12" preserveAspectRatio="none" style={{ position:'absolute', bottom:0, left:0, width:'100%', height:12, color:'var(--foreground)' }}><path d="M0 6 Q15 0 30 6 T60 6 T90 6 T120 6" stroke="currentColor" strokeWidth={2} fill="none" strokeLinecap="round"/></svg>
       </section>
 
-      <section className="section" style={{ padding:'3rem 0 4rem' }}>
+      {/* Pricing Grid */}
+      <section className="section" style={{ padding: '2rem 0 4rem' }}>
         <div className="container">
-          <div className="pricing-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(320px, 1fr))', gap:'2rem', alignItems:'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.75rem', alignItems: 'stretch' }}>
             {pricingTiers.map((tier) => (
-              <div key={tier.name} className={`card-sticker ${tier.popular ? 'featured' : ''}`} style={{
-                padding:'2.5rem 2rem', display:'flex', flexDirection:'column', position:'relative',
-                transform: tier.popular ? 'scale(1.05) rotate(-0.4deg)' : undefined,
-                borderColor: tier.popular ? 'var(--foreground)' : undefined,
-                background:'var(--card)'
-              }}>
+              <div
+                key={tier.name}
+                style={{
+                  padding: '2.25rem', display: 'flex', flexDirection: 'column', position: 'relative',
+                  background: tier.popular ? 'linear-gradient(180deg, #111111 0%, #080808 100%)' : '#0a0a0a',
+                  border: '1px solid ' + (tier.popular ? 'rgba(255, 255, 255, 0.28)' : 'rgba(255, 255, 255, 0.1)'),
+                  borderRadius: '14px',
+                  boxShadow: tier.popular ? '0 12px 40px rgba(0, 0, 0, 0.8)' : 'none'
+                }}
+              >
                 {tier.popular && (
-                  <div aria-hidden="true" style={{ position:'absolute', top:'-16px', left:'50%', transform:'translateX(-50%) rotate(3deg)', background:'var(--tertiary)', border:'2px solid var(--foreground)', borderRadius:'9999px', padding:'0.4rem 1rem', fontFamily:'var(--font-heading)', fontWeight:800, fontSize:'0.7rem', letterSpacing:'0.06em', boxShadow:'var(--shadow-pop)', display:'flex', alignItems:'center', gap:'6px', whiteSpace:'nowrap' }}>
-                    <Star size={12} strokeWidth={2.5} fill="var(--foreground)"/> MOST POPULAR
+                  <div style={{
+                    position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)',
+                    background: '#ffffff', color: '#000000', borderRadius: '4px', padding: '0.2rem 0.75rem',
+                    fontWeight: 600, fontSize: '0.72rem', letterSpacing: '0.04em', textTransform: 'uppercase',
+                    display: 'flex', alignItems: 'center', gap: '4px'
+                  }}>
+                    <Star size={11} fill="#000000" /> Most Popular
                   </div>
                 )}
-                <div style={{ width:44, height:44, borderRadius:'50%', background:tier.color, border:'2px solid var(--foreground)', boxShadow:'var(--shadow-pop)', display:'grid', placeItems:'center', marginBottom:'1rem', color: tier.color==='var(--accent)'?'white':'var(--foreground)' }}>
-                  <Sparkles size={18} strokeWidth={2.5} />
+
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.5rem' }}>{tier.name}</h3>
+                <p style={{ color: '#9a9a9a', fontSize: '0.86rem', lineHeight: 1.6, minHeight: '3rem', margin: 0 }}>{tier.desc}</p>
+                
+                <div style={{ margin: '1.5rem 0', display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+                  <span style={{ fontSize: '2.5rem', fontWeight: 700, color: '#ffffff' }}>{tier.price}</span>
+                  <span style={{ color: '#888888', fontSize: '0.86rem' }}>/ {tier.period}</span>
                 </div>
-                <h3 style={{ fontSize:'1.35rem', fontFamily:'var(--font-heading)', fontWeight:800, color:'var(--foreground)', marginBottom:'0.5rem' }}>{tier.name}</h3>
-                <p style={{ color:'var(--muted-foreground)', fontSize:'0.9rem', lineHeight:1.6, minHeight:'3rem', fontFamily:'var(--font-body)' }}>{tier.desc}</p>
-                <div style={{ margin:'1.5rem 0', display:'flex', alignItems:'baseline', gap:'6px' }}>
-                  <span style={{ fontSize:'2.8rem', fontWeight:800, color:'var(--foreground)', fontFamily:'var(--font-heading)' }}>{tier.price}</span>
-                  <span style={{ color:'var(--muted-foreground)', fontSize:'0.9rem', fontFamily:'var(--font-body)' }}>/ {tier.period}</span>
-                </div>
-                <ul style={{ display:'flex', flexDirection:'column', gap:'0.75rem', marginBottom:'2rem', flex:1, listStyle:'none', padding:0 }}>
+
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '2rem', flex: 1, listStyle: 'none', padding: 0, margin: '0 0 2rem' }}>
                   {tier.features.map(f => (
-                    <li key={f} style={{ display:'flex', alignItems:'flex-start', gap:'10px', fontSize:'0.9rem', color:'var(--muted-foreground)', fontFamily:'var(--font-body)' }}>
-                      <span style={{ width:22, height:22, borderRadius:'50%', background:'var(--quaternary)', border:'2px solid var(--foreground)', display:'grid', placeItems:'center', flexShrink:0, marginTop:2 }}><Check size={12} strokeWidth={3} color="var(--foreground)"/></span>
+                    <li key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.86rem', color: '#cccccc', lineHeight: 1.5 }}>
+                      <span style={{ width: 18, height: 18, borderRadius: '4px', background: 'rgba(255, 255, 255, 0.08)', display: 'grid', placeItems: 'center', flexShrink: 0, marginTop: 2 }}>
+                        <Check size={11} style={{ color: '#ffffff' }} />
+                      </span>
                       <span>{f}</span>
                     </li>
                   ))}
                 </ul>
-                <Link to="/contact" className={tier.popular ? 'btn-candy' : 'btn-secondary'} style={{ width:'100%', justifyContent:'center', textDecoration:'none', display:'inline-flex', alignItems:'center', gap:'0.5rem' }}>
-                  <span>{tier.cta}</span><ArrowRight size={16} strokeWidth={2.5} />
+
+                <Link
+                  to="/contact"
+                  className={tier.popular ? 'btn-primary' : 'btn-secondary'}
+                  style={{ width: '100%', justifyContent: 'center', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+                >
+                  <span>{tier.cta}</span>
+                  <ArrowRight size={14} />
                 </Link>
               </div>
             ))}
@@ -100,18 +150,17 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="section" style={{ padding:'4rem 0', background:'var(--muted)', borderTop:'2px solid var(--foreground)', borderBottom:'2px solid var(--foreground)' }}>
-        <div className="container">
-          <div className="badge-playful" style={{ background:'var(--quaternary)' }}><HelpCircle size={14} strokeWidth={2.5}/> Got Questions?</div>
-          <h2 className="section-title" style={{ fontFamily:'var(--font-heading)', fontWeight:800, marginTop:'0.5rem' }}>Frequently Asked <span style={{ color:'var(--secondary)' }}>Questions</span></h2>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'1.5rem', marginTop:'2rem' }}>
-            {faqs.map(faq => (
-              <div key={faq.q} className="card-sticker" style={{ padding:'1.75rem' }}>
-                <h3 style={{ fontSize:'1.05rem', fontFamily:'var(--font-heading)', fontWeight:800, color:'var(--foreground)', marginBottom:'0.75rem', display:'flex', alignItems:'center', gap:'8px' }}>
-                  <span style={{ width:28, height:28, borderRadius:'50%', background:'var(--tertiary)', border:'2px solid var(--foreground)', display:'grid', placeItems:'center', flexShrink:0 }}><HelpCircle size={14} strokeWidth={2.5} color="var(--foreground)"/></span>
-                  {faq.q}
-                </h3>
-                <p style={{ color:'var(--muted-foreground)', fontSize:'0.92rem', lineHeight:1.7, fontFamily:'var(--font-body)' }}>{faq.a}</p>
+      {/* Pricing FAQs */}
+      <section className="section" style={{ padding: '3rem 0', background: '#050505', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#ffffff', margin: '0 0 1.5rem', textAlign: 'center' }}>
+            Frequently Asked Questions
+          </h2>
+          <div style={{ display: 'grid', gap: '1rem' }}>
+            {faqs.map((faq, i) => (
+              <div key={i} style={{ padding: '1.25rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#ffffff', margin: '0 0 0.4rem' }}>{faq.q}</h3>
+                <p style={{ color: '#9a9a9a', fontSize: '0.86rem', lineHeight: 1.6, margin: 0 }}>{faq.a}</p>
               </div>
             ))}
           </div>

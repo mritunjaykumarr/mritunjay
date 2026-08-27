@@ -1,10 +1,10 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  Sun, Moon, FileText, X, ChevronRight,
+  FileText, X, ChevronRight,
   Briefcase, FolderKanban, Wrench, Award,
   BookOpen, DollarSign, Bot, LayoutDashboard, Gamepad2, Sparkles,
-  Home, User, Mail
+  User, Mail, Code2, Sun, Moon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -13,11 +13,13 @@ interface HeaderProps {
   toggleTheme: () => void;
 }
 
-/* ── Navigation data ── */
+/* ── Primary 3-column nav ── */
 const primaryNav = [
-  { label: 'Home', path: '/', icon: Home },
-  { label: 'About', path: '/about', icon: User },
-  { label: 'Contact', path: '/contact', icon: Mail },
+  { label: 'About', path: '/about' },
+  { label: 'Skills', path: '/skills' },
+  { label: 'Projects', path: '/projects' },
+  { label: 'Experience', path: '/experience' },
+  { label: 'Contact', path: '/contact' },
 ];
 
 const drawerSections = [
@@ -47,24 +49,14 @@ const drawerSections = [
   },
 ];
 
-export default function Header({ theme, toggleTheme }: HeaderProps) {
+export default function Header({ theme = 'dark', toggleTheme = () => {} }: HeaderProps) {
   const location = useLocation();
   const currentPath = location.pathname;
 
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  // Drawer state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const drawerPanelRef = useRef<HTMLDivElement>(null);
-  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  /* ── Live clock ── */
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   /* ── Scroll tracking ── */
   useEffect(() => {
@@ -101,28 +93,8 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
 
   /* ── Close drawer on route change ── */
   useEffect(() => {
-    const timer = setTimeout(() => setIsDrawerOpen(false), 0);
-    return () => clearTimeout(timer);
+    setIsDrawerOpen(false);
   }, [currentPath]);
-
-  /* ── Desktop hover triggers ── */
-  const handleTriggerMouseEnter = useCallback(() => {
-    if (window.innerWidth >= 861) {
-      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = setTimeout(() => setIsDrawerOpen(true), 150);
-    }
-  }, []);
-
-  const handleDrawerMouseLeave = useCallback(() => {
-    if (window.innerWidth >= 861) {
-      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = setTimeout(() => setIsDrawerOpen(false), 250);
-    }
-  }, []);
-
-  const handleDrawerMouseEnter = useCallback(() => {
-    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-  }, []);
 
   const isLinkActive = (path: string) => {
     if (path === '/') return currentPath === '/';
@@ -131,10 +103,7 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
 
   return (
     <>
-      <motion.header
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      <header
         className={`header-floating-wrapper ${scrolled ? 'header-scrolled' : ''}`}
         id="header"
       >
@@ -144,13 +113,25 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
             <span style={{ transform: `scaleX(${Math.max(scrollProgress, 0.005)})` }} />
           </div>
 
-          {/* LEFT: LOGO */}
-          <Link to="/" className="navbar-logo" aria-label="Mritunjay AI Home">
-            <img src="/brand/mritunjay-logo.svg" alt="Mritunjay" className="navbar-brand-logo" />
+          {/* LEFT: LOGO / NAME */}
+          <Link to="/" className="navbar-logo" aria-label="Mritunjay Kumar Portfolio">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{
+                width: '28px', height: '28px', borderRadius: '6px',
+                background: 'linear-gradient(135deg, #222222, #000000)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                display: 'grid', placeItems: 'center', color: '#ffffff'
+              }}>
+                <Code2 size={16} />
+              </div>
+              <span style={{ fontWeight: 600, fontSize: '0.95rem', letterSpacing: '-0.02em', color: '#ffffff' }}>
+                MRITUNJAY<span style={{ color: '#9a9a9a', fontWeight: 400 }}>.ai</span>
+              </span>
+            </div>
           </Link>
 
-          {/* CENTER: PRIMARY NAVIGATION LINKS (3 links: Home, About, Contact) */}
-          <nav className="navbar-center-nav" aria-label="Main navigation">
+          {/* CENTER: LIQUID METAL NAV PILLS */}
+          <nav className="navbar-center-nav" aria-label="Primary navigation">
             {primaryNav.map((link) => {
               const active = isLinkActive(link.path);
               return (
@@ -160,64 +141,45 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
                   className={`nav-pill-item ${active ? 'active' : ''}`}
                   aria-current={active ? 'page' : undefined}
                 >
-                  {active && (
-                    <motion.span
-                      layoutId="navbar-active-pill"
-                      className="nav-active-bg"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
                   <span className="nav-pill-label">{link.label}</span>
                 </Link>
               );
             })}
           </nav>
 
-          {/* RIGHT: ACTIONS */}
+          {/* RIGHT: THEME TOGGLE, RESUME & MENU TRIGGER */}
           <div className="navbar-right-actions">
-            {/* Live Time Display */}
-            <div className="navbar-live-time" title="Current Local Time (IST)">
-              <span className="live-pulse-dot" aria-hidden="true" />
-              <span className="time-text">
-                {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
-              <span className="time-tz">IST</span>
-            </div>
-
-            {/* Theme Toggle Button */}
-            <motion.button
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
               className="navbar-theme-btn"
               aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              onClick={toggleTheme}
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.92, rotate: 180 }}
-              transition={{ duration: 0.2 }}
+              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             >
-              {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
-            </motion.button>
+              {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+            </button>
 
             {/* Resume Button */}
             <a
               href="/updated_resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="navbar-resume-btn"
+              className="navbar-resume-btn btn-solid"
               aria-label="Download or view Resume PDF"
             >
-              <FileText size={14} />
+              <FileText size={13} />
               <span>Resume</span>
             </a>
 
-            {/* Drawer / Menu Trigger Button (Desktop & Mobile) */}
+            {/* Menu / Drawer Trigger Button */}
             <button
               className={`navbar-drawer-trigger-btn ${isDrawerOpen ? 'open' : ''}`}
               onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-              onMouseEnter={handleTriggerMouseEnter}
-              aria-label="Toggle Navigation Drawer"
+              aria-label="Toggle navigation drawer"
               aria-expanded={isDrawerOpen}
             >
               {isDrawerOpen ? (
-                <X size={18} />
+                <X size={17} />
               ) : (
                 <div className="drawer-hamburger-icon">
                   <span />
@@ -228,9 +190,9 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
             </button>
           </div>
         </div>
-      </motion.header>
+      </header>
 
-      {/* ── PREMIUM SLIDE-IN SIDE DRAWER ── */}
+      {/* ── FULLSCREEN / SLIDE-IN MOBILE & DESKTOP MENU ── */}
       <AnimatePresence>
         {isDrawerOpen && (
           <>
@@ -254,16 +216,14 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 360, damping: 32 }}
-              onMouseEnter={handleDrawerMouseEnter}
-              onMouseLeave={handleDrawerMouseLeave}
             >
               {/* Drawer Top Bar */}
               <div className="drawer-panel-topbar">
                 <div className="drawer-panel-brand">
-                  <Sparkles size={16} className="drawer-sparkle-icon" />
+                  <Sparkles size={16} style={{ color: '#ffffff' }} />
                   <div>
                     <span className="drawer-brand-name">Navigation</span>
-                    <span className="drawer-brand-sub">Explore Portfolio & Tools</span>
+                    <span className="drawer-brand-sub">Explore portfolio & tools</span>
                   </div>
                 </div>
                 <button
@@ -271,61 +231,52 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
                   onClick={() => setIsDrawerOpen(false)}
                   aria-label="Close navigation drawer"
                 >
-                  <X size={18} />
+                  <X size={17} />
                 </button>
               </div>
 
               {/* Drawer Main Scrollable Content */}
               <div className="drawer-panel-scroll-content">
-                {/* Quick Access Primary Nav (for mobile / all screen sizes) */}
+                {/* Quick Access Primary Nav */}
                 <div className="drawer-primary-grid">
-                  {primaryNav.map((link) => {
-                    const Icon = link.icon;
-                    const active = isLinkActive(link.path);
-                    return (
-                      <Link
-                        key={link.path}
-                        to={link.path}
-                        className={`drawer-primary-card ${active ? 'active' : ''}`}
-                        onClick={() => setIsDrawerOpen(false)}
-                      >
-                        <Icon size={18} />
-                        <span>{link.label}</span>
-                      </Link>
-                    );
-                  })}
+                  <Link to="/" className="drawer-primary-card" onClick={() => setIsDrawerOpen(false)}>
+                    <Code2 size={16} />
+                    <span>Home</span>
+                  </Link>
+                  <Link to="/about" className="drawer-primary-card" onClick={() => setIsDrawerOpen(false)}>
+                    <User size={16} />
+                    <span>About</span>
+                  </Link>
+                  <Link to="/contact" className="drawer-primary-card" onClick={() => setIsDrawerOpen(false)}>
+                    <Mail size={16} />
+                    <span>Contact</span>
+                  </Link>
                 </div>
 
                 {/* Categorized Navigation Sections */}
-                {drawerSections.map((section, si) => (
+                {drawerSections.map((section) => (
                   <div key={section.title} className="drawer-section-group">
                     <p className="drawer-group-heading">{section.title}</p>
                     <div className="drawer-group-list">
-                      {section.items.map((item, ii) => {
+                      {section.items.map((item) => {
                         const Icon = item.icon;
                         const active = isLinkActive(item.path);
                         return (
-                          <motion.div
+                          <Link
                             key={item.path}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.03 * (si * 3 + ii), duration: 0.22 }}
+                            to={item.path}
+                            className={`drawer-item-link ${active ? 'active' : ''}`}
+                            onClick={() => setIsDrawerOpen(false)}
                           >
-                            <Link
-                              to={item.path}
-                              className={`drawer-item-link ${active ? 'active' : ''}`}
-                              onClick={() => setIsDrawerOpen(false)}
-                            >
-                              <div className="drawer-item-icon-box">
-                                <Icon size={17} />
-                              </div>
-                              <div className="drawer-item-text">
-                                <span className="drawer-item-title">{item.label}</span>
-                                <span className="drawer-item-desc">{item.desc}</span>
-                              </div>
-                              <ChevronRight size={15} className="drawer-item-arrow" />
-                            </Link>
-                          </motion.div>
+                            <div className="drawer-item-icon-box">
+                              <Icon size={16} />
+                            </div>
+                            <div className="drawer-item-text">
+                              <span className="drawer-item-title">{item.label}</span>
+                              <span className="drawer-item-desc">{item.desc}</span>
+                            </div>
+                            <ChevronRight size={14} style={{ color: '#777777' }} />
+                          </Link>
                         );
                       })}
                     </div>
@@ -335,22 +286,6 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
 
               {/* Drawer Bottom Bar */}
               <div className="drawer-panel-footer">
-                <div className="drawer-footer-meta">
-                  <div className="drawer-time-badge">
-                    <span className="live-pulse-dot" />
-                    <span>{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} IST</span>
-                  </div>
-
-                  <button
-                    className="drawer-theme-toggle-btn"
-                    onClick={toggleTheme}
-                    aria-label="Toggle theme"
-                  >
-                    {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
-                    <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-                  </button>
-                </div>
-
                 <div className="drawer-footer-actions">
                   <a
                     href="/updated_resume.pdf"
@@ -359,7 +294,7 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
                     className="drawer-resume-action"
                     onClick={() => setIsDrawerOpen(false)}
                   >
-                    <FileText size={15} />
+                    <FileText size={14} />
                     <span>Resume PDF</span>
                   </a>
                   <Link
@@ -368,7 +303,7 @@ export default function Header({ theme, toggleTheme }: HeaderProps) {
                     onClick={() => setIsDrawerOpen(false)}
                   >
                     <span>Get In Touch</span>
-                    <ChevronRight size={15} />
+                    <ChevronRight size={14} />
                   </Link>
                 </div>
               </div>

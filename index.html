@@ -42,21 +42,25 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Instrument+Serif:ital@1&display=swap"
+    rel="stylesheet" />
+  <style>
+    /* Immediate pure black render - no white flash */
+    html, body {
+      background-color: #000000 !important;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7211021479773356"
     crossorigin="anonymous"></script>
   <script>
     (function () {
       try {
-        const savedTheme = localStorage.getItem('theme');
-        const theme = savedTheme ? savedTheme : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'dark');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {
         document.documentElement.setAttribute('data-theme', 'dark');
-      }
-      const day = new Date().getDay();
-      document.documentElement.setAttribute('data-day', day.toString());
+      } catch (e) {}
     })();
   </script>
   <script type="application/ld+json">

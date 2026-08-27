@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Scale, FileText, AlertCircle, Mail } from 'lucide-react';
+import { Scale, FileText, Mail } from 'lucide-react';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { useSEO } from '../lib/useSEO';
 
@@ -20,56 +20,65 @@ export default function TermsAndConditions() {
   });
 
   return (
-    <div className="page-wrapper" style={{ paddingTop: '5.5rem', paddingBottom: '5rem' }}>
-      <section className="page-header">
+    <div className="page-wrapper" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: '#000000', color: '#ffffff', minHeight: '100vh' }}>
+      <section className="page-header" style={{ padding: '2rem 0 3rem' }}>
         <div className="container">
-          <div className="breadcrumb"><Link to="/">Home</Link><span>/</span><span className="current">Terms</span></div>
-          <div className="page-header-content reveal">
-            <div className="section-eyebrow"><Scale size={14} /> Legal Terms</div>
-            <h1 className="page-title">Terms and <span className="grad">Conditions</span></h1>
-            <p className="page-subtitle">Last updated: August 6, 2026 — By accessing mritify.online you agree to these terms. Written for this portfolio, not a generic template.</p>
+          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: '#888888', marginBottom: '1rem' }}>
+            <Link to="/" style={{ color: '#888888', textDecoration: 'none' }}>Home</Link>
+            <span style={{ margin: '0 8px' }}>/</span>
+            <span style={{ color: '#ffffff' }}>Terms</span>
+          </div>
+          <div className="page-header-content">
+            <div className="badge-playful" style={{ marginBottom: '1rem' }}>
+              <Scale size={13} />
+              <span>Legal Guidelines</span>
+            </div>
+            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem' }}>
+              Terms &amp; <em>Conditions</em>
+            </h1>
+            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: '#9a9a9a', maxWidth: '600px', lineHeight: 1.65 }}>
+              Last updated: August 2026 — General conditions governing the use of mritify.online and open-source materials.
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="section" style={{ padding: '3rem 0' }}>
+      <section className="section" style={{ padding: '2rem 0 4rem' }}>
         <div className="container" style={{ maxWidth: 860 }}>
-          <div className="card-sticker" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.75rem', display: 'flex', gap: 8, alignItems: 'center' }}><FileText size={18} /> Acceptance</h2>
-            <p style={{ color: 'var(--muted-foreground)', lineHeight: 1.7 }}>By browsing, sharing, or contacting through mritify.online you agree to use the site lawfully and respectfully. If you do not agree, please do not use the site. This site is a personal portfolio, not a marketplace, and does not process payments directly.</p>
+          <div style={{ padding: '2rem', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+            <h2 style={{ fontWeight: 600, fontSize: '1.2rem', marginBottom: '0.75rem', display: 'flex', gap: 8, alignItems: 'center', color: '#ffffff' }}>
+              <FileText size={18} /> Acceptance
+            </h2>
+            <p style={{ color: '#9a9a9a', lineHeight: 1.7, fontSize: '0.92rem' }}>
+              By browsing, sharing, or contacting through mritify.online you agree to use the site lawfully and respectfully. This site is a personal portfolio showcasing engineering work and software development services.
+            </p>
           </div>
 
-          <div className="card-sticker" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.75rem' }}>Intellectual Property</h2>
-            <p style={{ color: 'var(--muted-foreground)', lineHeight: 1.7 }}>All original content — case studies, project descriptions, UI designs, and technical articles — is authored by Mritunjay Kumar unless otherwise credited. Project screenshots remain the property of their respective owners. You may share links to public pages with attribution, but you may not copy substantial text, images, or code and represent it as your own.</p>
-            <p style={{ color: 'var(--muted-foreground)', lineHeight: 1.7, marginTop: '0.75rem' }}>Open-source code linked via GitHub retains its own license (see each repository). Resume PDF may be shared for hiring purposes with credit.</p>
+          <div style={{ padding: '2rem', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+            <h2 style={{ fontWeight: 600, fontSize: '1.2rem', marginBottom: '0.75rem', color: '#ffffff' }}>
+              Intellectual Property
+            </h2>
+            <p style={{ color: '#9a9a9a', lineHeight: 1.7, fontSize: '0.92rem' }}>
+              All original code snippets, architecture diagrams, case studies, and technical articles are authored by Mritunjay Kumar unless otherwise credited. Open-source code linked via GitHub retains its designated open-source license.
+            </p>
           </div>
 
-          <div className="card-sticker" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.75rem' }}>External Links & Services</h2>
-            <p style={{ color: 'var(--muted-foreground)', lineHeight: 1.7 }}>This portfolio links to GitHub, LinkedIn, live demos (including bulkmailsender.online, currency tools, chat apps), and third-party certificate validators. We are not responsible for the content or privacy practices of external sites. Ads served by Google AdSense, if displayed, are controlled by Google.</p>
+          <div style={{ padding: '2rem', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+            <h2 style={{ fontWeight: 600, fontSize: '1.2rem', marginBottom: '0.75rem', color: '#ffffff' }}>
+              External Links &amp; Demonstrations
+            </h2>
+            <p style={{ color: '#9a9a9a', lineHeight: 1.7, fontSize: '0.92rem' }}>
+              This portfolio links to live demos (including Bulk Mail Sender, Live TV, Chat App, and CLI tool repositories). We strive for 100% uptime but are not liable for outages on external host platforms.
+            </p>
           </div>
 
-          <div className="card-sticker" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.75rem', display: 'flex', gap: 8, alignItems: 'center' }}><AlertCircle size={18} /> Disclaimer & Liability</h2>
-            <p style={{ color: 'var(--muted-foreground)', lineHeight: 1.7 }}>Content is provided “as is” for informational and hiring purposes. While we strive for accuracy, we make no warranties about completeness or reliability of project metrics and articles. Use of any code or advice is at your own risk. To the fullest extent allowed by law, Mritunjay Kumar is not liable for any loss arising from use of the site.</p>
-          </div>
-
-          <div className="card-sticker" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.75rem' }}>Prohibited Use</h2>
-            <ul style={{ color: 'var(--muted-foreground)', lineHeight: 1.7, paddingLeft: '1.25rem', listStyle: 'disc', display: 'grid', gap: '0.5rem' }}>
-              <li>Do not attempt to scrape the blog API at abusive rates or post spam/ hateful comments.</li>
-              <li>Do not impersonate the site owner or misrepresent affiliation.</li>
-              <li>Do not use the site to distribute malware or violate applicable laws in India or your jurisdiction.</li>
-            </ul>
-          </div>
-
-          <div className="card-sticker" style={{ padding: '2rem', background: 'var(--muted)', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <Mail size={20} style={{ color: 'var(--accent)' }} />
-            <div>
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700 }}>Contact</h3>
-              <p style={{ color: 'var(--muted-foreground)', fontSize: '0.92rem' }}>Questions about these terms? Reach <a href="mailto:me@mritify.online" style={{ color: 'var(--accent)', fontWeight: 700 }}>me@mritify.online</a> or via <Link to="/contact" style={{ color: 'var(--accent)', fontWeight: 700 }}>contact page</Link>. We may update these terms and will revise the “Last updated” date.</p>
-            </div>
+          <div style={{ padding: '2rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+            <h2 style={{ fontWeight: 600, fontSize: '1.2rem', marginBottom: '0.75rem', display: 'flex', gap: 8, alignItems: 'center', color: '#ffffff' }}>
+              <Mail size={18} /> Contact &amp; Questions
+            </h2>
+            <p style={{ color: '#9a9a9a', lineHeight: 1.7, fontSize: '0.92rem', margin: 0 }}>
+              For questions regarding these terms, contact <a href="mailto:me@mritify.online" style={{ color: '#ffffff', textDecoration: 'underline' }}>me@mritify.online</a> or <a href="mailto:support@mritify.online" style={{ color: '#ffffff', textDecoration: 'underline' }}>support@mritify.online</a>.
+            </p>
           </div>
         </div>
       </section>

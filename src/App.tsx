@@ -16,8 +16,6 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import Loader from './components/Loader';
-import CustomCursor from './components/CustomCursor';
-import ScrollTrail from './components/ScrollTrail';
 import FloatingPrinceAI from './components/FloatingPrinceAI';
 
 import PlaygroundPage from './pages/PlaygroundPage';
@@ -43,7 +41,6 @@ function App() {
     }
     return 'dark';
   });
-
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   useEffect(() => {
@@ -55,9 +52,16 @@ function App() {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
+    if (theme === 'light') {
+      document.documentElement.style.backgroundColor = '#f8f9fa';
+      document.body.style.backgroundColor = '#f8f9fa';
+    } else {
+      document.documentElement.style.backgroundColor = '#000000';
+      document.body.style.backgroundColor = '#000000';
+    }
     const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) {
-      metaTheme.setAttribute('content', theme === 'dark' ? '#0F172A' : '#FFFDF5');
+      metaTheme.setAttribute('content', theme === 'dark' ? '#000000' : '#ffffff');
     }
   }, [theme]);
 
@@ -68,8 +72,6 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <CustomCursor />
-      <ScrollTrail />
       <Loader />
       <AnnouncementBar />
       <Header theme={theme} toggleTheme={toggleTheme} />
