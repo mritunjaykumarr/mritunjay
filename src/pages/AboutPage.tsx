@@ -42,9 +42,9 @@ export default function AboutPage() {
       {/* Main Content Grid */}
       <section className="section" style={{ padding: '2rem 0 4rem' }}>
         <div className="container">
-          <div className="about-page-grid">
+          <div className="about-page-grid" style={{ width: '100%', boxSizing: 'border-box' }}>
             {/* Left Photo & Card */}
-            <div>
+            <div style={{ minWidth: 0, boxSizing: 'border-box' }}>
               <div style={{ border: '1px solid var(--border)', borderRadius: '14px', overflow: 'hidden', background: 'var(--card)', position: 'relative' }}>
                 <img src="/assets/about2.png" alt="Mritunjay Kumar" className="about-photo" loading="lazy" style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'cover' }} />
                 <div style={{
@@ -59,36 +59,36 @@ export default function AboutPage() {
               </div>
 
               {/* Quick Info Box */}
-              <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px' }}>
+              <div style={{ marginTop: '1.5rem', padding: 'clamp(1rem, 3vw, 1.5rem)', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px', boxSizing: 'border-box' }}>
                 <h3 style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text)', marginBottom: '1rem' }}>Quick Facts</h3>
-                <div style={{ display: 'grid', gap: '0.6rem', fontSize: '0.86rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ display: 'grid', gap: '0.75rem', fontSize: '0.86rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px' }}>
                     <span style={{ color: 'var(--text-muted)' }}>Based in:</span>
-                    <span style={{ color: 'var(--text)' }}>Bihar / New Delhi, India</span>
+                    <span style={{ color: 'var(--text)', fontWeight: 500, textAlign: 'right' }}>Bihar / New Delhi, India</span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px' }}>
                     <span style={{ color: 'var(--text-muted)' }}>Current Role:</span>
-                    <span style={{ color: 'var(--text)' }}>Fullstack Dev @ Epigroww</span>
+                    <span style={{ color: 'var(--text)', fontWeight: 500, textAlign: 'right' }}>Fullstack Dev @ Epigroww</span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px' }}>
                     <span style={{ color: 'var(--text-muted)' }}>Speciality:</span>
-                    <span style={{ color: 'var(--text)' }}>React 19, TypeScript, Node.js</span>
+                    <span style={{ color: 'var(--text)', fontWeight: 500, textAlign: 'right' }}>React 19, TypeScript, Node.js</span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px' }}>
                     <span style={{ color: 'var(--text-muted)' }}>Status:</span>
-                    <span style={{ color: '#22c55e' }}>Available for select projects</span>
+                    <span style={{ color: '#22c55e', fontWeight: 500, textAlign: 'right' }}>Available for select projects</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Right Story & Tabs */}
-            <div>
+            <div style={{ minWidth: 0, boxSizing: 'border-box' }}>
               <div className="badge-playful" style={{ marginBottom: '1rem' }}>
                 <Compass size={13} />
                 <span>My Narrative</span>
               </div>
-              <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.4rem)', fontWeight: 600, margin: '0 0 1.25rem', letterSpacing: '-0.035em', color: 'var(--text)' }}>
+              <h2 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 600, margin: '0 0 1.25rem', letterSpacing: '-0.035em', color: 'var(--text)', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
                 Turning complex systems into <em>effortless interfaces.</em>
               </h2>
               

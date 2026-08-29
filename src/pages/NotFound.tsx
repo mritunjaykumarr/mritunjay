@@ -18,13 +18,13 @@ export default function NotFound() {
   });
 
   return (
-    <div className="page-wrapper" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: '#000000', color: '#ffffff', minHeight: '100vh' }}>
+    <div className="page-wrapper" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
       <section className="section" style={{ padding: '6rem 0' }}>
         <div className="container" style={{ maxWidth: 640, textAlign: 'center' }}>
-          <div style={{ padding: '3rem 2rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '16px' }}>
-            <SearchX size={44} style={{ color: '#ffffff', margin: '0 auto 1.25rem' }} />
-            <h1 style={{ fontWeight: 600, fontSize: '2.2rem', color: '#ffffff', letterSpacing: '-0.03em', margin: '0 0 0.5rem' }}>404 — Page Not Found</h1>
-            <p style={{ color: '#9a9a9a', marginTop: '0.75rem', lineHeight: 1.7, fontSize: '0.94rem' }}>
+          <div style={{ padding: '3rem 2rem', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '16px' }}>
+            <SearchX size={44} style={{ color: 'var(--text)', margin: '0 auto 1.25rem' }} />
+            <h1 style={{ fontWeight: 600, fontSize: '2.2rem', color: 'var(--text)', letterSpacing: '-0.03em', margin: '0 0 0.5rem' }}>404 — Page Not Found</h1>
+            <p style={{ color: 'var(--text-muted)', marginTop: '0.75rem', lineHeight: 1.7, fontSize: '0.94rem' }}>
               The page you requested could not be located. It may have been moved or updated.
             </p>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem', flexWrap: 'wrap' }}>

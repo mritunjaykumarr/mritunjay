@@ -164,14 +164,14 @@ export default function PortfolioRedesign() {
   };
 
   return (
-    <div className="portfolio-v3" ref={canvasRef} onMouseMove={setSpotlight} style={{ background: '#000000', color: '#ffffff' }}>
+    <div className="portfolio-v3" ref={canvasRef} onMouseMove={setSpotlight} style={{ background: 'var(--bg)', color: 'var(--text)' }}>
       <main>
         {/* ——— Hero Section ——— */}
         <section ref={heroRef} className="v3-hero" id="home">
           <div className="v3-container v3-hero-grid">
             <FadeIn className="v3-hero-copy">
               <div className="v3-kicker" style={{ marginBottom: '1.25rem' }}>
-                <Sparkles size={13} style={{ color: '#ffffff' }} />
+                <Sparkles size={13} style={{ color: 'var(--text)' }} />
                 <span>Available for select projects · AI-First Engineering</span>
               </div>
 
@@ -405,7 +405,7 @@ export default function PortfolioRedesign() {
         </section>
 
         {/* ——— PrinceAI Flagship Section ——— */}
-        <section className="v3-section" id="prince-ai" style={{ background: '#050505' }}>
+        <section className="v3-section" id="prince-ai" style={{ background: 'var(--bg)' }}>
           <div className="v3-container">
             <FadeIn className="v3-section-heading">
               <p className="v3-eyebrow">03 / Flagship AI Product</p>
@@ -677,7 +677,7 @@ export default function PortfolioRedesign() {
         <div className="v3-container">
           <div className="v3-footer-top">
             <div>
-              <a href="#home" style={{ textDecoration: 'none', color: '#ffffff', fontSize: '1.2rem', fontWeight: '700', letterSpacing: '-0.02em' }}>
+              <a href="#home" style={{ textDecoration: 'none', color: 'var(--text)', fontSize: '1.2rem', fontWeight: '700', letterSpacing: '-0.02em' }}>
                 MRITUNJAY KUMAR
               </a>
               <p style={{ margin: '0.5rem 0 0', fontSize: '0.85rem' }}>

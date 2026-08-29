@@ -99,94 +99,127 @@ export default function PrinceAI() {
   };
 
   return (
-    <section id="prince-ai" className="section prince-ai">
-      <div className="container prince-ai-shell">
+    <section id="prince-ai" className="section prince-ai" style={{ width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
+      <div className="container prince-ai-shell" style={{ width: '100%', maxWidth: '1200px', boxSizing: 'border-box' }}>
         <div className="section-eyebrow"><Sparkles size={14} /> Differentiator Feature</div>
-        <h2 className="section-title reveal visible">AI Portfolio <span className="grad">Assistant</span></h2>
-        <p className="section-sub reveal visible">
+        <h2 className="section-title reveal visible" style={{ color: 'var(--text)' }}>AI Portfolio <span className="grad">Assistant</span></h2>
+        <p className="section-sub reveal visible" style={{ color: 'var(--text-muted)' }}>
           Instead of scrolling through text, ask <strong>Prince AI</strong> anything about Mritunjay's projects, architecture, skills, and why to hire him.
         </p>
 
-        <div className="prince-ai-grid">
+        <div className="prince-ai-grid" style={{ width: '100%', boxSizing: 'border-box' }}>
           {/* Left Panel: Intro & Interactive Prompt Chips */}
-          <article className="ai-panel ai-intro reveal visible">
+          <article className="ai-panel ai-intro reveal visible" style={{ minWidth: 0, boxSizing: 'border-box' }}>
             <p className="ai-kicker">Interactive Prompts</p>
-            <h3>Click any question to ask Prince AI:</h3>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text)', margin: '0.25rem 0 0.75rem' }}>
+              Quick Questions:
+            </h3>
             
-            <div className="ai-mandatory-chips-list" style={{ gap: '0.65rem', marginTop: '0.6rem' }}>
+            <div className="ai-mandatory-chips-list" style={{ display: 'grid', gap: '0.5rem' }}>
               {MANDATORY_PROMPT_CHIPS.map((chip, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSend(chip)}
-                  className="ai-chip-prompt-btn card-glass"
+                  className="ai-chip-prompt-btn"
                   style={{
                     textAlign: 'left',
-                    padding: '0.75rem 1rem',
-                    borderRadius: 'var(--r-sm)',
+                    padding: '0.65rem 0.85rem',
+                    borderRadius: '8px',
                     border: '1px solid var(--border)',
-                    background: 'var(--bg-elevated)',
+                    background: 'var(--surface-2)',
                     color: 'var(--text)',
                     cursor: 'pointer',
-                    fontSize: '0.92rem',
+                    fontSize: '0.85rem',
                     fontWeight: 500,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
+                    gap: '6px',
                     transition: 'all 0.2s ease',
+                    minWidth: 0,
+                    width: '100%',
+                    boxSizing: 'border-box'
                   }}
                 >
-                  <span>💬 {chip}</span>
-                  <ArrowRight size={14} className="text-primary" />
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>💬 {chip}</span>
+                  <ArrowRight size={13} style={{ flexShrink: 0, color: 'var(--text-muted)' }} />
                 </button>
               ))}
             </div>
           </article>
 
           {/* Right Panel: Live Chat Box */}
-          <article className="ai-panel ai-preview reveal reveal-right visible" style={{ ...(isFullScreen ? { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999, borderRadius: 0, display: 'flex', flexDirection: 'column' } : {}) }}>
-            <div className="ai-preview-head">
+          <article 
+            className="ai-panel ai-preview reveal reveal-right visible" 
+            style={{ 
+              minWidth: 0, 
+              boxSizing: 'border-box',
+              ...(isFullScreen ? { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999, borderRadius: 0, display: 'flex', flexDirection: 'column' } : {}) 
+            }}
+          >
+            <div className="ai-preview-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border)', marginBottom: '0.75rem' }}>
               <div>
-                <p className="ai-kicker">Interactive Assistant</p>
-                <h3>Talk to Prince AI</h3>
+                <p className="ai-kicker" style={{ margin: 0, fontSize: '0.72rem' }}>Interactive Assistant</p>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text)', margin: '2px 0 0' }}>Talk to Prince AI</h3>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <span className="ai-live-dot">Knowledge Engine Ready</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <span className="ai-live-dot" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Ready</span>
                 <button 
                   onClick={() => setIsFullScreen(!isFullScreen)} 
                   className="ai-action-btn"
-                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
+                  style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: '6px', padding: '4px 6px', cursor: 'pointer', color: 'var(--text)' }}
                   aria-label={isFullScreen ? "Minimize" : "Maximize"}
                 >
-                  {isFullScreen ? <Minimize size={18} /> : <Maximize size={18} />}
+                  {isFullScreen ? <Minimize size={15} /> : <Maximize size={15} />}
                 </button>
               </div>
             </div>
 
-            <div className="ai-chat" ref={chatRef} style={{ minHeight: isFullScreen ? '0' : '380px', maxHeight: isFullScreen ? 'none' : '480px', flex: isFullScreen ? 1 : 'none', overflowY: 'auto' }}>
+            <div 
+              className="ai-chat" 
+              ref={chatRef} 
+              style={{ 
+                minHeight: isFullScreen ? '0' : '300px', 
+                maxHeight: isFullScreen ? 'none' : '440px', 
+                flex: isFullScreen ? 1 : 'none', 
+                overflowY: 'auto',
+                overflowX: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.85rem',
+                paddingRight: '4px',
+                width: '100%',
+                boxSizing: 'border-box'
+              }}
+            >
               {messages.map((msg, i) => (
-                <div key={i} className={`ai-message ${msg.role === 'user' ? 'ai-message-user' : 'ai-message-ai'}`}>
-                  {msg.role === 'assistant' && <div className="ai-avatar-label"><Bot size={14} /> Prince AI</div>}
+                <div key={i} className={`ai-message ${msg.role === 'user' ? 'ai-message-user' : 'ai-message-ai'}`} style={{ minWidth: 0, maxWidth: '94%', boxSizing: 'border-box' }}>
+                  {msg.role === 'assistant' && (
+                    <div className="ai-avatar-label" style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 3 }}>
+                      <Bot size={13} /> Prince AI
+                    </div>
+                  )}
                   {msg.content ? (
                     msg.role === 'assistant' ? (
-                      <div className="ai-markdown-content">
+                      <div className="ai-markdown-content" style={{ minWidth: 0, overflowWrap: 'break-word', wordBreak: 'break-word' }}>
                         <ReactMarkdown>{msg.content}</ReactMarkdown>
                         {msg.content && (!isLoading || i !== messages.length - 1) && (
-                          <div className="ai-message-actions">
+                          <div className="ai-message-actions" style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
                             <button onClick={() => handleCopy(msg.content, i)} title="Copy response" className="ai-action-btn">
-                              {copiedIndex === i ? <Check size={14} /> : <Copy size={14} />}
+                              {copiedIndex === i ? <Check size={13} /> : <Copy size={13} />}
                               <span>{copiedIndex === i ? 'Copied' : 'Copy'}</span>
                             </button>
                             <button onClick={() => handleShare(msg.content)} title="Share response" className="ai-action-btn">
-                              <Share2 size={14} />
+                              <Share2 size={13} />
                               <span>Share</span>
                             </button>
                           </div>
                         )}
                       </div>
                     ) : (
-                      <div className="ai-user-content">
+                      <div className="ai-user-content" style={{ minWidth: 0, overflowWrap: 'break-word', wordBreak: 'break-word' }}>
                         {msg.image && <img src={msg.image} alt="User Upload" className="ai-message-img" />}
-                        {msg.content && <p>{msg.content}</p>}
+                        {msg.content && <p style={{ margin: 0 }}>{msg.content}</p>}
                       </div>
                     )
                   ) : (
@@ -197,7 +230,7 @@ export default function PrinceAI() {
             </div>
 
             {/* Chat Input */}
-            <div className="ai-input-container">
+            <div className="ai-input-container" style={{ width: '100%', boxSizing: 'border-box', marginTop: '0.75rem', paddingTop: '0.5rem', borderTop: '1px solid var(--border)' }}>
               {selectedImage && (
                 <div className="ai-image-preview">
                   <img src={selectedImage} alt="Preview" />
@@ -206,22 +239,23 @@ export default function PrinceAI() {
                   </button>
                 </div>
               )}
-              <div className="ai-input-row">
+              <div className="ai-input-row" style={{ width: '100%', boxSizing: 'border-box', minWidth: 0 }}>
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageSelect} style={{ display: 'none' }} />
-                <button className="ai-attach-btn" onClick={() => fileInputRef.current?.click()} aria-label="Attach Image">
+                <button className="ai-attach-btn" onClick={() => fileInputRef.current?.click()} aria-label="Attach Image" type="button">
                   <Paperclip size={16} />
                 </button>
                 <input 
                   ref={inputRef} 
                   type="text" 
-                  placeholder="Ask Prince AI about architecture, tech stack..." 
+                  placeholder="Ask Prince AI anything..." 
                   value={input} 
                   onChange={e => setInput(e.target.value)} 
                   onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }} 
                   disabled={isLoading} 
+                  style={{ minWidth: 0, flex: 1, width: '100%' }}
                 />
-                <button className="ai-send-btn" onClick={() => handleSend()} disabled={isLoading || (!input.trim() && !selectedImage)} aria-label="Send">
-                  <SendHorizonal size={16} />
+                <button className="ai-send-btn" onClick={() => handleSend()} disabled={isLoading || (!input.trim() && !selectedImage)} aria-label="Send" type="button">
+                  <SendHorizonal size={15} />
                 </button>
               </div>
             </div>
