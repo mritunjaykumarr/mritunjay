@@ -217,6 +217,7 @@ label,
   color: #ffffff !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
   transition: all 0.25s ease !important;
+  flex-shrink: 0;
 }
 
 .icon-circle:hover {
@@ -224,4 +225,74 @@ label,
   border-color: rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
   transform: translateY(-2px) !important;
+}
+
+/* ——— Responsive Button & Card Modifiers ——— */
+@media (max-width: 640px) {
+  .btn-candy,
+  .btn-primary,
+  .v3-button-primary,
+  .btn-solid,
+  .btn-secondary,
+  .btn-outline,
+  .v3-button-quiet,
+  .btn-ghost {
+    height: 40px !important;
+    padding: 0 1rem !important;
+    font-size: 0.84rem !important;
+  }
+
+  .btn-full-mobile {
+    width: 100% !important;
+  }
+
+  .card-sticker,
+  .card-glass,
+  .v3-story-card,
+  .v3-skill-card,
+  .v3-cert-card,
+  .ai-panel {
+    padding: 1.25rem !important;
+  }
+}
+
+/* ——— Modal Primitives ——— */
+.modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 1.25rem !important;
+  overflow-y: auto !important;
+}
+
+@media (max-width: 640px) {
+  .modal-overlay {
+    padding: 0.75rem !important;
+    align-items: flex-end !important;
+  }
+}
+
+.modal-box {
+  width: 100% !important;
+  max-width: 800px !important;
+  max-height: 90vh !important;
+  background: #0a0a0a !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+@media (max-width: 640px) {
+  .modal-box {
+    max-height: 92vh !important;
+    border-radius: 14px 14px 0 0 !important;
+  }
 }

@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="footer" style={{ background: '#000000', borderTop: '1px solid rgba(255, 255, 255, 0.12)', paddingTop: '4rem', paddingBottom: '3rem', position: 'relative' }}>
       <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 2fr', gap: '3rem', paddingBottom: '3rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+        <div className="footer-main-grid">
           {/* Brand Info */}
           <div>
             <Link to="/" style={{ textDecoration: 'none', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -47,7 +47,7 @@ export default function Footer() {
           </div>
 
           {/* Links Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+          <div className="footer-links-grid">
             {/* Column 1: Navigation */}
             <div>
               <h4 style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#777777', marginBottom: '1rem', fontWeight: 600 }}>

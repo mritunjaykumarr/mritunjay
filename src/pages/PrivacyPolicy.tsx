@@ -46,7 +46,7 @@ export default function PrivacyPolicy() {
 
       <section className="section" style={{ padding: '2rem 0 4rem' }}>
         <div className="container" style={{ maxWidth: 860 }}>
-          <div style={{ padding: '2rem', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+          <div style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
             <h2 style={{ fontWeight: 600, fontSize: '1.2rem', marginBottom: '0.75rem', display: 'flex', gap: 8, alignItems: 'center', color: '#ffffff' }}>
               <ShieldCheck size={18} /> Who We Are
             </h2>
@@ -55,7 +55,7 @@ export default function PrivacyPolicy() {
             </p>
           </div>
 
-          <div style={{ padding: '2rem', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+          <div style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
             <h2 style={{ fontWeight: 600, fontSize: '1.2rem', marginBottom: '0.75rem', display: 'flex', gap: 8, alignItems: 'center', color: '#ffffff' }}>
               <Cookie size={18} /> Cookies &amp; Local Storage
             </h2>
@@ -64,7 +64,7 @@ export default function PrivacyPolicy() {
             </p>
           </div>
 
-          <div style={{ padding: '2rem', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+          <div style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
             <h2 style={{ fontWeight: 600, fontSize: '1.2rem', marginBottom: '0.75rem', display: 'flex', gap: 8, alignItems: 'center', color: '#ffffff' }}>
               <BarChart3 size={18} /> Advertising &amp; Analytics
             </h2>

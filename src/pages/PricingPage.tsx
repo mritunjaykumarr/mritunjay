@@ -94,7 +94,7 @@ export default function PricingPage() {
       {/* Pricing Grid */}
       <section className="section" style={{ padding: '2rem 0 4rem' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.75rem', alignItems: 'stretch' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
             {pricingTiers.map((tier) => (
               <div
                 key={tier.name}

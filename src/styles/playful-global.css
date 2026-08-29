@@ -94,10 +94,31 @@ em {
   margin: 0 auto;
 }
 
+@media (max-width: 640px) {
+  .container,
+  .v3-container {
+    width: min(1180px, calc(100% - 1.5rem)) !important;
+  }
+}
+
 .section,
 .v3-section {
-  padding: 6.5rem 0;
+  padding: 5.5rem 0 !important;
   position: relative;
+}
+
+@media (max-width: 1024px) {
+  .section,
+  .v3-section {
+    padding: 4.25rem 0 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .section,
+  .v3-section {
+    padding: 3.25rem 0 !important;
+  }
 }
 
 /* ——— Selections & Focus ——— */

@@ -36,18 +36,18 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
   const galleryImages = project.screenshots && project.screenshots.length > 0 ? project.screenshots : [project.img, project.img, project.img];
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(16px)', display: 'grid', placeItems: 'center', padding: '1.25rem' }} onClick={onClose} role="dialog" aria-modal="true">
-      <div onClick={e => e.stopPropagation()} style={{ maxWidth: 980, width: '100%', maxHeight: '92vh', padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.14)', borderRadius: '16px', position: 'relative' }}>
+    <div className="modal-overlay open" onClick={onClose} role="dialog" aria-modal="true">
+      <div onClick={e => e.stopPropagation()} className="modal-box" style={{ maxWidth: '980px' }}>
         {/* Modal Top Bar */}
-        <div style={{ padding: '1.25rem 1.75rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#050505', gap: '1rem' }}>
+        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#050505', gap: '1rem' }}>
           <div>
             <span style={{ display: 'inline-block', padding: '0.2rem 0.55rem', borderRadius: '4px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.14)', fontSize: '0.72rem', textTransform: 'uppercase', color: '#ffffff', fontWeight: 500 }}>
               {project.category}
             </span>
-            <h2 style={{ fontSize: '1.35rem', fontWeight: 600, color: '#ffffff', marginTop: '0.35rem', margin: '0.35rem 0 0.1rem' }}>
+            <h2 style={{ fontSize: 'clamp(1.1rem, 3.5vw, 1.35rem)', fontWeight: 600, color: '#ffffff', marginTop: '0.35rem', margin: '0.35rem 0 0.1rem' }}>
               {project.title}
             </h2>
-            <p style={{ color: '#9a9a9a', fontSize: '0.86rem', margin: 0 }}>{project.tagline}</p>
+            <p style={{ color: '#9a9a9a', fontSize: '0.82rem', margin: 0 }}>{project.tagline}</p>
           </div>
           <button
             onClick={onClose}
@@ -63,7 +63,7 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
         </div>
 
         {/* Modal Tabs */}
-        <div style={{ display: 'flex', gap: '0.4rem', padding: '0.75rem 1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', overflowX: 'auto', background: '#080808' }}>
+        <div style={{ display: 'flex', gap: '0.4rem', padding: '0.65rem 1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', overflowX: 'auto', background: '#080808' }}>
           {[
             { id: 'overview', label: 'Overview & Metrics', Icon: Layers },
             { id: 'video', label: 'Video Demo', Icon: Play },
@@ -75,7 +75,7 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
               onClick={() => setActiveTab(tab.id as any)}
               className="nav-pill-item"
               style={{
-                height: '32px', padding: '0 12px', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '6px',
+                height: '32px', padding: '0 12px', fontSize: '0.76rem', display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap',
                 background: activeTab === tab.id ? 'linear-gradient(180deg, #ffffff 0%, #d5d5d5 100%)' : 'transparent',
                 color: activeTab === tab.id ? '#000000' : '#cccccc',
                 borderColor: activeTab === tab.id ? '#ffffff' : 'rgba(255, 255, 255, 0.1)'
@@ -88,7 +88,7 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
         </div>
 
         {/* Tab Content */}
-        <div style={{ overflowY: 'auto', flex: 1, padding: '1.5rem', background: '#0a0a0a' }}>
+        <div style={{ overflowY: 'auto', flex: 1, padding: '1.25rem', background: '#0a0a0a' }}>
           {activeTab === 'overview' && (
             <div style={{ display: 'grid', gap: '1.25rem' }}>
               <div style={{ position: 'relative', borderRadius: '10px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
@@ -99,12 +99,12 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
               </div>
 
               {/* Metrics Grid */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.85rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.75rem' }}>
                 {project.metrics.map((m, i) => (
-                  <div key={i} style={{ padding: '1rem', textAlign: 'center', background: '#121212', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '8px' }}>
-                    <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#ffffff' }}>{m.value}</div>
-                    <div style={{ fontSize: '0.74rem', color: '#888888', textTransform: 'uppercase', marginTop: '2px' }}>{m.label}</div>
-                    {m.sub && <div style={{ fontSize: '0.7rem', color: '#666666', marginTop: '2px' }}>{m.sub}</div>}
+                  <div key={i} style={{ padding: '0.85rem', textAlign: 'center', background: '#121212', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '8px' }}>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#ffffff' }}>{m.value}</div>
+                    <div style={{ fontSize: '0.72rem', color: '#888888', textTransform: 'uppercase', marginTop: '2px' }}>{m.label}</div>
+                    {m.sub && <div style={{ fontSize: '0.68rem', color: '#666666', marginTop: '2px' }}>{m.sub}</div>}
                   </div>
                 ))}
               </div>
@@ -117,7 +117,7 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
               {/* Problem Solved */}
               <div style={{ padding: '1.25rem', background: '#121212', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '10px' }}>
                 <h3 style={{ fontSize: '0.98rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.85rem' }}>Problem &amp; Impact</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.85rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.85rem' }}>
                   <div style={{ padding: '1rem', background: '#0a0a0a', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
                     <h4 style={{ fontSize: '0.74rem', color: '#888888', textTransform: 'uppercase', margin: '0 0 0.35rem' }}>The Challenge</h4>
                     <p style={{ color: '#cccccc', fontSize: '0.85rem', margin: 0, lineHeight: 1.6 }}>{project.problemSolved.problem}</p>
@@ -164,7 +164,7 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
             <div style={{ display: 'grid', gap: '1rem' }}>
               <div style={{ borderRadius: '10px', overflow: 'hidden', background: '#000', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                 {project.videoUrl ? (
-                  <iframe src={project.videoUrl} title={`${project.title} Demo`} style={{ width: '100%', height: '420px', border: 'none' }} allowFullScreen />
+                  <iframe src={project.videoUrl} title={`${project.title} Demo`} style={{ width: '100%', height: '380px', maxHeight: '55vh', border: 'none' }} allowFullScreen />
                 ) : (
                   <div style={{ padding: '3rem', textAlign: 'center', color: '#888888' }}>
                     Video demo available directly at live URL.
@@ -176,22 +176,22 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
 
           {activeTab === 'architecture' && (
             <div style={{ display: 'grid', gap: '1rem' }}>
-              <div style={{ padding: '1.5rem', background: '#121212', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '10px' }}>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#ffffff', marginBottom: '1rem' }}>System Architecture</h3>
-                <div style={{ display: 'grid', gap: '0.85rem', fontSize: '0.88rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.5rem' }}>
+              <div style={{ padding: '1.25rem', background: '#121212', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '10px' }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: '#ffffff', marginBottom: '1rem' }}>System Architecture</h3>
+                <div style={{ display: 'grid', gap: '0.85rem', fontSize: '0.86rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.5rem' }}>
                     <span style={{ color: '#888888' }}>Client Layer:</span>
                     <span style={{ color: '#ffffff', fontWeight: 500 }}>{project.architecture.client}</span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.5rem' }}>
                     <span style={{ color: '#888888' }}>API Routing:</span>
                     <span style={{ color: '#ffffff', fontWeight: 500 }}>{project.architecture.api}</span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.5rem' }}>
                     <span style={{ color: '#888888' }}>Database:</span>
                     <span style={{ color: '#ffffff', fontWeight: 500 }}>{project.architecture.database}</span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px' }}>
                     <span style={{ color: '#888888' }}>Connected Services:</span>
                     <span style={{ color: '#ffffff', fontWeight: 500 }}>{project.architecture.services.join(', ')}</span>
                   </div>
@@ -203,15 +203,15 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
           {activeTab === 'screenshots' && (
             <div style={{ display: 'grid', gap: '1rem' }}>
               <div style={{ borderRadius: '10px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.1)', background: '#000' }}>
-                <img src={galleryImages[selectedScreenshotIndex]} alt="Screenshot" style={{ width: '100%', display: 'block', maxHeight: 420, objectFit: 'contain' }} />
+                <img src={galleryImages[selectedScreenshotIndex]} alt="Screenshot" style={{ width: '100%', display: 'block', maxHeight: 380, objectFit: 'contain' }} />
               </div>
-              <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto' }}>
+              <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '4px' }}>
                 {galleryImages.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedScreenshotIndex(i)}
                     style={{
-                      width: 80, height: 50, borderRadius: '6px', overflow: 'hidden', padding: 0,
+                      width: 70, height: 46, borderRadius: '6px', overflow: 'hidden', padding: 0, flexShrink: 0,
                       border: selectedScreenshotIndex === i ? '2px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
                       cursor: 'pointer', background: '#000'
                     }}
@@ -225,7 +225,7 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
         </div>
 
         {/* Modal Bottom Actions */}
-        <div style={{ padding: '1rem 1.75rem', borderTop: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#050505' }}>
+        <div style={{ padding: '0.85rem 1.25rem', borderTop: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', background: '#050505' }}>
           <a
             href={project.github}
             target="_blank"

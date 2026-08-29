@@ -34,8 +34,8 @@ export default function PlaygroundPage() {
         </div>
       </section>
 
-      <div style={{ maxWidth: 1152, margin: '1.5rem auto', padding: '0 1.25rem' }}>
-        <div style={{ background: '#080808', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', padding: '1.5rem' }}>
+      <div className="container" style={{ margin: '1.5rem auto' }}>
+        <div style={{ background: '#080808', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', padding: 'clamp(0.75rem, 2vw, 1.5rem)' }}>
           <AIPlayground />
         </div>
       </div>

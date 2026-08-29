@@ -429,6 +429,33 @@
   color: #ffffff !important;
 }
 
+@media (max-width: 640px) {
+  .header-floating-wrapper {
+    top: 0.4rem !important;
+    padding: 0 0.5rem !important;
+  }
+  .navbar-pill-container {
+    padding: 0.45rem 0.75rem !important;
+    border-radius: 10px !important;
+  }
+  .navbar-resume-btn {
+    padding: 0 10px !important;
+    font-size: 0.76rem !important;
+    height: 32px !important;
+  }
+  .navbar-theme-btn,
+  .navbar-drawer-trigger-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-drawer-slide-panel {
+    width: 100vw !important;
+  }
+}
+
 /* ——— Minimal Footer ——— */
 .v3-footer,
 footer.footer {
@@ -438,14 +465,34 @@ footer.footer {
   color: #9a9a9a !important;
 }
 
+.footer-main-grid,
 .v3-footer-top {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
-  flex-wrap: wrap !important;
-  gap: 2rem !important;
+  display: grid !important;
+  grid-template-columns: 1.2fr 2fr !important;
+  gap: 3rem !important;
   padding-bottom: 2.5rem !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.footer-links-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1.5rem !important;
+}
+
+@media (max-width: 900px) {
+  .footer-main-grid,
+  .v3-footer-top {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-links-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
 }
 
 .v3-footer-bottom {
@@ -497,6 +544,7 @@ footer.footer {
   color: #ffffff !important;
   text-decoration: none !important;
   font-size: 0.82rem !important;
+  flex-wrap: wrap !important;
   transition: background 0.2s ease !important;
 }
 
@@ -556,6 +604,20 @@ footer.footer {
   }
 }
 
+@media (max-width: 480px) {
+  .announcement-bar-content {
+    gap: 6px !important;
+    padding: 6px 10px !important;
+    font-size: 0.74rem !important;
+  }
+  .announcement-highlight {
+    font-size: 0.72rem !important;
+  }
+  .announcement-cta-btn {
+    font-size: 0.7rem !important;
+  }
+}
+
 /* ——— Floating Prince AI Widget ——— */
 .floating-ai-btn {
   position: fixed !important;
@@ -606,6 +668,28 @@ footer.footer {
   flex-direction: column !important;
   overflow: hidden !important;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9) !important;
+}
+
+@media (max-width: 640px) {
+  .floating-ai-btn {
+    bottom: 16px !important;
+    right: 16px !important;
+    padding: 8px 12px !important;
+    font-size: 0.76rem !important;
+  }
+  .floating-ai-overlay {
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+  .floating-ai-drawer {
+    max-width: 100% !important;
+    height: 84vh !important;
+    max-height: 84vh !important;
+    border-radius: 16px 16px 0 0 !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
 }
 
 .floating-ai-header {

@@ -68,7 +68,7 @@ export default function CertificationsPage() {
       {/* Certifications Grid */}
       <section className="section" style={{ padding: '2rem 0 5rem' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.25rem' }}>
             {certsDatabase.map((cert) => (
               <div
                 key={cert.id}
@@ -111,27 +111,35 @@ export default function CertificationsPage() {
 
       {/* Modal Preview */}
       {selectedCert && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(16px)', display: 'grid', placeItems: 'center', padding: '1.5rem' }} onClick={() => setSelectedCert(null)}>
-          <div onClick={e => e.stopPropagation()} style={{ maxWidth: 800, width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '2rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.14)', borderRadius: '14px', position: 'relative' }}>
+        <div className="modal-overlay open" onClick={() => setSelectedCert(null)}>
+          <div onClick={e => e.stopPropagation()} className="modal-box" style={{ maxWidth: 800, width: '100%', maxHeight: '90vh', padding: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.14)', borderRadius: '14px', position: 'relative', overflowY: 'auto' }}>
             <button
               onClick={() => setSelectedCert(null)}
               aria-label="Close"
               style={{
-                position: 'absolute', top: 16, right: 16, width: 32, height: 32,
+                position: 'absolute', top: 14, right: 14, width: 32, height: 32,
                 borderRadius: '6px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.12)',
-                display: 'grid', placeItems: 'center', color: '#ffffff', cursor: 'pointer'
+                color: '#ffffff', display: 'grid', placeItems: 'center', cursor: 'pointer', zIndex: 10
               }}
             >
               <X size={16} />
             </button>
 
-            <div style={{ marginBottom: '1.25rem', paddingRight: '2rem' }}>
-              <h2 style={{ fontSize: '1.35rem', fontWeight: 600, color: '#ffffff', margin: 0 }}>{selectedCert.title}</h2>
-              <div style={{ fontSize: '0.85rem', color: '#9a9a9a', marginTop: '0.25rem' }}>{selectedCert.issuer} — {selectedCert.date}</div>
+            <div style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.12)', marginBottom: '1.25rem', background: '#000' }}>
+              <img src={selectedCert.img} alt={selectedCert.title} style={{ width: '100%', maxHeight: 360, objectFit: 'contain', display: 'block' }} />
             </div>
 
-            <div style={{ borderRadius: '10px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.12)', background: '#000', marginBottom: '1.5rem' }}>
-              <img src={selectedCert.img} alt={selectedCert.title} style={{ width: '100%', display: 'block', maxHeight: 480, objectFit: 'contain' }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+              <div>
+                <span style={{ fontSize: '0.78rem', color: '#888888' }}>{selectedCert.issuer} · {selectedCert.date}</span>
+                <h2 style={{ fontSize: 'clamp(1.1rem, 3.5vw, 1.4rem)', fontWeight: 600, color: '#ffffff', margin: '0.25rem 0' }}>{selectedCert.title}</h2>
+              </div>
+              {selectedCert.credentialUrl && (
+                <a href={selectedCert.credentialUrl} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '36px', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <span>Verify Credential</span>
+                  <ExternalLink size={13} />
+                </a>
+              )}
             </div>
 
             <div style={{ marginBottom: '1.5rem' }}>

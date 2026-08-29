@@ -298,7 +298,7 @@ export default function Dashboard() {
                 />
               </div>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <div className="input-row-dual">
                 <div className="db-form-group">
                   <label className="db-label">Content Type</label>
                   <select value={formData.type} onChange={e => setFormData({ ...formData, type: e.target.value })} className="db-select">
@@ -333,14 +333,14 @@ export default function Dashboard() {
 
               <div className="db-form-group">
                 <label className="db-label">Cover Artwork</label>
-                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <input 
                     type="text" 
                     placeholder="Image URL or upload below..." 
                     value={formData.cover} 
                     onChange={e => setFormData({ ...formData, cover: e.target.value })} 
                     className="db-input" 
-                    style={{ flex: 1 }} 
+                    style={{ flex: '1', minWidth: '200px' }} 
                   />
                   <label className="btn-secondary" style={{ cursor: 'pointer', height: '42px', padding: '0 16px', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>
                     {uploading ? <Loader2 className="animate-spin" size={16} /> : <Upload size={16} />} 
@@ -349,7 +349,7 @@ export default function Dashboard() {
                   </label>
                 </div>
                 {formData.cover && (
-                  <div style={{ marginTop: '10px', borderRadius: '8px', overflow: 'hidden', height: '140px', width: '220px', border: '1px solid var(--border)' }}>
+                  <div style={{ marginTop: '10px', borderRadius: '8px', overflow: 'hidden', height: '140px', maxWidth: '100%', width: '220px', border: '1px solid var(--border)' }}>
                     <img src={formData.cover} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                 )}
@@ -366,7 +366,7 @@ export default function Dashboard() {
                 />
               </div>
 
-              <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
+              <div style={{ display: 'flex', gap: '12px', marginTop: '20px', flexWrap: 'wrap' }}>
                 <button onClick={() => savePost('published')} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Send size={16} /> Publish Post
                 </button>

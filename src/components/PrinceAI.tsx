@@ -143,7 +143,7 @@ export default function PrinceAI() {
           </article>
 
           {/* Right Panel: Live Chat Box */}
-          <article className="ai-panel ai-preview reveal reveal-right visible" style={{ gridColumn: 'span 2', ...(isFullScreen ? { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999, borderRadius: 0, display: 'flex', flexDirection: 'column' } : {}) }}>
+          <article className="ai-panel ai-preview reveal reveal-right visible" style={{ ...(isFullScreen ? { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999, borderRadius: 0, display: 'flex', flexDirection: 'column' } : {}) }}>
             <div className="ai-preview-head">
               <div>
                 <p className="ai-kicker">Interactive Assistant</p>

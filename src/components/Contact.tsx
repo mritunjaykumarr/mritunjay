@@ -73,9 +73,9 @@ export default function Contact({ isOpen, onClose }: ContactProps) {
               <X size={16} />
             </button>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr' }}>
+            <div className="contact-modal-grid">
               {/* Left Info Panel */}
-              <div style={{ padding: '2.25rem', background: '#050505', borderRight: '1px solid rgba(255, 255, 255, 0.08)' }}>
+              <div style={{ padding: '2.25rem', background: '#050505' }}>
                 <h3 style={{ fontSize: '1.35rem', marginBottom: '0.75rem', color: '#ffffff', fontWeight: 600 }}>
                   Let's talk about your product
                 </h3>

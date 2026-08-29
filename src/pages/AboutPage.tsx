@@ -42,7 +42,7 @@ export default function AboutPage() {
       {/* Main Content Grid */}
       <section className="section" style={{ padding: '2rem 0 4rem' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.9fr', gap: '2.5rem', alignItems: 'start' }}>
+          <div className="about-page-grid">
             {/* Left Photo & Card */}
             <div>
               <div style={{ border: '1px solid rgba(255, 255, 255, 0.14)', borderRadius: '14px', overflow: 'hidden', background: '#0a0a0a', position: 'relative' }}>

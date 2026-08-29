@@ -208,7 +208,7 @@ export default function BlogPage() {
       {/* Blog Cards Grid */}
       <section className="section" style={{ padding: '1rem 0 4rem' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.25rem' }}>
             {filteredPosts.map((post) => (
               <div
                 key={post.id}
@@ -274,15 +274,15 @@ export default function BlogPage() {
 
       {/* Article Reader Modal */}
       {activePost && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(16px)', display: 'grid', placeItems: 'center', padding: '1.5rem' }} onClick={closePost}>
-          <div onClick={e => e.stopPropagation()} style={{ maxWidth: 750, width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '2.5rem', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '14px', position: 'relative' }}>
+        <div className="modal-overlay open" onClick={closePost}>
+          <div onClick={e => e.stopPropagation()} className="modal-box" style={{ maxWidth: 750, width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '1.75rem', position: 'relative' }}>
             <button
               onClick={closePost}
               aria-label="Close"
               style={{
-                position: 'absolute', top: 16, right: 16, width: 32, height: 32,
+                position: 'absolute', top: 14, right: 14, width: 32, height: 32,
                 borderRadius: '6px', background: 'var(--surface-2)', border: '1px solid var(--border)',
-                display: 'grid', placeItems: 'center', color: 'var(--text)', cursor: 'pointer'
+                display: 'grid', placeItems: 'center', color: 'var(--text)', cursor: 'pointer', zIndex: 10
               }}
             >
               <X size={16} />

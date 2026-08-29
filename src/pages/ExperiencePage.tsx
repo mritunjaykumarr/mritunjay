@@ -96,7 +96,7 @@ export default function ExperiencePage() {
               <div
                 key={exp.id}
                 style={{
-                  padding: '2rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)',
+                  padding: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '14px', position: 'relative'
                 }}
               >
@@ -110,23 +110,23 @@ export default function ExperiencePage() {
                     }}>
                       <Briefcase size={12} /> {exp.type}
                     </span>
-                    <h3 style={{ fontSize: '1.35rem', fontWeight: 600, marginTop: '0.6rem', color: '#ffffff' }}>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginTop: '0.6rem', color: '#ffffff' }}>
                       {exp.role}
                     </h3>
-                    <div style={{ fontSize: '1rem', color: '#9a9a9a', fontWeight: 500, marginTop: '0.2rem' }}>
+                    <div style={{ fontSize: '0.95rem', color: '#9a9a9a', fontWeight: 500, marginTop: '0.2rem' }}>
                       {exp.company}
                     </div>
                   </div>
 
-                  <div style={{ textAlign: 'right', fontSize: '0.82rem', color: '#888888' }}>
+                  <div style={{ fontSize: '0.82rem', color: '#888888', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <div style={{
-                      display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end',
+                      display: 'inline-flex', alignItems: 'center', gap: '6px',
                       background: '#121212', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '6px',
                       padding: '0.3rem 0.75rem', color: '#ffffff', fontWeight: 500
                     }}>
                       <Calendar size={13} /> {exp.period}
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888888', fontSize: '0.78rem' }}>
                       <MapPin size={13} /> {exp.location}
                     </div>
                   </div>

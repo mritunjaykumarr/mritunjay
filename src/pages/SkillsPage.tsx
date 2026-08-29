@@ -125,7 +125,7 @@ export default function SkillsPage() {
       {/* Skills Cards Grid */}
       <section className="section" style={{ padding: '1rem 0 4rem' }} ref={visualRef}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.25rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.25rem' }}>
             {filteredSkills.map((skill) => (
               <div
                 key={skill.name}
