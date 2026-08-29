@@ -49,13 +49,13 @@ export default function SkillsPage() {
   });
 
   return (
-    <div className="page-wrapper skills-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: '#000000', color: '#ffffff', minHeight: '100vh' }}>
+    <div className="page-wrapper skills-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
       <section className="page-header" style={{ padding: '2rem 0 3rem' }}>
         <div className="container">
-          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: '#888888', marginBottom: '1rem' }}>
-            <Link to="/" style={{ color: '#888888', textDecoration: 'none' }}>Home</Link>
+          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+            <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
             <span style={{ margin: '0 8px' }}>/</span>
-            <span style={{ color: '#ffffff' }}>Skills</span>
+            <span style={{ color: 'var(--text)' }}>Skills</span>
           </div>
 
           <div className="page-header-content">
@@ -63,10 +63,10 @@ export default function SkillsPage() {
               <Cpu size={13} />
               <span>Technology Matrix</span>
             </div>
-            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem' }}>
+            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem', color: 'var(--text)' }}>
               Technical Stack & <em>Engineering Range</em>
             </h1>
-            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: '#9a9a9a', maxWidth: '600px', lineHeight: 1.65 }}>
+            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: 'var(--text-muted)', maxWidth: '600px', lineHeight: 1.65 }}>
               A comprehensive overview of my capabilities across frontend architecture, backend systems, databases, programming languages, and cloud deployment pipelines.
             </p>
           </div>
@@ -76,26 +76,23 @@ export default function SkillsPage() {
       {/* Filter & Search Bar */}
       <section className="section" style={{ padding: '0 0 2rem' }}>
         <div className="container">
-          <div style={{
-            padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem',
-            background: 'rgba(12, 12, 12, 0.8)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px'
-          }}>
-            <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
-              <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#666666' }} />
+          <div className="blog-filter-bar">
+            <div className="blog-search-wrap" style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
+              <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
               <input
                 type="text"
-                placeholder="Search skills by name or keyword..."
+                placeholder="Search skills by name, stack, keyword..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{
                   width: '100%', padding: '0.65rem 1rem 0.65rem 2.5rem', borderRadius: '8px',
-                  background: 'rgba(5, 5, 5, 0.8)', border: '1px solid rgba(255, 255, 255, 0.12)',
-                  color: '#ffffff', fontSize: '0.88rem'
+                  background: 'var(--surface-2)', border: '1px solid var(--border)',
+                  color: 'var(--text)', fontSize: '0.88rem'
                 }}
               />
             </div>
 
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+            <div className="blog-filter-chips" style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
               {[
                 { id: 'all', label: 'All Skills' },
                 { id: 'frontend', label: 'Frontend' },
@@ -109,9 +106,9 @@ export default function SkillsPage() {
                   className="nav-pill-item"
                   style={{
                     height: '34px', padding: '0 12px', fontSize: '0.78rem', textTransform: 'capitalize',
-                    background: activeCategory === cat.id ? 'linear-gradient(180deg, #ffffff 0%, #d5d5d5 100%)' : 'rgba(15, 15, 15, 0.8)',
-                    color: activeCategory === cat.id ? '#000000' : '#cccccc',
-                    borderColor: activeCategory === cat.id ? '#ffffff' : 'rgba(255, 255, 255, 0.1)'
+                    background: activeCategory === cat.id ? 'var(--solid-btn-grad)' : 'var(--surface-2)',
+                    color: activeCategory === cat.id ? 'var(--accent-foreground)' : 'var(--text-muted)',
+                    borderColor: activeCategory === cat.id ? 'var(--border-accent)' : 'var(--border)'
                   }}
                 >
                   {cat.label}
@@ -130,41 +127,41 @@ export default function SkillsPage() {
               <div
                 key={skill.name}
                 style={{
-                  padding: '1.5rem', background: 'rgba(10, 10, 10, 0.8)', border: '1px solid rgba(255, 255, 255, 0.1)',
+                  padding: '1.5rem', background: 'var(--card)', border: '1px solid var(--border)',
                   borderRadius: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'
                 }}
               >
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'rgba(25, 25, 25, 0.8)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'grid', placeItems: 'center', color: '#ffffff' }}>
+                      <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'var(--surface-2)', border: '1px solid var(--border)', display: 'grid', placeItems: 'center', color: 'var(--text)' }}>
                         {skill.category === 'frontend' && <Code size={14} />}
                         {skill.category === 'backend' && <Server size={14} />}
                         {skill.category === 'languages' && <Languages size={14} />}
                         {skill.category === 'tools' && <Wrench size={14} />}
                       </div>
-                      <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: '#ffffff', margin: 0 }}>{skill.name}</h3>
+                      <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text)', margin: 0 }}>{skill.name}</h3>
                     </div>
                     <span style={{
                       fontSize: '0.72rem', padding: '0.2rem 0.55rem', borderRadius: '4px',
-                      background: 'rgba(25, 25, 25, 0.8)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#cccccc'
+                      background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text-muted)'
                     }}>
                       {skill.level}
                     </span>
                   </div>
 
-                  <p style={{ fontSize: '0.85rem', color: '#9a9a9a', lineHeight: 1.6, marginBottom: '1.25rem', minHeight: '2.8rem' }}>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '1.25rem', minHeight: '2.8rem' }}>
                     {skill.desc}
                   </p>
                 </div>
 
                 <div>
-                  <div style={{ height: 4, background: 'rgba(255, 255, 255, 0.08)', borderRadius: 2, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${skill.proficiency}%`, background: '#ffffff', borderRadius: 2 }} />
+                  <div style={{ height: 4, background: 'var(--surface-2)', borderRadius: 2, overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${skill.proficiency}%`, background: 'var(--accent)', borderRadius: 2 }} />
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#777777', marginTop: '0.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
                     <span>Experience: {skill.experience}</span>
-                    <span style={{ color: '#ffffff', fontWeight: 500 }}>{skill.proficiency}% Proficiency</span>
+                    <span style={{ color: 'var(--text)', fontWeight: 500 }}>{skill.proficiency}% Proficiency</span>
                   </div>
                 </div>
               </div>
@@ -174,43 +171,43 @@ export default function SkillsPage() {
       </section>
 
       {/* Engineering Standards */}
-      <section className="section" style={{ padding: '4rem 0', background: '#050505', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+      <section className="section" style={{ padding: '4rem 0', background: 'var(--bg-subtle, var(--bg))', borderTop: '1px solid var(--border)' }}>
         <div className="container">
           <div className="badge-playful" style={{ marginBottom: '1rem' }}>
             <Star size={13} />
             <span>Engineering Standards</span>
           </div>
-          <h2 style={{ fontSize: '1.8rem', fontWeight: 600, color: '#ffffff', margin: '0 0 2rem' }}>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: 600, color: 'var(--text)', margin: '0 0 2rem' }}>
             Principles for building <em>clean systems.</em>
           </h2>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
-            <div style={{ padding: '1.75rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.14)', display: 'grid', placeItems: 'center', color: '#ffffff', marginBottom: '1rem' }}>
+            <div style={{ padding: '1.75rem', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'var(--surface-2)', border: '1px solid var(--border)', display: 'grid', placeItems: 'center', color: 'var(--text)', marginBottom: '1rem' }}>
                 <CheckCircle2 size={16} />
               </div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.5rem' }}>Strict Type Safety</h3>
-              <p style={{ color: '#9a9a9a', fontSize: '0.86rem', lineHeight: 1.6, margin: 0 }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.5rem' }}>Strict Type Safety</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.86rem', lineHeight: 1.6, margin: 0 }}>
                 Leveraging TypeScript to catch errors at compile-time and enforce reliable interfaces across components and API models.
               </p>
             </div>
 
-            <div style={{ padding: '1.75rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.14)', display: 'grid', placeItems: 'center', color: '#ffffff', marginBottom: '1rem' }}>
+            <div style={{ padding: '1.75rem', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'var(--surface-2)', border: '1px solid var(--border)', display: 'grid', placeItems: 'center', color: 'var(--text)', marginBottom: '1rem' }}>
                 <Layers size={16} />
               </div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.5rem' }}>Decoupled Architecture</h3>
-              <p style={{ color: '#9a9a9a', fontSize: '0.86rem', lineHeight: 1.6, margin: 0 }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.5rem' }}>Decoupled Architecture</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.86rem', lineHeight: 1.6, margin: 0 }}>
                 Keeping presentation components isolated from business logic and data providers for seamless testing and scalability.
               </p>
             </div>
 
-            <div style={{ padding: '1.75rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.14)', display: 'grid', placeItems: 'center', color: '#ffffff', marginBottom: '1rem' }}>
+            <div style={{ padding: '1.75rem', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'var(--surface-2)', border: '1px solid var(--border)', display: 'grid', placeItems: 'center', color: 'var(--text)', marginBottom: '1rem' }}>
                 <Sparkles size={16} />
               </div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.5rem' }}>Performance Optimization</h3>
-              <p style={{ color: '#9a9a9a', fontSize: '0.86rem', lineHeight: 1.6, margin: 0 }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.5rem' }}>Performance Optimization</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.86rem', lineHeight: 1.6, margin: 0 }}>
                 Optimizing bundle sizes, utilizing lazy-loaded React routes, image webp formats, and GPU-accelerated CSS animations.
               </p>
             </div>

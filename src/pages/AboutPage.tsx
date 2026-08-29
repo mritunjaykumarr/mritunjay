@@ -14,14 +14,14 @@ export default function AboutPage() {
   const [activeTab, setActiveTab] = useState<'philosophy' | 'values' | 'milestones'>('philosophy');
 
   return (
-    <div className="page-wrapper about-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: '#000000', color: '#ffffff', minHeight: '100vh' }}>
+    <div className="page-wrapper about-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
       {/* Page Header */}
       <section className="page-header" style={{ padding: '2rem 0 3rem' }}>
         <div className="container">
-          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: '#888888', marginBottom: '1rem' }}>
-            <Link to="/" style={{ color: '#888888', textDecoration: 'none' }}>Home</Link>
+          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+            <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
             <span style={{ margin: '0 8px' }}>/</span>
-            <span style={{ color: '#ffffff' }}>About</span>
+            <span style={{ color: 'var(--text)' }}>About</span>
           </div>
 
           <div className="page-header-content">
@@ -29,10 +29,10 @@ export default function AboutPage() {
               <Sparkles size={13} />
               <span>Full Journey &amp; Engineering Story</span>
             </div>
-            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem' }}>
+            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem', color: 'var(--text)' }}>
               Crafting digital products with <em>purpose &amp; precision</em>
             </h1>
-            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: '#9a9a9a', maxWidth: '600px', lineHeight: 1.65 }}>
+            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: 'var(--text-muted)', maxWidth: '600px', lineHeight: 1.65 }}>
               AI Engineer & Full Stack Developer with a relentless focus on high-performance frontends, intuitive UI/UX motion, and modern web architectures.
             </p>
           </div>
@@ -45,13 +45,13 @@ export default function AboutPage() {
           <div className="about-page-grid">
             {/* Left Photo & Card */}
             <div>
-              <div style={{ border: '1px solid rgba(255, 255, 255, 0.14)', borderRadius: '14px', overflow: 'hidden', background: '#0a0a0a', position: 'relative' }}>
+              <div style={{ border: '1px solid var(--border)', borderRadius: '14px', overflow: 'hidden', background: 'var(--card)', position: 'relative' }}>
                 <img src="/assets/about2.png" alt="Mritunjay Kumar" className="about-photo" loading="lazy" style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'cover' }} />
                 <div style={{
                   position: 'absolute', bottom: '1rem', left: '1rem',
                   display: 'inline-flex', alignItems: 'center', gap: '6px',
-                  background: 'rgba(0, 0, 0, 0.8)', padding: '0.35rem 0.75rem', borderRadius: '6px',
-                  border: '1px solid rgba(255, 255, 255, 0.2)', fontSize: '0.78rem', color: '#ffffff', backdropFilter: 'blur(8px)'
+                  background: 'var(--bg-overlay, var(--surface))', padding: '0.35rem 0.75rem', borderRadius: '6px',
+                  border: '1px solid var(--border)', fontSize: '0.78rem', color: 'var(--text)', backdropFilter: 'blur(8px)'
                 }}>
                   <Code size={13} />
                   <span>Full Stack Developer</span>
@@ -59,23 +59,23 @@ export default function AboutPage() {
               </div>
 
               {/* Quick Info Box */}
-              <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
-                <h3 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#ffffff', marginBottom: '1rem' }}>Quick Facts</h3>
+              <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px' }}>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text)', marginBottom: '1rem' }}>Quick Facts</h3>
                 <div style={{ display: 'grid', gap: '0.6rem', fontSize: '0.86rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: '#888888' }}>Based in:</span>
-                    <span style={{ color: '#ffffff' }}>Bihar / New Delhi, India</span>
+                    <span style={{ color: 'var(--text-muted)' }}>Based in:</span>
+                    <span style={{ color: 'var(--text)' }}>Bihar / New Delhi, India</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: '#888888' }}>Current Role:</span>
-                    <span style={{ color: '#ffffff' }}>Fullstack Dev @ Epigroww</span>
+                    <span style={{ color: 'var(--text-muted)' }}>Current Role:</span>
+                    <span style={{ color: 'var(--text)' }}>Fullstack Dev @ Epigroww</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: '#888888' }}>Speciality:</span>
-                    <span style={{ color: '#ffffff' }}>React 19, TypeScript, Node.js</span>
+                    <span style={{ color: 'var(--text-muted)' }}>Speciality:</span>
+                    <span style={{ color: 'var(--text)' }}>React 19, TypeScript, Node.js</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: '#888888' }}>Status:</span>
+                    <span style={{ color: 'var(--text-muted)' }}>Status:</span>
                     <span style={{ color: '#22c55e' }}>Available for select projects</span>
                   </div>
                 </div>
@@ -88,28 +88,28 @@ export default function AboutPage() {
                 <Compass size={13} />
                 <span>My Narrative</span>
               </div>
-              <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.4rem)', fontWeight: 600, margin: '0 0 1.25rem', letterSpacing: '-0.035em' }}>
+              <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.4rem)', fontWeight: 600, margin: '0 0 1.25rem', letterSpacing: '-0.035em', color: 'var(--text)' }}>
                 Turning complex systems into <em>effortless interfaces.</em>
               </h2>
               
-              <p style={{ fontSize: '1rem', lineHeight: 1.75, color: '#9a9a9a', marginBottom: '1rem' }}>
+              <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--text-muted)', marginBottom: '1rem' }}>
                 My software engineering journey began with a deep curiosity for how digital experiences are designed, structured, and scaled. Over time, that curiosity evolved into a dedicated career building fast, accessible, and resilient applications for modern product teams.
               </p>
-              <p style={{ fontSize: '1rem', lineHeight: 1.75, color: '#9a9a9a', marginBottom: '2rem' }}>
+              <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--text-muted)', marginBottom: '2rem' }}>
                 Today, I specialize in crafting next-generation web applications using React, TypeScript, and high-performance CSS, paired with robust backend services in Node.js and Supabase. I approach every build as a balance between clean code architecture, aesthetic precision, and business outcomes.
               </p>
 
               {/* Interactive Tabs */}
-              <div style={{ background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px', padding: '1.5rem' }}>
-                <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
+              <div style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px', padding: '1.5rem' }}>
+                <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid var(--border)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
                   <button 
                     className="nav-pill-item"
                     onClick={() => setActiveTab('philosophy')}
                     style={{
                       height: '34px', padding: '0 14px', fontSize: '0.8rem',
-                      background: activeTab === 'philosophy' ? 'linear-gradient(180deg, #ffffff 0%, #d5d5d5 100%)' : 'transparent',
-                      color: activeTab === 'philosophy' ? '#000000' : '#cccccc',
-                      borderColor: activeTab === 'philosophy' ? '#ffffff' : 'rgba(255, 255, 255, 0.1)'
+                      background: activeTab === 'philosophy' ? 'var(--solid-btn-grad)' : 'transparent',
+                      color: activeTab === 'philosophy' ? 'var(--accent-foreground)' : 'var(--text-muted)',
+                      borderColor: activeTab === 'philosophy' ? 'var(--border-accent)' : 'var(--border)'
                     }}
                   >
                     Philosophy
@@ -119,9 +119,9 @@ export default function AboutPage() {
                     onClick={() => setActiveTab('values')}
                     style={{
                       height: '34px', padding: '0 14px', fontSize: '0.8rem',
-                      background: activeTab === 'values' ? 'linear-gradient(180deg, #ffffff 0%, #d5d5d5 100%)' : 'transparent',
-                      color: activeTab === 'values' ? '#000000' : '#cccccc',
-                      borderColor: activeTab === 'values' ? '#ffffff' : 'rgba(255, 255, 255, 0.1)'
+                      background: activeTab === 'values' ? 'var(--solid-btn-grad)' : 'transparent',
+                      color: activeTab === 'values' ? 'var(--accent-foreground)' : 'var(--text-muted)',
+                      borderColor: activeTab === 'values' ? 'var(--border-accent)' : 'var(--border)'
                     }}
                   >
                     Core Values
@@ -131,9 +131,9 @@ export default function AboutPage() {
                     onClick={() => setActiveTab('milestones')}
                     style={{
                       height: '34px', padding: '0 14px', fontSize: '0.8rem',
-                      background: activeTab === 'milestones' ? 'linear-gradient(180deg, #ffffff 0%, #d5d5d5 100%)' : 'transparent',
-                      color: activeTab === 'milestones' ? '#000000' : '#cccccc',
-                      borderColor: activeTab === 'milestones' ? '#ffffff' : 'rgba(255, 255, 255, 0.1)'
+                      background: activeTab === 'milestones' ? 'var(--solid-btn-grad)' : 'transparent',
+                      color: activeTab === 'milestones' ? 'var(--accent-foreground)' : 'var(--text-muted)',
+                      borderColor: activeTab === 'milestones' ? 'var(--border-accent)' : 'var(--border)'
                     }}
                   >
                     Milestones
@@ -141,25 +141,25 @@ export default function AboutPage() {
                 </div>
 
                 {activeTab === 'philosophy' && (
-                  <div style={{ color: '#cccccc', fontSize: '0.92rem', lineHeight: 1.7 }}>
-                    <p style={{ margin: 0 }}>
+                  <div style={{ color: 'var(--text)', fontSize: '0.92rem', lineHeight: 1.7 }}>
+                    <p style={{ margin: 0, color: 'var(--text)' }}>
                       User-first engineering with an uncompromising commitment to clean, scalable, and accessible code. Every project is an opportunity to eliminate unnecessary friction and deliver software that feels natural and reliable.
                     </p>
                   </div>
                 )}
 
                 {activeTab === 'values' && (
-                  <div style={{ display: 'grid', gap: '0.75rem', fontSize: '0.88rem' }}>
+                  <div style={{ display: 'grid', gap: '0.75rem', fontSize: '0.88rem', color: 'var(--text)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <CircleCheckBig size={15} style={{ color: '#ffffff' }} />
+                      <CircleCheckBig size={15} style={{ color: 'var(--text)' }} />
                       <span><strong>Craft &amp; Detail:</strong> Zero compromise on design execution and typography.</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <CircleCheckBig size={15} style={{ color: '#ffffff' }} />
+                      <CircleCheckBig size={15} style={{ color: 'var(--text)' }} />
                       <span><strong>Reliability:</strong> Architecting resilient systems with proactive error handling.</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <CircleCheckBig size={15} style={{ color: '#ffffff' }} />
+                      <CircleCheckBig size={15} style={{ color: 'var(--text)' }} />
                       <span><strong>Speed &amp; Delivery:</strong> Rapid iteration with maintainable clean code standards.</span>
                     </div>
                   </div>
@@ -167,13 +167,13 @@ export default function AboutPage() {
 
                 {activeTab === 'milestones' && (
                   <div style={{ display: 'grid', gap: '0.85rem', fontSize: '0.88rem' }}>
-                    <div style={{ borderLeft: '2px solid rgba(255, 255, 255, 0.2)', paddingLeft: '12px' }}>
-                      <strong style={{ color: '#ffffff' }}>Present — Fullstack Developer</strong>
-                      <p style={{ margin: '2px 0 0', color: '#9a9a9a', fontSize: '0.82rem' }}>Leading frontend architectures and full-stack modules at Epigroww Global.</p>
+                    <div style={{ borderLeft: '2px solid var(--border)', paddingLeft: '12px' }}>
+                      <strong style={{ color: 'var(--text)' }}>Present — Fullstack Developer</strong>
+                      <p style={{ margin: '2px 0 0', color: 'var(--text-muted)', fontSize: '0.82rem' }}>Leading frontend architectures and full-stack modules at Epigroww Global.</p>
                     </div>
-                    <div style={{ borderLeft: '2px solid rgba(255, 255, 255, 0.2)', paddingLeft: '12px' }}>
-                      <strong style={{ color: '#ffffff' }}>2026 — Software Developer Intern</strong>
-                      <p style={{ margin: '2px 0 0', color: '#9a9a9a', fontSize: '0.82rem' }}>Built utility tools and client interfaces at Digicaptain Technology.</p>
+                    <div style={{ borderLeft: '2px solid var(--border)', paddingLeft: '12px' }}>
+                      <strong style={{ color: 'var(--text)' }}>2026 — Software Developer Intern</strong>
+                      <p style={{ margin: '2px 0 0', color: 'var(--text-muted)', fontSize: '0.82rem' }}>Built utility tools and client interfaces at Digicaptain Technology.</p>
                     </div>
                   </div>
                 )}

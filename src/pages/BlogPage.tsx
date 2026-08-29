@@ -165,11 +165,8 @@ export default function BlogPage() {
       {/* Filter & Search Bar */}
       <section className="section" style={{ padding: '0 0 2rem' }}>
         <div className="container">
-          <div style={{
-            padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem',
-            background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px'
-          }}>
-            <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
+          <div className="blog-filter-bar">
+            <div className="blog-search-wrap" style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
               <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
               <input
                 type="text"
@@ -184,7 +181,7 @@ export default function BlogPage() {
               />
             </div>
 
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+            <div className="blog-filter-chips" style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
               {['all', 'Blog', 'Article', 'News'].map(f => (
                 <button
                   key={f}

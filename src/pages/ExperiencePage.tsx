@@ -55,14 +55,14 @@ export default function ExperiencePage() {
   ];
 
   return (
-    <div className="page-wrapper experience-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: '#000000', color: '#ffffff', minHeight: '100vh' }}>
+    <div className="page-wrapper experience-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
       {/* Page Header */}
       <section className="page-header" style={{ padding: '2rem 0 3rem' }}>
         <div className="container">
-          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: '#888888', marginBottom: '1rem' }}>
-            <Link to="/" style={{ color: '#888888', textDecoration: 'none' }}>Home</Link>
+          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+            <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
             <span style={{ margin: '0 8px' }}>/</span>
-            <span style={{ color: '#ffffff' }}>Experience</span>
+            <span style={{ color: 'var(--text)' }}>Experience</span>
           </div>
 
           <div className="page-header-content">
@@ -70,10 +70,10 @@ export default function ExperiencePage() {
               <Briefcase size={13} />
               <span>Career &amp; Milestones</span>
             </div>
-            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem' }}>
+            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem', color: 'var(--text)' }}>
               Professional <em>Journey &amp; Education</em>
             </h1>
-            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: '#9a9a9a', maxWidth: '600px', lineHeight: 1.65 }}>
+            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: 'var(--text-muted)', maxWidth: '600px', lineHeight: 1.65 }}>
               A comprehensive view of my engineering roles, technical impact, production deliverables, and academic background.
             </p>
           </div>
@@ -87,7 +87,7 @@ export default function ExperiencePage() {
             <Sparkles size={13} />
             <span>Work History</span>
           </div>
-          <h2 style={{ fontSize: '1.8rem', fontWeight: 600, color: '#ffffff', margin: '0 0 2.5rem' }}>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: 600, color: 'var(--text)', margin: '0 0 2.5rem' }}>
             Production <em>Experience</em>
           </h2>
 
@@ -96,7 +96,7 @@ export default function ExperiencePage() {
               <div
                 key={exp.id}
                 style={{
-                  padding: '1.5rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)',
+                  padding: '1.5rem', background: 'var(--card)', border: '1px solid var(--border)',
                   borderRadius: '14px', position: 'relative'
                 }}
               >
@@ -105,46 +105,46 @@ export default function ExperiencePage() {
                     <span style={{
                       display: 'inline-flex', alignItems: 'center', gap: '5px',
                       padding: '0.25rem 0.65rem', borderRadius: '5px',
-                      background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.14)',
-                      fontSize: '0.72rem', textTransform: 'uppercase', color: '#ffffff', fontWeight: 500
+                      background: 'var(--surface-2)', border: '1px solid var(--border)',
+                      fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--text)', fontWeight: 500
                     }}>
                       <Briefcase size={12} /> {exp.type}
                     </span>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginTop: '0.6rem', color: '#ffffff' }}>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginTop: '0.6rem', color: 'var(--text)' }}>
                       {exp.role}
                     </h3>
-                    <div style={{ fontSize: '0.95rem', color: '#9a9a9a', fontWeight: 500, marginTop: '0.2rem' }}>
+                    <div style={{ fontSize: '0.95rem', color: 'var(--text-muted)', fontWeight: 500, marginTop: '0.2rem' }}>
                       {exp.company}
                     </div>
                   </div>
 
-                  <div style={{ fontSize: '0.82rem', color: '#888888', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <div style={{
                       display: 'inline-flex', alignItems: 'center', gap: '6px',
-                      background: '#121212', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '6px',
-                      padding: '0.3rem 0.75rem', color: '#ffffff', fontWeight: 500
+                      background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: '6px',
+                      padding: '0.3rem 0.75rem', color: 'var(--text)', fontWeight: 500
                     }}>
                       <Calendar size={13} /> {exp.period}
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888888', fontSize: '0.78rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)', fontSize: '0.78rem' }}>
                       <MapPin size={13} /> {exp.location}
                     </div>
                   </div>
                 </div>
 
-                <p style={{ marginTop: '1.25rem', color: '#9a9a9a', lineHeight: 1.7, fontSize: '0.94rem' }}>
+                <p style={{ marginTop: '1.25rem', color: 'var(--text-muted)', lineHeight: 1.7, fontSize: '0.94rem' }}>
                   {exp.desc}
                 </p>
 
                 <div style={{ marginTop: '1.25rem' }}>
-                  <h4 style={{ fontSize: '0.78rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  <h4 style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     Key Contributions &amp; Technical Impact:
                   </h4>
                   <ul style={{ display: 'grid', gap: '0.5rem', listStyle: 'none', padding: 0, margin: 0 }}>
                     {exp.highlights.map((h, i) => (
-                      <li key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', color: '#cccccc', fontSize: '0.88rem', lineHeight: 1.6 }}>
-                        <span style={{ width: 18, height: 18, borderRadius: '4px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.14)', display: 'grid', placeItems: 'center', flexShrink: 0, marginTop: 2 }}>
-                          <CheckCircle size={11} style={{ color: '#ffffff' }} />
+                      <li key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', color: 'var(--text)', fontSize: '0.88rem', lineHeight: 1.6 }}>
+                        <span style={{ width: 18, height: 18, borderRadius: '4px', background: 'var(--surface-2)', border: '1px solid var(--border)', display: 'grid', placeItems: 'center', flexShrink: 0, marginTop: 2 }}>
+                          <CheckCircle size={11} style={{ color: 'var(--text)' }} />
                         </span>
                         <span>{h}</span>
                       </li>
@@ -152,11 +152,11 @@ export default function ExperiencePage() {
                   </ul>
                 </div>
 
-                <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
+                <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)', display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
                   {exp.skills.map(skill => (
                     <span key={skill} style={{
-                      padding: '0.25rem 0.6rem', borderRadius: '5px', background: '#141414',
-                      border: '1px solid rgba(255, 255, 255, 0.08)', fontSize: '0.74rem', color: '#cccccc'
+                      padding: '0.25rem 0.6rem', borderRadius: '5px', background: 'var(--surface-2)',
+                      border: '1px solid var(--border)', fontSize: '0.74rem', color: 'var(--text-muted)'
                     }}>
                       {skill}
                     </span>
@@ -169,13 +169,13 @@ export default function ExperiencePage() {
       </section>
 
       {/* Academic Background */}
-      <section className="section" style={{ padding: '4rem 0', background: '#050505', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+      <section className="section" style={{ padding: '4rem 0', background: 'var(--bg-subtle, var(--bg))', borderTop: '1px solid var(--border)' }}>
         <div className="container">
           <div className="badge-playful" style={{ marginBottom: '1rem' }}>
             <GraduationCap size={13} />
             <span>Academic Foundation</span>
           </div>
-          <h2 style={{ fontSize: '1.8rem', fontWeight: 600, color: '#ffffff', margin: '0 0 2rem' }}>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: 600, color: 'var(--text)', margin: '0 0 2rem' }}>
             Education &amp; <em>Degrees</em>
           </h2>
 
@@ -184,35 +184,35 @@ export default function ExperiencePage() {
               <div
                 key={edu.id}
                 style={{
-                  padding: '2rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)',
+                  padding: '2rem', background: 'var(--card)', border: '1px solid var(--border)',
                   borderRadius: '14px'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '0.5rem' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.14)', display: 'grid', placeItems: 'center', color: '#ffffff' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'var(--surface-2)', border: '1px solid var(--border)', display: 'grid', placeItems: 'center', color: 'var(--text)' }}>
                     <GraduationCap size={16} />
                   </div>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#ffffff', margin: 0 }}>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text)', margin: 0 }}>
                     {edu.degree}
                   </h3>
                 </div>
 
-                <div style={{ color: '#9a9a9a', fontSize: '0.88rem', marginBottom: '0.75rem' }}>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '0.75rem' }}>
                   {edu.institution} · {edu.period} · {edu.location}
                 </div>
-                <p style={{ color: '#cccccc', fontSize: '0.9rem', lineHeight: 1.6, margin: '0 0 1.25rem' }}>
+                <p style={{ color: 'var(--text)', fontSize: '0.9rem', lineHeight: 1.6, margin: '0 0 1.25rem' }}>
                   {edu.details}
                 </p>
 
                 <div>
-                  <h4 style={{ fontSize: '0.78rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#888888', marginBottom: '0.5rem' }}>
+                  <h4 style={{ fontSize: '0.78rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
                     Core Coursework:
                   </h4>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
                     {edu.coursework.map(c => (
                       <span key={c} style={{
                         fontSize: '0.74rem', padding: '0.3rem 0.65rem', borderRadius: '5px',
-                        background: '#141414', border: '1px solid rgba(255, 255, 255, 0.08)', color: '#cccccc'
+                        background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text-muted)'
                       }}>
                         {c}
                       </span>

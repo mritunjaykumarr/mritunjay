@@ -66,14 +66,14 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="page-wrapper pricing-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: '#000000', color: '#ffffff', minHeight: '100vh' }}>
+    <div className="page-wrapper pricing-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
       {/* Page Header */}
       <section className="page-header" style={{ padding: '2rem 0 3rem' }}>
         <div className="container">
-          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: '#888888', marginBottom: '1rem' }}>
-            <Link to="/" style={{ color: '#888888', textDecoration: 'none' }}>Home</Link>
+          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+            <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
             <span style={{ margin: '0 8px' }}>/</span>
-            <span style={{ color: '#ffffff' }}>Services &amp; Pricing</span>
+            <span style={{ color: 'var(--text)' }}>Services &amp; Pricing</span>
           </div>
 
           <div className="page-header-content">
@@ -81,10 +81,10 @@ export default function PricingPage() {
               <Sparkles size={13} />
               <span>Clear &amp; Transparent Rates</span>
             </div>
-            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem' }}>
+            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem', color: 'var(--text)' }}>
               Services, Packages &amp; <em>Investment</em>
             </h1>
-            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: '#9a9a9a', maxWidth: '600px', lineHeight: 1.65 }}>
+            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: 'var(--text-muted)', maxWidth: '600px', lineHeight: 1.65 }}>
               Straightforward pricing for handcrafted web applications, production engineering, and AI-powered digital products.
             </p>
           </div>
@@ -100,36 +100,36 @@ export default function PricingPage() {
                 key={tier.name}
                 style={{
                   padding: '2.25rem', display: 'flex', flexDirection: 'column', position: 'relative',
-                  background: tier.popular ? 'linear-gradient(180deg, #111111 0%, #080808 100%)' : '#0a0a0a',
-                  border: '1px solid ' + (tier.popular ? 'rgba(255, 255, 255, 0.28)' : 'rgba(255, 255, 255, 0.1)'),
+                  background: 'var(--card)',
+                  border: '1px solid ' + (tier.popular ? 'var(--border-accent)' : 'var(--border)'),
                   borderRadius: '14px',
-                  boxShadow: tier.popular ? '0 12px 40px rgba(0, 0, 0, 0.8)' : 'none'
+                  boxShadow: tier.popular ? 'var(--shadow-lg)' : 'none'
                 }}
               >
                 {tier.popular && (
                   <div style={{
                     position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)',
-                    background: '#ffffff', color: '#000000', borderRadius: '4px', padding: '0.2rem 0.75rem',
+                    background: 'var(--accent)', color: 'var(--accent-foreground)', borderRadius: '4px', padding: '0.2rem 0.75rem',
                     fontWeight: 600, fontSize: '0.72rem', letterSpacing: '0.04em', textTransform: 'uppercase',
                     display: 'flex', alignItems: 'center', gap: '4px'
                   }}>
-                    <Star size={11} fill="#000000" /> Most Popular
+                    <Star size={11} fill="currentColor" /> Most Popular
                   </div>
                 )}
 
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.5rem' }}>{tier.name}</h3>
-                <p style={{ color: '#9a9a9a', fontSize: '0.86rem', lineHeight: 1.6, minHeight: '3rem', margin: 0 }}>{tier.desc}</p>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.5rem' }}>{tier.name}</h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.86rem', lineHeight: 1.6, minHeight: '3rem', margin: 0 }}>{tier.desc}</p>
                 
                 <div style={{ margin: '1.5rem 0', display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <span style={{ fontSize: '2.5rem', fontWeight: 700, color: '#ffffff' }}>{tier.price}</span>
-                  <span style={{ color: '#888888', fontSize: '0.86rem' }}>/ {tier.period}</span>
+                  <span style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--text)' }}>{tier.price}</span>
+                  <span style={{ color: 'var(--text-muted)', fontSize: '0.86rem' }}>/ {tier.period}</span>
                 </div>
 
                 <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '2rem', flex: 1, listStyle: 'none', padding: 0, margin: '0 0 2rem' }}>
                   {tier.features.map(f => (
-                    <li key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.86rem', color: '#cccccc', lineHeight: 1.5 }}>
-                      <span style={{ width: 18, height: 18, borderRadius: '4px', background: 'rgba(255, 255, 255, 0.08)', display: 'grid', placeItems: 'center', flexShrink: 0, marginTop: 2 }}>
-                        <Check size={11} style={{ color: '#ffffff' }} />
+                    <li key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.86rem', color: 'var(--text)', lineHeight: 1.5 }}>
+                      <span style={{ width: 18, height: 18, borderRadius: '4px', background: 'var(--surface-2)', display: 'grid', placeItems: 'center', flexShrink: 0, marginTop: 2 }}>
+                        <Check size={11} style={{ color: 'var(--text)' }} />
                       </span>
                       <span>{f}</span>
                     </li>
@@ -151,16 +151,16 @@ export default function PricingPage() {
       </section>
 
       {/* Pricing FAQs */}
-      <section className="section" style={{ padding: '3rem 0', background: '#050505', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+      <section className="section" style={{ padding: '3rem 0', background: 'var(--bg-subtle, var(--bg))', borderTop: '1px solid var(--border)' }}>
         <div className="container" style={{ maxWidth: '800px' }}>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#ffffff', margin: '0 0 1.5rem', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: 'var(--text)', margin: '0 0 1.5rem', textAlign: 'center' }}>
             Frequently Asked Questions
           </h2>
           <div style={{ display: 'grid', gap: '1rem' }}>
             {faqs.map((faq, i) => (
-              <div key={i} style={{ padding: '1.25rem', background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#ffffff', margin: '0 0 0.4rem' }}>{faq.q}</h3>
-                <p style={{ color: '#9a9a9a', fontSize: '0.86rem', lineHeight: 1.6, margin: 0 }}>{faq.a}</p>
+              <div key={i} style={{ padding: '1.25rem', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '10px' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text)', margin: '0 0 0.4rem' }}>{faq.q}</h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.86rem', lineHeight: 1.6, margin: 0 }}>{faq.a}</p>
               </div>
             ))}
           </div>

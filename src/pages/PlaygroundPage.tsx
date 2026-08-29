@@ -9,14 +9,14 @@ export default function PlaygroundPage() {
   useSEO(SEO_CONFIGS.playground);
 
   return (
-    <div className="page-wrapper playground-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: '#000000', color: '#ffffff', minHeight: '100vh' }}>
+    <div className="page-wrapper playground-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
       {/* Page Header */}
       <section className="page-header" style={{ padding: '2rem 0 2rem' }}>
         <div className="container">
-          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: '#888888', marginBottom: '1rem' }}>
-            <Link to="/" style={{ color: '#888888', textDecoration: 'none' }}>Home</Link>
+          <div className="breadcrumb" style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+            <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
             <span style={{ margin: '0 8px' }}>/</span>
-            <span style={{ color: '#ffffff' }}>AI Playground</span>
+            <span style={{ color: 'var(--text)' }}>AI Playground</span>
           </div>
 
           <div className="page-header-content">
@@ -24,10 +24,10 @@ export default function PlaygroundPage() {
               <Sparkles size={13} />
               <span>Interactive AI Tools Sandbox</span>
             </div>
-            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem' }}>
+            <h1 className="page-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 600, letterSpacing: '-0.04em', margin: '0.5rem 0 1rem', color: 'var(--text)' }}>
               AI <em>Playground</em>
             </h1>
-            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: '#9a9a9a', maxWidth: '600px', lineHeight: 1.65 }}>
+            <p className="page-subtitle" style={{ fontSize: '1.05rem', color: 'var(--text-muted)', maxWidth: '600px', lineHeight: 1.65 }}>
               A suite of 6 live engineering utilities demonstrating practical AI code generation, performance audits, regex builders, and prompt optimizers.
             </p>
           </div>
@@ -35,7 +35,7 @@ export default function PlaygroundPage() {
       </section>
 
       <div className="container" style={{ margin: '1.5rem auto' }}>
-        <div style={{ background: '#080808', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', padding: 'clamp(0.75rem, 2vw, 1.5rem)' }}>
+        <div style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '16px', padding: 'clamp(0.75rem, 2vw, 1.5rem)' }}>
           <AIPlayground />
         </div>
       </div>

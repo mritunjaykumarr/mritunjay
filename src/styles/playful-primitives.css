@@ -26,10 +26,10 @@
   white-space: nowrap !important;
   cursor: pointer !important;
   text-decoration: none !important;
-  background: linear-gradient(180deg, #ffffff 0%, #e7e7e7 48%, #cfcfcf 100%) !important;
-  color: #111111 !important;
-  border: 1px solid #ffffff !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  background: var(--solid-btn-grad) !important;
+  color: var(--accent-foreground) !important;
+  border: 1px solid var(--border-accent) !important;
+  box-shadow: var(--shadow-sm) !important;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
@@ -41,7 +41,7 @@
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
-  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.5) 48%, transparent 76%) !important;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.4) 48%, transparent 76%) !important;
   transform: translateX(-130%) !important;
   transition: transform 0.65s ease !important;
   pointer-events: none !important;
@@ -59,14 +59,14 @@
 .btn-primary:hover,
 .v3-button-primary:hover,
 .btn-solid:hover {
-  background: linear-gradient(180deg, #ffffff 0%, #f3f6ff 42%, #d5def2 100%) !important;
-  border-color: #f2f6ff !important;
-  box-shadow: inset 0 1px 0 #ffffff, 0 0 24px rgba(186, 208, 255, 0.35), 0 8px 18px rgba(255, 255, 255, 0.12) !important;
+  background: var(--solid-btn-hover) !important;
+  border-color: var(--border-accent) !important;
+  box-shadow: var(--shadow-md) !important;
   transform: translateY(-1px) !important;
-  color: #111111 !important;
+  color: var(--accent-foreground) !important;
 }
 
-/* ——— Ghost / Quiet Button (Frosted Dark Glass) ——— */
+/* ——— Ghost / Quiet Button (Frosted Glass) ——— */
 .btn-secondary,
 .btn-outline,
 .v3-button-quiet,
@@ -89,12 +89,11 @@
   white-space: nowrap !important;
   cursor: pointer !important;
   text-decoration: none !important;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.5) 48%, rgba(160, 175, 200, 0.08)) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(198, 198, 198, 0.35) !important;
+  background: var(--ghost-btn-grad) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
@@ -102,11 +101,10 @@
 .btn-outline:hover,
 .v3-button-quiet:hover,
 .btn-ghost:hover {
-  background: linear-gradient(135deg, rgba(210, 225, 255, 0.18), rgba(0, 0, 0, 0.35) 48%, rgba(180, 195, 220, 0.16)) !important;
-  border-color: rgba(220, 230, 255, 0.75) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 20px rgba(170, 200, 255, 0.22) !important;
+  background: var(--surface-2) !important;
+  border-color: var(--border-accent) !important;
   transform: translateY(-1px) !important;
-  color: #ffffff !important;
+  color: var(--text) !important;
 }
 
 /* ——— Frosted Minimal Card ——— */
@@ -126,10 +124,11 @@
 .v3-cert-card,
 .v3-article-card,
 .ai-panel {
-  background: rgba(10, 10, 10, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
   border-radius: 12px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: var(--shadow-sm) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
@@ -142,8 +141,8 @@
 .v3-story-card:hover,
 .v3-skill-card:hover,
 .v3-project-card:hover {
-  border-color: rgba(255, 255, 255, 0.24) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 24px rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--border-accent) !important;
+  box-shadow: var(--shadow-md) !important;
   transform: translateY(-3px) !important;
 }
 
@@ -159,15 +158,14 @@
   gap: 0.45rem !important;
   padding: 0.35rem 0.85rem !important;
   border-radius: 6px !important;
-  background: linear-gradient(90deg, #2a2a2a 0%, #151515 52%, #0a0a0a 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  color: #e2e2e2 !important;
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
   font-family: var(--font, "Inter", sans-serif) !important;
   font-size: 0.78rem !important;
   font-weight: 500 !important;
   letter-spacing: -0.01em !important;
   text-transform: none !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* ——— Inputs & Textareas ——— */
@@ -176,14 +174,13 @@ textarea,
 select,
 .v3-form-field input,
 .v3-form-field textarea {
-  background: rgba(12, 12, 12, 0.9) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
   border-radius: 8px !important;
-  color: #ffffff !important;
+  color: var(--text) !important;
   font-family: var(--font, "Inter", sans-serif) !important;
   font-size: 0.92rem !important;
   padding: 0.85rem 1rem !important;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5) !important;
   transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
 }
 
@@ -192,14 +189,14 @@ textarea:focus,
 select:focus,
 .v3-form-field input:focus,
 .v3-form-field textarea:focus {
-  border-color: rgba(255, 255, 255, 0.5) !important;
-  box-shadow: 0 0 14px rgba(255, 255, 255, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+  border-color: var(--border-accent) !important;
+  box-shadow: 0 0 10px var(--accent-glow) !important;
   outline: none !important;
 }
 
 label,
 .v3-form-field label {
-  color: #9a9a9a !important;
+  color: var(--text-muted) !important;
   font-size: 0.82rem !important;
   font-weight: 500 !important;
   letter-spacing: -0.01em !important;
@@ -210,20 +207,19 @@ label,
   width: 40px !important;
   height: 40px !important;
   border-radius: 8px !important;
-  background: rgba(20, 20, 20, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
   display: grid !important;
   place-items: center !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  color: var(--text) !important;
   transition: all 0.25s ease !important;
   flex-shrink: 0;
 }
 
 .icon-circle:hover {
-  background: rgba(35, 35, 35, 0.9) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  color: #ffffff !important;
+  background: var(--surface-3) !important;
+  border-color: var(--border-accent) !important;
+  color: var(--text) !important;
   transform: translateY(-2px) !important;
 }
 
