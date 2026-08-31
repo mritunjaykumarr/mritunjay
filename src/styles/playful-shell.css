@@ -505,6 +505,8 @@ footer.footer {
   position: relative !important;
   z-index: 998 !important;
   overflow: hidden !important;
+  width: 100% !important;
+  max-width: 100vw !important;
 }
 
 .announcement-bar-content {
@@ -518,6 +520,8 @@ footer.footer {
   font-size: 0.82rem !important;
   flex-wrap: wrap !important;
   transition: background 0.2s ease !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .announcement-bar-content:hover {
@@ -643,12 +647,9 @@ footer.footer {
   box-shadow: var(--shadow-lg) !important;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .floating-ai-btn {
-    bottom: 16px !important;
-    right: 16px !important;
-    padding: 8px 12px !important;
-    font-size: 0.76rem !important;
+    display: none !important;
   }
   .floating-ai-overlay {
     padding: 0 !important;
