@@ -53,21 +53,52 @@ export default function Contact({ isOpen, onClose }: ContactProps) {
   return (
     <>
       {isOpen && (
-        <div className="modal-overlay open" onClick={(e) => e.target === e.currentTarget && onClose()} style={{
-          position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(16px)', display: 'grid', placeItems: 'center', padding: '1.5rem'
-        }}>
-          <div className="modal-box" style={{
-            maxWidth: '780px', width: '100%', padding: '0', overflow: 'hidden',
-            background: '#0a0a0a', border: '1px solid rgba(255, 255, 255, 0.14)', borderRadius: '14px',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.9)', position: 'relative'
-          }}>
+        <div 
+          className="modal-overlay open" 
+          onClick={(e) => e.target === e.currentTarget && onClose()}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            background: 'var(--bg-overlay, rgba(0, 0, 0, 0.75))',
+            backdropFilter: 'blur(16px)',
+            display: 'grid',
+            placeItems: 'center',
+            padding: '1rem'
+          }}
+        >
+          <div 
+            className="modal-box" 
+            style={{
+              maxWidth: '780px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              padding: '0',
+              background: 'var(--card)',
+              border: '1px solid var(--border)',
+              borderRadius: '16px',
+              boxShadow: 'var(--shadow-lg)',
+              position: 'relative'
+            }}
+          >
             <button
               onClick={onClose}
               aria-label="Close modal"
               style={{
-                position: 'absolute', top: '1rem', right: '1rem', width: '32px', height: '32px',
-                borderRadius: '6px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.12)',
-                color: '#ffffff', display: 'grid', placeItems: 'center', cursor: 'pointer', zIndex: 10
+                position: 'absolute',
+                top: '1rem',
+                right: '1rem',
+                width: '32px',
+                height: '32px',
+                borderRadius: '6px',
+                background: 'var(--surface-2)',
+                border: '1px solid var(--border)',
+                color: 'var(--text)',
+                display: 'grid',
+                placeItems: 'center',
+                cursor: 'pointer',
+                zIndex: 10
               }}
             >
               <X size={16} />
@@ -75,32 +106,32 @@ export default function Contact({ isOpen, onClose }: ContactProps) {
 
             <div className="contact-modal-grid">
               {/* Left Info Panel */}
-              <div style={{ padding: '2.25rem', background: '#050505' }}>
-                <h3 style={{ fontSize: '1.35rem', marginBottom: '0.75rem', color: '#ffffff', fontWeight: 600 }}>
-                  Let's talk about your product
+              <div style={{ padding: 'clamp(1.5rem, 3vw, 2.25rem)', background: 'var(--surface-2)' }}>
+                <h3 style={{ fontSize: '1.35rem', marginBottom: '0.75rem', color: 'var(--text)', fontWeight: 600 }}>
+                  Let&apos;s talk about your product
                 </h3>
-                <p style={{ color: '#9a9a9a', marginBottom: '1.75rem', fontSize: '0.88rem', lineHeight: 1.6 }}>
-                  I'm always open to discussing new engineering projects, AI integrations, or high-impact technical roles.
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.75rem', fontSize: '0.88rem', lineHeight: 1.6 }}>
+                  I&apos;m always open to discussing new engineering projects, AI integrations, or high-impact technical roles.
                 </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  <a href="mailto:me@mritify.online" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ffffff', textDecoration: 'none', fontSize: '0.86rem' }}>
-                    <Mail size={16} style={{ color: '#9a9a9a' }} />
-                    <span>me@mritify.online <small style={{ color: '#666666' }}>(Direct)</small></span>
+                  <a href="mailto:me@mritify.online" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text)', textDecoration: 'none', fontSize: '0.86rem' }}>
+                    <Mail size={16} style={{ color: 'var(--text-muted)' }} />
+                    <span>me@mritify.online <small style={{ color: 'var(--text-muted)' }}>(Direct)</small></span>
                   </a>
-                  <a href="mailto:support@mritify.online" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ffffff', textDecoration: 'none', fontSize: '0.86rem' }}>
-                    <Mail size={16} style={{ color: '#9a9a9a' }} />
-                    <span>support@mritify.online <small style={{ color: '#666666' }}>(Support)</small></span>
+                  <a href="mailto:support@mritify.online" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text)', textDecoration: 'none', fontSize: '0.86rem' }}>
+                    <Mail size={16} style={{ color: 'var(--text-muted)' }} />
+                    <span>support@mritify.online <small style={{ color: 'var(--text-muted)' }}>(Support)</small></span>
                   </a>
-                  <a href="mailto:info@mritify.online" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ffffff', textDecoration: 'none', fontSize: '0.86rem' }}>
-                    <Mail size={16} style={{ color: '#9a9a9a' }} />
-                    <span>info@mritify.online <small style={{ color: '#666666' }}>(Info)</small></span>
+                  <a href="mailto:info@mritify.online" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text)', textDecoration: 'none', fontSize: '0.86rem' }}>
+                    <Mail size={16} style={{ color: 'var(--text-muted)' }} />
+                    <span>info@mritify.online <small style={{ color: 'var(--text-muted)' }}>(Info)</small></span>
                   </a>
-                  <a href="https://wa.me/919470880956" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ffffff', textDecoration: 'none', fontSize: '0.86rem' }}>
-                    <MessageSquare size={16} style={{ color: '#9a9a9a' }} />
+                  <a href="https://wa.me/919470880956" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text)', textDecoration: 'none', fontSize: '0.86rem' }}>
+                    <MessageSquare size={16} style={{ color: 'var(--text-muted)' }} />
                     <span>+91 94708 80956</span>
                   </a>
-                  <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ffffff', textDecoration: 'none', fontSize: '0.86rem' }}>
+                  <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text)', textDecoration: 'none', fontSize: '0.86rem' }}>
                     <LinkedinIcon size={16} />
                     <span>LinkedIn Profile</span>
                   </a>
@@ -108,23 +139,23 @@ export default function Contact({ isOpen, onClose }: ContactProps) {
               </div>
 
               {/* Right Form */}
-              <div style={{ padding: '2.25rem' }}>
+              <div style={{ padding: 'clamp(1.5rem, 3vw, 2.25rem)', background: 'var(--card)' }}>
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   <input type="hidden" name="access_key" value="af71a9aa-dfeb-4439-a91b-afa7bc2e17d8" />
                   
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <label htmlFor="contact-name" style={{ fontSize: '0.78rem', color: '#9a9a9a' }}>Full Name</label>
-                    <input type="text" name="name" placeholder="Your Name" required id="contact-name" />
+                    <label htmlFor="contact-name" style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 500 }}>Full Name</label>
+                    <input type="text" name="name" placeholder="Your Name" required id="contact-name" style={{ padding: '0.65rem 0.85rem', borderRadius: '8px', background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)', fontSize: '0.88rem' }} />
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <label htmlFor="contact-email" style={{ fontSize: '0.78rem', color: '#9a9a9a' }}>Email Address</label>
-                    <input type="email" name="email" placeholder="you@company.com" required id="contact-email" />
+                    <label htmlFor="contact-email" style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 500 }}>Email Address</label>
+                    <input type="email" name="email" placeholder="you@company.com" required id="contact-email" style={{ padding: '0.65rem 0.85rem', borderRadius: '8px', background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)', fontSize: '0.88rem' }} />
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <label htmlFor="contact-message" style={{ fontSize: '0.78rem', color: '#9a9a9a' }}>Your Message</label>
-                    <textarea name="message" rows={4} placeholder="Tell me about your project goals..." required id="contact-message" />
+                    <label htmlFor="contact-message" style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 500 }}>Your Message</label>
+                    <textarea name="message" rows={4} placeholder="Tell me about your project goals..." required id="contact-message" style={{ padding: '0.65rem 0.85rem', borderRadius: '8px', background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)', fontSize: '0.88rem', resize: 'vertical' }} />
                   </div>
 
                   <button type="submit" className="btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center', marginTop: '0.5rem' }}>

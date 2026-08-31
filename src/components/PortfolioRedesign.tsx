@@ -411,7 +411,7 @@ export default function PortfolioRedesign() {
               <p className="v3-eyebrow">03 / Flagship AI Product</p>
               <h2>Meet <em>PrinceAI™</em></h2>
               <p>
-                Personal AI Assistant powered by custom LLM integrations. A production-ready demonstration of conversational AI, contextual knowledge retrieval, and API-connected engineering.
+                Personal AI Assistant fully trained by <strong>Mritify</strong> — a production-ready demonstration of conversational AI, contextual knowledge retrieval, and API-connected engineering.
               </p>
             </FadeIn>
 
@@ -570,7 +570,7 @@ export default function PortfolioRedesign() {
                       {article.category} · {article.time}
                     </span>
                     <h3 style={{ margin: '0.4rem 0 0.85rem', fontSize: '1.05rem' }}>{article.title}</h3>
-                    <a href="/blog" style={{ color: '#ffffff', fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+                    <a href="/blog" style={{ color: 'var(--text)', fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
                       Read Article <ArrowUpRight size={14} />
                     </a>
                   </div>

@@ -118,14 +118,14 @@ export default function Header({ theme = 'dark', toggleTheme = () => {} }: Heade
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{
                 width: '28px', height: '28px', borderRadius: '6px',
-                background: 'linear-gradient(135deg, #222222, #000000)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                display: 'grid', placeItems: 'center', color: '#ffffff'
+                background: 'var(--accent)',
+                border: '1px solid var(--border)',
+                display: 'grid', placeItems: 'center', color: 'var(--accent-foreground)'
               }}>
                 <Code2 size={16} />
               </div>
-              <span style={{ fontWeight: 600, fontSize: '0.95rem', letterSpacing: '-0.02em', color: '#ffffff' }}>
-                MRITUNJAY<span style={{ color: '#9a9a9a', fontWeight: 400 }}>.ai</span>
+              <span style={{ fontWeight: 600, fontSize: '0.95rem', letterSpacing: '-0.02em', color: 'var(--text)' }}>
+                MRITUNJAY<span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>.ai</span>
               </span>
             </div>
           </Link>
@@ -220,7 +220,7 @@ export default function Header({ theme = 'dark', toggleTheme = () => {} }: Heade
               {/* Drawer Top Bar */}
               <div className="drawer-panel-topbar">
                 <div className="drawer-panel-brand">
-                  <Sparkles size={16} style={{ color: '#ffffff' }} />
+                  <Sparkles size={16} style={{ color: 'var(--accent)' }} />
                   <div>
                     <span className="drawer-brand-name">Navigation</span>
                     <span className="drawer-brand-sub">Explore portfolio & tools</span>

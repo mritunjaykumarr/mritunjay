@@ -1,38 +1,8 @@
 /* ============================================================
    MRITUNJAY KUMAR PORTFOLIO — CORE DESIGN SYSTEM
-   Pure Black #000000, Liquid Metal & Frosted Glass Aesthetics
+   Pure Black & Clean Light Adaptive Vesper Aesthetics
    Zero-Green, Zero-Flash, High Performance
    ============================================================ */
-
-:root {
-  --bg: #000000;
-  --bg-subtle: #050505;
-  --bg-card: #0a0a0a;
-  --bg-glass: rgba(12, 12, 12, 0.8);
-  
-  --text: #ffffff;
-  --text-muted: #9a9a9a;
-  --text-subtle: #666666;
-  
-  --border: rgba(255, 255, 255, 0.12);
-  --border-light: rgba(255, 255, 255, 0.06);
-  --border-strong: rgba(255, 255, 255, 0.24);
-  
-  --accent: #ffffff;
-  --accent-muted: #d5d5d5;
-  
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: "Instrument Serif", Georgia, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
-  --radius-full: 9999px;
-  
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
-}
 
 /* Theme Adaptive html and body */
 html, body {
@@ -41,7 +11,7 @@ html, body {
   color: var(--text) !important;
   margin: 0;
   padding: 0;
-  font-family: var(--font-sans);
+  font-family: var(--font, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   overflow-x: hidden;
   overflow-y: auto !important;
   scroll-behavior: smooth;
@@ -68,22 +38,22 @@ html, body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.18);
+  background: var(--border-strong);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: var(--accent);
 }
 
 /* Selection */
 ::selection {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: var(--border-strong);
+  color: var(--text);
 }
 
 /* Container */
@@ -132,6 +102,8 @@ a {
 input, textarea, select {
   font-family: inherit;
   color: var(--text) !important;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
 }
 
 input::placeholder,
@@ -228,6 +200,6 @@ body::before {
     overflow-x: auto;
     padding-bottom: 4px;
     -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
   }
 }
-

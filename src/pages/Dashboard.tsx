@@ -49,6 +49,22 @@ export default function Dashboard() {
   const [formData, setFormData] = useState<FormData>({ id: '', title: '', excerpt: '', body: '', type: 'Blog', category: 'General', cover: '' });
   const [uploading, setUploading] = useState(false);
   
+  const deduplicate = (list: Post[]): Post[] => {
+    const ids = new Set<string>();
+    const titles = new Set<string>();
+    const out: Post[] = [];
+    for (const p of list) {
+      if (!p || !p.title) continue;
+      const t = p.title.toLowerCase().trim();
+      if (!ids.has(p.id) && !titles.has(t)) {
+        ids.add(p.id);
+        titles.add(t);
+        out.push(p);
+      }
+    }
+    return out;
+  };
+
   const fetchPosts = useCallback(async () => {
     // Check local storage first
     let currentPosts: Post[] = [];
@@ -68,7 +84,7 @@ export default function Dashboard() {
       const { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
       if (!error && data && data.length > 0) {
         const livePosts = data as Post[];
-        const merged = [...livePosts, ...currentPosts.filter(cp => !livePosts.some(lp => lp.id === cp.id))];
+        const merged = deduplicate([...livePosts, ...currentPosts]);
         setPosts(merged);
         localStorage.setItem('admin_local_posts', JSON.stringify(merged));
         return;
@@ -77,7 +93,9 @@ export default function Dashboard() {
       console.warn('Supabase offline or unreachable. Using local vault storage.', err);
     }
 
-    setPosts(currentPosts);
+    const deduped = deduplicate(currentPosts);
+    setPosts(deduped);
+    localStorage.setItem('admin_local_posts', JSON.stringify(deduped));
   }, []);
 
   useEffect(() => {

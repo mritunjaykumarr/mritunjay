@@ -670,8 +670,8 @@ footer.footer {
   align-items: center !important;
   justify-content: space-between !important;
   padding: 1rem 1.25rem !important;
-  background: #050505 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: var(--surface-2) !important;
+  border-bottom: 1px solid var(--border) !important;
 }
 
 .ai-header-title {
@@ -684,23 +684,23 @@ footer.footer {
   width: 32px !important;
   height: 32px !important;
   border-radius: 8px !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: var(--surface-3) !important;
+  border: 1px solid var(--border) !important;
   display: grid !important;
   place-items: center !important;
-  color: #ffffff !important;
+  color: var(--text) !important;
 }
 
 .ai-header-title h4 {
   font-size: 0.92rem !important;
   font-weight: 600 !important;
-  color: #ffffff !important;
+  color: var(--text) !important;
   margin: 0 !important;
 }
 
 .ai-header-title p {
   font-size: 0.72rem !important;
-  color: #888888 !important;
+  color: var(--text-muted) !important;
   margin: 0 !important;
 }
 
@@ -708,11 +708,17 @@ footer.footer {
   width: 28px !important;
   height: 28px !important;
   border-radius: 6px !important;
-  background: rgba(255, 255, 255, 0.06) !important;
-  color: #ffffff !important;
+  background: var(--surface-3) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
   display: grid !important;
   place-items: center !important;
   cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.ai-close-btn:hover {
+  background: var(--border-accent) !important;
 }
 
 .floating-ai-chips {
@@ -720,16 +726,16 @@ footer.footer {
   gap: 6px !important;
   padding: 8px 12px !important;
   overflow-x: auto !important;
-  background: #080808 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  background: var(--surface) !important;
+  border-bottom: 1px solid var(--border) !important;
 }
 
 .ai-chip-btn {
   padding: 4px 10px !important;
   border-radius: 9999px !important;
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #cccccc !important;
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-muted) !important;
   font-size: 0.72rem !important;
   white-space: nowrap !important;
   cursor: pointer !important;
@@ -737,8 +743,9 @@ footer.footer {
 }
 
 .ai-chip-btn:hover {
-  background: rgba(255, 255, 255, 0.14) !important;
-  color: #ffffff !important;
+  background: var(--surface-3) !important;
+  color: var(--text) !important;
+  border-color: var(--border-accent) !important;
 }
 
 .floating-ai-body {
@@ -748,6 +755,7 @@ footer.footer {
   display: flex !important;
   flex-direction: column !important;
   gap: 0.85rem !important;
+  background: var(--card) !important;
 }
 
 .ai-msg {
@@ -761,9 +769,9 @@ footer.footer {
 }
 
 .ai-msg-user .ai-bubble {
-  background: rgba(255, 255, 255, 0.15) !important;
-  color: #ffffff !important;
-  border-radius: 12px 12px 2px 12px !important;
+  background: var(--chat-user-bg) !important;
+  color: var(--chat-user-text) !important;
+  border-radius: 14px 14px 2px 14px !important;
 }
 
 .ai-msg-assistant {
@@ -771,24 +779,24 @@ footer.footer {
 }
 
 .ai-msg-assistant .ai-bubble {
-  background: #141414 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #d8d8d8 !important;
-  border-radius: 12px 12px 12px 2px !important;
+  background: var(--chat-ai-bg) !important;
+  border: 1px solid var(--chat-ai-border) !important;
+  color: var(--text) !important;
+  border-radius: 14px 14px 14px 2px !important;
 }
 
 .ai-sender-name {
   font-size: 0.7rem !important;
-  color: #888888 !important;
+  color: var(--text-muted) !important;
   display: flex !important;
   align-items: center !important;
   gap: 4px !important;
 }
 
 .ai-bubble {
-  padding: 8px 12px !important;
-  font-size: 0.85rem !important;
-  line-height: 1.55 !important;
+  padding: 10px 14px !important;
+  font-size: 0.86rem !important;
+  line-height: 1.6 !important;
   max-width: 88% !important;
 }
 
@@ -802,17 +810,17 @@ footer.footer {
   display: flex !important;
   gap: 8px !important;
   padding: 10px 12px !important;
-  background: #050505 !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: var(--surface-2) !important;
+  border-top: 1px solid var(--border) !important;
 }
 
 .floating-ai-input-bar input {
   flex: 1 !important;
   padding: 8px 12px !important;
   border-radius: 8px !important;
-  background: #121212 !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
   font-size: 0.84rem !important;
 }
 
@@ -820,9 +828,90 @@ footer.footer {
   width: 36px !important;
   height: 36px !important;
   border-radius: 8px !important;
-  background: #ffffff !important;
-  color: #000000 !important;
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
   display: grid !important;
   place-items: center !important;
   cursor: pointer !important;
+  transition: opacity 0.2s ease !important;
 }
+
+.ai-send-action:disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+}
+
+/* ——— Mobile Floating Navigation Dock ——— */
+.mobile-bottom-dock {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-dock {
+    display: flex !important;
+    position: fixed !important;
+    bottom: max(12px, env(safe-area-inset-bottom, 12px)) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 950 !important;
+    width: min(calc(100% - 24px), 390px) !important;
+    padding: 6px 10px !important;
+    border-radius: 9999px !important;
+    background: var(--dock-bg) !important;
+    border: 1px solid var(--dock-border) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    gap: 4px !important;
+  }
+
+  .mobile-dock-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    padding: 6px 10px !important;
+    border-radius: 18px !important;
+    color: var(--text-muted) !important;
+    text-decoration: none !important;
+    font-size: 0.65rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    cursor: pointer !important;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .mobile-dock-item:active {
+    transform: scale(0.92) !important;
+  }
+
+  .mobile-dock-item.active {
+    color: var(--dock-active) !important;
+    background: var(--dock-active-bg) !important;
+  }
+
+  .mobile-dock-item-ai {
+    background: var(--solid-btn-grad) !important;
+    color: var(--accent-foreground) !important;
+    padding: 8px 12px !important;
+    border-radius: 9999px !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+
+  .mobile-dock-item-ai.active,
+  .mobile-dock-item-ai:hover {
+    color: var(--accent-foreground) !important;
+  }
+
+  /* Add bottom padding to page wrappers so dock doesn't obscure content */
+  .page-wrapper,
+  .v3-portfolio-redesign,
+  #root > div:first-of-type {
+    padding-bottom: 5.5rem !important;
+  }
+}
+

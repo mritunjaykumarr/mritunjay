@@ -17,6 +17,7 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import Loader from './components/Loader';
 import FloatingPrinceAI from './components/FloatingPrinceAI';
+import MobileBottomDock from './components/MobileBottomDock';
 
 import PlaygroundPage from './pages/PlaygroundPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -102,6 +103,7 @@ function App() {
         onClose={() => setIsContactOpen(false)} 
       />
       <FloatingPrinceAI />
+      <MobileBottomDock />
     </BrowserRouter>
   );
 }
