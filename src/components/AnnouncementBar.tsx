@@ -37,7 +37,7 @@ export default function AnnouncementBar() {
 
       <div className="announcement-bar-inner">
         <a
-          href="https://live-tv-sooty.vercel.app/"
+          href="https://livetv.mritify.online/"
           target="_blank"
           rel="noopener noreferrer"
           className="announcement-bar-content"
