@@ -68,15 +68,17 @@ export default function Contact({ isOpen, onClose }: ContactProps) {
   const [mobileTab, setMobileTab] = useState<'form' | 'channels'>('form');
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // Lock body scroll when modal is open
+  // Lock body scroll and set class when modal is open
   useEffect(() => {
     if (!isOpen) return;
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-open');
     setMobileTab('form');
     setStatus('');
     return () => {
       document.body.style.overflow = originalOverflow;
+      document.body.classList.remove('modal-open');
     };
   }, [isOpen]);
 

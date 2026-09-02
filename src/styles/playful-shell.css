@@ -203,10 +203,10 @@
 .navbar-drawer-backdrop {
   position: fixed !important;
   inset: 0 !important;
-  z-index: 998 !important;
-  background: rgba(0, 0, 0, 0.65) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
+  z-index: 100000 !important;
+  background: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
 }
 
 .navbar-drawer-slide-panel {
@@ -215,13 +215,26 @@
   right: 0 !important;
   bottom: 0 !important;
   width: min(440px, 90vw) !important;
-  z-index: 999 !important;
+  z-index: 100001 !important;
   background: var(--bg) !important;
   border-left: 1px solid var(--border) !important;
   color: var(--text) !important;
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: -10px 0 50px rgba(0, 0, 0, 0.6) !important;
   display: flex !important;
   flex-direction: column !important;
+}
+
+body.drawer-open .floating-ai-btn,
+body.drawer-open .lead-chat-launcher,
+body.drawer-open .mobile-bottom-dock,
+body.modal-open .floating-ai-btn,
+body.modal-open .lead-chat-launcher,
+body.modal-open .mobile-bottom-dock {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: scale(0.9) !important;
+  transition: all 0.2s ease !important;
 }
 
 .drawer-panel-topbar {

@@ -81,14 +81,19 @@ export default function Header({ theme = 'dark', toggleTheme = () => {} }: Heade
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  /* ── Lock body scroll when drawer is open ── */
+  /* ── Lock body scroll and set class when drawer is open ── */
   useEffect(() => {
     if (isDrawerOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('drawer-open');
     } else {
       document.body.style.overflow = '';
+      document.body.classList.remove('drawer-open');
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+      document.body.classList.remove('drawer-open');
+    };
   }, [isDrawerOpen]);
 
   /* ── Close drawer on route change ── */
