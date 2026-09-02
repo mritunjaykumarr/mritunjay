@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { Check, ArrowRight, Sparkles, Star } from 'lucide-react';
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
+import ProjectEstimateCalculator from '../components/ProjectEstimateCalculator';
+import Testimonials from '../components/Testimonials';
 
 export default function PricingPage() {
   usePortfolioMotion();
@@ -66,9 +68,9 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="page-wrapper pricing-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
+    <div className="page-wrapper pricing-page" style={{ paddingTop: '2rem', paddingBottom: '5rem', background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
       {/* Page Header */}
-      <section className="page-header" style={{ padding: '2rem 0 3rem' }}>
+      <section className="page-header" style={{ padding: '2rem 0 2rem' }}>
         <div className="container">
           <div className="breadcrumb" style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
             <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
@@ -91,9 +93,25 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Pricing Grid */}
-      <section className="section" style={{ padding: '2rem 0 4rem' }}>
+      {/* Interactive Project Quote / Estimate Calculator */}
+      <section className="section" style={{ padding: '1rem 0 2rem' }}>
         <div className="container">
+          <ProjectEstimateCalculator />
+        </div>
+      </section>
+
+      {/* Pricing Standard Packages Grid */}
+      <section className="section" style={{ padding: '2rem 0 3rem' }}>
+        <div className="container">
+          <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 2.5rem' }}>
+            <h2 style={{ fontSize: '1.75rem', fontWeight: 600, color: 'var(--text)', margin: '0 0 0.5rem' }}>
+              Standard <em>Packages</em>
+            </h2>
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>
+              Fixed-scope packages with turnkey deliverables and clear delivery milestones.
+            </p>
+          </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
             {pricingTiers.map((tier) => (
               <div
@@ -149,6 +167,9 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
+
+      {/* Client Reviews Section */}
+      <Testimonials />
 
       {/* Pricing FAQs */}
       <section className="section" style={{ padding: '3rem 0', background: 'var(--bg-subtle, var(--bg))', borderTop: '1px solid var(--border)' }}>

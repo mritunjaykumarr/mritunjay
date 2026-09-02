@@ -33,6 +33,7 @@ export default function ContactPage() {
         body: json
       });
       const result = await res.json();
+
       if (result.success) {
         setStatus('✓ Message sent successfully! I will respond within 24 hours.');
         (form as HTMLFormElement).reset();
@@ -158,7 +159,7 @@ export default function ContactPage() {
 
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   <input type="hidden" name="access_key" value="af71a9aa-dfeb-4439-a91b-afa7bc2e17d8" />
-                  
+
                   <div style={{ display: 'grid', gap: '4px' }}>
                     <label htmlFor="c-page-name" style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>Full Name</label>
                     <input type="text" name="name" placeholder="John Doe" required id="c-page-name" />

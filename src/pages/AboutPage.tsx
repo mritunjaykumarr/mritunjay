@@ -7,6 +7,7 @@ import {
 import { usePortfolioMotion } from '../lib/usePortfolioMotion';
 import { useSEO, SEO_CONFIGS } from '../lib/useSEO';
 import AdUnit from '../components/AdUnit';
+import Testimonials from '../components/Testimonials';
 
 export default function AboutPage() {
   usePortfolioMotion();
@@ -14,9 +15,9 @@ export default function AboutPage() {
   const [activeTab, setActiveTab] = useState<'philosophy' | 'values' | 'milestones'>('philosophy');
 
   return (
-    <div className="page-wrapper about-page" style={{ paddingTop: '6rem', paddingBottom: '5rem', background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
+    <div className="page-wrapper about-page" style={{ paddingTop: '2rem', paddingBottom: '5rem', background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
       {/* Page Header */}
-      <section className="page-header" style={{ padding: '2rem 0 3rem' }}>
+      <section className="page-header" style={{ padding: '2rem 0 2rem' }}>
         <div className="container">
           <div className="breadcrumb" style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
             <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
@@ -40,7 +41,7 @@ export default function AboutPage() {
       </section>
 
       {/* Main Content Grid */}
-      <section className="section" style={{ padding: '2rem 0 4rem' }}>
+      <section className="section" style={{ padding: '2rem 0 3rem' }}>
         <div className="container">
           <div className="about-page-grid" style={{ width: '100%', boxSizing: 'border-box' }}>
             {/* Left Photo & Card */}
@@ -194,6 +195,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Client Testimonials */}
+      <Testimonials />
 
       {/* AdSense Unit */}
       <section className="section" style={{ padding: '2rem 0' }}>

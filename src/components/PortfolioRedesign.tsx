@@ -14,6 +14,8 @@ import { EXTENDED_PROJECTS_DATA } from '../data/projectsData';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
 import PrinceAI from './PrinceAI';
 import AdUnit from './AdUnit';
+import Testimonials from './Testimonials';
+import LiveDevStats from './LiveDevStats';
 
 const socials = [
   { label: 'GitHub', href: 'https://github.com/mritunjaykumarr', icon: GithubIcon },
@@ -250,22 +252,26 @@ export default function PortfolioRedesign() {
 
         {/* ——— Stats Section ——— */}
         <section className="v3-stats" aria-label="Portfolio metrics">
-          <div className="v3-container v3-stats-grid">
+          <div className="v3-container v3-stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))' }}>
             <div>
-              <strong><CountUp end={12} suffix="+" /></strong>
-              <span>Products shipped</span>
+              <strong><CountUp end={35} suffix="+" /></strong>
+              <span>Projects delivered</span>
             </div>
             <div>
               <strong><CountUp end={3} suffix="+" /></strong>
               <span>Years building</span>
             </div>
             <div>
-              <strong><CountUp end={18} suffix="+" /></strong>
-              <span>Technologies</span>
+              <strong><CountUp end={15} suffix="+" /></strong>
+              <span>AI models & pipelines</span>
             </div>
             <div>
               <strong><CountUp end={99} suffix=".9%" /></strong>
-              <span>Uptime targets</span>
+              <span>Service uptime</span>
+            </div>
+            <div>
+              <strong><CountUp end={100} suffix="+" /></strong>
+              <span>Live stream channels</span>
             </div>
           </div>
         </section>
@@ -579,6 +585,12 @@ export default function PortfolioRedesign() {
             </div>
           </div>
         </section>
+
+        {/* ——— Open Source & Live Developer Stats ——— */}
+        <LiveDevStats />
+
+        {/* ——— Client Testimonials & Social Proof ——— */}
+        <Testimonials />
 
         {/* ——— Contact Section ——— */}
         <section className="v3-section" id="contact">
