@@ -4,7 +4,7 @@ import {
   FileText, X, ChevronRight,
   Briefcase, FolderKanban, Wrench, Award,
   BookOpen, DollarSign, Bot, LayoutDashboard, Gamepad2, Sparkles,
-  User, Mail, Code2, Sun, Moon
+  User, Mail, Code2, Sun, Moon, Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -18,6 +18,7 @@ const primaryNav = [
   { label: 'About', path: '/about' },
   { label: 'Skills', path: '/skills' },
   { label: 'Projects', path: '/projects' },
+  { label: 'Domain Checker', path: '/domain-checker' },
   { label: 'Experience', path: '/experience' },
   { label: 'Contact', path: '/contact' },
 ];
@@ -43,6 +44,7 @@ const drawerSections = [
     title: 'AI & Interactive Tools',
     items: [
       { label: 'PrinceAI', path: '/prince-ai', icon: Bot, desc: 'Personal LLM AI assistant' },
+      { label: 'Domain Checker', path: '/domain-checker', icon: Globe, desc: 'Real-time WHOIS & RDAP lookup' },
       { label: 'Playground', path: '/playground', icon: Gamepad2, desc: 'Interactive AI & UI experiments' },
       { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, desc: 'Performance analytics & stats' },
     ],
@@ -247,6 +249,10 @@ export default function Header({ theme = 'dark', toggleTheme = () => {} }: Heade
                   <Link to="/" className="drawer-primary-card" onClick={() => setIsDrawerOpen(false)}>
                     <Code2 size={16} />
                     <span>Home</span>
+                  </Link>
+                  <Link to="/domain-checker" className="drawer-primary-card" onClick={() => setIsDrawerOpen(false)}>
+                    <Globe size={16} />
+                    <span>Domain Tool</span>
                   </Link>
                   <Link to="/about" className="drawer-primary-card" onClick={() => setIsDrawerOpen(false)}>
                     <User size={16} />

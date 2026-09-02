@@ -75,6 +75,9 @@ export default function Footer() {
                 <Link to="/prince-ai" style={{ color: 'var(--text-muted)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <ChevronRight size={13} style={{ color: 'var(--border-strong)' }} /> Prince AI
                 </Link>
+                <Link to="/domain-checker" style={{ color: 'var(--text-muted)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <ChevronRight size={13} style={{ color: 'var(--border-strong)' }} /> Domain Checker
+                </Link>
                 <Link to="/contact" style={{ color: 'var(--text-muted)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <ChevronRight size={13} style={{ color: 'var(--border-strong)' }} /> Contact
                 </Link>

@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import { 
   PieChart, Plus, Layers, ArrowLeft, FileText, CheckCircle, 
   PenTool, Upload, Loader2, Send, Save, Calendar, 
-  Folder, Heart, Edit2, Trash2, Ghost
+  Folder, Heart, Edit2, Trash2, Ghost, Globe
 } from 'lucide-react';
 import { DEFAULT_POSTS } from '../data/blogData';
 
@@ -262,6 +262,9 @@ export default function Dashboard() {
           </button>
           
           <div style={{ marginTop: 'auto', paddingTop: '20px', borderTop: '1px solid var(--border)' }}>
+            <a href="/domain-checker" className="db-nav-btn" style={{ marginBottom: '8px' }}>
+              <Globe size={16} /> Domain Checker
+            </a>
             <a href="/" className="db-nav-btn">
               <ArrowLeft size={16} /> Live Site
             </a>

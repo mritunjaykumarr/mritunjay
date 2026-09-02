@@ -20,6 +20,7 @@ import FloatingPrinceAI from './components/FloatingPrinceAI';
 import MobileBottomDock from './components/MobileBottomDock';
 
 import PlaygroundPage from './pages/PlaygroundPage';
+import DomainCheckerPage from './pages/DomainCheckerPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
 import Disclaimer from './pages/Disclaimer';
@@ -89,6 +90,7 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/prince-ai" element={<PrinceAIPage />} />
           <Route path="/playground" element={<PlaygroundPage />} />
+          <Route path="/domain-checker" element={<DomainCheckerPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="/disclaimer" element={<Disclaimer />} />

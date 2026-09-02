@@ -2710,3 +2710,100 @@
   }
 }
 
+/* ——— Domain Registrar & WHOIS Checker Styles ——— */
+.domain-checker-card {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--shadow-sm) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+.domain-search-bar-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.75rem !important;
+  align-items: stretch !important;
+}
+
+.domain-search-box-wrap {
+  display: flex !important;
+  align-items: center !important;
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  padding: 0 0.5rem 0 1rem !important;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+  flex: 1 1 280px !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  box-sizing: border-box !important;
+}
+
+.domain-search-box-wrap:focus-within {
+  border-color: var(--border-accent) !important;
+  box-shadow: 0 0 10px var(--accent-glow) !important;
+}
+
+.domain-search-icon {
+  color: var(--text-muted) !important;
+  flex-shrink: 0 !important;
+  margin-right: 0.65rem !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.domain-search-input {
+  flex: 1 1 auto !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 0.25rem !important;
+  color: var(--text) !important;
+  font-family: var(--font, "Inter", sans-serif) !important;
+  font-size: 0.95rem !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+}
+
+.domain-search-input:focus {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.domain-search-input::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.75 !important;
+}
+
+.domain-search-clear-btn {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-muted) !important;
+  padding: 0.35rem !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 4px !important;
+  transition: color 0.2s ease !important;
+  flex-shrink: 0 !important;
+}
+
+.domain-search-clear-btn:hover {
+  color: var(--text) !important;
+}
+
+.domain-submit-btn {
+  height: 48px !important;
+  padding: 0 1.5rem !important;
+  font-size: 0.92rem !important;
+  min-width: 160px !important;
+}
+
+

@@ -270,4 +270,13 @@ export const SEO_CONFIGS = {
     keywords:
       'AI Playground, Interactive Demo, AI Tools, Mritunjay Kumar Demo, Web AI, Developer Playground',
   } satisfies SEOConfig,
+
+  domainChecker: {
+    title: 'Domain Registrar & WHOIS Checker | Mritunjay Kumar — Free RDAP Lookup',
+    description:
+      'Free real-time domain registrar and WHOIS lookup tool. Inspect authoritative registrars, registration dates, expiration timelines, and active nameservers via official RDAP.',
+    keywords:
+      'Domain Registrar Checker, WHOIS Lookup, RDAP Tool, Check Domain Registrar, Free Domain Lookup, Nameserver Checker, Expiry Date Lookup, Mritunjay Tools',
+  } satisfies SEOConfig,
 } as const;
+

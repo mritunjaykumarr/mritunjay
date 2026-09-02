@@ -13,6 +13,7 @@ import {
 import { EXTENDED_PROJECTS_DATA } from '../data/projectsData';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
 import PrinceAI from './PrinceAI';
+import DomainChecker from './DomainChecker.tsx';
 import AdUnit from './AdUnit';
 import Testimonials from './Testimonials';
 import LiveDevStats from './LiveDevStats';
@@ -425,6 +426,9 @@ export default function PortfolioRedesign() {
           </div>
         </section>
 
+        {/* ——— Domain Registrar Checker Section ——— */}
+        <DomainChecker />
+
         {/* ——— Skills Section ——— */}
         <section className="v3-section" id="skills">
           <div className="v3-container">
@@ -709,6 +713,7 @@ export default function PortfolioRedesign() {
               <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer">GitHub</a>
               <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer">LinkedIn</a>
               <a href="mailto:me@mritify.online">Email</a>
+              <a href="/domain-checker">Domain Checker</a>
               <a href="/privacy-policy">Privacy</a>
               <a href="/terms-and-conditions">Terms</a>
             </div>
