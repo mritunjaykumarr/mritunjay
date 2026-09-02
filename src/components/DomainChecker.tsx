@@ -92,10 +92,21 @@ export default function DomainChecker() {
         body: JSON.stringify({ domain: query }),
       });
 
-      const data = await res.json();
+      let data: any = null;
+      const rawText = await res.text();
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        // Non-JSON response
+      }
 
       if (!res.ok) {
-        throw new Error(data.message || data.error || 'Failed to lookup domain registrar details.');
+        const errorMsg =
+          (typeof data?.message === 'string' && data.message) ||
+          (typeof data?.error === 'string' && data.error) ||
+          (typeof data?.error?.message === 'string' && data.error.message) ||
+          (rawText && rawText.length < 150 ? rawText : `Lookup failed (HTTP ${res.status})`);
+        throw new Error(errorMsg);
       }
 
       setResult(data as DomainLookupResult);
@@ -105,7 +116,8 @@ export default function DomainChecker() {
       saveToHistory((data as DomainLookupResult).domain);
     } catch (err: any) {
       setResult(null);
-      setError(err.message || 'An unexpected error occurred while querying WHOIS registry.');
+      const msg = typeof err === 'string' ? err : (err?.message || 'An unexpected error occurred while querying WHOIS registry.');
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -150,10 +162,21 @@ export default function DomainChecker() {
           body: JSON.stringify({ domain: dom }),
         });
 
-        const data = await res.json();
+        let data: any = null;
+        const rawText = await res.text();
+        try {
+          data = JSON.parse(rawText);
+        } catch {
+          // non-JSON
+        }
 
         if (!res.ok) {
-          throw new Error(data.message || data.error || 'Lookup failed');
+          const errorMsg =
+            (typeof data?.message === 'string' && data.message) ||
+            (typeof data?.error === 'string' && data.error) ||
+            (typeof data?.error?.message === 'string' && data.error.message) ||
+            `Lookup failed (HTTP ${res.status})`;
+          throw new Error(errorMsg);
         }
 
         setBulkResults((prev) =>
@@ -163,9 +186,10 @@ export default function DomainChecker() {
         );
         saveToHistory((data as DomainLookupResult).domain);
       } catch (err: any) {
+        const errorMsg = typeof err === 'string' ? err : (err?.message || 'Lookup failed');
         setBulkResults((prev) =>
           prev.map((item, idx) =>
-            idx === i ? { ...item, status: 'error', error: err.message || 'Lookup failed' } : item
+            idx === i ? { ...item, status: 'error', error: errorMsg } : item
           )
         );
       }
