@@ -99,6 +99,7 @@ function domainLookupDevPlugin(): Plugin {
 }
 
 export default defineConfig({
+  base: '/',
   plugins: [react(), domainLookupDevPlugin()],
   build: {
     cssCodeSplit: false,
