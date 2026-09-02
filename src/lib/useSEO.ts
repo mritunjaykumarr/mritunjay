@@ -147,7 +147,7 @@ export const SEO_CONFIGS = {
           sameAs: [
             'https://github.com/mritunjaykumarr',
             'https://www.linkedin.com/in/mritunjay-kumar-22a7a828b',
-            'https://www.instagram.com/mritunjaykumar.dev/',
+            'https://www.instagram.com/princegupta.dev/',
             'https://x.com/mritunjay2025',
           ],
           address: {

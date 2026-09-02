@@ -37,7 +37,7 @@ export default function Footer() {
               <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="icon-circle">
                 <LinkedinIcon size={16} />
               </a>
-              <a href="https://www.instagram.com/mritunjaykumar.dev/" target="_blank" rel="noreferrer" aria-label="Instagram" className="icon-circle">
+              <a href="https://www.instagram.com/princegupta.dev/" target="_blank" rel="noreferrer" aria-label="Instagram" className="icon-circle">
                 <InstagramIcon size={16} />
               </a>
               <a href="mailto:me@mritify.online" aria-label="Email" className="icon-circle">

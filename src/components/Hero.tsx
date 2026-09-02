@@ -107,8 +107,8 @@ export default function Hero() {
       <HeroCanvas3D />
 
       {/* Mouse Spotlight Gradient Layer */}
-      <div 
-        className="hero-spotlight-overlay" 
+      <div
+        className="hero-spotlight-overlay"
         style={{
           background: `radial-gradient(600px circle at ${spotlightPos.x}% ${spotlightPos.y}%, var(--accent-glow), transparent 80%)`,
         }}
@@ -122,7 +122,7 @@ export default function Hero() {
 
       <div className="container hero-inner">
         {/* HERO LEFT COLUMN */}
-        <motion.div 
+        <motion.div
           className="hero-left"
           variants={containerVariants}
           initial="hidden"
@@ -136,7 +136,7 @@ export default function Hero() {
 
           {/* Live Typewriter Headline */}
           <motion.h1 variants={itemVariants} className="hero-h1">
-            <TypewriterText 
+            <TypewriterText
               phrases={[
                 "Hello, I'm Mritunjay Kumar",
                 "Full Stack & AI Application Developer",
@@ -155,15 +155,15 @@ export default function Hero() {
           </motion.p>
 
           {/* Quick AI Prompt Input in Hero */}
-          <motion.div 
-            variants={itemVariants} 
+          <motion.div
+            variants={itemVariants}
             className="hero-ai-prompt-box card-glass"
             whileHover={{ scale: 1.012, boxShadow: '0 12px 35px var(--shadow-accent)' }}
             transition={{ duration: 0.2 }}
           >
             <div className="ai-prompt-input-wrapper">
               <Bot size={18} className="text-primary" />
-              <input 
+              <input
                 type="text"
                 placeholder="Ask Prince AI about projects, tech stack, or hiring..."
                 value={heroInput}
@@ -172,9 +172,9 @@ export default function Hero() {
                   if (e.key === 'Enter') handleAskPrinceAI();
                 }}
               />
-              <motion.button 
-                onClick={handleAskPrinceAI} 
-                className="btn-primary btn-sm" 
+              <motion.button
+                onClick={handleAskPrinceAI}
+                className="btn-primary btn-sm"
                 aria-label="Ask AI"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -184,21 +184,21 @@ export default function Hero() {
               </motion.button>
             </div>
             <div className="hero-prompt-chips">
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.06, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => { setHeroInput('What is your tech stack?'); handleAskPrinceAI(); }}
               >
                 Tech Stack
               </motion.button>
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.06, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => { setHeroInput('Show best project'); handleAskPrinceAI(); }}
               >
                 Best Projects
               </motion.button>
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.06, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => { setHeroInput('Why should we hire you?'); handleAskPrinceAI(); }}
@@ -210,8 +210,8 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <motion.div variants={itemVariants} className="hero-btns">
-            <motion.a 
-              href="#projects" 
+            <motion.a
+              href="#projects"
               className="btn-primary"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
@@ -219,9 +219,9 @@ export default function Hero() {
               <span>Explore Projects</span>
               <ArrowRight size={16} />
             </motion.a>
-            <motion.button 
-              onClick={() => window.dispatchEvent(new Event('open-contact'))} 
-              className="btn-outline" 
+            <motion.button
+              onClick={() => window.dispatchEvent(new Event('open-contact'))}
+              className="btn-outline"
               style={{ fontFamily: 'inherit', cursor: 'pointer' }}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
@@ -249,7 +249,7 @@ export default function Hero() {
         </motion.div>
 
         {/* HERO RIGHT COLUMN: Interactive Terminal & Floating Tech Badges */}
-        <motion.div 
+        <motion.div
           className="hero-right"
           variants={rightVariants}
           initial="hidden"
@@ -260,28 +260,28 @@ export default function Hero() {
             <HeroTerminal />
 
             {/* Orbiting Floating Tech Icons with Framer Motion floating loop */}
-            <motion.div 
-              className="float-badge badge-react float-orbit-1" 
+            <motion.div
+              className="float-badge badge-react float-orbit-1"
               title="React 19"
               animate={{ y: [0, -12, 0], rotate: [0, 2, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="2" /><ellipse cx="12" cy="12" rx="10" ry="4" /><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" /><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" /></svg>
               <span>React</span>
             </motion.div>
 
-            <motion.div 
-              className="float-badge badge-node float-orbit-2" 
+            <motion.div
+              className="float-badge badge-node float-orbit-2"
               title="Node.js"
               animate={{ y: [0, 10, 0], rotate: [0, -2, 0] }}
               transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
             >
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>
               <span>Node.js</span>
             </motion.div>
 
-            <motion.div 
-              className="float-badge badge-ai float-orbit-3" 
+            <motion.div
+              className="float-badge badge-ai float-orbit-3"
               title="OpenRouter & Gemini AI"
               animate={{ y: [0, -10, 0], scale: [1, 1.04, 1] }}
               transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
@@ -290,8 +290,8 @@ export default function Hero() {
               <span>Gemini / OpenRouter</span>
             </motion.div>
 
-            <motion.div 
-              className="float-badge badge-ts float-orbit-4" 
+            <motion.div
+              className="float-badge badge-ts float-orbit-4"
               title="TypeScript"
               animate={{ y: [0, 12, 0], rotate: [0, 3, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
@@ -300,7 +300,7 @@ export default function Hero() {
               <span>TypeScript</span>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="float-badge badge-open float-orbit-5"
               animate={{ y: [0, -6, 0] }}
               transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
@@ -310,7 +310,7 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          <motion.div 
+          <motion.div
             className="hero-socials-bar card-glass"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
@@ -319,15 +319,15 @@ export default function Hero() {
             <div className="hero-socials">
               <motion.a whileHover={{ scale: 1.25, y: -2 }} href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer" className="social-link" aria-label="GitHub"><GithubIcon size={18} /></motion.a>
               <motion.a whileHover={{ scale: 1.25, y: -2 }} href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer" className="social-link" aria-label="LinkedIn"><LinkedinIcon size={18} /></motion.a>
-              <motion.a whileHover={{ scale: 1.25, y: -2 }} href="https://www.instagram.com/mritunjaykumar.dev/" target="_blank" rel="noreferrer" className="social-link" aria-label="Instagram"><InstagramIcon size={18} /></motion.a>
+              <motion.a whileHover={{ scale: 1.25, y: -2 }} href="https://www.instagram.com/princegupta.dev/" target="_blank" rel="noreferrer" className="social-link" aria-label="Instagram"><InstagramIcon size={18} /></motion.a>
               <motion.a whileHover={{ scale: 1.25, y: -2 }} href="https://x.com/mritunjay2025" target="_blank" rel="noreferrer" className="social-link" aria-label="Twitter"><TwitterIcon size={18} /></motion.a>
             </div>
           </motion.div>
         </motion.div>
       </div>
 
-      <motion.div 
-        className="scroll-hint" 
+      <motion.div
+        className="scroll-hint"
         aria-hidden="true"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
