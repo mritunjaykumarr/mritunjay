@@ -141,7 +141,14 @@ async function queryRDAP(domain: string): Promise<DomainLookupResult> {
       throw new Error(`RDAP registry returned status ${res.status}`);
     }
 
-    const data = await res.json() as any;
+    const raw = await res.text();
+    let data: any;
+    try {
+      data = JSON.parse(raw);
+    } catch (e: any) {
+      throw new Error(`Registry did not return valid JSON for "${domain}".`);
+    }
+
     const registrar = extractRegistrar(data?.entities);
     const { registrationDate, expiryDate, updatedDate } = extractDates(data?.events);
     const nameservers = extractNameservers(data?.nameservers);
