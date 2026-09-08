@@ -39,7 +39,7 @@ export default function ProjectProductModal({ project, onClose }: ProjectProduct
     <div className="modal-overlay open" onClick={onClose} role="dialog" aria-modal="true">
       <div 
         onClick={e => e.stopPropagation()} 
-        className="modal-box" 
+        className="modal-box modal-fixed-layout" 
         style={{ 
           maxWidth: '980px',
           background: 'var(--card)',

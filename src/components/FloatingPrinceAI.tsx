@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, Sparkles, X, SendHorizonal, MessageSquare, Send, Mail, Phone, Check } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { streamPrinceAIChat, type ChatMessage } from '../lib/princeAiService';
 
 const PRESET_AI_QUESTIONS = [
@@ -39,8 +40,39 @@ export default function FloatingPrinceAI() {
   ]);
   const [aiInput, setAiInput] = useState('');
   const [aiLoading, setAiLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const aiBodyRef = useRef<HTMLDivElement>(null);
+
+  const handlePaste = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.indexOf('image') !== -1) {
+        const file = item.getAsFile();
+        if (file) {
+          e.preventDefault();
+          const reader = new FileReader();
+          reader.onload = (ev) => setSelectedImage(ev.target?.result as string);
+          reader.readAsDataURL(file);
+          break;
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleOpenAI = (e: Event) => {
+      const customEvent = e as CustomEvent<{ tab?: 'lead' | 'ai' }>;
+      if (customEvent.detail?.tab) {
+        setActiveTab(customEvent.detail.tab);
+      }
+      setIsOpen(true);
+    };
+    window.addEventListener('open-prince-ai', handleOpenAI);
+    return () => window.removeEventListener('open-prince-ai', handleOpenAI);
+  }, []);
 
   useEffect(() => {
     if (aiBodyRef.current) {
@@ -50,11 +82,15 @@ export default function FloatingPrinceAI() {
 
   const handleSendAI = async (userText?: string) => {
     const text = (userText || aiInput).trim();
-    if (!text || aiLoading) return;
+    if ((!text && !selectedImage) || aiLoading) return;
 
-    const newMsgs: ChatMessage[] = [...aiMessages, { role: 'user', content: text }];
+    const newMsgs: ChatMessage[] = [
+      ...aiMessages,
+      { role: 'user', content: text, image: selectedImage || undefined }
+    ];
     setAiMessages(newMsgs);
     setAiInput('');
+    setSelectedImage(null);
     setAiLoading(true);
     setAiMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
@@ -358,8 +394,11 @@ export default function FloatingPrinceAI() {
                         <span className="ai-sender-name"><Bot size={12} /> Prince AI</span>
                       )}
                       <div className="ai-bubble">
+                        {m.image && (
+                          <img src={m.image} alt="Attachment" style={{ maxWidth: '100%', maxHeight: '180px', borderRadius: '8px', marginBottom: '6px', display: 'block' }} />
+                        )}
                         {m.content ? (
-                          <ReactMarkdown>{m.content}</ReactMarkdown>
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content}</ReactMarkdown>
                         ) : (
                           <span className="ai-typing"><span /><span /><span /></span>
                         )}
@@ -368,13 +407,25 @@ export default function FloatingPrinceAI() {
                   ))}
                 </div>
 
+                {/* Attached Screenshot Preview in Floating Chat */}
+                {selectedImage && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 10px', background: 'var(--surface-3)', borderTop: '1px solid var(--border)' }}>
+                    <img src={selectedImage} alt="Pasted" style={{ width: '28px', height: '28px', borderRadius: '4px', objectFit: 'cover' }} />
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', flex: 1 }}>📸 Screenshot attached (Ctrl+V)</span>
+                    <button type="button" onClick={() => setSelectedImage(null)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '2px' }}>
+                      <X size={13} />
+                    </button>
+                  </div>
+                )}
+
                 {/* Input Bar */}
-                <div className="floating-ai-input-bar">
+                <div className="floating-ai-input-bar" onPaste={handlePaste}>
                   <input
                     type="text"
-                    placeholder="Ask Prince AI anything..."
+                    placeholder="Ask Prince AI anything (or paste Ctrl+V)..."
                     value={aiInput}
                     onChange={(e) => setAiInput(e.target.value)}
+                    onPaste={handlePaste}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
@@ -385,7 +436,7 @@ export default function FloatingPrinceAI() {
                   />
                   <button
                     onClick={() => handleSendAI()}
-                    disabled={!aiInput.trim() || aiLoading}
+                    disabled={(!aiInput.trim() && !selectedImage) || aiLoading}
                     className="ai-send-action"
                     aria-label="Send"
                   >

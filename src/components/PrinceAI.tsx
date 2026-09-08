@@ -6,6 +6,7 @@ import {
   Code2, MessageSquare, ChevronRight
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { streamPrinceAIChat, type ChatMessage } from '../lib/princeAiService';
 
 /* ———————————————————————————————————————
@@ -102,13 +103,31 @@ export default function PrinceAI({ fullPage = false }: PrinceAIProps) {
     resizeTextarea();
   }, [input, resizeTextarea]);
 
-  /* ——— Image attachment ——— */
+  /* ——— Image attachment & Screenshot Paste (Ctrl+V) ——— */
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (ev) => setSelectedImage(ev.target?.result as string);
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.indexOf('image') !== -1) {
+        const file = item.getAsFile();
+        if (file) {
+          e.preventDefault();
+          const reader = new FileReader();
+          reader.onload = (ev) => setSelectedImage(ev.target?.result as string);
+          reader.readAsDataURL(file);
+          break;
+        }
+      }
     }
   };
 
@@ -195,6 +214,7 @@ export default function PrinceAI({ fullPage = false }: PrinceAIProps) {
   return (
     <div
       ref={containerRef}
+      onPaste={handlePaste}
       className={`pai-root ${fullPage ? 'pai-fullpage' : ''} ${isFullScreen ? 'pai-fs' : ''}`}
     >
       {/* ═══════ HEADER ═══════ */}
@@ -336,7 +356,7 @@ export default function PrinceAI({ fullPage = false }: PrinceAIProps) {
                   {msg.content ? (
                     <div className="pai-bubble">
                       {msg.role === 'assistant' ? (
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
                       ) : (
                         <p>{msg.content}</p>
                       )}
@@ -373,11 +393,12 @@ export default function PrinceAI({ fullPage = false }: PrinceAIProps) {
 
       {/* ═══════ COMPOSER ═══════ */}
       <footer className="pai-composer">
-        {/* Image preview */}
+        {/* Image / Screenshot preview */}
         {selectedImage && (
           <div className="pai-attach-preview">
-            <img src={selectedImage} alt="Attached" />
-            <button onClick={() => setSelectedImage(null)} className="pai-attach-remove" aria-label="Remove attachment">
+            <img src={selectedImage} alt="Attached screenshot" />
+            <span className="pai-attach-label">📸 Screenshot attached (Ctrl+V)</span>
+            <button onClick={() => setSelectedImage(null)} className="pai-attach-remove" title="Remove attachment" aria-label="Remove attachment">
               <X size={12} />
             </button>
           </div>
@@ -389,7 +410,7 @@ export default function PrinceAI({ fullPage = false }: PrinceAIProps) {
           <button
             className="pai-composer-btn"
             onClick={() => fileInputRef.current?.click()}
-            title="Attach image"
+            title="Attach image or screenshot (or press Ctrl+V)"
             aria-label="Attach image"
           >
             <Paperclip size={17} />
@@ -398,10 +419,11 @@ export default function PrinceAI({ fullPage = false }: PrinceAIProps) {
           <textarea
             ref={textareaRef}
             className="pai-textarea"
-            placeholder="Ask Prince AI anything..."
+            placeholder="Ask Prince AI anything (or paste screenshot with Ctrl+V)..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            onPaste={handlePaste}
             disabled={isLoading}
             rows={1}
           />

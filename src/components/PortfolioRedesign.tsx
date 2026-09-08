@@ -173,9 +173,15 @@ export default function PortfolioRedesign() {
         <section ref={heroRef} className="v3-hero" id="home">
           <div className="v3-container v3-hero-grid">
             <FadeIn className="v3-hero-copy">
-              <div className="v3-kicker" style={{ marginBottom: '1.25rem' }}>
+              <div
+                className="v3-kicker"
+                style={{ marginBottom: '1.25rem', cursor: 'pointer' }}
+                onClick={() => window.dispatchEvent(new CustomEvent('open-welcome-hub'))}
+                title="Click to open Welcome Hub & Interactive Quick Start"
+              >
                 <Sparkles size={13} style={{ color: 'var(--text)' }} />
                 <span>Available for select projects · AI-First Engineering</span>
+                <span style={{ fontSize: '0.72rem', opacity: 0.6, marginLeft: '4px' }}>✨ Quick Start</span>
               </div>
 
               <h1>
@@ -203,7 +209,7 @@ export default function PortfolioRedesign() {
 
               <div className="v3-hero-proof">
                 <div className="v3-avatar-stack">
-                  <img src="/assets/profile1.jpg" alt="Mritunjay Kumar" />
+                  <img src="/assets/orgpic1.jpg" alt="Mritunjay Kumar" />
                 </div>
                 <p>
                   <strong>Usually replies within 24 hours.</strong>

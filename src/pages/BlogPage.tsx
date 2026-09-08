@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useScrollLock } from '../hooks/useScrollLock';
@@ -17,7 +17,14 @@ export default function BlogPage() {
   const [activePost, setActivePost] = useState<BlogPost | null>(null);
   const [comments, setComments] = useState<CommentItem[]>([]);
   const [newComment, setNewComment] = useState('');
+  const modalBoxRef = useRef<HTMLDivElement>(null);
   useScrollLock(!!activePost);
+
+  useEffect(() => {
+    if (activePost && modalBoxRef.current) {
+      modalBoxRef.current.scrollTop = 0;
+    }
+  }, [activePost]);
 
   const [userLikes, setUserLikes] = useState<Record<string, boolean>>(() => {
     try {
@@ -360,125 +367,128 @@ export default function BlogPage() {
       {activePost && (
         <div className="modal-overlay open" onClick={closePost} role="dialog" aria-modal="true">
           <div 
+            ref={modalBoxRef}
             onClick={e => e.stopPropagation()} 
-            className="modal-box" 
-            style={{ 
-              maxWidth: 780, 
-              width: '100%', 
-              maxHeight: '90vh', 
-              overflowY: 'auto', 
-              padding: 'clamp(1.25rem, 3vw, 2rem)', 
-              position: 'relative',
-              background: 'var(--card)',
-              border: '1px solid var(--border)',
-              borderRadius: '16px',
-              boxShadow: 'var(--shadow-lg)'
-            }}
+            className="modal-box blog-reader-modal modal-scrollable" 
           >
-            <button
-              onClick={closePost}
-              aria-label="Close article"
-              style={{
-                position: 'absolute', top: 14, right: 14, width: 32, height: 32,
-                borderRadius: '6px', background: 'var(--surface-2)', border: '1px solid var(--border)',
-                display: 'grid', placeItems: 'center', color: 'var(--text)', cursor: 'pointer', zIndex: 10
-              }}
-            >
-              <X size={16} />
-            </button>
+            {/* Sticky Header with Meta & Close Button */}
+            <div className="blog-reader-sticky-header">
+              <div className="blog-reader-header-meta">
+                <span className="blog-reader-badge">{activePost.category || activePost.type}</span>
+                <span>·</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <Clock size={12} />
+                  {readTime(activePost.body || '')} min read
+                </span>
+                <span style={{ opacity: 0.35 }}>|</span>
+                <span className="blog-reader-head-title" title={activePost.title}>{activePost.title}</span>
+              </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              <span>{activePost.category || activePost.type}</span>
-              <span>·</span>
-              <span>{readTime(activePost.body || '')} min read</span>
+              <button
+                onClick={closePost}
+                aria-label="Close article"
+                className="blog-reader-close-btn"
+              >
+                <X size={16} />
+              </button>
             </div>
 
-            <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.85rem)', fontWeight: 600, color: 'var(--text)', margin: '0 0 1rem', lineHeight: 1.3, paddingRight: '2rem' }}>
-              {activePost.title}
-            </h2>
+            {/* Scrollable Article Body */}
+            <div className="blog-reader-body">
+              {/* Only render headline if HTML body does not already open with an <h1> */}
+              {!/^\s*<h1/i.test(activePost.body || '') && (
+                <h1 className="blog-reader-title">
+                  {activePost.title}
+                </h1>
+              )}
 
-            {activePost.cover && (
-              <div style={{ borderRadius: '10px', overflow: 'hidden', marginBottom: '1.5rem', border: '1px solid var(--border)' }}>
-                <img src={activePost.cover} alt="" style={{ width: '100%', maxHeight: 320, objectFit: 'cover' }} />
-              </div>
-            )}
-
-            <div 
-              style={{ 
-                color: 'var(--text)', fontSize: '0.95rem', lineHeight: 1.75,
-                borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem', marginBottom: '1.5rem' 
-              }}
-              dangerouslySetInnerHTML={{ __html: activePost.body }}
-            />
-
-            {/* Modal Bottom Actions */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button
-                  onClick={() => toggleLike(activePost.id)}
-                  className="btn-secondary"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.4rem 0.85rem', fontSize: '0.82rem' }}
-                >
-                  <Heart size={14} fill={userLikes[activePost.id] ? '#f43f5e' : 'none'} color={userLikes[activePost.id] ? '#f43f5e' : 'currentColor'} />
-                  <span>{activePost.likes_count || 0} Likes</span>
-                </button>
-
-                <button
-                  onClick={() => handleShareArticle(activePost)}
-                  className="btn-secondary"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.4rem 0.85rem', fontSize: '0.82rem' }}
-                >
-                  <Share2 size={14} />
-                  <span>Share</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Comments Section */}
-            <div>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text)', marginBottom: '1rem' }}>
-                Discussion &amp; Feedback ({comments.length})
-              </h3>
-
-              <div style={{ display: 'flex', gap: '8px', marginBottom: '1.25rem' }}>
-                <input
-                  type="text"
-                  placeholder="Add a thought or question on this post..."
-                  value={newComment}
-                  onChange={e => setNewComment(e.target.value)}
-                  onKeyDown={e => { if (e.key === 'Enter') handleComment(activePost.id); }}
-                  style={{
-                    flex: 1, padding: '0.65rem 0.85rem', borderRadius: '8px',
-                    background: 'var(--surface-2)', border: '1px solid var(--border)',
-                    color: 'var(--text)', fontSize: '0.85rem'
-                  }}
-                />
-                <button
-                  onClick={() => handleComment(activePost.id)}
-                  disabled={!newComment.trim()}
-                  className="btn-primary"
-                  style={{ padding: '0.65rem 1rem', fontSize: '0.82rem' }}
-                >
-                  <Send size={14} />
-                </button>
+              <div className="blog-reader-byline">
+                <span>Published on {new Date(activePost.created_at || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                <span>·</span>
+                <span>By Mritunjay Kumar</span>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                {comments.length === 0 ? (
-                  <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                    Be the first to share a thought on this article!
-                  </div>
-                ) : (
-                  comments.map((c, i) => (
-                    <div key={c.id || i} style={{ padding: '0.75rem 1rem', background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: '8px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                        <span style={{ fontWeight: 600, color: 'var(--text)' }}>{c.author_name || c.user_name || 'Visitor'}</span>
-                        <span>{new Date(c.created_at).toLocaleDateString()}</span>
-                      </div>
-                      <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text)', lineHeight: 1.5 }}>{c.content}</p>
+              {activePost.cover && (
+                <div className="blog-reader-cover">
+                  <img src={activePost.cover} alt={activePost.title} />
+                </div>
+              )}
+
+              {/* Rich HTML Content */}
+              <div 
+                className="blog-reader-content"
+                dangerouslySetInnerHTML={{ __html: activePost.body }}
+              />
+
+              {/* Modal Bottom Actions */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.75rem' }}>
+                <div style={{ display: 'flex', gap: '0.75rem' }}>
+                  <button
+                    onClick={() => toggleLike(activePost.id)}
+                    className="btn-secondary"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.45rem 0.95rem', fontSize: '0.82rem' }}
+                  >
+                    <Heart size={14} fill={userLikes[activePost.id] ? '#f43f5e' : 'none'} color={userLikes[activePost.id] ? '#f43f5e' : 'currentColor'} />
+                    <span>{activePost.likes_count || 0} Likes</span>
+                  </button>
+
+                  <button
+                    onClick={() => handleShareArticle(activePost)}
+                    className="btn-secondary"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.45rem 0.95rem', fontSize: '0.82rem' }}
+                  >
+                    <Share2 size={14} />
+                    <span>Share</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Comments Section */}
+              <div>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text)', marginBottom: '1rem' }}>
+                  Discussion &amp; Feedback ({comments.length})
+                </h3>
+
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '1.25rem' }}>
+                  <input
+                    type="text"
+                    placeholder="Add a thought or question on this post..."
+                    value={newComment}
+                    onChange={e => setNewComment(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter') handleComment(activePost.id); }}
+                    style={{
+                      flex: 1, padding: '0.65rem 0.85rem', borderRadius: '8px',
+                      background: 'var(--surface-2)', border: '1px solid var(--border)',
+                      color: 'var(--text)', fontSize: '0.85rem'
+                    }}
+                  />
+                  <button
+                    onClick={() => handleComment(activePost.id)}
+                    disabled={!newComment.trim()}
+                    className="btn-primary"
+                    style={{ padding: '0.65rem 1rem', fontSize: '0.82rem' }}
+                  >
+                    <Send size={14} />
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  {comments.length === 0 ? (
+                    <div style={{ fontSize: '0.84rem', color: 'var(--text-muted)' }}>
+                      Be the first to share a thought on this article!
                     </div>
-                  ))
-                )}
+                  ) : (
+                    comments.map((c, i) => (
+                      <div key={c.id || i} style={{ padding: '0.85rem 1.1rem', background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: '10px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.74rem', color: 'var(--text-muted)', marginBottom: '5px' }}>
+                          <span style={{ fontWeight: 600, color: 'var(--text)' }}>{c.author_name || c.user_name || 'Visitor'}</span>
+                          <span>{new Date(c.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text)', lineHeight: 1.6 }}>{c.content}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>

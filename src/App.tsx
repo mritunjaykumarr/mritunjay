@@ -18,6 +18,7 @@ import ScrollToTop from './components/ScrollToTop';
 import Loader from './components/Loader';
 import FloatingPrinceAI from './components/FloatingPrinceAI';
 import MobileBottomDock from './components/MobileBottomDock';
+import WelcomeHub from './components/WelcomeHub';
 
 import PlaygroundPage from './pages/PlaygroundPage';
 import DomainCheckerPage from './pages/DomainCheckerPage';
@@ -105,6 +106,7 @@ function App() {
         onClose={() => setIsContactOpen(false)} 
       />
       <FloatingPrinceAI />
+      <WelcomeHub />
       <MobileBottomDock />
     </BrowserRouter>
   );

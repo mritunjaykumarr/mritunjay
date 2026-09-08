@@ -32,8 +32,9 @@ export const SYSTEM_PROMPT = `You are Prince AI — an intelligent, friendly, an
 
 ### Guidance for Responses:
 - Maintain a professional, friendly, and expert technical tone.
-- Format responses cleanly with Markdown (bullet points, bold text, code blocks where applicable).
-- Keep answers informative yet crisp. If asked general technical/programming questions or about Mritunjay's work, provide accurate and direct help!`;
+- Format responses cleanly with Markdown (bullet points, bold text, code blocks, and properly spaced Markdown tables with newline separators).
+- Always deliver complete, thorough, well-structured answers from start to finish without stopping abruptly.
+- If asked general technical/programming questions or about Mritunjay's work, provide accurate and direct help!`;
 
 /**
  * High-precision, context-aware local intelligence engine for Prince AI.
@@ -230,14 +231,63 @@ Mritunjay built a dedicated **[Domain Registrar Checker](/domain-checker)** dire
 - Try it now on the [/domain-checker](/domain-checker) page!`;
   }
 
-  // Default intelligent assistant response
-  return `Thanks for asking! Mritunjay Kumar is a **Full Stack & AI Application Developer** specializing in React 19, TypeScript, Node.js, Python, and generative AI systems. 
+  // Edge computing & Edge Requests
+  if (q.includes('edge request') || q.includes('edge computing') || q.includes('edge function') || q.includes('cdn')) {
+    return `### ⚡ What is an Edge Request?
+    
+An **Edge Request** is a network request routed to and processed by servers located at the **network edge** (such as Cloudflare, Vercel Edge Network, or AWS CloudFront points-of-presence) geographically closest to the user, rather than traveling all the way to a centralized origin server.
 
-You can ask me about:
-- 🚀 His top projects (**Bulk Mail Sender**, **Domain Checker**, **CLI Portfolio**)
-- ⚡ Specific frameworks and tools (**React**, **Next.js**, **Express**, **Supabase**)
-- 💼 His professional experience at **Epigroww Global**
-- 📄 How to **hire him** or download his **resume**!`;
+#### 🚀 Key Benefits:
+- **Ultra-Low Latency:** Edge servers respond within 10–30ms by executing code close to the user.
+- **Global Scalability:** Distributes load across hundreds of global edge nodes, eliminating central bottlenecks.
+- **Instant Personalization & Routing:** Perfect for geolocation detection, A/B testing, JWT auth verification, and fast streaming.
+- **Cost Reduction:** Offloads traffic and compute from origin databases and servers.
+
+*Mritunjay actively leverages Edge compute and Vercel Edge routes for high-throughput streaming and low-latency API architectures.*`;
+  }
+
+  // General Web & Backend Architecture
+  if (q.includes('websocket') || q.includes('real-time') || q.includes('socket')) {
+    return `### 🔄 Real-Time & WebSockets
+    
+WebSockets provide a full-duplex, persistent communication channel between client and server over a single TCP connection. Unlike traditional HTTP request-response cycles, both the client and server can send messages independently at any moment.
+
+Mritunjay engineered a **Sub-20ms Real-Time Multi-Room Chat** using **Socket.io and React**, optimizing for packet compression, automatic reconnection, and channel subscriptions.`;
+  }
+
+  if (q.includes('database') || q.includes('sql') || q.includes('postgres') || q.includes('supabase') || q.includes('mongodb')) {
+    return `### 🗄️ Database Systems & Data Modeling
+    
+Mritunjay works across both relational and document databases:
+- **Supabase & PostgreSQL:** Primary choice for structured data, Row Level Security (RLS), ACID transactions, and vector search.
+- **Redis:** Used for in-memory caching, sub-millisecond session state, and rate-limiting.
+- **MongoDB:** Flexible JSON document storage for unstructured payloads.`;
+  }
+
+  // Technical inquiry fallback
+  if (q.includes('what is') || q.includes('how to') || q.includes('how does') || q.includes('explain') || q.includes('difference between')) {
+    return `### 💡 Technical Insight from Prince AI
+    
+You asked: **"${query}"**
+
+In modern software engineering, clean modular design and performance-first architecture are key. Whether working with client-side React 19, serverless edge compute, or streaming LLM pipelines, Mritunjay designs systems with:
+1. **Low Time-to-Interactive (TTI):** Efficient code-splitting and asset optimization.
+2. **Type Safety & Reliability:** 100% strict TypeScript and typed API contracts.
+3. **Resilient Data Pipelines:** Graceful fallbacks, intelligent retry mechanisms, and low-latency caching.
+
+*Feel free to ask more specific questions about his projects, architecture choices, or tech stack!*`;
+  }
+
+  // Default intelligent assistant response
+  return `👋 **Prince AI here!** 
+
+You asked: *"**${query}**"*
+
+I can help you explore Mritunjay Kumar's work, code, and background:
+- 🚀 **Projects:** Ask about his *Bulk Mail Sender*, *Domain Checker*, or *Ad-Free Stream Engine*.
+- ⚡ **Tech Stack:** Inquire about *React 19*, *TypeScript*, *Node.js*, or *LLM Integration*.
+- 💼 **Experience:** Learn about his engineering at *Epigroww Global*.
+- 📄 **Resume & Hiring:** Say "hire" or "resume" to get direct contact info!`;
 }
 
 /**
@@ -260,10 +310,10 @@ async function streamLocalFallback(
 
 /**
  * Streams Prince AI chat responses.
- * 1. Tries OpenRouter with 100% free models (:free tier) if API key is present.
- * 2. If OpenRouter returns any credit error (402), rate limit (429), or is offline,
- *    it gracefully and silently falls back to the high-precision Local Intelligence Engine.
- * 3. Guarantees 100% lifetime free, uninterrupted AI assistance.
+ * 1. Calls OpenRouter with official free router (:free tier).
+ * 2. Uses max 3 models in fallback array as required by OpenRouter.
+ * 3. If API is unreachable or rate-limited, falls back to context-aware local intelligence.
+ * 4. Guarantees 100% lifetime free, uninterrupted AI assistance.
  */
 export async function streamPrinceAIChat(
   messages: ChatMessage[],
@@ -272,14 +322,8 @@ export async function streamPrinceAIChat(
   _onError: (errMessage: string) => void
 ) {
   const lastUserMsg = messages[messages.length - 1]?.content || '';
-  const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-
-  // Fallback immediately if no API key is provided
-  if (!apiKey || !apiKey.trim()) {
-    const fallbackResponse = generatePrinceAIResponse(lastUserMsg);
-    await streamLocalFallback(fallbackResponse, onChunk, onDone);
-    return;
-  }
+  const apiKey =
+    import.meta.env.VITE_OPENROUTER_API_KEY || '';
 
   try {
     const formattedMessages = [
@@ -298,7 +342,7 @@ export async function streamPrinceAIChat(
       }),
     ];
 
-    // Priority list of 100% FREE OpenRouter models (0 credits required)
+    // Try OpenRouter Free tier with up to 3 valid models (OpenRouter enforces <= 3 items)
     const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -309,23 +353,20 @@ export async function streamPrinceAIChat(
       },
       body: JSON.stringify({
         models: [
-          'google/gemini-2.0-flash-exp:free',
-          'meta-llama/llama-3.3-70b-instruct:free',
-          'qwen/qwen-2.5-coder-32b-instruct:free',
-          'meta-llama/llama-3.1-8b-instruct:free',
-          'mistralai/mistral-7b-instruct:free',
-          'deepseek/deepseek-r1:free'
+          'openrouter/free',
+          'nvidia/nemotron-3.5-lightning:free',
+          'liquid/lfm-2.5-2.6b:free'
         ],
         messages: formattedMessages,
         stream: true,
-        max_tokens: 800,
+        max_tokens: 2500,
         temperature: 0.7,
       }),
     });
 
-    // If API returns ANY error (e.g. 402 Insufficient credits, 429 Rate limited, 401 Bad key)
+    // If OpenRouter returns an error (429, 400, 502), fall back to local intelligence
     if (!res.ok) {
-      console.warn(`OpenRouter returned status ${res.status}. Falling back to Lifetime Free Engine.`);
+      console.warn(`OpenRouter status ${res.status}. Using context engine.`);
       const fallbackResponse = generatePrinceAIResponse(lastUserMsg);
       await streamLocalFallback(fallbackResponse, onChunk, onDone);
       return;
@@ -384,7 +425,7 @@ export async function streamPrinceAIChat(
 
     onDone();
   } catch (err: unknown) {
-    console.warn('Prince AI Network/Stream Exception. Activating Lifetime Free Engine.', err);
+    console.warn('Prince AI Network/Stream Exception. Activating Local Intelligence.', err);
     const fallbackResponse = generatePrinceAIResponse(lastUserMsg);
     await streamLocalFallback(fallbackResponse, onChunk, onDone);
   }

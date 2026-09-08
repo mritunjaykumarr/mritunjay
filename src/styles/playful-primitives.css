@@ -277,18 +277,58 @@ label,
   width: 100% !important;
   max-width: 800px !important;
   max-height: 90vh !important;
-  background: #0a0a0a !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  border-radius: 14px !important;
-  overflow: hidden !important;
+  background: var(--card, #0a0a0a) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.14)) !important;
+  border-radius: 16px !important;
   position: relative !important;
   display: flex !important;
   flex-direction: column !important;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+  overscroll-behavior: contain !important;
+}
+
+/* Modals with custom fixed layout */
+.modal-box.modal-fixed-layout {
+  overflow: hidden !important;
+}
+
+/* Modals that scroll directly */
+.modal-box:not(.modal-fixed-layout),
+.modal-box.modal-scrollable,
+.blog-reader-modal {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Custom sleek scrollbars for modal boxes */
+.modal-box::-webkit-scrollbar,
+.blog-reader-modal::-webkit-scrollbar {
+  width: 7px;
+}
+
+.modal-box::-webkit-scrollbar-track,
+.blog-reader-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-box::-webkit-scrollbar-thumb,
+.blog-reader-modal::-webkit-scrollbar-thumb {
+  background: var(--border, rgba(255, 255, 255, 0.22));
+  border-radius: 8px;
+}
+
+.modal-box::-webkit-scrollbar-thumb:hover,
+.blog-reader-modal::-webkit-scrollbar-thumb:hover {
+  background: var(--border-accent, rgba(255, 255, 255, 0.45));
 }
 
 @media (max-width: 640px) {
   .modal-box {
-    max-height: 92vh !important;
-    border-radius: 14px 14px 0 0 !important;
+    max-height: 94vh !important;
+    border-radius: 18px 18px 0 0 !important;
   }
 }
+
