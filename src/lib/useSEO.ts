@@ -278,5 +278,45 @@ export const SEO_CONFIGS = {
     keywords:
       'Domain Registrar Checker, WHOIS Lookup, RDAP Tool, Check Domain Registrar, Free Domain Lookup, Nameserver Checker, Expiry Date Lookup, Mritunjay Tools',
   } satisfies SEOConfig,
+
+  recruiterMatcher: {
+    title: 'Recruiter JD Matcher & ATS Scorecard | Mritunjay Kumar',
+    description:
+      'Evaluate Mritunjay Kumar against your job description in real-time. Instant ATS match calculation, skill overlap analysis, and verified portfolio proof.',
+    keywords:
+      'Recruiter JD Matcher, ATS Scorecard, Hire Mritunjay Kumar, Full Stack Candidate Match, React Developer Screening',
+  } satisfies SEOConfig,
+
+  techArchitect: {
+    title: 'Startup Tech Stack Architect | Mritunjay Kumar',
+    description:
+      'Generate production system architecture, tech stack blueprints, and cloud cost estimations for any web application or AI idea in seconds.',
+    keywords:
+      'Tech Stack Architect, System Design Tool, Cloud Architecture Planner, AI App Stack, Cost Estimator, Mritunjay Kumar',
+  } satisfies SEOConfig,
+
+  scheduleCall: {
+    title: 'Schedule a Call / Consultation | Mritunjay Kumar',
+    description:
+      'Book a 15-minute recruiter screen, 30-minute project discovery session, or 60-minute technical architecture consultation directly with Mritunjay Kumar.',
+    keywords:
+      'Schedule Call, Book Meeting, Hire Mritunjay Kumar, Technical Consultation, Recruiter Screen, Full Stack Advisory',
+  } satisfies SEOConfig,
+
+  guestbook: {
+    title: 'Community Guestbook & Peer Endorsements | Mritunjay Kumar',
+    description:
+      'Sign the developer guestbook. Read verified reviews, peer endorsements, and client testimonials for Mritunjay Kumar.',
+    keywords:
+      'Developer Guestbook, Client Testimonials, Peer Endorsements, Mritunjay Kumar Reviews, Web Engineer Recommendations',
+  } satisfies SEOConfig,
+
+  tools: {
+    title: 'Developer Micro-Tools Suite | Mritunjay Kumar',
+    description:
+      'Explore free developer utilities: Social OpenGraph visualizer, JSON to TypeScript interface generator, UUID generator, and Domain WHOIS lookup.',
+    keywords:
+      'Developer Tools, OpenGraph Previewer, JSON to TypeScript, UUID Generator, Meta Tag Tester, Mritunjay Kumar Tools',
+  } satisfies SEOConfig,
 } as const;
 

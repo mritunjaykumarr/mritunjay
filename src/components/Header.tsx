@@ -3,8 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   FileText, X, ChevronRight,
   Briefcase, FolderKanban, Wrench, Award,
-  BookOpen, DollarSign, Bot, LayoutDashboard, Gamepad2, Sparkles,
-  User, Mail, Code2, Sun, Moon, Globe
+  BookOpen, DollarSign, Bot, LayoutDashboard, Sparkles,
+  User, Mail, Code2, Sun, Moon, Globe,
+  Search, Sliders, Calendar, Heart
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -18,12 +19,24 @@ const primaryNav = [
   { label: 'About', path: '/about' },
   { label: 'Skills', path: '/skills' },
   { label: 'Projects', path: '/projects' },
-  { label: 'Domain Checker', path: '/domain-checker' },
+  { label: 'Tools', path: '/tools' },
   { label: 'Experience', path: '/experience' },
+  { label: 'Book Call', path: '/book-call' },
   { label: 'Contact', path: '/contact' },
 ];
 
 const drawerSections = [
+  {
+    title: 'SaaS Engines & Client Tools',
+    items: [
+      { label: 'Recruiter JD Matcher', path: '/recruiter-analyzer', icon: Briefcase, desc: 'ATS candidate match % & profile audit' },
+      { label: 'Tech Stack Architect', path: '/tech-architect', icon: Sparkles, desc: 'System blueprints & cloud cost forecast' },
+      { label: 'Developer Micro-Tools', path: '/tools', icon: Sliders, desc: 'Social OG previewer & JSON-to-TS studio' },
+      { label: 'Schedule Consultation', path: '/book-call', icon: Calendar, desc: 'Book a 15, 30, or 60 min session' },
+      { label: 'Community Guestbook', path: '/guestbook', icon: Heart, desc: 'Verified reviews & peer endorsements' },
+      { label: 'Domain WHOIS Checker', path: '/domain-checker', icon: Globe, desc: 'Real-time RDAP registry lookup' },
+    ],
+  },
   {
     title: 'Portfolio & Work',
     items: [
@@ -34,18 +47,11 @@ const drawerSections = [
     ],
   },
   {
-    title: 'Writing & Pricing',
+    title: 'Writing & AI',
     items: [
+      { label: 'PrinceAI Assistant', path: '/prince-ai', icon: Bot, desc: 'Personal LLM AI assistant' },
       { label: 'Blog & Articles', path: '/blog', icon: BookOpen, desc: 'Insights on React 19, AI & motion' },
       { label: 'Services & Pricing', path: '/pricing', icon: DollarSign, desc: 'Product build plans & rates' },
-    ],
-  },
-  {
-    title: 'AI & Interactive Tools',
-    items: [
-      { label: 'PrinceAI', path: '/prince-ai', icon: Bot, desc: 'Personal LLM AI assistant' },
-      { label: 'Domain Checker', path: '/domain-checker', icon: Globe, desc: 'Real-time WHOIS & RDAP lookup' },
-      { label: 'Playground', path: '/playground', icon: Gamepad2, desc: 'Interactive AI & UI experiments' },
       { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, desc: 'Performance analytics & stats' },
     ],
   },
@@ -156,6 +162,18 @@ export default function Header({ theme = 'dark', toggleTheme = () => {} }: Heade
 
           {/* RIGHT: THEME TOGGLE, RESUME & MENU TRIGGER */}
           <div className="navbar-right-actions">
+            {/* Command Palette Trigger */}
+            <button
+              onClick={() => window.dispatchEvent(new Event('open-command-palette'))}
+              className="navbar-theme-btn"
+              aria-label="Open Command Palette (Cmd+K)"
+              title="Search & Commands (Cmd+K)"
+              style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '6px 10px', width: 'auto', borderRadius: '8px' }}
+            >
+              <Search size={14} />
+              <kbd style={{ fontSize: '0.68rem', fontFamily: 'monospace', opacity: 0.75 }}>⌘K</kbd>
+            </button>
+
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}

@@ -27,8 +27,16 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import Disclaimer from './pages/Disclaimer';
 import NotFound from './pages/NotFound';
 
+import CommandPalette from './components/CommandPalette';
+import LiveStatusBeacon from './components/LiveStatusBeacon';
+
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const AdFree = lazy(() => import('./pages/AdFree'));
+const RecruiterMatcherPage = lazy(() => import('./pages/RecruiterMatcherPage'));
+const TechArchitectPage = lazy(() => import('./pages/TechArchitectPage'));
+const ScheduleCallPage = lazy(() => import('./pages/ScheduleCallPage'));
+const GuestbookPage = lazy(() => import('./pages/GuestbookPage'));
+const ToolsPage = lazy(() => import('./pages/ToolsPage'));
 
 /* Footer wrapper: shows Footer on all pages EXCEPT "/" (Home has its own) */
 function ConditionalFooter() {
@@ -92,6 +100,12 @@ function App() {
           <Route path="/prince-ai" element={<PrinceAIPage />} />
           <Route path="/playground" element={<PlaygroundPage />} />
           <Route path="/domain-checker" element={<DomainCheckerPage />} />
+          <Route path="/tools" element={<ToolsPage />} />
+          <Route path="/recruiter-analyzer" element={<RecruiterMatcherPage />} />
+          <Route path="/tech-architect" element={<TechArchitectPage />} />
+          <Route path="/book-call" element={<ScheduleCallPage />} />
+          <Route path="/schedule" element={<ScheduleCallPage />} />
+          <Route path="/guestbook" element={<GuestbookPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
@@ -107,6 +121,8 @@ function App() {
       />
       <FloatingPrinceAI />
       <WelcomeHub />
+      <LiveStatusBeacon />
+      <CommandPalette />
       <MobileBottomDock />
     </BrowserRouter>
   );

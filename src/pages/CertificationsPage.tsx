@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Award, X, ExternalLink, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { useScrollLock } from '../hooks/useScrollLock';
@@ -28,8 +28,15 @@ export default function CertificationsPage() {
   usePortfolioMotion();
   useSEO(SEO_CONFIGS.certifications);
   const [selectedCert, setSelectedCert] = useState<CertItem | null>(null);
+  const modalBoxRef = useRef<HTMLDivElement>(null);
 
   useScrollLock(!!selectedCert);
+
+  useEffect(() => {
+    if (selectedCert && modalBoxRef.current) {
+      modalBoxRef.current.scrollTop = 0;
+    }
+  }, [selectedCert]);
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
@@ -112,7 +119,12 @@ export default function CertificationsPage() {
       {/* Modal Preview */}
       {selectedCert && (
         <div className="modal-overlay open" onClick={() => setSelectedCert(null)}>
-          <div onClick={e => e.stopPropagation()} className="modal-box" style={{ maxWidth: 800, width: '100%', maxHeight: '90vh', padding: '1.5rem', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '14px', position: 'relative', overflowY: 'auto' }}>
+          <div 
+            ref={modalBoxRef}
+            onClick={e => e.stopPropagation()} 
+            className="modal-box modal-scrollable" 
+            style={{ maxWidth: 800, width: '100%', maxHeight: '90vh', padding: '1.5rem', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '14px', position: 'relative', overflowY: 'auto' }}
+          >
             <button
               onClick={() => setSelectedCert(null)}
               aria-label="Close"
