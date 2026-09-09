@@ -28,7 +28,6 @@ import Disclaimer from './pages/Disclaimer';
 import NotFound from './pages/NotFound';
 
 import CommandPalette from './components/CommandPalette';
-import LiveStatusBeacon from './components/LiveStatusBeacon';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const AdFree = lazy(() => import('./pages/AdFree'));
@@ -121,7 +120,6 @@ function App() {
       />
       <FloatingPrinceAI />
       <WelcomeHub />
-      <LiveStatusBeacon />
       <CommandPalette />
       <MobileBottomDock />
     </BrowserRouter>

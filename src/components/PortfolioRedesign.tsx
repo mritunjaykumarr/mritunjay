@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import {
-  ArrowRight, ArrowUpRight, Award, Bot, BrainCircuit, BriefcaseBusiness,
+  ArrowRight, ArrowUpRight, Award, BrainCircuit, BriefcaseBusiness,
   Check, ChevronRight, Cloud, Code2, Database, ExternalLink,
   GraduationCap, Mail, MapPin,
   MessageCircle, MonitorSmartphone, Send, Server, Sparkles,
@@ -18,6 +18,7 @@ import DomainChecker from './DomainChecker.tsx';
 import AdUnit from './AdUnit';
 import Testimonials from './Testimonials';
 import LiveDevStats from './LiveDevStats';
+import InteractiveHeroTerminal from './InteractiveHeroTerminal';
 
 const socials = [
   { label: 'GitHub', href: 'https://github.com/mritunjaykumarr', icon: GithubIcon },
@@ -88,26 +89,6 @@ function FadeIn({ children, delay = 0, className = '', style }: { children: Reac
   );
 }
 
-function ProvidedImage({ name, fallback, alt, className }: { name: 'img1' | 'img2'; fallback: string; alt: string; className?: string }) {
-  const [source, setSource] = useState(`/assets/${name}.jpeg`);
-  const [triedPng, setTriedPng] = useState(false);
-
-  return (
-    <img
-      className={className}
-      src={source}
-      alt={alt}
-      onError={() => {
-        if (!triedPng) {
-          setTriedPng(true);
-          setSource(`/assets/${name}.png`);
-        } else {
-          setSource(fallback);
-        }
-      }}
-    />
-  );
-}
 
 export default function PortfolioRedesign() {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -221,39 +202,7 @@ export default function PortfolioRedesign() {
             </FadeIn>
 
             <FadeIn delay={0.15} className="v3-stage-wrap">
-              <div className="v3-stage">
-                <div className="v3-stage-terminal">
-                  <div className="v3-terminal-bar">
-                    <span /><span /><span />
-                    <b>mritunjay.ai / workspace</b>
-                  </div>
-                  <div className="v3-terminal-content">
-                    <p><span style={{ color: '#9a9a9a' }}>~</span> whoami</p>
-                    <strong>Mritunjay Kumar — AI Engineer & Full Stack Developer</strong>
-                    <p><span style={{ color: '#9a9a9a' }}>~</span> focus --current</p>
-                    <ul>
-                      <li><Check size={13} style={{ color: '#ffffff' }} /> Crafting crisp, high-performance interfaces</li>
-                      <li><Check size={13} style={{ color: '#ffffff' }} /> Connecting LLMs to actionable business workflows</li>
-                      <li><Check size={13} style={{ color: '#ffffff' }} /> Shipping reliable full-stack architectures</li>
-                    </ul>
-                    <p><span style={{ color: '#9a9a9a' }}>~</span> <b style={{ animation: 'blink 1s infinite' }}>_</b></p>
-                  </div>
-                </div>
-
-                <div className="v3-stage-photo">
-                  <ProvidedImage name="img1" fallback="/assets/profile2.jpg" alt="Mritunjay Kumar" />
-                </div>
-
-                <motion.div className="v3-tech-chip v3-chip-react" animate={{ y: [0, -6, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}>
-                  <Code2 size={14} /> React 19 + TypeScript
-                </motion.div>
-                <motion.div className="v3-tech-chip v3-chip-ai" animate={{ y: [0, 6, 0] }} transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}>
-                  <Bot size={14} /> AI Workflows & LLMs
-                </motion.div>
-                <motion.div className="v3-tech-chip v3-chip-cloud" animate={{ y: [0, -5, 0] }} transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut' }}>
-                  <Cloud size={14} /> Supabase & Node.js
-                </motion.div>
-              </div>
+              <InteractiveHeroTerminal />
             </FadeIn>
           </div>
         </section>

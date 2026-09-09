@@ -369,28 +369,6 @@ export default function WelcomeHub() {
         }}
       />
 
-      {/* Floating Persistent Launcher Trigger Pill */}
-      {!isOpen && (
-        <motion.button
-          onClick={() => {
-            setIsOpen(true);
-            if (soundEnabled) playSynthesizedChime('pop');
-          }}
-          className="welcome-floating-trigger"
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          title="Open Welcome Hub & Interactive Quick Start"
-          aria-label="Open Welcome Hub"
-        >
-          <div className="welcome-trigger-pulse" />
-          <Sparkles size={15} className="welcome-trigger-sparkle" />
-          <span className="welcome-trigger-text">Welcome Hub</span>
-          <span className="welcome-trigger-shortcut">Press ?</span>
-        </motion.button>
-      )}
-
       {/* Main Welcome Modal Overlay */}
       <AnimatePresence>
         {isOpen && (
