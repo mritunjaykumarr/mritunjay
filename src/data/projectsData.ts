@@ -1,17 +1,16 @@
 import type { ExtendedProjectItem } from '../components/ProjectProductModal';
 
 export const EXTENDED_PROJECTS_DATA: ExtendedProjectItem[] = [
-
   {
     id: 2,
-    category: 'web tools',
+    category: 'web applications',
     title: 'Bulk Mail Sender',
     tagline: 'High-Volume Personalised Email Campaign Platform',
     desc: 'Mass email platform with CSV upload, Gmail API, Node.js, and Express backend for high-volume campaigns.',
     img: '/assets/bulkmailP.png',
     url: 'https://www.bulkmailsender.online/',
     github: 'https://github.com/mritunjaykumarr',
-    tags: ['Web', 'Tools', 'Node.js', 'Gmail API'],
+    tags: ['Web', 'Automation', 'Node.js', 'Gmail API'],
     fullDesc: 'A fullstack web application designed for high-deliverability bulk email marketing campaigns. Users can import CSV recipient lists, customize HTML templates with dynamic placeholders, and send personalized emails through Gmail API and Node.js.',
     features: [
       'CSV file parsing and recipient verification',
@@ -35,6 +34,44 @@ export const EXTENDED_PROJECTS_DATA: ExtendedProjectItem[] = [
       problem: 'Traditional mail merge software requires complex setups or expensive subscriptions for sending under 5,000 personalized outreach emails.',
       solution: 'Created a zero-friction web tool using direct OAuth Gmail API authentication to deliver personalized campaigns directly from user inboxes.',
       impact: 'Enabled users to send 10,000+ outreach emails with zero deliverability degradation.'
+    }
+  },
+
+  {
+    id: 1,
+    category: 'web platforms',
+    title: 'ToolOut Developer Platform',
+    tagline: 'High-Performance Standalone Developer Utilities Suite',
+    desc: 'Dedicated Next.js developer platform hosting WHOIS RDAP queries, IRCTC train intelligence, OpenGraph generators, JSON-to-TS, and dev utilities.',
+    img: '/assets/adfree.png',
+    url: 'https://toolout.online',
+    github: 'https://github.com/mritunjaykumarr',
+    tags: ['Next.js 16', 'TypeScript', 'Turbopack', 'RDAP Protocol'],
+    fullDesc: 'A dedicated, standalone developer productivity platform built with Next.js App Router and TypeScript at toolout.online. Provides instant developer utilities including OpenGraph social previewers, JSON to TypeScript type generators, batch UUID/Base64/Hash generators, authoritative domain RDAP lookup with DNS records, live IRCTC rail status radar, and an interactive code sandbox.',
+    features: [
+      'Zero-config OpenGraph & Twitter card preview generator',
+      'Instant JSON to TypeScript interface converter with auto-nesting',
+      'Authoritative RDAP domain registration intelligence & DNS resolver',
+      'IRCTC live train tracking, PNR radar, and route timetable lookup',
+      'Cryptographic SHA-256 hash generator & batch UUID v4 suite',
+      'Live in-browser HTML/CSS/JavaScript interactive playground'
+    ],
+    metrics: [
+      { label: 'Platform Speed', value: '100/100', sub: 'Lighthouse score' },
+      { label: 'Active Tools', value: '6+', sub: 'Expanding suite' },
+      { label: 'Framework', value: 'Next.js 16', sub: 'Modern App Router' }
+    ],
+    stack: ['Next.js', 'TypeScript', 'CSS Tokens', 'RDAP Protocol', 'Vercel'],
+    architecture: {
+      client: 'Next.js 16 App Router with Dark Glassmorphic Design',
+      api: 'Next.js Serverless Route Handlers',
+      services: ['RDAP Query Engine', 'DNS Resolver', 'TypeScript AST Synthesizer', 'IRCTC Rail Proxy'],
+      database: 'Serverless Edge Cache & Client-Side LocalStorage'
+    },
+    problemSolved: {
+      problem: 'Developer utility sites are frequently bloated with invasive popups, slow loading ads, and clunky interfaces.',
+      solution: 'Created ToolOut as a clean, lightning-fast, privacy-first platform with zero clutter and direct serverless APIs.',
+      impact: 'Instant sub-second developer utilities accessible to engineers globally at toolout.online.'
     }
   },
   {

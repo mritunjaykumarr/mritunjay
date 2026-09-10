@@ -4,8 +4,8 @@ import {
   FileText, X, ChevronRight,
   Briefcase, FolderKanban, Wrench, Award,
   BookOpen, DollarSign, Bot, LayoutDashboard, Sparkles,
-  User, Mail, Code2, Sun, Moon, Globe,
-  Search, Sliders, Calendar, Heart, TrainFront
+  User, Mail, Code2, Sun, Moon,
+  Search, Calendar, Heart
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -14,30 +14,18 @@ interface HeaderProps {
   toggleTheme: () => void;
 }
 
-/* ── Primary 3-column nav ── */
+/* ── Primary nav ── */
 const primaryNav = [
   { label: 'About', path: '/about' },
-  { label: 'Skills', path: '/skills' },
-  { label: 'Projects', path: '/projects' },
-  { label: 'Tools', path: '/tools' },
   { label: 'Experience', path: '/experience' },
-  { label: 'Book Call', path: '/book-call' },
+  { label: 'Projects', path: '/projects' },
+  { label: 'Skills', path: '/skills' },
+  { label: 'Certifications', path: '/certifications' },
+  { label: 'Blog', path: '/blog' },
   { label: 'Contact', path: '/contact' },
 ];
 
 const drawerSections = [
-  {
-    title: 'SaaS Engines & Client Tools',
-    items: [
-      { label: 'IRCTC Rail Intelligence', path: '/irctc', icon: TrainFront, desc: 'Live PNR, running status, seat radar & fares' },
-      { label: 'Recruiter JD Matcher', path: '/recruiter-analyzer', icon: Briefcase, desc: 'ATS candidate match % & profile audit' },
-      { label: 'Tech Stack Architect', path: '/tech-architect', icon: Sparkles, desc: 'System blueprints & cloud cost forecast' },
-      { label: 'Developer Micro-Tools', path: '/tools', icon: Sliders, desc: 'Social OG previewer & JSON-to-TS studio' },
-      { label: 'Schedule Consultation', path: '/book-call', icon: Calendar, desc: 'Book a 15, 30, or 60 min session' },
-      { label: 'Community Guestbook', path: '/guestbook', icon: Heart, desc: 'Verified reviews & peer endorsements' },
-      { label: 'Domain WHOIS Checker', path: '/domain-checker', icon: Globe, desc: 'Real-time RDAP registry lookup' },
-    ],
-  },
   {
     title: 'Portfolio & Work',
     items: [
@@ -48,11 +36,13 @@ const drawerSections = [
     ],
   },
   {
-    title: 'Writing & AI',
+    title: 'Writing & Connect',
     items: [
       { label: 'PrinceAI Assistant', path: '/prince-ai', icon: Bot, desc: 'Personal LLM AI assistant' },
       { label: 'Blog & Articles', path: '/blog', icon: BookOpen, desc: 'Insights on React 19, AI & motion' },
       { label: 'Services & Pricing', path: '/pricing', icon: DollarSign, desc: 'Product build plans & rates' },
+      { label: 'Schedule Consultation', path: '/book-call', icon: Calendar, desc: 'Book a 15, 30, or 60 min session' },
+      { label: 'Community Guestbook', path: '/guestbook', icon: Heart, desc: 'Verified reviews & peer endorsements' },
       { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, desc: 'Performance analytics & stats' },
     ],
   },
@@ -269,9 +259,9 @@ export default function Header({ theme = 'dark', toggleTheme = () => {} }: Heade
                     <Code2 size={16} />
                     <span>Home</span>
                   </Link>
-                  <Link to="/domain-checker" className="drawer-primary-card" onClick={() => setIsDrawerOpen(false)}>
-                    <Globe size={16} />
-                    <span>Domain Tool</span>
+                  <Link to="/projects" className="drawer-primary-card" onClick={() => setIsDrawerOpen(false)}>
+                    <FolderKanban size={16} />
+                    <span>Projects</span>
                   </Link>
                   <Link to="/about" className="drawer-primary-card" onClick={() => setIsDrawerOpen(false)}>
                     <User size={16} />
@@ -290,7 +280,34 @@ export default function Header({ theme = 'dark', toggleTheme = () => {} }: Heade
                     <div className="drawer-group-list">
                       {section.items.map((item) => {
                         const Icon = item.icon;
-                        const active = isLinkActive(item.path);
+                        const isExternal = item.path.startsWith('http');
+                        const active = !isExternal && isLinkActive(item.path);
+
+                        if (isExternal) {
+                          return (
+                            <a
+                              key={item.path}
+                              href={item.path}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="drawer-item-link"
+                              onClick={() => setIsDrawerOpen(false)}
+                            >
+                              <div className="drawer-item-icon-box">
+                                <Icon size={16} />
+                              </div>
+                              <div className="drawer-item-text">
+                                <span className="drawer-item-title" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                  {item.label}
+                                  <span style={{ fontSize: '0.72rem', opacity: 0.65 }}>↗</span>
+                                </span>
+                                <span className="drawer-item-desc">{item.desc}</span>
+                              </div>
+                              <ChevronRight size={14} style={{ color: '#777777' }} />
+                            </a>
+                          );
+                        }
+
                         return (
                           <Link
                             key={item.path}

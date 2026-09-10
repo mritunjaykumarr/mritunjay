@@ -19,7 +19,8 @@ import {
   Layers,
   Send,
   ExternalLink,
-  Clock
+  Clock,
+  BookOpen
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
 
@@ -338,9 +339,9 @@ export default function WelcomeHub() {
     window.open('/updated_resume.pdf', '_blank', 'noopener,noreferrer');
   };
 
-  const handleOpenLiveTools = () => {
+  const handleOpenBlog = () => {
     setIsOpen(false);
-    navigate('/domain-checker');
+    navigate('/blog');
     if (soundEnabled) playSynthesizedChime('click');
   };
 
@@ -581,24 +582,24 @@ export default function WelcomeHub() {
                   </div>
                 </button>
 
-                {/* 5. Try Live Developer Tools */}
+                {/* 5. Read Engineering Blog */}
                 <button
                   type="button"
-                  onClick={handleOpenLiveTools}
+                  onClick={handleOpenBlog}
                   className="welcome-card"
                 >
                   <div className="welcome-card-icon-wrap" style={{ background: 'rgba(56, 189, 248, 0.12)', color: '#38bdf8' }}>
-                    <Globe size={18} />
+                    <BookOpen size={18} />
                   </div>
                   <div className="welcome-card-body">
                     <div className="welcome-card-top">
-                      <h3>Try Live Web Tools</h3>
+                      <h3>Read Engineering Blog</h3>
                       <ArrowRight size={14} className="welcome-card-arrow" />
                     </div>
-                    <p>Live Domain Checker, Streaming TV & AI Playground</p>
+                    <p>Insights on React 19, TypeScript, and software design</p>
                     <div className="welcome-tags">
-                      <span>Domain Checker</span>
-                      <span>100+ Channels</span>
+                      <span>Technical Blog</span>
+                      <span>Deep Dives</span>
                     </div>
                   </div>
                 </button>

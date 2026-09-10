@@ -89,10 +89,10 @@ export default function RecruiterMatcher() {
         link: 'https://www.bulkmailsender.online/',
       },
       {
-        title: 'Domain Registrar & WHOIS Intelligence',
-        relevance: 'Demonstrates low-latency network protocols, IANA RDAP querying, and client-side caching.',
-        tech: ['TypeScript', 'Vite', 'REST API', 'CSS Tokens'],
-        link: '/domain-checker',
+        title: 'ToolOut Developer Utilities Suite',
+        relevance: 'Demonstrates modern Next.js 16 App Router architecture, authoritative RDAP querying, and fullstack TypeScript tooling.',
+        tech: ['Next.js 16', 'TypeScript', 'Turbopack', 'RDAP Protocol'],
+        link: 'https://toolout.online',
       },
       {
         title: 'Prince AI Multi-Provider Assistant',

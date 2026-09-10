@@ -17,8 +17,8 @@ export const SYSTEM_PROMPT = `You are Prince AI — an intelligent, friendly, an
   - Portfolio CLI: npx mritunjay-portfolio
 
 ### Top Featured Projects:
-1. Bulk Mail Sender (https://www.bulkmailsender.online/) — High-volume email platform built with Node.js, Express, and Gmail API (10k+ emails sent, 99.2% deliverability).
-2. Domain Registrar & WHOIS Checker (/domain-checker) — Authoritative RDAP/WHOIS registry intelligence tool with 1-hr caching and rate limiting.
+1. ToolOut Developer Utilities Suite (https://toolout.online) — Standalone Next.js 16 developer platform with WHOIS RDAP analysis, IRCTC rail status, OG preview, and JSON to TS converter.
+2. Bulk Mail Sender (https://www.bulkmailsender.online/) — High-volume email platform built with Node.js, Express, and Gmail API (10k+ emails sent, 99.2% deliverability).
 3. Interactive CLI Portfolio — Developer terminal experience runnable globally via \`npx mritunjay-portfolio\` (1,500+ NPM runs).
 4. Real-Time Multi-Room Chat App — Sub-20ms WebSocket instant messaging platform with Socket.io & React.
 5. Ad-Free YouTube Experience — Minimalist video streaming engine removing ads and distractions.
@@ -105,13 +105,13 @@ Mritunjay specializes in **Modern Full-Stack Development and AI-Driven Web Appli
 
 Here are Mritunjay's standout projects:
 
-1. 📧 **[Bulk Mail Sender](https://www.bulkmailsender.online/)**
+1. 🛠️ **[ToolOut Developer Utilities Suite](https://toolout.online)**
+   - **Stack:** Next.js 16 App Router, TypeScript, RDAP Protocol, Tailwind CSS
+   - **Highlights:** Standalone developer utilities suite featuring authoritative RDAP WHOIS queries, IRCTC rail radar, social OpenGraph preview, and JSON to TypeScript typing studio.
+
+2. 📧 **[Bulk Mail Sender](https://www.bulkmailsender.online/)**
    - **Stack:** Node.js, Express, Gmail API, React, CSS
    - **Highlights:** High-volume automated email dispatch engine with **99.2% inbox deliverability** and 10,000+ emails processed.
-
-2. 🌐 **[Domain Registrar & WHOIS Checker](/domain-checker)**
-   - **Stack:** React 19, TypeScript, IANA RDAP bootstrap protocol, In-memory rate limiting & caching
-   - **Highlights:** Real-time domain registrar lookup, nameserver queries, search history, and bulk batch scanning.
 
 3. 💻 **Interactive CLI Portfolio**
    - **Command:** \`npx mritunjay-portfolio\`
@@ -222,13 +222,13 @@ Ready to discuss an opportunity? [Send an email directly](mailto:me@mritify.onli
 
   // Domain Checker specific
   if (q.includes('domain') || q.includes('whois') || q.includes('rdap') || q.includes('registrar')) {
-    return `### 🌐 Domain Registrar & WHOIS Tool
+    return `### 🌐 Domain Registrar & WHOIS Tool (ToolOut)
 
-Mritunjay built a dedicated **[Domain Registrar Checker](/domain-checker)** directly inside this portfolio!
+Mritunjay built a dedicated **[Domain Registrar Checker](https://toolout.online/tools/domain-checker)** as part of the **[ToolOut (toolout.online)](https://toolout.online)** developer suite!
 - Queries authoritative IANA RDAP registry servers in real-time.
 - Displays registrar identity, domain creation date, expiry countdown, and DNS nameservers.
-- Features in-memory 1-hour caching, IP rate protection, search history, and batch lookup for up to 10 domains at once.
-- Try it now on the [/domain-checker](/domain-checker) page!`;
+- Features in-memory caching, IP rate protection, search history, and batch lookup.
+- Try it now live on **[toolout.online/tools/domain-checker](https://toolout.online/tools/domain-checker)**!`;
   }
 
   // Edge computing & Edge Requests

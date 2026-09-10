@@ -2,16 +2,16 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Search, X, Bot, Globe, Briefcase, FolderKanban, Wrench, BookOpen,
+  Search, X, Bot, Briefcase, FolderKanban, Wrench, BookOpen,
   Calendar, FileText, Moon, CornerDownLeft, Sparkles,
-  Terminal, Heart, Sliders, Mail, User, TrainFront
+  Terminal, Heart, Mail, User
 } from 'lucide-react';
 
 interface PaletteItem {
   id: string;
   title: string;
   subtitle?: string;
-  category: 'SaaS Engines' | 'Navigation' | 'Actions' | 'Contact';
+  category: 'Navigation' | 'Actions' | 'Contact';
   icon: React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>;
   action: () => void;
   badge?: string;
@@ -82,48 +82,21 @@ export default function CommandPalette() {
   };
 
   const items: PaletteItem[] = useMemo(() => [
-    // SaaS Engines
+    // Interactive Assistants & Bookings
     {
-      id: 'irctc-suite',
-      title: 'IRCTC Rail Intelligence & MCP Hub',
-      subtitle: 'Live PNR status, GPS train radar, seat availability matrix & fares',
-      category: 'SaaS Engines',
-      icon: TrainFront,
-      badge: 'Rail API',
-      action: () => { navigate('/irctc'); setIsOpen(false); }
-    },
-    {
-      id: 'recruiter',
-      title: 'Recruiter JD Matcher',
-      subtitle: 'Paste any job description to get instant ATS match % & relevant projects',
-      category: 'SaaS Engines',
-      icon: Briefcase,
-      badge: 'AI Engine',
-      action: () => { navigate('/recruiter-analyzer'); setIsOpen(false); }
-    },
-    {
-      id: 'architect',
-      title: 'Startup Tech Stack Architect',
-      subtitle: 'Generate system architecture, cloud stack & cost estimates for app ideas',
-      category: 'SaaS Engines',
-      icon: Sparkles,
-      badge: 'AI Planner',
-      action: () => { navigate('/tech-architect'); setIsOpen(false); }
-    },
-    {
-      id: 'tools-hub',
-      title: 'Developer Micro-Tools Suite',
-      subtitle: 'OpenGraph visualizer, JSON to TypeScript generator, and utilities',
-      category: 'SaaS Engines',
-      icon: Sliders,
-      badge: 'SaaS Suite',
-      action: () => { navigate('/tools'); setIsOpen(false); }
+      id: 'prince-ai',
+      title: 'Prince AI Assistant',
+      subtitle: 'Ask technical questions, explore work history, and query portfolio knowledge',
+      category: 'Navigation',
+      icon: Bot,
+      badge: 'LLM Agent',
+      action: () => { navigate('/prince-ai'); setIsOpen(false); }
     },
     {
       id: 'book-call',
       title: 'Schedule a Call / Consultation',
       subtitle: 'Book a 15-min intro, 30-min technical scope, or 60-min advisory slot',
-      category: 'SaaS Engines',
+      category: 'Navigation',
       icon: Calendar,
       badge: 'Interactive',
       action: () => { navigate('/book-call'); setIsOpen(false); }
@@ -132,28 +105,10 @@ export default function CommandPalette() {
       id: 'guestbook',
       title: 'Community Guestbook & Endorsements',
       subtitle: 'Leave a verified signature, feedback, or peer review on the live wall',
-      category: 'SaaS Engines',
+      category: 'Navigation',
       icon: Heart,
       badge: 'Live',
       action: () => { navigate('/guestbook'); setIsOpen(false); }
-    },
-    {
-      id: 'prince-ai',
-      title: 'Prince AI Assistant',
-      subtitle: 'Ask technical questions, explore work history, and query portfolio knowledge',
-      category: 'SaaS Engines',
-      icon: Bot,
-      badge: 'LLM Agent',
-      action: () => { navigate('/prince-ai'); setIsOpen(false); }
-    },
-    {
-      id: 'domain-checker',
-      title: 'Domain Registrar & WHOIS Checker',
-      subtitle: 'Authoritative RDAP lookup engine with expiry tracking and DNS records',
-      category: 'SaaS Engines',
-      icon: Globe,
-      badge: 'Live RDAP',
-      action: () => { navigate('/domain-checker'); setIsOpen(false); }
     },
 
     // Navigation

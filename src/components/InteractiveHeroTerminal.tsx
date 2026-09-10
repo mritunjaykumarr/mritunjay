@@ -122,8 +122,8 @@ export default function InteractiveHeroTerminal() {
             <a href="https://www.bulkmailsender.online/" target="_blank" rel="noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600 }}>Live Link ↗</a>
           </div>
           <div style={{ fontSize: '0.79rem', color: '#e2e8f0', lineHeight: 1.4 }}>
-            2. <strong style={{ color: '#ffffff' }}>Domain WHOIS & RDAP Engine</strong> — Sub-second IANA lookup.{' '}
-            <button onClick={() => navigate('/domain-checker')} style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600, padding: 0, fontSize: 'inherit', cursor: 'pointer', background: 'transparent', border: 'none' }}>Open Tool ↗</button>
+            2. <strong style={{ color: '#ffffff' }}>ToolOut Developer Platform</strong> — Next.js dev suite & WHOIS RDAP.{' '}
+            <a href="https://toolout.online" target="_blank" rel="noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600 }}>Live Link ↗</a>
           </div>
           <div style={{ fontSize: '0.79rem', color: '#e2e8f0', lineHeight: 1.4 }}>
             3. <strong style={{ color: '#ffffff' }}>CLI Portfolio Experience</strong> — Runnable globally via <code style={{ color: '#4ade80', background: 'rgba(34, 197, 94, 0.12)', padding: '1px 5px', borderRadius: '3px' }}>npx mritunjay-portfolio</code>
@@ -164,23 +164,8 @@ export default function InteractiveHeroTerminal() {
       );
     } else if (lower === 'tools' || lower === 'saas') {
       outputContent = (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '2px 0' }}>
-          <span style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.82rem' }}>Interactive SaaS Tools:</span>
-          <div style={{ fontSize: '0.78rem', color: '#e2e8f0' }}>
-            • <button onClick={() => navigate('/recruiter-analyzer')} style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600, cursor: 'pointer', padding: 0, background: 'transparent', border: 'none' }}>Recruiter JD Matcher</button> — ATS match % & gap scorecard
-          </div>
-          <div style={{ fontSize: '0.78rem', color: '#e2e8f0' }}>
-            • <button onClick={() => navigate('/tech-architect')} style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600, cursor: 'pointer', padding: 0, background: 'transparent', border: 'none' }}>Tech Stack Architect</button> — Architecture designer & AWS/GCP cost estimator
-          </div>
-          <div style={{ fontSize: '0.78rem', color: '#e2e8f0' }}>
-            • <button onClick={() => navigate('/book-call')} style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600, cursor: 'pointer', padding: 0, background: 'transparent', border: 'none' }}>Schedule Consultation</button> — Direct booking & calendar invites
-          </div>
-          <div style={{ fontSize: '0.78rem', color: '#e2e8f0' }}>
-            • <button onClick={() => navigate('/guestbook')} style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600, cursor: 'pointer', padding: 0, background: 'transparent', border: 'none' }}>Live Community Guestbook</button> — Peer endorsements
-          </div>
-          <div style={{ fontSize: '0.78rem', color: '#e2e8f0' }}>
-            • <button onClick={() => navigate('/tools')} style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600, cursor: 'pointer', padding: 0, background: 'transparent', border: 'none' }}>Developer Micro-Tools</button> — OpenGraph & JSON-to-TS studio
-          </div>
+        <div style={{ padding: '2px 0', fontSize: '0.78rem', color: '#e2e8f0' }}>
+          All developer micro-tools, WHOIS RDAP engines, and utilities have moved to our standalone platform: <a href="https://toolout.online" target="_blank" rel="noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600 }}>toolout.online ↗</a>
         </div>
       );
     } else if (lower === 'resume' || lower === 'cv') {

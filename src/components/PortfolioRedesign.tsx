@@ -3,18 +3,16 @@ import type { CSSProperties, FormEvent, MouseEvent, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Link } from 'react-router-dom';
 import {
   ArrowRight, ArrowUpRight, Award, BrainCircuit, BriefcaseBusiness,
   Check, ChevronRight, Cloud, Code2, Database, ExternalLink,
   GraduationCap, Mail, MapPin,
   MessageCircle, MonitorSmartphone, Send, Server, Sparkles,
-  Workflow, Zap, FileText, Calendar, Sliders
+  Workflow, Zap, FileText
 } from 'lucide-react';
 import { EXTENDED_PROJECTS_DATA } from '../data/projectsData';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
 import PrinceAI from './PrinceAI';
-import DomainChecker from './DomainChecker.tsx';
 import AdUnit from './AdUnit';
 import Testimonials from './Testimonials';
 import LiveDevStats from './LiveDevStats';
@@ -233,82 +231,7 @@ export default function PortfolioRedesign() {
           </div>
         </section>
 
-        {/* ——— SaaS Platform Suite Showcase ——— */}
-        <section className="v3-section" style={{ paddingTop: '2.5rem', paddingBottom: '3.5rem' }}>
-          <div className="v3-container">
-            <FadeIn className="v3-section-heading v3-split-heading">
-              <div>
-                <p className="v3-eyebrow">Interactive Platform · SaaS Tools</p>
-                <h2>Built for <em>recruiters, founders</em> & engineering teams.</h2>
-              </div>
-              <p>
-                More than a static portfolio. Explore interactive AI analysis engines, instant tech architecture planners, and developer utility tools.
-              </p>
-            </FadeIn>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem', marginTop: '1.75rem' }}>
-              {/* Card 1: Recruiter JD Matcher */}
-              <Link to="/recruiter-analyzer" style={{ textDecoration: 'none' }}>
-                <FadeIn delay={0.05} className="v3-story-card" style={{ height: '100%', cursor: 'pointer', transition: 'border-color 0.2s' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <span className="v3-card-label">For Recruiters</span>
-                    <Sparkles size={16} style={{ color: 'var(--text)' }} />
-                  </div>
-                  <h3>Recruiter JD Match Analyzer</h3>
-                  <p>Paste your open job description to get instant ATS match %, skill overlap, and matched case studies.</p>
-                  <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', color: 'var(--text)' }}>
-                    <span>Launch Matcher</span> <ChevronRight size={14} />
-                  </div>
-                </FadeIn>
-              </Link>
-
-              {/* Card 2: Tech Stack Architect */}
-              <Link to="/tech-architect" style={{ textDecoration: 'none' }}>
-                <FadeIn delay={0.1} className="v3-story-card" style={{ height: '100%', cursor: 'pointer', transition: 'border-color 0.2s' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <span className="v3-card-label">For Founders</span>
-                    <BrainCircuit size={16} style={{ color: 'var(--text)' }} />
-                  </div>
-                  <h3>Startup Tech Stack Architect</h3>
-                  <p>Describe any app idea to generate production architecture diagrams, cloud stack, and monthly cost forecast.</p>
-                  <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', color: 'var(--text)' }}>
-                    <span>Generate Blueprint</span> <ChevronRight size={14} />
-                  </div>
-                </FadeIn>
-              </Link>
-
-              {/* Card 3: Interactive Call Scheduler */}
-              <Link to="/book-call" style={{ textDecoration: 'none' }}>
-                <FadeIn delay={0.15} className="v3-story-card" style={{ height: '100%', cursor: 'pointer', transition: 'border-color 0.2s' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <span className="v3-card-label">1-Click Booking</span>
-                    <Calendar size={16} style={{ color: 'var(--text)' }} />
-                  </div>
-                  <h3>Schedule a Call / Consultation</h3>
-                  <p>Book a 15-min screen, 30-min discovery, or 60-min AI consultation with automated calendar invites.</p>
-                  <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', color: 'var(--text)' }}>
-                    <span>Select Time Slot</span> <ChevronRight size={14} />
-                  </div>
-                </FadeIn>
-              </Link>
-
-              {/* Card 4: Developer Micro-Tools */}
-              <Link to="/tools" style={{ textDecoration: 'none' }}>
-                <FadeIn delay={0.2} className="v3-story-card" style={{ height: '100%', cursor: 'pointer', transition: 'border-color 0.2s' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <span className="v3-card-label">Free Utilities</span>
-                    <Sliders size={16} style={{ color: 'var(--text)' }} />
-                  </div>
-                  <h3>Developer Micro-Tools Suite</h3>
-                  <p>Social OpenGraph visualizer, JSON-to-TypeScript interface studio, and cryptographic UUID tools.</p>
-                  <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', color: 'var(--text)' }}>
-                    <span>Explore Tools</span> <ChevronRight size={14} />
-                  </div>
-                </FadeIn>
-              </Link>
-            </div>
-          </div>
-        </section>
 
         {/* ——— About Section ——— */}
         <section className="v3-section" id="about">
@@ -458,9 +381,6 @@ export default function PortfolioRedesign() {
             <PrinceAI />
           </div>
         </section>
-
-        {/* ——— Domain Registrar Checker Section ——— */}
-        <DomainChecker />
 
         {/* ——— Skills Section ——— */}
         <section className="v3-section" id="skills">
@@ -746,7 +666,7 @@ export default function PortfolioRedesign() {
               <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer">GitHub</a>
               <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer">LinkedIn</a>
               <a href="mailto:me@mritify.online">Email</a>
-              <a href="/domain-checker">Domain Checker</a>
+              <a href="https://toolout.online" target="_blank" rel="noreferrer">ToolOut Suite ↗</a>
               <a href="/privacy-policy">Privacy</a>
               <a href="/terms-and-conditions">Terms</a>
             </div>
