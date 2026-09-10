@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, X, Bot, Globe, Briefcase, FolderKanban, Wrench, BookOpen,
   Calendar, FileText, Moon, CornerDownLeft, Sparkles,
-  Terminal, Heart, Sliders, Mail, User
+  Terminal, Heart, Sliders, Mail, User, TrainFront
 } from 'lucide-react';
 
 interface PaletteItem {
@@ -83,6 +83,15 @@ export default function CommandPalette() {
 
   const items: PaletteItem[] = useMemo(() => [
     // SaaS Engines
+    {
+      id: 'irctc-suite',
+      title: 'IRCTC Rail Intelligence & MCP Hub',
+      subtitle: 'Live PNR status, GPS train radar, seat availability matrix & fares',
+      category: 'SaaS Engines',
+      icon: TrainFront,
+      badge: 'Rail API',
+      action: () => { navigate('/irctc'); setIsOpen(false); }
+    },
     {
       id: 'recruiter',
       title: 'Recruiter JD Matcher',

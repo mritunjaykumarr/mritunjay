@@ -318,5 +318,14 @@ export const SEO_CONFIGS = {
     keywords:
       'Developer Tools, OpenGraph Previewer, JSON to TypeScript, UUID Generator, Meta Tag Tester, Mritunjay Kumar Tools',
   } satisfies SEOConfig,
+
+  irctc: {
+    title: 'IRCTC Rail Intelligence Suite & MCP Hub | Mritunjay Kumar',
+    description:
+      'Real-time Indian Railways PNR status, live train running radar, seat confirmation matrix, fare enquiry, and MCP server remote endpoints powered by RapidAPI.',
+    keywords:
+      'IRCTC API, RapidAPI IRCTC, PNR Status, Live Train Running Status, Train Timetable, Seat Availability, MCP Remote Server, Mritunjay Kumar',
+  } satisfies SEOConfig,
 } as const;
+
 

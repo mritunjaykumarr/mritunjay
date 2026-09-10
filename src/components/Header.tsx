@@ -5,7 +5,7 @@ import {
   Briefcase, FolderKanban, Wrench, Award,
   BookOpen, DollarSign, Bot, LayoutDashboard, Sparkles,
   User, Mail, Code2, Sun, Moon, Globe,
-  Search, Sliders, Calendar, Heart
+  Search, Sliders, Calendar, Heart, TrainFront
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -29,6 +29,7 @@ const drawerSections = [
   {
     title: 'SaaS Engines & Client Tools',
     items: [
+      { label: 'IRCTC Rail Intelligence', path: '/irctc', icon: TrainFront, desc: 'Live PNR, running status, seat radar & fares' },
       { label: 'Recruiter JD Matcher', path: '/recruiter-analyzer', icon: Briefcase, desc: 'ATS candidate match % & profile audit' },
       { label: 'Tech Stack Architect', path: '/tech-architect', icon: Sparkles, desc: 'System blueprints & cloud cost forecast' },
       { label: 'Developer Micro-Tools', path: '/tools', icon: Sliders, desc: 'Social OG previewer & JSON-to-TS studio' },

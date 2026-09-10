@@ -1,11 +1,14 @@
 # robots.txt for mritify.online
-# Allow all search engine crawlers
+# Allow all search engine and AdSense crawlers without restrictions
+
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: Googlebot
+Allow: /
 
 User-agent: *
 Allow: /
 
 # Sitemap location
 Sitemap: https://mritify.online/sitemap.xml
-
-# Crawl-delay (optional, be polite to crawlers)
-Crawl-delay: 1

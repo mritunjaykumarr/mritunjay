@@ -6,7 +6,7 @@ export default function AdFree() {
       <iframe 
         src="/adfree.html" 
         style={{ width: '100%', height: '100%', border: 'none' }} 
-        title="Ad-Free Experience"
+        title="ZenTube Cinematic Video Experience"
       />
     </div>
   );

@@ -34,8 +34,8 @@ const FALLBACK_REPOS: RepoItem[] = [
   },
   {
     id: 102,
-    name: 'adfree-platform',
-    description: 'High-performance privacy-first web application with customizable ad-free browsing tools.',
+    name: 'zentube-studio',
+    description: 'High-performance video player web application with minimalist cinematic study tools.',
     stargazers_count: 8,
     forks_count: 3,
     language: 'TypeScript',

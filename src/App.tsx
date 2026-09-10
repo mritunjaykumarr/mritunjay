@@ -36,6 +36,7 @@ const TechArchitectPage = lazy(() => import('./pages/TechArchitectPage'));
 const ScheduleCallPage = lazy(() => import('./pages/ScheduleCallPage'));
 const GuestbookPage = lazy(() => import('./pages/GuestbookPage'));
 const ToolsPage = lazy(() => import('./pages/ToolsPage'));
+const IrctcPage = lazy(() => import('./pages/IrctcPage'));
 
 /* Footer wrapper: shows Footer on all pages EXCEPT "/" (Home has its own) */
 function ConditionalFooter() {
@@ -99,6 +100,7 @@ function App() {
           <Route path="/prince-ai" element={<PrinceAIPage />} />
           <Route path="/playground" element={<PlaygroundPage />} />
           <Route path="/domain-checker" element={<DomainCheckerPage />} />
+          <Route path="/irctc" element={<IrctcPage />} />
           <Route path="/tools" element={<ToolsPage />} />
           <Route path="/recruiter-analyzer" element={<RecruiterMatcherPage />} />
           <Route path="/tech-architect" element={<TechArchitectPage />} />

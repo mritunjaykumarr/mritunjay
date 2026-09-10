@@ -110,14 +110,14 @@ export const EXTENDED_PROJECTS_DATA: ExtendedProjectItem[] = [
   {
     id: 5,
     category: 'web design',
-    title: 'Ad-Free YouTube Experience',
-    tagline: 'Minimalist Cinematic Video Streaming Engine',
-    desc: 'Custom YouTube player with clean minimalist UI, zero advertisements, distraction-free viewing, and custom playback controls.',
+    title: 'ZenTube Minimalist Video Player',
+    tagline: 'Minimalist Cinematic Video Learning Engine',
+    desc: 'Custom YouTube player with clean minimalist UI, distraction-free study mode, ambient glow, and custom playback controls.',
     img: '/assets/adfree.png',
-    url: 'https://mritunjaykumar2.vercel.app/adfree.html',
+    url: '/adfree',
     github: 'https://github.com/mritunjaykumarr',
     tags: ['Web', 'Design', 'Media', 'JavaScript'],
-    fullDesc: 'A clean front-end YouTube viewing experience engineered to eliminate pre-roll ads, recommended sidebar distractions, and pop-up overlays while maintaining high-definition video playback control.',
+    fullDesc: 'A clean front-end video viewing experience engineered to eliminate recommended sidebar clutter, comments, and distractions while maintaining high-definition video playback control for focused learning.',
     features: [
       'Clean iframe YouTube player integration',
       'Custom theater mode and full-screen controls',
@@ -125,21 +125,21 @@ export const EXTENDED_PROJECTS_DATA: ExtendedProjectItem[] = [
       'Instant URL search and playlist queue support'
     ],
     metrics: [
-      { label: 'Ads Blocked', value: '100%', sub: 'Zero clutter' },
+      { label: 'UI Clutter', value: 'Zero', sub: 'Pure focus mode' },
       { label: 'Load Time', value: '0.4s', sub: 'Instant playback' },
-      { label: 'Distraction Level', value: 'Zero', sub: 'Pure viewing' }
+      { label: 'Distraction Level', value: 'Zero', sub: 'Study friendly' }
     ],
     stack: ['JavaScript', 'YouTube IFrame API', 'CSS Variables', 'HTML5'],
     architecture: {
       client: 'Vanilla JS Single-File Web App',
       api: 'YouTube IFrame Player API',
-      services: ['URL Parser & Stripper', 'Theater Controller'],
+      services: ['URL Parser', 'Theater Controller'],
       database: 'LocalStorage Preferences'
     },
     problemSolved: {
-      problem: 'Cluttered YouTube recommendations and aggressive ad popups interrupt focus during educational coding tutorials.',
-      solution: 'Stripped away all non-essential UI elements to embed a direct high-definition playback canvas.',
-      impact: 'Provided thousands of distraction-free viewing sessions for users.'
+      problem: 'Cluttered YouTube algorithmic recommendations and sidebar distractions interrupt focus during educational coding tutorials.',
+      solution: 'Stripped away non-essential UI elements to embed a direct high-definition playback canvas with ambient lighting.',
+      impact: 'Provided thousands of distraction-free study sessions for developers and students.'
     }
   },
   {
