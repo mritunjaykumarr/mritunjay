@@ -10,6 +10,7 @@ interface HistoryItem {
 
 const COMMAND_GUIDE = [
   { cmd: 'whoami', desc: 'Developer bio & background' },
+  { cmd: 'founder', desc: 'ToolOut — founded platform' },
   { cmd: 'projects', desc: 'Featured production software' },
   { cmd: 'skills', desc: 'Tech stack & proficiencies' },
   { cmd: 'tools', desc: 'SaaS micro-tools & analyzers' },
@@ -103,7 +104,7 @@ export default function InteractiveHeroTerminal() {
             Mritunjay Kumar
           </div>
           <div style={{ color: '#38bdf8', fontSize: '0.8rem', fontWeight: 500 }}>
-            Full Stack Developer @ Epigroww Global
+            Full Stack Developer @ Epigroww Global · Founder of toolout.online
           </div>
           <div style={{ color: '#e2e8f0', fontSize: '0.78rem' }}>
             Specializing in React 19, TypeScript, Node.js & Streaming LLMs. Based in India, collaborating with product teams globally.
@@ -152,6 +153,23 @@ export default function InteractiveHeroTerminal() {
             <span>View all projects in gallery</span>
             <ArrowRight size={12} />
           </button>
+        </div>
+      );
+    } else if (lower === 'founder' || lower === 'toolout') {
+      window.open('https://toolout.online', '_blank', 'noopener,noreferrer');
+      outputContent = (
+        <div style={{ lineHeight: 1.5, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.82rem' }}>
+            🚀 Founder — ToolOut Developer Platform
+          </div>
+          <div style={{ color: '#e2e8f0', fontSize: '0.79rem' }}>
+            A privacy-first developer utilities suite on Next.js 16: WHOIS/RDAP intelligence, live IRCTC rail radar,
+            JSON-to-TypeScript, OpenGraph previews & an in-browser sandbox.
+          </div>
+          <div style={{ fontSize: '0.79rem' }}>
+            <a href="https://toolout.online" target="_blank" rel="noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600 }}>toolout.online ↗</a>
+            <span style={{ color: '#4ade80', marginLeft: '8px', fontWeight: 600 }}>● 100/100 Lighthouse</span>
+          </div>
         </div>
       );
     } else if (lower === 'skills' || lower === 'stack') {

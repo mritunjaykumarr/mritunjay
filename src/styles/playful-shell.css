@@ -2061,5 +2061,43 @@ footer.footer {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   HEADER — anchored full-bleed at rest, floating pill on scroll
+   (appended — authoritative, last in cascade)
+
+   At the very top of the page the navbar sits flush to the viewport
+   top as a solid full-width bar, so the dark page background is
+   continuous to the top edge — no floating gap "hanging over" the top.
+   After the user scrolls (>20px → .header-scrolled, set in Header.tsx)
+   it lifts into the rounded floating pill.
+   ═══════════════════════════════════════════════════════════════ */
+.header-floating-wrapper:not(.header-scrolled) {
+  top: 0 !important;
+  padding: 0 !important;
+}
+.header-floating-wrapper:not(.header-scrolled) .navbar-pill-container {
+  max-width: 100% !important;
+  border-radius: 0 !important;
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 1px solid var(--border) !important;
+  box-shadow: none !important;
+  background: var(--bg) !important;
+  /* keep the inner content aligned to the ~1180px content column */
+  padding-left: max(1.25rem, calc((100% - 1180px) / 2 + 1.25rem)) !important;
+  padding-right: max(1.25rem, calc((100% - 1180px) / 2 + 1.25rem)) !important;
+}
+/* Scrolled: lift into the floating pill with a smooth transition */
+.header-floating-wrapper {
+  transition: top 0.35s var(--ease, ease), padding 0.35s var(--ease, ease) !important;
+}
+.header-floating-wrapper.header-scrolled {
+  top: 0.5rem !important;
+}
+.header-floating-wrapper.header-scrolled .navbar-pill-container {
+  box-shadow: var(--shadow-lg, var(--shadow-md)) !important;
+}
+
 
 

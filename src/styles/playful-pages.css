@@ -3479,3 +3479,228 @@
   background: var(--text);
   color: var(--bg);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   LANDING POLISH & RESPONSIVE SUITE  (appended — authoritative)
+   Ambient hero backdrop, founder identity, balanced grids
+   ═══════════════════════════════════════════════════════════ */
+
+/* ——— Contain stray glows so nothing forces horizontal scroll ——— */
+.portfolio-v3 {
+  overflow-x: clip !important;
+}
+
+/* ——— Hero: stack decorative layers behind the content ——— */
+.v3-hero {
+  overflow: hidden !important;
+}
+.v3-hero-grid {
+  position: relative !important;
+  z-index: 2 !important;
+}
+.v3-hero-aurora,
+.v3-hero-glow,
+.v3-hero-grid-lines {
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Soft dual-orb aurora that slowly breathes */
+.v3-hero-aurora {
+  background:
+    radial-gradient(38% 46% at 18% 8%, var(--accent-glow), transparent 70%),
+    radial-gradient(34% 42% at 88% 22%, var(--accent-glow), transparent 72%);
+  opacity: 0.55 !important;
+  filter: blur(6px) !important;
+  animation: v3-aurora-drift 14s ease-in-out infinite alternate !important;
+}
+.v3-hero-glow {
+  background: radial-gradient(30% 40% at 72% 60%, var(--accent-glow), transparent 70%);
+  opacity: 0.35 !important;
+}
+/* Faint blueprint grid, masked to fade toward the edges */
+.v3-hero-grid-lines {
+  background-image:
+    linear-gradient(var(--border-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+  background-size: 46px 46px !important;
+  opacity: 0.6 !important;
+  -webkit-mask-image: radial-gradient(ellipse 72% 62% at 50% 24%, #000, transparent 78%);
+  mask-image: radial-gradient(ellipse 72% 62% at 50% 24%, #000, transparent 78%);
+}
+@keyframes v3-aurora-drift {
+  from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+  to   { transform: translate3d(2%, 1.5%, 0) scale(1.08); }
+}
+
+/* ——— Kicker live pulse dot (replaces static sparkle) ——— */
+.v3-kicker-pulse {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: var(--text) !important;
+  flex-shrink: 0 !important;
+  animation: v3-kicker-pulse 2.4s ease-out infinite !important;
+}
+@keyframes v3-kicker-pulse {
+  0%   { box-shadow: 0 0 0 0 var(--accent-glow); }
+  70%  { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* ——— Hero role tags + founder identity chip ——— */
+.v3-hero-roles {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 0 1.6rem !important;
+}
+.v3-role-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0.34rem 0.75rem !important;
+  border-radius: 7px !important;
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-muted) !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+}
+.v3-founder-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 0.34rem 0.8rem !important;
+  border-radius: 7px !important;
+  background: linear-gradient(135deg, var(--accent-soft), transparent 70%) !important;
+  border: 1px solid var(--border-strong) !important;
+  color: var(--text) !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  text-decoration: none !important;
+  transition: transform 0.25s var(--ease), border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+.v3-founder-tag strong { color: var(--text) !important; font-weight: 700 !important; }
+.v3-founder-tag:hover {
+  transform: translateY(-1px) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 6px 18px -8px var(--accent-glow) !important;
+}
+
+/* ——— Founder banner (About section) ——— */
+.v3-founder-banner {
+  margin-top: 1.4rem !important;
+  display: grid !important;
+  grid-template-columns: auto 1fr auto !important;
+  align-items: center !important;
+  gap: 1.5rem !important;
+  padding: 1.6rem 1.9rem !important;
+  border-radius: 14px !important;
+  background:
+    radial-gradient(60% 120% at 0% 0%, var(--accent-soft), transparent 60%),
+    var(--card) !important;
+  border: 1px solid var(--border-strong) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.v3-founder-banner-icon {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 12px !important;
+  display: grid !important;
+  place-items: center !important;
+  background: var(--text) !important;
+  color: var(--bg) !important;
+  flex-shrink: 0 !important;
+}
+.v3-founder-banner-copy h3 {
+  font-size: 1.3rem !important;
+  margin: 0.15rem 0 0.5rem !important;
+  color: var(--text) !important;
+}
+.v3-founder-banner-copy h3 a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  color: var(--text) !important;
+  border-bottom: 1px solid var(--border-strong) !important;
+  padding-bottom: 1px !important;
+  transition: border-color 0.2s ease !important;
+}
+.v3-founder-banner-copy h3 a:hover { border-color: var(--accent) !important; }
+.v3-founder-banner-copy p { margin: 0 !important; font-size: 0.9rem !important; max-width: 60ch !important; }
+.v3-founder-banner-cta { flex-shrink: 0 !important; white-space: nowrap !important; }
+
+/* ——— Timeline: emphasize the founder entry ——— */
+.v3-timeline-highlight {
+  border-color: var(--border-strong) !important;
+  background:
+    radial-gradient(70% 140% at 100% 0%, var(--accent-soft), transparent 55%),
+    var(--card) !important;
+}
+.v3-timeline-highlight .v3-timeline-mark {
+  background: var(--text) !important;
+  color: var(--bg) !important;
+  border-color: var(--text) !important;
+}
+
+/* ═══ RESPONSIVE SUITE (authoritative — last in cascade) ═══ */
+
+/* Stats stay balanced & multi-column at every width */
+.v3-stats-grid {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+  gap: 1.25rem !important;
+}
+
+/* Tablet: two-up project cards instead of a lonely single column */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .v3-project-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Tablet & below: keep the hero readable, tame the ambient layers */
+@media (max-width: 900px) {
+  .v3-hero-grid {
+    gap: 2.25rem !important;
+  }
+  .v3-hero-aurora { opacity: 0.4 !important; }
+  .v3-hero-grid-lines { opacity: 0.4 !important; }
+  .v3-founder-banner {
+    grid-template-columns: 1fr !important;
+    gap: 1.1rem !important;
+    padding: 1.4rem !important;
+  }
+  .v3-founder-banner-cta { width: 100% !important; justify-content: center !important; }
+}
+
+/* Phones */
+@media (max-width: 640px) {
+  .v3-hero { padding: 1.25rem 0 2.5rem !important; }
+  .v3-hero-copy h1 {
+    font-size: clamp(1.9rem, 8vw, 2.5rem) !important;
+    line-height: 1.15 !important;
+  }
+  .v3-hero-roles { gap: 6px !important; margin-bottom: 1.35rem !important; }
+  .v3-role-tag,
+  .v3-founder-tag { font-size: 0.74rem !important; padding: 0.3rem 0.65rem !important; }
+  .v3-hero-proof { align-items: flex-start !important; }
+  .v3-founder-banner-icon { width: 46px !important; height: 46px !important; }
+  .v3-founder-banner-copy h3 { font-size: 1.15rem !important; }
+}
+
+/* Narrow phones: two stat columns read better than cramped auto-fit */
+@media (max-width: 540px) {
+  .v3-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.85rem !important; }
+}
+
+/* Respect reduced-motion for the ambient hero animation */
+@media (prefers-reduced-motion: reduce) {
+  .v3-hero-aurora { animation: none !important; }
+  .v3-kicker-pulse { animation: none !important; }
+}

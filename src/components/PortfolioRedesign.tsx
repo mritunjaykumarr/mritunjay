@@ -7,8 +7,8 @@ import {
   ArrowRight, ArrowUpRight, Award, BrainCircuit, BriefcaseBusiness,
   Check, ChevronRight, Cloud, Code2, Database, ExternalLink,
   GraduationCap, Mail, MapPin,
-  MessageCircle, MonitorSmartphone, Send, Server, Sparkles,
-  Workflow, Zap, FileText
+  MessageCircle, MonitorSmartphone, Send, Server,
+  Workflow, Zap, FileText, Rocket
 } from 'lucide-react';
 import { EXTENDED_PROJECTS_DATA } from '../data/projectsData';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
@@ -151,6 +151,9 @@ export default function PortfolioRedesign() {
       <main>
         {/* ——— Hero Section ——— */}
         <section ref={heroRef} className="v3-hero" id="home">
+          <div className="v3-hero-aurora" aria-hidden="true" />
+          <div className="v3-hero-glow" aria-hidden="true" />
+          <div className="v3-hero-grid-lines" aria-hidden="true" />
           <div className="v3-container v3-hero-grid">
             <FadeIn className="v3-hero-copy">
               <div
@@ -159,7 +162,7 @@ export default function PortfolioRedesign() {
                 onClick={() => window.dispatchEvent(new CustomEvent('open-welcome-hub'))}
                 title="Click to open Welcome Hub & Interactive Quick Start"
               >
-                <Sparkles size={13} style={{ color: 'var(--text)' }} />
+                <span className="v3-kicker-pulse" aria-hidden="true" />
                 <span>Available for select projects · AI-First Engineering</span>
                 <span style={{ fontSize: '0.72rem', opacity: 0.6, marginLeft: '4px' }}>✨ Quick Start</span>
               </div>
@@ -167,6 +170,22 @@ export default function PortfolioRedesign() {
               <h1>
                 Engineering intelligent <em>AI systems</em> & scalable web products.
               </h1>
+
+              <div className="v3-hero-roles">
+                <span className="v3-role-tag">Full-Stack Engineer</span>
+                <span className="v3-role-tag">AI Systems Builder</span>
+                <a
+                  className="v3-founder-tag"
+                  href="https://toolout.online"
+                  target="_blank"
+                  rel="noreferrer"
+                  title="Founder of toolout.online — developer utilities platform"
+                >
+                  <Rocket size={13} />
+                  <span>Founder of <strong>toolout.online</strong></span>
+                  <ArrowUpRight size={12} />
+                </a>
+              </div>
 
               <p className="v3-lede">
                 I design and ship fast, thoughtful software for teams turning ambitious ideas into useful, high-impact products.
@@ -277,6 +296,35 @@ export default function PortfolioRedesign() {
                 </ul>
               </FadeIn>
             </div>
+
+            <FadeIn delay={0.24} className="v3-founder-banner">
+              <div className="v3-founder-banner-icon">
+                <Rocket size={22} />
+              </div>
+              <div className="v3-founder-banner-copy">
+                <p className="v3-card-label">Founder</p>
+                <h3>
+                  Founder of{' '}
+                  <a href="https://toolout.online" target="_blank" rel="noreferrer">
+                    toolout.online <ArrowUpRight size={16} />
+                  </a>
+                </h3>
+                <p>
+                  A privacy-first developer utilities platform built on Next.js 16 — authoritative WHOIS/RDAP
+                  intelligence, live IRCTC rail tracking, JSON-to-TypeScript generation, OpenGraph previews and an
+                  in-browser sandbox, all shipped to a 100/100 Lighthouse bar.
+                </p>
+              </div>
+              <a
+                href="https://toolout.online"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-secondary v3-button-quiet v3-founder-banner-cta"
+              >
+                <span>Visit ToolOut</span>
+                <ArrowUpRight size={15} />
+              </a>
+            </FadeIn>
           </div>
         </section>
 
@@ -429,6 +477,27 @@ export default function PortfolioRedesign() {
             </FadeIn>
 
             <div className="v3-timeline">
+              <FadeIn className="v3-timeline-item v3-timeline-highlight">
+                <div className="v3-timeline-mark">
+                  <Rocket size={18} />
+                </div>
+                <div>
+                  <p className="v3-date">Present · Remote / India</p>
+                  <h3>Founder &amp; Product Engineer <span>@ ToolOut · toolout.online</span></h3>
+                  <p>
+                    Founded and shipped a privacy-first developer utilities platform on Next.js 16 — RDAP domain
+                    intelligence, live IRCTC rail tracking, code generators, and an in-browser sandbox — engineered
+                    end-to-end for sub-second performance and a clean, ad-light experience.
+                  </p>
+                  <div className="v3-timeline-tags">
+                    <span>Next.js 16</span>
+                    <span>TypeScript</span>
+                    <span>RDAP</span>
+                    <span>Vercel</span>
+                  </div>
+                </div>
+              </FadeIn>
+
               <FadeIn className="v3-timeline-item">
                 <div className="v3-timeline-mark">
                   <BriefcaseBusiness size={18} />
@@ -650,7 +719,7 @@ export default function PortfolioRedesign() {
                 MRITUNJAY KUMAR
               </a>
               <p style={{ margin: '0.5rem 0 0', fontSize: '0.85rem' }}>
-                AI Engineer & Full Stack Developer building high-performance web products.
+                AI Engineer & Full Stack Developer · Founder of toolout.online — building high-performance web products.
               </p>
             </div>
             <a href="#home" className="btn-secondary v3-button-quiet" style={{ height: '36px', fontSize: '0.8rem' }}>
