@@ -37,23 +37,49 @@ function playSynthesizedChime(type: 'welcome' | 'sparkle' | 'click' | 'pop') {
     const now = ctx.currentTime;
 
     if (type === 'welcome') {
-      // 3-note ascending warm futuristic chord: C5 -> E5 -> G5 -> B5 (Maj7 sparkle)
-      const freqs = [523.25, 659.25, 783.99, 987.77];
-      freqs.forEach((f, idx) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(f, now + idx * 0.08);
+      // Aesthetic, glassy welcome chime — a soft pentatonic arpeggio resolving
+      // into a warm chord, layered (sine body + gentle triangle shimmer) and
+      // rounded off through a low-pass filter with a slow open, so it feels
+      // premium and calm rather than a plain beep.
+      const master = ctx.createGain();
+      master.gain.setValueAtTime(0.9, now);
 
-        gain.gain.setValueAtTime(0.001, now + idx * 0.08);
-        gain.gain.exponentialRampToValueAtTime(0.08, now + idx * 0.08 + 0.04);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.6);
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1400, now);
+      filter.frequency.linearRampToValueAtTime(4200, now + 0.5);
+      filter.Q.setValueAtTime(0.6, now);
 
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+      filter.connect(master);
+      master.connect(ctx.destination);
 
-        osc.start(now + idx * 0.08);
-        osc.stop(now + idx * 0.08 + 0.65);
+      // A major add9 voicing: A4, C#5, E5, B5, A5 — warm, resolved, a touch dreamy
+      const notes = [440.0, 554.37, 659.25, 987.77, 880.0];
+      notes.forEach((f, idx) => {
+        const t = now + idx * 0.09;
+        const voice = ctx.createGain();
+        voice.gain.setValueAtTime(0.0001, t);
+        voice.gain.exponentialRampToValueAtTime(0.07, t + 0.035); // soft attack
+        voice.gain.exponentialRampToValueAtTime(0.0001, t + 1.35); // long, smooth tail
+        voice.connect(filter);
+
+        const fund = ctx.createOscillator();
+        fund.type = 'sine';
+        fund.frequency.setValueAtTime(f, t);
+
+        const shimmer = ctx.createOscillator();
+        shimmer.type = 'triangle';
+        shimmer.frequency.setValueAtTime(f * 2, t); // one octave up, quieter
+        const shimmerGain = ctx.createGain();
+        shimmerGain.gain.setValueAtTime(0.28, t);
+        shimmer.connect(shimmerGain);
+        shimmerGain.connect(voice);
+
+        fund.connect(voice);
+        fund.start(t);
+        shimmer.start(t);
+        fund.stop(t + 1.45);
+        shimmer.stop(t + 1.45);
       });
     } else if (type === 'sparkle') {
       // High frequency double twinkle
