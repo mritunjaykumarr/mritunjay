@@ -17,10 +17,8 @@ interface HeaderProps {
 /* ── Primary nav ── */
 const primaryNav = [
   { label: 'About', path: '/about' },
+  { label: 'Work', path: '/projects' },
   { label: 'Experience', path: '/experience' },
-  { label: 'Projects', path: '/projects' },
-  { label: 'Skills', path: '/skills' },
-  { label: 'Certifications', path: '/certifications' },
   { label: 'Blog', path: '/blog' },
   { label: 'Contact', path: '/contact' },
 ];
