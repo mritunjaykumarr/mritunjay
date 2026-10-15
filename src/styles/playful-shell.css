@@ -2217,10 +2217,51 @@ html {
 
 @media (max-width: 640px) {
   .header-floating-wrapper .navbar-pill-container {
+    height: 60px !important;
+    min-height: 60px !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 0.75rem !important;
     padding: 0 1rem !important;
   }
+  .header-floating-wrapper,
+  .header-floating-wrapper:not(.header-scrolled),
+  .header-floating-wrapper.header-scrolled {
+    height: 60px !important;
+    min-height: 60px !important;
+  }
+  #root { padding-top: 60px !important; }
+  html { scroll-padding-top: 72px !important; }
+  .header-floating-wrapper .navbar-logo {
+    min-width: 0 !important;
+  }
+  .header-floating-wrapper .navbar-logo > div {
+    gap: 7px !important;
+  }
+  .header-floating-wrapper .navbar-logo > div > div {
+    width: 27px !important;
+    height: 27px !important;
+    flex: 0 0 27px !important;
+  }
   .header-floating-wrapper .navbar-logo > div > span {
-    font-size: 0.84rem !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 0.82rem !important;
+  }
+  .header-floating-wrapper .navbar-right-actions {
+    gap: 6px !important;
+  }
+  /* Keep the phone header focused on the two controls that need one-tap access;
+     the full navigation and Resume link remain available in the drawer. */
+  .header-floating-wrapper .navbar-right-actions .navbar-theme-btn:first-child,
+  .header-floating-wrapper .navbar-resume-btn {
+    display: none !important;
+  }
+  .header-floating-wrapper .navbar-theme-btn,
+  .header-floating-wrapper .navbar-drawer-trigger-btn {
+    width: 36px !important;
+    height: 36px !important;
+    flex: 0 0 36px !important;
   }
 }
 
