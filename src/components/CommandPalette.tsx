@@ -169,7 +169,7 @@ export default function CommandPalette() {
       category: 'Actions',
       icon: FileText,
       badge: 'PDF',
-      action: () => { window.open('/updated_resume.pdf', '_blank'); setIsOpen(false); }
+      action: () => { window.open('https://drive.google.com/file/d/1HdONkW4D_xoIwXzMg2axe7RPThyOf3KU/view?usp=drive_link', '_blank', 'noopener,noreferrer'); setIsOpen(false); }
     },
     {
       id: 'act-cli',

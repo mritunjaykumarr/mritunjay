@@ -224,7 +224,7 @@ export default function ExperiencePage() {
           </div>
 
           <div style={{ marginTop: '2.5rem' }}>
-            <a href="/updated_resume.pdf" target="_blank" rel="noopener noreferrer" className="btn-primary">
+            <a href="https://drive.google.com/file/d/1HdONkW4D_xoIwXzMg2axe7RPThyOf3KU/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="btn-primary">
               <Download size={14} />
               <span>Download Complete CV / Resume</span>
             </a>

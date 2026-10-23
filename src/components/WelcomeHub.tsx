@@ -362,7 +362,7 @@ export default function WelcomeHub() {
 
   const handleOpenResume = () => {
     if (soundEnabled) playSynthesizedChime('click');
-    window.open('/updated_resume.pdf', '_blank', 'noopener,noreferrer');
+    window.open('https://drive.google.com/file/d/1HdONkW4D_xoIwXzMg2axe7RPThyOf3KU/view?usp=drive_link', '_blank', 'noopener,noreferrer');
   };
 
   const handleOpenBlog = () => {

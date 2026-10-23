@@ -175,7 +175,7 @@ export default function Header({ theme = 'dark', toggleTheme = () => {} }: Heade
 
             {/* Resume Button */}
             <a
-              href="/updated_resume.pdf"
+              href="https://drive.google.com/file/d/1HdONkW4D_xoIwXzMg2axe7RPThyOf3KU/view?usp=drive_link"
               target="_blank"
               rel="noopener noreferrer"
               className="navbar-resume-btn btn-solid"
@@ -333,7 +333,7 @@ export default function Header({ theme = 'dark', toggleTheme = () => {} }: Heade
               <div className="drawer-panel-footer">
                 <div className="drawer-footer-actions">
                   <a
-                    href="/updated_resume.pdf"
+                    href="https://drive.google.com/file/d/1HdONkW4D_xoIwXzMg2axe7RPThyOf3KU/view?usp=drive_link"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="drawer-resume-action"

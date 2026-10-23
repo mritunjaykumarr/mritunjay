@@ -187,7 +187,7 @@ export default function InteractiveHeroTerminal() {
         </div>
       );
     } else if (lower === 'resume' || lower === 'cv') {
-      window.open('/updated_resume.pdf', '_blank');
+      window.open('https://drive.google.com/file/d/1HdONkW4D_xoIwXzMg2axe7RPThyOf3KU/view?usp=drive_link', '_blank', 'noopener,noreferrer');
       outputContent = (
         <div style={{ color: '#4ade80', fontSize: '0.79rem', fontWeight: 500 }}>
           ✓ Verified Resume PDF opened in a new tab! (/updated_resume.pdf)

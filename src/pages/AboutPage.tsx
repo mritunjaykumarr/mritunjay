@@ -182,7 +182,7 @@ export default function AboutPage() {
 
               {/* Action Buttons */}
               <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', flexWrap: 'wrap' }}>
-                <a href="/updated_resume.pdf" target="_blank" rel="noopener noreferrer" className="btn-primary">
+                <a href="https://drive.google.com/file/d/1HdONkW4D_xoIwXzMg2axe7RPThyOf3KU/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="btn-primary">
                   <Download size={15} />
                   <span>Download Resume</span>
                 </a>

@@ -196,7 +196,7 @@ export default function PortfolioRedesign() {
                   <span>View Selected Work</span>
                   <ArrowRight size={15} />
                 </a>
-                <a href="/updated_resume.pdf" target="_blank" rel="noopener noreferrer" className="btn-secondary v3-button-quiet">
+                <a href="https://drive.google.com/file/d/1HdONkW4D_xoIwXzMg2axe7RPThyOf3KU/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="btn-secondary v3-button-quiet">
                   <FileText size={15} />
                   <span>View Resume</span>
                 </a>
@@ -731,7 +731,7 @@ export default function PortfolioRedesign() {
           <div className="v3-footer-bottom">
             <span>© {new Date().getFullYear()} Mritunjay Kumar. All rights reserved.</span>
             <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
-              <a href="/updated_resume.pdf" target="_blank" rel="noreferrer">Resume</a>
+              <a href="https://drive.google.com/file/d/1HdONkW4D_xoIwXzMg2axe7RPThyOf3KU/view?usp=drive_link" target="_blank" rel="noreferrer">Resume</a>
               <a href="https://github.com/mritunjaykumarr" target="_blank" rel="noreferrer">GitHub</a>
               <a href="https://www.linkedin.com/in/mritunjay-kumar-22a7a828b" target="_blank" rel="noreferrer">LinkedIn</a>
               <a href="mailto:me@mritify.online">Email</a>

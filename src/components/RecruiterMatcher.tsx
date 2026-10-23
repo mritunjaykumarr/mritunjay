@@ -382,7 +382,7 @@ export default function RecruiterMatcher() {
                     <span>Book 15-Min Screen</span>
                   </button>
                   <a
-                    href="/updated_resume.pdf"
+                    href="https://drive.google.com/file/d/1HdONkW4D_xoIwXzMg2axe7RPThyOf3KU/view?usp=drive_link"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
