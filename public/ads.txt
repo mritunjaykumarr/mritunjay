@@ -1,4 +1,0 @@
-# ads.txt for mritify.online — Google AdSense
-# Verified Publisher ID: ca-pub-7211021479773356 (from your ad code screenshot)
-# This file must be reachable at https://mritify.online/ads.txt
-google.com, pub-7211021479773356, DIRECT, f08c47fec0942fa0
